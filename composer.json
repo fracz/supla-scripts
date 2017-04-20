@@ -1,0 +1,12 @@
+{
+  "name": "fracz/supla-scripts",
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/fracz/supla-api-client-php"
+    }
+  ],
+  "require": {
+    "supla/api-client": "dev-master"
+  }
+}
