@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e95c37841688b5b389ebb884a72be108",
+    "content-hash": "ec02cc18bd0622f5055b6660366c8db1",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -239,34 +239,31 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/fracz/supla-api-client-php.git",
-                "reference": "93d793219ae455eec32a89a340da83767986b7da"
+                "url": "https://github.com/SUPLA/api-client-php.git",
+                "reference": "1d3bbed3d9c6800799e3af8f6cc178105380046d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fracz/supla-api-client-php/zipball/93d793219ae455eec32a89a340da83767986b7da",
-                "reference": "93d793219ae455eec32a89a340da83767986b7da",
+                "url": "https://api.github.com/repos/SUPLA/api-client-php/zipball/1d3bbed3d9c6800799e3af8f6cc178105380046d",
+                "reference": "1d3bbed3d9c6800799e3af8f6cc178105380046d",
                 "shasum": ""
             },
-            "require": {
-                "guzzlehttp/guzzle": "^6.2"
+            "require-dev": {
+                "squizlabs/php_codesniffer": "^2.8"
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "Supla": "src"
+                "psr-4": {
+                    "Supla\\ApiClient\\": "src"
                 }
             },
-            "support": {
-                "source": "https://github.com/fracz/supla-api-client-php/tree/master",
-                "issues": "https://github.com/fracz/supla-api-client-php/issues"
-            },
-            "time": "2017-04-20 06:52:30"
+            "notification-url": "https://packagist.org/downloads/",
+            "time": "2017-04-20 14:48:08"
         }
     ],
     "packages-dev": [],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": {
         "supla/api-client": 20
     },
