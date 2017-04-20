@@ -5,6 +5,7 @@ namespace SuplaScripts;
 use Supla\ApiClient\SuplaApiClient;
 
 require __DIR__ . '/config.php';
+require __DIR__ . '/http-basic-auth.php';
 
 class ConfiguredSuplaApiClient extends SuplaApiClient
 {
