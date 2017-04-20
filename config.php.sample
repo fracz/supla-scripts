@@ -6,5 +6,5 @@ define('SUPLA_SECRET', '');
 define('SUPLA_USERNAME', 'api_2');
 define('SUPLA_PASSWORD', '');
 
-define('HTTP_BASIC_USER', 'sample');
-define('HTTP_BASIC_PASSWORD', 'sample');
+define('HTTP_BASIC_USER', '');
+define('HTTP_BASIC_PASSWORD', '');
