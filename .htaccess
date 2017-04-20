@@ -1,0 +1,3 @@
+RewriteEngine On
+RewriteRule ^temperature/(\d+) temperature/temperature.php?channel=$1
+RewriteRule ^toggle/(\d+) toggle/toggle.php?channel=$1
