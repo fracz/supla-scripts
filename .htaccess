@@ -1,3 +1,4 @@
 RewriteEngine On
 RewriteRule ^temperature/(\d+) temperature/temperature.php?channel=$1
+RewriteRule ^temperature-stats/(\d+)/((max)|(min)|(avg))/(.+) temperature-stats/temperature-stats.php?channel=$1&stat=$2&since=$3
 RewriteRule ^toggle/(\d+) toggle/toggle.php?channel=$1
