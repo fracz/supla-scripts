@@ -24,3 +24,5 @@ if ($avgTemperature < $thermostatConfig['heatFrom']) {
 } else {
     echo "No action needed";
 }
+
+echo PHP_EOL;
