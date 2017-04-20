@@ -30,6 +30,19 @@ the id of the channel assigned to your account and that is a thermometer.
 
 The script will output the temperature in Celcius degrees, e.g. `21.65°C`.
 
+## Temperature stats
+
+Allow to calculate extreme or avareage values of temperatures of specified channels.
+
+Examples, assuming that `123` is the number of the channel with your thermometer:
+
+* `https://your-server.com/supla-scripts/temperature-stats/123/max/-1day` will return
+  max temperature and date from last 24 hours
+* `https://your-server.com/supla-scripts/temperature-stats/123/min/-1week` will return
+  min temperature and date from last 7 days
+* `https://your-server.com/supla-scripts/temperature-stats/123/avg/-1month` will return
+  average temperature from the last month
+
 ## Thermostat
 
 Simple script that decides based on average temperature from chosen
