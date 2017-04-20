@@ -1,0 +1,7 @@
+<?php
+return [
+    'thermometers' => [1, 2, 3],
+    'heater' => 4,
+    'heatFrom' => 20,
+    'heatTo' => 21,
+];

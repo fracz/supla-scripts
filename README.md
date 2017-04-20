@@ -30,6 +30,27 @@ the id of the channel assigned to your account and that is a thermometer.
 
 The script will output the temperature in Celcius degrees, e.g. `21.65°C`.
 
+## Thermostat
+
+Simple script that decides based on average temperature from chosen
+thermometers whether to turn the heater on or off.
+
+Copy the `thermostat/config.php.sample` into `thermostat/config.php`.
+Adjust the values there
+
+* `thermometers` is an array of channel ids that are thermometers to check an
+  calculate the average temperature from
+* `heater` is the channel id of heater to manage
+* `heatFrom` is a temperature when the heating should start
+* `heatTo` is a temperature when the heating should end
+
+After configuration, add the script to crontab by running `crontab -e` and adding
+the following line (path might need to be tweaked).
+
+```
+*/5 * * * * /usr/bin/php /home/supla/supla-scripts/thermostat/thermostat.php
+```
+
 # Create widgest on Android
 
 Install the [HTTP Request Widget](https://play.google.com/store/apps/details?id=com.idlegandalf.httprequestwidget)
