@@ -1,0 +1,7 @@
+<?php
+
+define('SUPLA_SERVER', 'svrX.supla.org');
+define('SUPLA_CLIENT_ID', '');
+define('SUPLA_SECRET', '');
+define('SUPLA_USERNAME', 'api_2');
+define('SUPLA_PASSWORD', '');

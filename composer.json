@@ -1,6 +1,11 @@
 {
   "name": "fracz/supla-scripts",
   "minimum-stability": "dev",
+  "autoload": {
+    "psr-4": {
+      "SuplaScripts\\": ""
+    }
+  },
   "require": {
     "supla/api-client": "dev-master"
   }
