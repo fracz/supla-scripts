@@ -72,7 +72,7 @@ and make a request to `https://your-server.com/supla-scripts/scenes/command`.
 Examples:
 
  * `https://your-server.com/supla-scripts/scenes/123-turnOn,124-turnOff`
- * `https://your-server.com/supla-scripts/scenes/111-open,112-open,113-shut`
+ * `https://your-server.com/supla-scripts/scenes/111-openClose,112-openClose,113-shut`
  
 Make sure the action can be executed on the chosen channel.
 
