@@ -78,9 +78,9 @@ Make sure the action can be executed on the chosen channel.
 
 Available actions:
 
- * `turnOn` and `turnOff`
- * `open` and `close`
- * `shut` and `reveal`
+ * `turnOn` and `turnOff` for lights/switches
+ * `openClose` to change the state of gates
+ * `shut` and `reveal` for rolette shutters
 
 # Create widgest on Android
 
