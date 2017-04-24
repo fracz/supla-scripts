@@ -4,7 +4,7 @@ Utilites that leverage Supla REST Api in order to provide some nice URLs.
 
 # Installation
 
-Clone this repo.
+Clone this repo and run `composer install` inside the root directory. You might need to [install composer](https://getcomposer.org/download/) first.
 
 Copy `config.php.sample` into `config.php` and adjust settings there.
 
