@@ -64,6 +64,24 @@ the following line (path might need to be tweaked).
 */5 * * * * /usr/bin/php /home/supla/supla-scripts/thermostat/thermostat.php
 ```
 
+## Scenes
+
+Prepare a scene commands by using a notation `channel1-action1,channel2-action2`
+and make a request to `https://your-server.com/supla-scripts/scenes/command`.
+
+Examples:
+
+ * `https://your-server.com/supla-scripts/scenes/123-turnOn,124-turnOff`
+ * `https://your-server.com/supla-scripts/scenes/111-open,112-open,113-shut`
+ 
+Make sure the action can be executed on the chosen channel.
+
+Available actions:
+
+ * `turnOn` and `turnOff`
+ * `open` and `close`
+ * `shut` and `reveal`
+
 # Create widgest on Android
 
 Install the [HTTP Request Widget](https://play.google.com/store/apps/details?id=com.idlegandalf.httprequestwidget)
