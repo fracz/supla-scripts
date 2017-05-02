@@ -7,6 +7,8 @@ use Supla\ApiClient\SuplaApiClient;
 require __DIR__ . '/config.php';
 require __DIR__ . '/http-basic-auth.php';
 
+header('Content-Type: text/plain; charset=utf-8');
+
 class ConfiguredSuplaApiClient extends SuplaApiClient
 {
     public function __construct()
