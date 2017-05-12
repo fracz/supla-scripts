@@ -1,0 +1,11 @@
+<?php
+return [
+    [
+        'latitude' => 49.179560,
+        'longitude' => 20.088018,
+        'tolerance' => 1000,
+        'channel' => 123,
+        'actionInside' => 'turnOn',
+        'actionOutside' => 'turnOff',
+    ]
+];
