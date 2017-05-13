@@ -66,13 +66,14 @@ the following line (path might need to be tweaked).
 
 ## Scenes
 
-Prepare a scene commands by using a notation `channel1-action1,channel2-action2`
+Prepare a scene commands by using a notation `action1,channel1|action2,channel2,param`
 and make a request to `https://your-server.com/supla-scripts/scenes/command`.
 
 Examples:
 
- * `https://your-server.com/supla-scripts/scenes/123-turnOn,124-turnOff`
- * `https://your-server.com/supla-scripts/scenes/111-openClose,112-openClose,113-shut`
+ * `https://your-server.com/supla-scripts/scenes/turnOn,123|turnOff,124`
+ * `https://your-server.com/supla-scripts/scenes/openClose,111|openClose,112|shut,113`
+ * `https://your-server.com/supla-scripts/scenes/setRGB,7330,16776960,100`
  
 Make sure the action can be executed on the chosen channel.
 

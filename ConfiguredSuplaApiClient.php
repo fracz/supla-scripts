@@ -25,7 +25,7 @@ class ConfiguredSuplaApiClient extends SuplaApiClient
     public function executeCommandFromString($command, $separator = ',')
     {
         $args = explode($separator, $command);
-        $methodName = 'channel' . ucfirst(array_shift($command));
+        $methodName = 'channel' . ucfirst(array_shift($args));
         call_user_func_array([$this, $methodName], $args);
     }
 
