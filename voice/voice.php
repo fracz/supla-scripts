@@ -5,7 +5,7 @@ $config = require __DIR__ . '/config.php';
 $client = new \SuplaScripts\ConfiguredSuplaApiClient();
 
 $command = $_GET['command'];
-
+$command = base64_decode($command);
 $command = mb_strtolower($command, 'UTF-8');
 
 foreach ($config as $cfg) {
