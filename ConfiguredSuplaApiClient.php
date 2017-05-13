@@ -21,4 +21,19 @@ class ConfiguredSuplaApiClient extends SuplaApiClient
             'password' => SUPLA_PASSWORD,
         ]);
     }
+
+    public function executeCommandFromString($command, $separator = ',')
+    {
+        $args = explode($separator, $command);
+        $methodName = 'channel' . ucfirst(array_shift($command));
+        call_user_func_array([$this, $methodName], $args);
+    }
+
+    public function executeCommandsFromString($commands, $separator = '|', $commandSeparator = ',')
+    {
+        $commands = explode($separator, $commands);
+        foreach ($commands as $command) {
+            $this->executeCommandFromString($command, $commandSeparator);
+        }
+    }
 }
