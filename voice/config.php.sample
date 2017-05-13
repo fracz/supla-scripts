@@ -4,12 +4,12 @@ return [
         'commands' => [
             'włącz światło w sypialni'
         ],
-        'action' => '123-turnOn',
+        'action' => 'turnOn,123',
     ],
     [
         'commands' => [
             'wyłącz światło w sypialni'
         ],
-        'action' => '123-turnOff',
+        'action' => 'turnOff,123',
     ]
 ];
