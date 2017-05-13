@@ -1,0 +1,15 @@
+<?php
+return [
+    [
+        'commands' => [
+            'włącz światło w sypialni'
+        ],
+        'action' => '123-turnOn',
+    ],
+    [
+        'commands' => [
+            'wyłącz światło w sypialni'
+        ],
+        'action' => '123-turnOff',
+    ]
+];
