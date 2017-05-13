@@ -1,5 +1,9 @@
 <?php
 
+if (php_sapi_name() != "cli") {
+    die('Devices list is available only in command line.');
+}
+
 require __DIR__ . '/../vendor/autoload.php';
 
 $client = new \SuplaScripts\ConfiguredSuplaApiClient();
