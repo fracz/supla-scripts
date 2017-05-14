@@ -15,6 +15,7 @@ foreach ($config as $cfg) {
         $cmd = mb_strtolower($cmd, 'UTF-8');
         if (strpos($command, $cmd) !== false) {
             $client->executeCommandsFromString($cfg['action']);
+            ++$actions;
             break;
         }
     }
