@@ -8,6 +8,8 @@ $command = $_GET['command'];
 $command = base64_decode($command);
 $command = mb_strtolower($command, 'UTF-8');
 
+$actions = 0;
+
 foreach ($config as $cfg) {
     foreach ($cfg['commands'] as $cmd) {
         $cmd = mb_strtolower($cmd, 'UTF-8');
@@ -18,4 +20,5 @@ foreach ($config as $cfg) {
     }
 }
 
-echo 'OK';
+echo $command . PHP_EOL;
+echo "Matched actions: " . $actions;
