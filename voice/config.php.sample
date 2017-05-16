@@ -13,5 +13,19 @@ return [
         ],
         'action' => 'turnOff,123',
         'feedback' => 'światło w sypialni zostało wyłączone',
-    ]
+    ],
+    [
+        'commands' => [
+            'czy światło w sypialni jest włączone'
+        ],
+        'action' => 'get,123',
+        'feedback' => 'światło w sypialni jest {{on}}',
+    ],
+    [
+        'commands' => [
+            'ile jest stopni w domu'
+        ],
+        'action' => 'get,125',
+        'feedback' => 'w domu jest {{temperature}} stopni',
+    ],
 ];
