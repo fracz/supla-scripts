@@ -8,9 +8,14 @@ require __DIR__ . '/../vendor/autoload.php';
 
 $client = new \SuplaScripts\ConfiguredSuplaApiClient();
 
-$devices = $client->ioDevices()->iodevices;
+$devices = $client->ioDevices();
 
-foreach ($devices as $device) {
+if (!$devices) {
+    echo "Could not connect to SUPLA-Cloud API. Verify if the configuration in config.php is correct.";
+    exit;
+}
+
+foreach ($devices->iodevices as $device) {
     echo "#{$device->id} $device->name";
     if ($device->comment) {
         echo " ($device->comment)";
