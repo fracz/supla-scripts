@@ -20,12 +20,14 @@ foreach ($config as $cfg) {
             $client->log("Executed command: $cmd ($cfg[action])");
             $results = $client->executeCommandsFromString($cfg['action']);
             if (isset($cfg['feedback'])) {
-                $firstResult = $results[0];
-                $feedback = preg_replace_callback('#{{\s*([a-z]+)\s*}}#', function ($variable) use ($firstResult) {
-                    $variable = $variable[1];
-                    $value = $firstResult->{$variable};
+                $feedback = preg_replace_callback('#{{\s*([a-z]+)\s*\|?\s*(\d+)?\s*}}#', function ($match) use ($results) {
+                    $variable = $match[1];
+                    $resultIndex = isset($match[2]) && $match[2] ? $match[2] : 0;
+                    $value = $results[$resultIndex]->{$variable};
                     if ($variable == 'on') {
                         $value = $value ? 'włączone' : 'wyłączone';
+                    } else if ($variable == 'hi') {
+                        $value = $value ? 'zamknięta' : 'otwarta';
                     } else if (floatval($value)) {
                         $value = number_format($value, 1, ',', '');
                     }
