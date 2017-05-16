@@ -22,8 +22,11 @@ foreach ($config as $cfg) {
             if (isset($cfg['feedback'])) {
                 $firstResult = $results[0];
                 $feedback = preg_replace_callback('#{{\s*([a-z]+)\s*}}#', function ($variable) use ($firstResult) {
-                    $value = $firstResult->{$variable[1]};
-                    if (floatval($value)) {
+                    $variable = $variable[1];
+                    $value = $firstResult->{$variable};
+                    if ($variable == 'on') {
+                        $value = $value ? 'włączone' : 'wyłączone';
+                    } else if (floatval($value)) {
                         $value = number_format($value, 1, ',', '');
                     }
                     return $value;
