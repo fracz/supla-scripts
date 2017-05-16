@@ -9,7 +9,11 @@ $command = $_GET['command'];
 $command = base64_decode($command);
 $command = mb_strtolower($command, 'UTF-8');
 
-file_put_contents(LOG_FILE, PHP_EOL . (new DateTime())->format(DateTime::ATOM) . ': Command: ' . $command, FILE_APPEND);
+$wrote = file_put_contents(LOG_FILE, PHP_EOL . (new DateTime())->format(DateTime::ATOM) . ': Command: ' . $command, FILE_APPEND);
+
+if (!$wrote) {
+    echo 'Can not write to log file.';
+}
 
 $actions = 0;
 
