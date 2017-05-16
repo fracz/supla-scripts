@@ -11,6 +11,7 @@ $command = mb_strtolower($command, 'UTF-8');
 $client->log('Command: ' . $command);
 
 $actions = 0;
+$feedbacks = [];
 
 foreach ($config as $cfg) {
     foreach ($cfg['commands'] as $cmd) {
@@ -18,6 +19,9 @@ foreach ($config as $cfg) {
         if (strpos($command, $cmd) !== false) {
             $client->log("Executed command: $cmd ($cfg[action])");
             $client->executeCommandsFromString($cfg['action']);
+            if ($cfg['feedback']) {
+                $feedbacks[] = $cfg['feedback'];
+            }
             ++$actions;
             break;
         }
@@ -26,4 +30,4 @@ foreach ($config as $cfg) {
 
 $client->log("Matched actions: $actions");
 
-echo 'OK';
+echo implode(PHP_EOL, $feedbacks);
