@@ -18,9 +18,12 @@ foreach ($config as $cfg) {
         $cmd = mb_strtolower($cmd, 'UTF-8');
         if (strpos($command, $cmd) !== false) {
             $client->log("Executed command: $cmd ($cfg[action])");
-            $client->executeCommandsFromString($cfg['action']);
-            if ($cfg['feedback']) {
-                $feedbacks[] = $cfg['feedback'];
+            $results = $client->executeCommandsFromString($cfg['action']);
+            if (isset($cfg['feedback'])) {
+                $firstResult = $results[0];
+                $feedbacks[] = preg_replace_callback('#{{\s*([a-z]+)\s*}}#', function ($variable) use ($firstResult) {
+                    return $firstResult->{$variable[1]};
+                }, $cfg['feedback']);
             }
             ++$actions;
             break;

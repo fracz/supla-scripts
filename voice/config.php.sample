@@ -5,11 +5,13 @@ return [
             'włącz światło w sypialni'
         ],
         'action' => 'turnOn,123',
+        'feedback' => 'światło w sypialni zostało włączone',
     ],
     [
         'commands' => [
             'wyłącz światło w sypialni'
         ],
         'action' => 'turnOff,123',
+        'feedback' => 'światło w sypialni zostało wyłączone',
     ]
 ];

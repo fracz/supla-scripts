@@ -31,16 +31,22 @@ class ConfiguredSuplaApiClient extends SuplaApiClient
     public function executeCommandFromString($command, $separator = ',')
     {
         $args = explode($separator, $command);
-        $methodName = 'channel' . ucfirst(array_shift($args));
-        call_user_func_array([$this, $methodName], $args);
+        $methodSuffix = ucfirst(array_shift($args));
+        if ($methodSuffix == 'Get') {
+            $methodSuffix = '';
+        }
+        $methodName = 'channel' . $methodSuffix;
+        return call_user_func_array([$this, $methodName], $args);
     }
 
     public function executeCommandsFromString($commands, $separator = '|', $commandSeparator = ',')
     {
         $commands = explode($separator, $commands);
+        $results = [];
         foreach ($commands as $command) {
-            $this->executeCommandFromString($command, $commandSeparator);
+            $results[] = $this->executeCommandFromString($command, $commandSeparator);
         }
+        return $results;
     }
 
     public function log($entry)
