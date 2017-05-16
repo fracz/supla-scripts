@@ -22,7 +22,11 @@ foreach ($config as $cfg) {
             if (isset($cfg['feedback'])) {
                 $firstResult = $results[0];
                 $feedback = preg_replace_callback('#{{\s*([a-z]+)\s*}}#', function ($variable) use ($firstResult) {
-                    return $firstResult->{$variable[1]};
+                    $value = $firstResult->{$variable[1]};
+                    if (floatval($value)) {
+                        $value = number_format($value, 1, ',', '');
+                    }
+                    return $value;
                 }, $cfg['feedback']);
                 $client->log("Feedback: " . $feedback);
                 $feedbacks[] = $feedback;
