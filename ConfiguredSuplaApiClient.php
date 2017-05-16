@@ -51,7 +51,7 @@ class ConfiguredSuplaApiClient extends SuplaApiClient
         } else {
             $entry = "\t" . $entry;
         }
-        $wrote = file_put_contents(LOGS_DIR . '/' . $this->scriptName . '.log', PHP_EOL . $entry, FILE_APPEND);
+        $wrote = file_put_contents(LOGS_DIR . '/' . $this->scriptName . '.log', $entry . PHP_EOL, FILE_APPEND);
         if (!$wrote) {
             echo 'Can not write to log file.' . PHP_EOL;
         }
