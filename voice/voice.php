@@ -21,9 +21,11 @@ foreach ($config as $cfg) {
             $results = $client->executeCommandsFromString($cfg['action']);
             if (isset($cfg['feedback'])) {
                 $firstResult = $results[0];
-                $feedbacks[] = preg_replace_callback('#{{\s*([a-z]+)\s*}}#', function ($variable) use ($firstResult) {
+                $feedback = preg_replace_callback('#{{\s*([a-z]+)\s*}}#', function ($variable) use ($firstResult) {
                     return $firstResult->{$variable[1]};
                 }, $cfg['feedback']);
+                $client->log("Feedback: " . $feedback);
+                $feedbacks[] = $feedback;
             }
             ++$actions;
             break;
