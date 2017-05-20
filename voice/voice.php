@@ -4,8 +4,7 @@ $config = require __DIR__ . '/config.php';
 
 $client = new \SuplaScripts\ConfiguredSuplaApiClient('voice');
 
-$command = $_GET['command'];
-$command = base64_decode($command);
+$command = file_get_contents('php://input');
 $command = mb_strtolower($command, 'UTF-8');
 
 $client->log('Command: ' . $command);
