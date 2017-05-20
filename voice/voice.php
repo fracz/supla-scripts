@@ -43,4 +43,7 @@ foreach ($config as $cfg) {
 
 $client->log("Matched actions: $actions");
 
-echo implode(PHP_EOL, $feedbacks);
+echo json_encode([
+    'matchedActions' => $actions,
+    'feedback' => implode(PHP_EOL, $feedbacks),
+]);
