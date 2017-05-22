@@ -31,7 +31,7 @@ $colors = ['000000', 'ffffff', 'ffff00', 'ff0000', 'ff8800', 'ff00ff', '0000ff',
 ?>
 <div id="container">
     <?php foreach ($colors as $color): ?>
-        <a style="background-color: #<?= $color ?>" onclick="changeColor()" color="<?= $color ?>"></a>
+        <a style="background-color: #<?= $color ?>" color="<?= $color ?>"></a>
     <?php endforeach; ?>
 </div>
 
