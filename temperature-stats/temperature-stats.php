@@ -6,7 +6,9 @@ $channel = $_GET['channel'];
 $from = strtotime($_GET['since']);
 $stat = $_GET['stat'];
 
-$history = $client->temperatureLogGetItems($channel)->log;
+$count = $client->temperatureLogItemCount($channel);
+$offset = max(0, $count->count - $count->record_limit_per_request + 1);
+$history = $client->temperatureLogGetItems($channel, $offset)->log;
 $history = array_filter($history, function ($item) use ($from) {
     return $item->date_timestamp > $from;
 });
