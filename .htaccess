@@ -3,6 +3,7 @@ RewriteRule ^action/(\d+)/(.+) action/action.php?channel=$1&action=$2
 RewriteRule ^geo/([\d\\.]+)/([\d\\.]+) geo/geo.php?latitude=$1&longitude=$2
 RewriteRule ^rgb/([\d]+) rgb/remote.php?channel=$1
 RewriteRule ^scenes/(.+) scene/scene.php?commands=$1
+RewriteRule ^state/(\d+) state/state.php?channel=$1
 RewriteRule ^temperature/(\d+) temperature/temperature.php?channel=$1
 RewriteRule ^temperature-stats/(\d+)/((max)|(min)|(avg))/(.+) temperature-stats/temperature-stats.php?channel=$1&stat=$2&since=$6
 RewriteRule ^toggle/(\d+) toggle/toggle.php?channel=$1
