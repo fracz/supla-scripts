@@ -3,8 +3,7 @@
 require __DIR__ . '/../vendor/autoload.php';
 
 $client = new \SuplaScripts\ConfiguredSuplaApiClient('temperature');
-$channel = $_GET['channel'];
-
+$channel = $client->readFromGetOrArgv('channel');
 $client->log('#' . $channel);
 
 $response = $client->channel($channel);

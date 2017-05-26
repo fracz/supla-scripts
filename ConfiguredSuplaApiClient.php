@@ -49,6 +49,20 @@ class ConfiguredSuplaApiClient extends SuplaApiClient
         return $results;
     }
 
+    public function readFromGetOrArgv($getName, $argvIndex = 1)
+    {
+        global $argv;
+        if (isset($_GET[$getName]) && !empty($_GET[$getName])) {
+            return $_GET[$getName];
+        } else if (isset($argv[$argvIndex])) {
+            return $argv[$argvIndex];
+        } else {
+            $error = "Could not read the $getName parameter.";
+            $this->log($error);
+            die($error);
+        }
+    }
+
     public function log($entry)
     {
         if (!$this->alreadyLogged) {
