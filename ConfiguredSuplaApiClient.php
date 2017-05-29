@@ -52,7 +52,7 @@ class ConfiguredSuplaApiClient extends SuplaApiClient
     public function readFromGetOrArgv($getName, $argvIndex = 1)
     {
         global $argv;
-        if (isset($_GET[$getName]) && !empty($_GET[$getName])) {
+        if (isset($_GET[$getName]) && $_GET[$getName] !== '') {
             return $_GET[$getName];
         } else if (isset($argv[$argvIndex])) {
             return $argv[$argvIndex];
