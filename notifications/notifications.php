@@ -1,7 +1,7 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
 
-$client = new \SuplaScripts\ConfiguredSuplaApiClient('state-notifier');
+$client = new \SuplaScripts\ConfiguredSuplaApiClient('notifications');
 $config = require __DIR__ . '/config.php';
 
 //$command = $client->readFromGetOrArgv('command');
