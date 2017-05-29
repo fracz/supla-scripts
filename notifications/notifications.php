@@ -7,28 +7,28 @@ $config = require __DIR__ . '/config.php';
 //$command = $client->readFromGetOrArgv('command');
 
 if (strtolower($_SERVER['REQUEST_METHOD']) != 'PUT') {
-    $notificationsToShow = [];
-    for ($notificationConfigIndex = 0; $notificationConfigIndex < count($config); ++$notificationConfigIndex) {
-        $notificationConfig = $config[$notificationConfigIndex];
+    $query = $client->readFromGetOrArgv('query');
+    if ($query == 'init') {
+        echo count($config);
+    } else if (isset($config[$query])) {
+        $notificationConfig = $config[$query];
         $channelData = $client->channel($notificationConfig['channel']);
         $notificationNeeded = false;
         foreach ($notificationConfig['expectation'] as $expectedProp => $expectedValue) {
             $actualValue = $channelData->{$expectedProp};
             if ($actualValue != $expectedValue) {
-                $notificationNeeded = true;
-                break;
+                $notification = array_merge($notificationConfig['notification'], [
+                    'actions' => array_map(function ($action) {
+                        return $action['label'];
+                    }, $notificationConfig['actions']),
+                ]);
+                echo json_encode($notification);
+                exit;
             }
         }
-        if ($notificationNeeded) {
-            $notificationsToShow[] = array_merge($notificationConfig['notification'], [
-                'index' => $notificationConfigIndex,
-                'actions' => array_map(function ($action) {
-                    return $action['label'];
-                }, $notificationConfig['actions']),
-            ]);
-        }
+    } else {
+        echo "INVALID CONFIG OFFSET: " . $query;
     }
-    echo json_encode($notificationsToShow);
 } else {
 
 }
