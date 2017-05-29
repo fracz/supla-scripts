@@ -4,8 +4,6 @@ require __DIR__ . '/../vendor/autoload.php';
 $client = new \SuplaScripts\ConfiguredSuplaApiClient('notifications');
 $config = require __DIR__ . '/config.php';
 
-//$command = $client->readFromGetOrArgv('command');
-
 $query = $client->readFromGetOrArgv('query');
 
 if (isset($config[$query])) {
@@ -27,9 +25,9 @@ if (isset($config[$query])) {
         }
     } else {
         $action = file_get_contents('php://input');
-        if (isset($notificationConfig[$action])) {
-            if (isset($notificationConfig[$action]['command'])) {
-                $client->executeCommandsFromString($notificationConfig[$action]['command']);
+        if (isset($notificationConfig['actions'][$action])) {
+            if (isset($notificationConfig['actions'][$action]['command'])) {
+                $client->executeCommandsFromString($notificationConfig['actions'][$action]['command']);
             }
         } else {
             echo "Invalid action: " . $action;
@@ -38,17 +36,3 @@ if (isset($config[$query])) {
 } else {
     echo count($config);
 }
-
-//foreach ($config as $channelId => $expectations) {
-//    $info = $client->channel($channelId);
-//    foreach ($expectations as $prop => $expectedValue) {
-//        $actualValue = $info->{$prop};
-//        if ($actualValue != $expectedValue) {
-//            if (is_bool($expectedValue)) {
-//                $expectedValue = $expectedValue ? 'true' : 'false';
-//                $actualValue = $actualValue ? 'true' : 'false';
-//            }
-//            echo "Expectation failed! $channelId should have $prop set to $expectedValue but it has $actualValue!";
-//        }
-//    }
-//}
