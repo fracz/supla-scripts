@@ -19,7 +19,7 @@ if (isset($config[$query])) {
             if ($actualValue != $expectedValue) {
                 $notification = array_merge($notificationConfig['notification'], [
                     'actions' => array_map(function ($action) {
-                        return $action['label'];
+                        return array_intersect_key($action, ['label' => '', 'icon' => '']);
                     }, $notificationConfig['actions']),
                 ]);
                 $client->log(json_encode($notification));
