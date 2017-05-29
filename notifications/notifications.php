@@ -10,7 +10,7 @@ $client->log('Query: ' . $query);
 
 if (isset($config[$query])) {
     $notificationConfig = $config[$query];
-    if (strtolower($_SERVER['REQUEST_METHOD']) != 'PUT') {
+    if (strtoupper($_SERVER['REQUEST_METHOD']) != 'PUT') {
         $client->log('Reading status');
         $channelData = $client->channel($notificationConfig['channel']);
         $notificationNeeded = false;
