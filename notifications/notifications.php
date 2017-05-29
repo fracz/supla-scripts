@@ -6,12 +6,11 @@ $config = require __DIR__ . '/config.php';
 
 //$command = $client->readFromGetOrArgv('command');
 
-if (strtolower($_SERVER['REQUEST_METHOD']) != 'PUT') {
-    $query = $client->readFromGetOrArgv('query');
-    if ($query == 'init') {
-        echo count($config);
-    } else if (isset($config[$query])) {
-        $notificationConfig = $config[$query];
+$query = $client->readFromGetOrArgv('query');
+
+if (isset($config[$query])) {
+    $notificationConfig = $config[$query];
+    if (strtolower($_SERVER['REQUEST_METHOD']) != 'PUT') {
         $channelData = $client->channel($notificationConfig['channel']);
         $notificationNeeded = false;
         foreach ($notificationConfig['expectation'] as $expectedProp => $expectedValue) {
@@ -27,10 +26,17 @@ if (strtolower($_SERVER['REQUEST_METHOD']) != 'PUT') {
             }
         }
     } else {
-        echo "INVALID CONFIG OFFSET: " . $query;
+        $action = file_get_contents('php://input');
+        if (isset($notificationConfig[$action])) {
+            if (isset($notificationConfig[$action]['command'])) {
+                $client->executeCommandsFromString($notificationConfig[$action]['command']);
+            }
+        } else {
+            echo "Invalid action: " . $action;
+        }
     }
 } else {
-
+    echo count($config);
 }
 
 //foreach ($config as $channelId => $expectations) {
