@@ -7,6 +7,7 @@
     }
   },
   "require": {
-    "supla/api-client": "dev-master"
+    "supla/api-client": "dev-master",
+    "mtdowling/cron-expression": "1.2.0"
   }
 }

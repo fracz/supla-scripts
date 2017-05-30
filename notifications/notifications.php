@@ -11,7 +11,8 @@ $client->log('Query: ' . $query);
 if (isset($config[$query])) {
     $notificationConfig = $config[$query];
     $response = [
-        'nextRunTimestamp' => calculateNextNotificationTime($notificationConfig)
+        'nextRunTimestamp' => calculateNextNotificationTime($notificationConfig),
+        'awake' => isset($notificationConfig['awake']) ? $notificationConfig['awake'] : false,
     ];
     if (strtoupper($_SERVER['REQUEST_METHOD']) != 'PUT') {
         $client->log('Checking condition');
@@ -50,5 +51,14 @@ function calculateNextNotificationTime(array $notificationConfig)
     $time = isset($notificationConfig['time']) ? $notificationConfig['time'] : 60;
     if (is_int($time)) {
         return time() + $time;
+    } else {
+        if (!is_array($time)) {
+            $time = [$time];
+        }
+        $nextRunDates = array_map(function ($cronExpression) {
+            $cron = Cron\CronExpression::factory($cronExpression);
+            return $cron->getNextRunDate()->getTimestamp();
+        }, $time);
+        return min($nextRunDates);
     }
 }
