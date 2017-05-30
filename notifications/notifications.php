@@ -10,12 +10,12 @@ $client->log('Query: ' . $query);
 
 if (isset($config[$query])) {
     $notificationConfig = $config[$query];
+    $response = [
+        'nextRunTimestamp' => calculateNextNotificationTime($notificationConfig)
+    ];
     if (strtoupper($_SERVER['REQUEST_METHOD']) != 'PUT') {
         $client->log('Checking condition');
         $notificationData = $notificationConfig['condition']->getNotificationToSend($client);
-        $response = [
-            'nextRunTimestamp' => calculateNextNotificationTime($notificationConfig)
-        ];
         if ($notificationData) {
             $response['notification'] = array_merge($notificationConfig['notification'], [
                 'actions' => array_map(function ($action) {
@@ -24,8 +24,6 @@ if (isset($config[$query])) {
             ]);
 
         }
-        $client->log(json_encode($response));
-        echo json_encode($response);
     } else {
         $client->log('Executing command');
         $action = file_get_contents('php://input');
@@ -39,9 +37,10 @@ if (isset($config[$query])) {
             }
         } else {
             $client->log("Invalid action: " . $action);
-            echo "Invalid action: " . $action;
         }
     }
+    $client->log(json_encode($response));
+    echo json_encode($response);
 } else {
     echo count($config);
 }
