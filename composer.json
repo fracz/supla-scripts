@@ -8,6 +8,7 @@
   },
   "require": {
     "supla/api-client": "dev-master",
-    "mtdowling/cron-expression": "1.2.0"
+    "mtdowling/cron-expression": "1.2.0",
+    "nicmart/string-template": "~0.1"
   }
 }

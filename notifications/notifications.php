@@ -16,14 +16,17 @@ if (isset($config[$query])) {
     ];
     if (strtoupper($_SERVER['REQUEST_METHOD']) != 'PUT') {
         $client->log('Checking condition');
-        $notificationData = $notificationConfig['condition']->getNotificationToSend($client);
+        $notificationData = $notificationConfig['trigger']->getNotification($client);
         if ($notificationData) {
             $response['notification'] = array_merge($notificationConfig['notification'], [
                 'actions' => array_map(function ($action) {
                     return array_intersect_key($action, ['label' => '', 'icon' => '', 'sound' => '', 'vibrate' => '', 'flash' => '']);
-                }, $notificationConfig['actions']),
+                }, isset($notificationConfig['actions']) ? $notificationConfig['actions'] : []),
             ]);
-
+            if (is_array($notificationData)) {
+                $engine = new StringTemplate\Engine;
+                $response['notification']['title'] = $engine->render($response['notification']['title'], $notificationData);
+            }
         }
     } else {
         $client->log('Executing command');
@@ -48,17 +51,17 @@ if (isset($config[$query])) {
 
 function calculateNextNotificationTime(array $notificationConfig)
 {
-    $time = isset($notificationConfig['time']) ? $notificationConfig['time'] : 60;
-    if (is_int($time)) {
-        return time() + $time;
+    $interval = isset($notificationConfig['interval']) ? $notificationConfig['interval'] : 60;
+    if (is_int($interval)) {
+        return time() + $interval;
     } else {
-        if (!is_array($time)) {
-            $time = [$time];
+        if (!is_array($interval)) {
+            $interval = [$interval];
         }
         $nextRunDates = array_map(function ($cronExpression) {
             $cron = Cron\CronExpression::factory($cronExpression);
             return $cron->getNextRunDate()->getTimestamp();
-        }, $time);
+        }, $interval);
         return min($nextRunDates);
     }
 }
