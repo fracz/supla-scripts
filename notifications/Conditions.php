@@ -1,8 +1,7 @@
 <?php
 namespace SuplaScripts\notifications;
 
-
-use SuplaScripts\notifications\expectations\SimpleCondition;
+use SuplaScripts\notifications\conditions\SimpleCondition;
 
 class Conditions
 {
@@ -13,7 +12,7 @@ class Conditions
 
     public static function isTurnedOff($channelId)
     {
-        return new SimpleCondition($channelId, ['off' => true]);
+        return new SimpleCondition($channelId, ['on' => false]);
     }
 
     public static function isOpened($channelId)

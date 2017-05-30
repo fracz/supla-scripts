@@ -1,9 +1,8 @@
 <?php
-namespace SuplaScripts\notifications\expectations;
+namespace SuplaScripts\notifications\conditions;
 
 
 use SuplaScripts\ConfiguredSuplaApiClient;
-use SuplaScripts\notifications\conditions\NotificationCondition;
 
 class SimpleCondition implements NotificationCondition
 {
