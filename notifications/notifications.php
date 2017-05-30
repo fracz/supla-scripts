@@ -13,19 +13,16 @@ if (isset($config[$query])) {
     if (strtoupper($_SERVER['REQUEST_METHOD']) != 'PUT') {
         $client->log('Reading status');
         $channelData = $client->channel($notificationConfig['channel']);
-        $notificationNeeded = false;
-        foreach ($notificationConfig['expectation'] as $expectedProp => $expectedValue) {
-            $actualValue = $channelData->{$expectedProp};
-            if ($actualValue != $expectedValue) {
-                $notification = array_merge($notificationConfig['notification'], [
-                    'actions' => array_map(function ($action) {
-                        return array_intersect_key($action, ['label' => '', 'icon' => '', 'sound' => '', 'vibrate' => '', 'flash' => '']);
-                    }, $notificationConfig['actions']),
-                ]);
-                $client->log(json_encode($notification));
-                echo json_encode($notification);
-                exit;
-            }
+        $notificationData = $notificationConfig['condition']->getNotificationToSend($client);
+        if ($notificationData) {
+            $notification = array_merge($notificationConfig['notification'], [
+                'actions' => array_map(function ($action) {
+                    return array_intersect_key($action, ['label' => '', 'icon' => '', 'sound' => '', 'vibrate' => '', 'flash' => '']);
+                }, $notificationConfig['actions']),
+            ]);
+            $client->log(json_encode($notification));
+            echo json_encode($notification);
+            exit;
         }
     } else {
         $client->log('Executing command');
