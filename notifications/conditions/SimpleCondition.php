@@ -22,9 +22,9 @@ class SimpleCondition implements NotificationCondition
         foreach ($this->expectation as $expectedProp => $expectedValue) {
             $actualValue = $channelData->{$expectedProp};
             if ($actualValue != $expectedValue) {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 }
