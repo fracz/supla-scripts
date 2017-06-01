@@ -16,17 +16,21 @@ if (isset($config[$query])) {
     ];
     if (strtoupper($_SERVER['REQUEST_METHOD']) != 'PUT') {
         $client->log('Checking condition');
-        $notificationData = $notificationConfig['trigger']->getNotification($client);
-        if ($notificationData) {
-            $response['notification'] = array_merge($notificationConfig['notification'], [
+        $shouldDisplay = isset($notificationConfig['condition']) ? $notificationConfig['condition']->shouldShowNotification($client) : true;
+        if ($shouldDisplay) {
+            $notification = $notificationConfig['notification'];
+            if (isset($notificationConfig['valueProviders'])) {
+                foreach (['title', 'message'] as $itemToReplace) {
+                    if (isset($notification[$itemToReplace])) {
+                        $notification[$itemToReplace] = \SuplaScripts\utils\MessageBuilder::build($client, $notification[$itemToReplace], $notificationConfig['valueProviders']);
+                    }
+                }
+            }
+            $response['notification'] = array_merge($notification, [
                 'actions' => array_map(function ($action) {
                     return array_intersect_key($action, ['label' => '', 'icon' => '', 'sound' => '', 'vibrate' => '', 'flash' => '']);
                 }, isset($notificationConfig['actions']) ? $notificationConfig['actions'] : []),
             ]);
-            if (is_array($notificationData)) {
-                $engine = new StringTemplate\Engine;
-                $response['notification']['title'] = $engine->render($response['notification']['title'], $notificationData);
-            }
         }
     } else {
         $client->log('Executing command');

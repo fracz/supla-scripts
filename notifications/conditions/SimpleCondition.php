@@ -1,9 +1,9 @@
 <?php
-namespace SuplaScripts\notifications\triggers;
+namespace SuplaScripts\notifications\conditions;
 
 use SuplaScripts\ConfiguredSuplaApiClient;
 
-class SimpleTrigger implements NotificationTrigger
+class SimpleCondition implements NotificationCondition
 {
     private $channelId;
     private $expectation;
@@ -15,7 +15,7 @@ class SimpleTrigger implements NotificationTrigger
     }
 
     /** @return bool */
-    public function getNotification(ConfiguredSuplaApiClient $client)
+    public function shouldShowNotification(ConfiguredSuplaApiClient $client)
     {
         $channelData = $client->channel($this->channelId);
         foreach ($this->expectation as $expectedProp => $expectedValue) {
