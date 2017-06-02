@@ -9,6 +9,7 @@ class AutomateIcons
     const BULLHORN = 0xf025;
     const CALENDAR = 0xf033;
     const CHECK = 0xf0f5;
+    const CLOCK = 0xf002;
     const CROSS = 0xf0f6;
     const EXCLAMATION = 0xf0ec;
     const EXCLAMATION_SIGN = 0xf106;
@@ -21,6 +22,7 @@ class AutomateIcons
     const LOCK_OPENED = 0xf00b;
     const MOON = 0xf0b9;
     const QUESTION_MARK = 0xf0ed;
+    const REFRESH = 0xf110;
     const THERMISTOR = 0xf04f;
     const TRANSPARENT = 0xf001;
     const TURN_ON = 0xf0c4;
