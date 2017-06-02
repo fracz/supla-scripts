@@ -1,6 +1,7 @@
 <?php
 namespace SuplaScripts\notifications;
 
+use SuplaScripts\notifications\conditions\AnyOfCondition;
 use SuplaScripts\notifications\conditions\SimpleCondition;
 
 class Conditions
@@ -23,5 +24,10 @@ class Conditions
     public static function isClosed($channelId)
     {
         return new SimpleCondition($channelId, ['hi' => true]);
+    }
+
+    public static function anyOf()
+    {
+        return new AnyOfCondition(func_get_args());
     }
 }
