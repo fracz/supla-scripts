@@ -38,7 +38,11 @@ if (isset($config[$query])) {
         if (isset($notificationConfig['actions'][$action])) {
             if (isset($notificationConfig['actions'][$action]['command'])) {
                 $command = $notificationConfig['actions'][$action]['command'];
-                $client->executeCommandsFromString($command);
+                if (strpos($command, 'postpone') === 0) {
+                    $response['nextRunTimestamp'] = calculateNextNotificationTime(intval(substr($command, strlen('postpone,'))));
+                } else {
+                    $client->executeCommandsFromString($command);
+                }
                 $client->log("Executed: " . $command);
             } else {
                 $client->log("No command defined for " . $action);
@@ -53,9 +57,11 @@ if (isset($config[$query])) {
     echo count($config);
 }
 
-function calculateNextNotificationTime(array $notificationConfig)
+function calculateNextNotificationTime($interval)
 {
-    $interval = isset($notificationConfig['interval']) ? $notificationConfig['interval'] : 60;
+    if (is_array($interval) && isset($interval['interval'])) {
+        $interval = $interval['interval'];
+    }
     if (is_int($interval)) {
         return time() + $interval;
     } else {
