@@ -1,5 +1,80 @@
 <?php
-// channelId => expected values in details
+namespace SuplaScripts\notifications;
+
+use SuplaScripts\utils\AutomateIcons;
+use SuplaScripts\utils\conditions\Conditions;
+use SuplaScripts\utils\valueproviders\ValueProviders;
+
+$outsideDS18B20 = 120;
+$insideDHT22 = 135;
+$sampleBulb =675;
+$garageGateSensor = 768;
+$garageGate = 769;
+
 return [
-    'channelId' => ['hi' => true],
+    [
+        'condition' => Conditions::isTurnedOn($sampleBulb),
+        'valueProviders' => ValueProviders::onOff($sampleBulb, 'włączona', 'wyłączona'),
+        'interval' => 30,
+        'retryInterval' => 5,
+        'notification' => [
+            'title' => 'Żarówa jest {on}.',
+            'message' => 'Wyłącz ją bo marnujesz prąd.',
+            'icon' => AutomateIcons::BULB,
+            'cancellable' => true,
+            'sound' => true,
+        ],
+        'actions' => [
+            ['label' => 'Wyłącz', 'icon' => AutomateIcons::TURN_ON, 'command' => "turnOff,$sampleBulb"],
+            ['label' => 'Sprawdź potem', 'icon' => AutomateIcons::CLOCK, 'command' => 'postpone,45'],
+        ],
+    ],
+    [
+        'condition' => Conditions::isOpened($garageGateSensor),
+        'interval' => ['*/15 * * * *'],
+        'retryInterval' => 60,
+        'notification' => [
+            'title' => 'Brama domowa jest otwarta!',
+            'icon' => AutomateIcons::LOCK_OPENED,
+            'cancellable' => true,
+            'sound' => true,
+            'vibrate' => true,
+        ],
+        'actions' => [
+            ['label' => 'Zamknij', 'icon' => AutomateIcons::LOCK_CLOSED, 'command' => "openClose,$garageGate"],
+            ['label' => 'Sprawdź teraz', 'icon' => AutomateIcons::REFRESH, 'command' => 'postpone,1'],
+            ['label' => 'Sprawdź za godzinę', 'icon' => AutomateIcons::CLOCK, 'command' => 'postpone,3600'],
+        ]
+    ],
+    [
+        'condition' => Conditions::firstTemperatureIsLowerThanSecond($outsideDS18B20, $insideDHT22),
+        'interval' => ['*/15 17,18,19 * * *'],
+        'valueProviders' => [
+            ValueProviders::temperatureAndHumidity($insideDHT22),
+            ValueProviders::temperatureAndHumidity($outsideDS18B20),
+        ],
+        'notification' => [
+            'title' => 'Na zewnątrz jest chłodniej niż w domu',
+            'message' => "Otwórz okno. W domu jest aż {temperature|$insideDHT22} a na zewnątrz tylko {temperature|$outsideDS18B20}!",
+            'icon' => AutomateIcons::HEART,
+            'cancellable' => true,
+        ],
+        'actions' => [
+            ['label' => 'Sprawdź teraz', 'icon' => AutomateIcons::REFRESH, 'command' => 'postpone,1'],
+            ['label' => 'Otwarłem', 'icon' => AutomateIcons::CHECK, 'command' => 'postpone,60000'],
+        ]
+    ],
+    [
+        'valueProviders' => [
+            ValueProviders::temperatureAndHumidity($outsideDS18B20),
+            ValueProviders::temperatureAndHumidity($insideDHT22),
+        ],
+        'interval' => ['30 6 * * * ', '0 12 * * *', '0 15 * * *', '0 20 * * *'],
+        'notification' => [
+            'title' => "Na zewnątrz jest {temperature|$outsideDS18B20}, w środku {temperature|$insideDHT22}",
+            'message' => "Wilgotność: {humidity|$insideDHT22}",
+            'icon' => AutomateIcons::THERMISTOR,
+            'cancellable' => true,
+        ]
+    ]
 ];
