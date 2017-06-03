@@ -1,6 +1,7 @@
 {
   "name": "fracz/supla-scripts",
   "minimum-stability": "dev",
+  "version": "1.0.0",
   "autoload": {
     "psr-4": {
       "SuplaScripts\\": ""
