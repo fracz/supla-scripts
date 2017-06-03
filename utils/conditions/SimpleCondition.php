@@ -1,9 +1,9 @@
 <?php
-namespace SuplaScripts\notifications\conditions;
+namespace SuplaScripts\utils\conditions;
 
 use SuplaScripts\ConfiguredSuplaApiClient;
 
-class SimpleCondition implements NotificationCondition
+class SimpleCondition implements StatusCondition
 {
     private $channelId;
     private $expectation;
@@ -15,7 +15,7 @@ class SimpleCondition implements NotificationCondition
     }
 
     /** @return bool */
-    public function shouldShowNotification(ConfiguredSuplaApiClient $client)
+    public function isFulfilled(ConfiguredSuplaApiClient $client)
     {
         $channelData = $client->channel($this->channelId);
         foreach ($this->expectation as $expectedProp => $expectedValue) {

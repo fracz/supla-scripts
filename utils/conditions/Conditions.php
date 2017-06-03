@@ -1,8 +1,5 @@
 <?php
-namespace SuplaScripts\notifications;
-
-use SuplaScripts\notifications\conditions\AnyOfCondition;
-use SuplaScripts\notifications\conditions\SimpleCondition;
+namespace SuplaScripts\utils\conditions;
 
 class Conditions
 {
@@ -29,5 +26,10 @@ class Conditions
     public static function anyOf()
     {
         return new AnyOfCondition(func_get_args());
+    }
+
+    public static function firstTemperatureIsLowerThanSecond($channelIdFirst, $channelIdSecond, $delta = 0.5)
+    {
+        return new FirstTemperatureIsLowerThanSecondCondition($channelIdFirst, $channelIdSecond, $delta);
     }
 }

@@ -1,24 +1,24 @@
 <?php
-namespace SuplaScripts\notifications\conditions;
+namespace SuplaScripts\utils\conditions;
 
 use SuplaScripts\ConfiguredSuplaApiClient;
 
-class AnyOfCondition implements NotificationCondition
+class AnyOfCondition implements StatusCondition
 {
-    /** @var NotificationCondition[] */
+    /** @var StatusCondition[] */
     private $conditions;
 
-    /** @param NotificationCondition[] $conditions */
+    /** @param StatusCondition[] $conditions */
     public function __construct(array $conditions)
     {
         $this->conditions = $conditions;
     }
 
     /** @return bool */
-    public function shouldShowNotification(ConfiguredSuplaApiClient $client)
+    public function isFulfilled(ConfiguredSuplaApiClient $client)
     {
         foreach ($this->conditions as $condition) {
-            if ($condition->shouldShowNotification($client)) {
+            if ($condition->isFulfilled($client)) {
                 return true;
             }
         }
