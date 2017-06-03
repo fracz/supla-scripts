@@ -31,6 +31,9 @@ if (isset($config[$query])) {
                     return array_intersect_key($action, ['label' => '', 'icon' => '', 'sound' => '', 'vibrate' => '', 'flash' => '']);
                 }, isset($notificationConfig['actions']) ? $notificationConfig['actions'] : []),
             ]);
+            if (isset($notificationConfig['retryInterval'])) {
+                $response['nextRunTimestamp'] = calculateNextNotificationTime($notificationConfig['retryInterval']);
+            }
         }
     } else {
         $client->log('Executing command');
