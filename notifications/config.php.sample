@@ -7,7 +7,7 @@ use SuplaScripts\utils\valueproviders\ValueProviders;
 
 $outsideDS18B20 = 120;
 $insideDHT22 = 135;
-$sampleBulb =675;
+$sampleBulb = 675;
 $garageGateSensor = 768;
 $garageGate = 769;
 
@@ -33,6 +33,7 @@ return [
         'condition' => Conditions::isOpened($garageGateSensor),
         'interval' => ['*/15 * * * *'],
         'retryInterval' => 60,
+        'awake' => true,
         'notification' => [
             'title' => 'Brama domowa jest otwarta!',
             'icon' => AutomateIcons::LOCK_OPENED,
