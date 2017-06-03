@@ -16,7 +16,7 @@ if (isset($config[$query])) {
     ];
     if (strtoupper($_SERVER['REQUEST_METHOD']) != 'PUT') {
         $client->log('Checking condition');
-        $shouldDisplay = isset($notificationConfig['condition']) ? $notificationConfig['condition']->shouldShowNotification($client) : true;
+        $shouldDisplay = isset($notificationConfig['condition']) ? $notificationConfig['condition']->isFulfilled($client) : true;
         if ($shouldDisplay) {
             $notification = $notificationConfig['notification'];
             if (isset($notificationConfig['valueProviders'])) {
