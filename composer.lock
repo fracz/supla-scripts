@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a11754ea2dc5d16b2ca73d1d80375d19",
+    "content-hash": "963d35506004a98c88f1b79656463027",
     "packages": [
         {
             "name": "mtdowling/cron-expression",
@@ -97,12 +97,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SUPLA/api-client-php.git",
-                "reference": "e8edc7369937eab4037a49ba6e1d16b2839b48d9"
+                "reference": "f9e0d8c31ffc28d23c97e128bf4c048e9bb7153c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SUPLA/api-client-php/zipball/e8edc7369937eab4037a49ba6e1d16b2839b48d9",
-                "reference": "e8edc7369937eab4037a49ba6e1d16b2839b48d9",
+                "url": "https://api.github.com/repos/SUPLA/api-client-php/zipball/f9e0d8c31ffc28d23c97e128bf4c048e9bb7153c",
+                "reference": "f9e0d8c31ffc28d23c97e128bf4c048e9bb7153c",
                 "shasum": ""
             },
             "require-dev": {
@@ -115,7 +115,7 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "time": "2017-04-20 15:05:56"
+            "time": "2017-06-24 18:24:41"
         }
     ],
     "packages-dev": [],

@@ -24,7 +24,7 @@ class ConfiguredSuplaApiClient extends SuplaApiClient
             'secret' => SUPLA_SECRET,
             'username' => SUPLA_USERNAME,
             'password' => SUPLA_PASSWORD,
-        ], $auto_logout = true, $debug = false);
+        ], $auto_logout = true, SUPLA_API_DEBUG, SUPLA_API_SSL_VERIFY);
         $this->scriptName = $scriptName;
     }
 
