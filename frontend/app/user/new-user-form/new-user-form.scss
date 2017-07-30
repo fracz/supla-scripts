@@ -1,0 +1,14 @@
+@import "../../styles";
+
+.btn-group-radio {
+  margin: 0;
+  .btn {
+    @include opacity(.7);
+  }
+  .btn.active {
+    @include opacity(1);
+    .fa:before {
+      content: '\f192'; // dot-circle-o
+    }
+  }
+}

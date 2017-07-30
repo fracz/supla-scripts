@@ -1,0 +1,31 @@
+@import 'styles';
+
+* {
+  -webkit-font-smoothing: antialiased !important;
+}
+
+html, body {
+  min-height: 100%;
+}
+
+a, .pointer {
+  cursor: pointer;
+}
+
+table {
+  &.table-no-border {
+    td, th {
+      border: 0 !important;
+    }
+  }
+  &.table-no-first-border {
+    tr:first-child {
+      td, th {
+        border-top: 0;
+      }
+    }
+  }
+  &.table-fixed {
+    table-layout: fixed;
+  }
+}

@@ -1,0 +1,43 @@
+@import "../node_modules/compass-mixins/lib/compass";
+@import "../node_modules/compass-mixins/lib/animation/core";
+@import "../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/variables";
+@import "../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/mixins";
+@import "../bower_components/bootstrap-material-design/sass/colors";
+@import "../bower_components/bootstrap-material-design/sass/mixins";
+@import "../bower_components/bootstrap-material-design/sass/shadows";
+
+@mixin state-based-background($stateName) {
+  .state-#{$stateName} #bg:after {
+    background-image: url('/img/backgrounds/#{$stateName}.jpg') !important;
+  }
+}
+
+@mixin on-and-down($size) {
+  @media only screen and (max-width: $size) {
+    @content;
+  }
+}
+
+@mixin on-sm-and-down {
+  @include on-and-down($screen-sm-max) {
+    @content;
+  }
+}
+
+@mixin on-md-and-down {
+  @include on-and-down($screen-md-max) {
+    @content;
+  }
+}
+
+@mixin on-and-up($size) {
+  @media only screen and (min-width: $size) {
+    @content;
+  }
+}
+
+@mixin on-md-and-up {
+  @include on-and-up($screen-md) {
+    @content;
+  }
+}

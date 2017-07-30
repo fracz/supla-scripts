@@ -1,0 +1,89 @@
+<div class="row">
+    <div class="col-md-6"
+        ng-if="!$ctrl.user.id">
+        <div class="form-group"
+            show-errors>
+            <label>Nazwa użytkownika</label>
+            <input type="text"
+                class="form-control"
+                required
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+                ng-pattern="/^[a-zA-Z0-9_]+$/"
+                ng-minlength="5"
+                name="username"
+                ng-model="$ctrl.user.username">
+            <span class="help-block">Co najmniej 5 znaków, tylko litery, cyfry i znak podkreślenia.</span>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group"
+            show-errors>
+            <label>Adres e-mail</label>
+            <input type="email"
+                ng-required="!$ctrl.user.id"
+                autocomplete="off"
+                class="form-control"
+                ng-model="$ctrl.user.email"
+                validate-email
+                name="email">
+            <span class="help-block">
+                <span ng-if="!$ctrl.user.id">Wymagany. Na ten adres zostanie przesłane wygenerowane hasło do konta.</span>
+            </span>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Imię i nazwisko</label>
+            <input type="text"
+                class="form-control"
+                name="name"
+                ng-model="$ctrl.user.name">
+            <span class="help-block">Informacja opcjonalna, widoczna wyłącznie dla administratora systemu.</span>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Nazwa wyświetlana</label>
+            <input type="text"
+                class="form-control"
+                name="displayName"
+                ng-model="$ctrl.user.displayName">
+            <span class="help-block">Jeśli podasz nazwę, będzie ona widoczna przy wiadomościach napisanych przez
+                {{ $ctrl.forCurrentUser ? 'Ciebie' : 'tego koordynatora' }}.</span>
+        </div>
+    </div>
+    <div class="col-md-6"
+        require-role="admin"
+        ng-if="!$ctrl.forCurrentUser">
+        <div class="form-group">
+            <label>Rola użytkownika</label>
+            <div class="btn-group btn-group-justified btn-group-radio">
+                <label class="btn btn-default btn-raised"
+                    ng-model="$ctrl.user.role"
+                    uib-btn-radio="'coordinator'">
+                    <fa name="circle-o"
+                        fw></fa>
+                    {{ 'coordinator' | userRoleLabel }}
+                </label>
+                <label class="btn btn-default btn-raised"
+                    ng-model="$ctrl.user.role"
+                    uib-btn-radio="'admin'">
+                    <fa name="circle-o"
+                        fw></fa>
+                    {{ 'admin' | userRoleLabel }}
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6"
+        require-role="admin"
+        ng-show="$ctrl.user.role == 'coordinator' && $ctrl.user.assignedInstanceIds">
+        <div class="form-group">
+            <label>Obsługiwane instancje</label>
+            <user-assign-instances ng-model="$ctrl.user.assignedInstanceIds"></user-assign-instances>
+        </div>
+    </div>
+</div>

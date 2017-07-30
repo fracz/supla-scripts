@@ -1,0 +1,31 @@
+<!doctype html>
+<html ng-app="supla-scripts" ng-strict-di>
+<head>
+    <meta charset="utf-8">
+    <title ng-bind-template="{{ $viewTitle + ($viewTitle ? ' - ' : '') }}supla-scripts">supla-scripts</title>
+    <base href="/">
+    <meta name="viewport"
+          content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <meta name="apple-mobile-web-app-capable"
+          content="yes">
+    <!-- vendor:css -->
+    <!-- endinject -->
+    <!-- inject:css -->
+    <!-- endinject -->
+</head>
+
+<body state-based-css-class>
+
+<div id="world">
+    <navbar></navbar>
+    <div class="content">
+        <div ui-view></div>
+    </div>
+</div>
+
+<!-- vendor:js -->
+<!-- endinject -->
+<!-- inject:js -->
+<!-- endinject -->
+</body>
+</html>

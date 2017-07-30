@@ -1,0 +1,15 @@
+{
+  "displayErrorDetails": true,
+  "db": {
+    "driver": "sqlite",
+    "database": "backend/var/suplascripts.db",
+    "charset": "utf8",
+    "prefix": ""
+  },
+  "jwt": {
+    "key": "CHANGE ME",
+    "expirationTime": 3600,
+    "expirationTimeRememberMe": 604800,
+    "iss": "https://supla.fracz.pl"
+  }
+}

@@ -1,0 +1,37 @@
+RewriteEngine On
+
+# Don't rewrite files
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+
+RewriteRule \.html$ - [L]
+
+# Rewrite API calls to api.php
+RewriteRule ^api api.php [QSA,L]
+
+# Rewrite everything else to index.html to allow html5 state links
+RewriteRule ^ index.html [L]
+
+# Otherwise PHP wont have access to Authorization: Bearer header (from http://www.appelsiini.net/projects/slim-jwt-auth)
+RewriteRule .* - [env=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# Cache settings from: http://stackoverflow.com/a/2538387/878514
+<ifmodule mod_expires.c>
+    ExpiresActive on
+    ExpiresByType image/jpg "access 2 month"
+    ExpiresByType image/gif "access 2 month"
+    ExpiresByType image/jpeg "access 2 month"
+    ExpiresByType image/png "access 2 month"
+    ExpiresByType text/css "access 2 month"
+    ExpiresByType application/x-javascript "access plus 2 month"
+    ExpiresByType text/javascript "access plus 2 month"
+    ExpiresByType application/javascript "access plus 2 month"
+    ExpiresByType image/x-icon "access plus 12 month"
+    ExpiresByType image/icon "access plus 12 month"
+    ExpiresByType application/x-ico "access plus 12 month"
+    ExpiresByType application/ico "access plus 12 month"
+</ifmodule>
+
+<ifmodule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/text text/html text/plain text/xml text/css application/x-javascript application/javascript
+</ifmodule>

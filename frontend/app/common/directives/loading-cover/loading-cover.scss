@@ -1,0 +1,21 @@
+.loading-cover {
+  position: relative;
+  &.is-loading {
+    opacity: .5;
+  }
+  .loading:before, .loading:after {
+    content: " ";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    min-height: 50px;
+    min-width: 50px;
+    z-index: 1000;
+  }
+  .loading:before {
+    opacity: 0;
+  }
+}
+

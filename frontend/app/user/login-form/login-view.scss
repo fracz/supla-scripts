@@ -1,0 +1,14 @@
+.login-form-container {
+  position: absolute;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  .login-form {
+    margin: auto;
+    width: 100%;
+    max-width: 400px;
+  }
+  .version {
+    font-family:monospace;
+  }
+}

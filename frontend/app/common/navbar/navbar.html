@@ -1,0 +1,43 @@
+<nav class="navbar" ng-if="$ctrl.currentUser">
+    <div class="container-fluid">
+        <div class="navbar-header page-scroll">
+            <button type="button"
+                    class="navbar-toggle"
+                    data-toggle="collapse"
+                    data-target="#navbar-collapse">
+                <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+            </button>
+
+            <a class="navbar-brand"
+               href="/">
+                supla-scripts
+            </a>
+        </div>
+
+        <div class="collapse navbar-collapse"
+             id="navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li ui-sref-active="active">
+                    <a ui-sref="dashboard">Termostat</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#"
+                       class="dropdown-toggle"
+                       data-toggle="dropdown"
+                       aria-expanded="false">
+                        <fa name="user"
+                            fw></fa>
+                        {{$ctrl.currentUser.username}}
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a ui-sref="users.me">Moje konto</a></li>
+                        <li><a ng-click="$ctrl.forgetUser()">Wyloguj</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

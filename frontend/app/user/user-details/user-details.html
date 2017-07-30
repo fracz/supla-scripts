@@ -1,0 +1,168 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <h1 view-title>{{ $ctrl.forCurrentUser ? 'Twoje konto' : 'Użytkownik ' + $ctrl.user.username }}</h1>
+            <div class="well"
+                ng-if="$ctrl.user">
+                <dl ng-if="!$ctrl.editingUser">
+                    <dt>Nazwa użytkownika</dt>
+                    <dd>{{ $ctrl.user.username }}</dd>
+                    <dt>E-mail</dt>
+                    <dd value-or-not-given="$ctrl.user.email"></dd>
+                    <dt>Imię i nazwisko</dt>
+                    <dd value-or-not-given="$ctrl.user.name"></dd>
+                    <dt>Nazwa wyświetlana</dt>
+                    <dd value-or-not-given="$ctrl.user.displayName"></dd>
+                    <dt ng-if="'admin' | hasRole">Rola</dt>
+                    <dd ng-if="'admin' | hasRole">{{ $ctrl.user | userRoleLabel }}</dd>
+                    <dt>Data utworzenia konta</dt>
+                    <dd>{{ $ctrl.user.createdAt | date:'short' }}</dd>
+                    <dt>Ostatnie logowanie</dt>
+                    <dd value-or-not-given="$ctrl.user.lastLoginDate | date:'short'"
+                        not-given="-"></dd>
+                    <dt ng-if="$ctrl.user.assignedInstanceIds && $ctrl.user.role == 'coordinator'">Obsługiwane instancje</dt>
+                    <dd ng-if="$ctrl.user.assignedInstanceIds && $ctrl.user.role == 'coordinator'">
+                        <user-assigned-instances instance-ids="$ctrl.user.assignedInstanceIds"></user-assigned-instances>
+                    </dd>
+                </dl>
+
+                <div ng-if="$ctrl.editingUser"
+                    class="fx-fade-left">
+                    <form name="userForm"
+                        novalidate
+                        promise-btn
+                        ng-submit="$broadcast('show-errors-check-validity') && userForm.$valid && $ctrl.saveEditedUser()">
+                        <user-form user="$ctrl.editingUser"></user-form>
+                        <div class="form-group">
+                            <button type="button"
+                                class="btn btn-default btn-raised btn-block"
+                                ng-click="$ctrl.editingUser = undefined">
+                                <fa name="times"
+                                    fw></fa>
+                                Anuluj
+                            </button>
+                            <button type="submit"
+                                class="btn btn-primary btn-raised btn-block">
+                                <fa name="save"
+                                    fw></fa>
+                                Zapisz zmiany
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div ng-if="$ctrl.removingUser"
+                    class="form-group fx-bounce-right">
+                    <div class="alert alert-warning">
+                        <fa name="exclamation-triangle"
+                            class="alert-icon"></fa>
+                        <h4>Czy na pewno chcesz usunąć <span ng-if="$ctrl.forCurrentUser">swoje</span> konto użytkownika?</h4>
+                        Operacaja ta spowoduje, że {{ $ctrl.forCurrentUser ? 'nie będziesz' : 'użytkownik nie będzie' }} już mógł się zalogować.
+                        Wszystkie wprowadzone informacje powiązane z tym kontem (zgłoszenia, wiadomości) nie zostaną usunięte.
+                    </div>
+                    <form name="removeUserForm"
+                        ng-submit="removeUserForm.$valid && $ctrl.deleteUser()">
+                        <div class="form-group label-floating">
+                            <label class="control-label">W celu potwierdzenia operacji wpisz nazwę użytkownika</label>
+                            <input type="text"
+                                class="form-control bg-transparent text-center"
+                                ng-model="$ctrl.usernameToRemove"
+                                required
+                                same-as="{{ $ctrl.user.username }}"
+                                onpaste="return false;"
+                                name="usernameToRemove">
+                        </div>
+                        <div class="text-center">
+                            <button type="button"
+                                class="btn btn-default btn-raised"
+                                ng-click="$ctrl.removingUser = false">
+                                <fa name="share"
+                                    rotate="180"
+                                    fw></fa>
+                                Pozostaw
+                            </button>
+                            <button type="submit"
+                                class="btn btn-danger btn-raised"
+                                ng-disabled="removeUserForm.$invalid"
+                                promise-btn>
+                                <fa name="user-times"
+                                    fw></fa>
+                                Rozumiem, usuń <span ng-if="$ctrl.forCurrentUser">moje</span> konto
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div ng-if="$ctrl.generatingPassword"
+                    class="form-group fx-bounce-right">
+                    <div class="alert alert-warning">
+                        <fa name="exclamation-triangle"
+                            class="alert-icon"></fa>
+                        <h4>Czy na pewno chcesz wygenerować nowe hasło do tego konta?</h4>
+                        Po wykonaniu tej operacji użytkownik utraci możliwość logowania się za pomocą dotychczasowych danych. Na jego adres mailowy zostanie
+                        przesłane nowe hasło.
+                    </div>
+                    <div class="form-group">
+                        <button type="button"
+                            class="btn btn-default btn-raised btn-block"
+                            ng-click="$ctrl.generatingPassword = false">
+                            <fa name="times"
+                                fw></fa>
+                            Anuluj
+                        </button>
+                        <button type="submit"
+                            class="btn btn-primary btn-raised btn-block"
+                            promise-btn
+                            ng-click="$ctrl.generateNewPassword()">
+                            <fa name="unlock"
+                                fw></fa>
+                            Wygeneruj nowe hasło
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group"
+                    ng-if="!$ctrl.editingUser && !$ctrl.removingUser && !$ctrl.generatingPassword">
+                    <a class="btn btn-default btn-raised btn-block"
+                        ng-click="$ctrl.editUser()">
+                        <fa name="edit"
+                            fw></fa>
+                        Edytuj dane
+                    </a>
+                    <a class="btn btn-default btn-raised btn-block"
+                        ng-if="!$ctrl.forCurrentUser"
+                        ng-disabled="!$ctrl.user.email"
+                        uib-tooltip="{{!$ctrl.user.email ? 'Do wygenerowania hasła konieczny jest adres e-mail użytkownika' : ''}}"
+                        tooltip-placement="bottom"
+                        ng-click="$ctrl.generatingPassword = $ctrl.user.email">
+                        <fa name="unlock"
+                            fw></fa>
+                        Wygeneruj nowe hasło
+                    </a>
+                    <a class="btn btn-default btn-raised btn-block"
+                        ng-if="$ctrl.forCurrentUser"
+                        ui-sref="users.password">
+                        <fa name="unlock"
+                            fw></fa>
+                        Zmień hasło
+                    </a>
+                    <a class="btn btn-danger btn-raised btn-block"
+                        ng-if="$ctrl.forCurrentUser || ('admin' | hasRole)"
+                        ng-click="$ctrl.removingUser = true">
+                        <fa name="user-times"
+                            fw></fa>
+                        Usuń
+                        <span ng-if="$ctrl.forCurrentUser">moje</span>
+                        konto
+                    </a>
+                </div>
+            </div>
+            <div ng-else
+                class="text-center">
+                <fa name="circle-o-notch"
+                    size="3"
+                    spin></fa>
+            </div>
+        </div>
+    </div>
+</div>

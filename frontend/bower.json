@@ -1,0 +1,132 @@
+{
+  "name": "supla-scripts",
+  "version": "2.0.0",
+  "private": true,
+  "dependencies": {
+    "angular": "1.6.5",
+    "angular-animate": "1.6.5",
+    "angular-bootstrap": "2.5.0",
+    "angular-bootstrap-show-errors": "2.3.0",
+    "angular-clipboard": "1.6.0",
+    "angular-filter": "0.5.16",
+    "angular-fontawesome": "1.0.0",
+    "angular-i18n": "1.6.5",
+    "angular-jwt": "0.1.9",
+    "angular-moment": "1.0.1",
+    "angular-promise-buttons": "0.1.21",
+    "angular-toastr": "2.1.1",
+    "angular-ui-router": "0.4.2",
+    "bootstrap": "3.3.7",
+    "bootstrap-material-design": "0.5.10",
+    "ng-elif": "0.1.5",
+    "ngFx": "1.1.0",
+    "ngstorage": "0.3.11",
+    "restangular": "1.6.1",
+    "arrive": "^2.4.1"
+  },
+  "resolutions": {
+    "angular": "1.6.5",
+    "angular-animate": "1.6.5",
+    "jquery": "^2.2"
+  },
+  "overrides": {
+    "angular": {
+      "main": "angular.js",
+      "dependencies": {
+        "jquery": "*"
+      }
+    },
+    "angular-i18n": {
+      "main": "angular-locale_pl-pl.js",
+      "dependencies": {
+        "angular": "*"
+      }
+    },
+    "angular-bootstrap": {
+      "main": "ui-bootstrap-tpls.min.js"
+    },
+    "angular-bootstrap-show-errors": {
+      "main": "src/showErrors.min.js"
+    },
+    "angular-chart.js": {
+      "main": "dist/angular-chart.min.js"
+    },
+    "angular-counter": {
+      "main": "js/angular-counter.min.js"
+    },
+    "angular-fontawesome": {
+      "main": "dist/angular-fontawesome.min.js"
+    },
+    "angular-moment": {
+      "main": "angular-moment.min.js"
+    },
+    "angular-jwt": {
+      "main": "dist/angular-jwt.min.js"
+    },
+    "angular-promise-buttons": {
+      "main": "dist/angular-promise-buttons.min.js"
+    },
+    "angular-ui-router": {
+      "main": "release/angular-ui-router.min.js"
+    },
+    "arrive": {
+      "main": "minified/arrive.min.js"
+    },
+    "bootstrap": {
+      "main": [
+        "dist/css/bootstrap.min.css",
+        "dist/js/bootstrap.min.js",
+        "dist/fonts/glyphicons-halflings-regular.ttf",
+        "dist/fonts/glyphicons-halflings-regular.svg",
+        "dist/fonts/glyphicons-halflings-regular.eot",
+        "dist/fonts/glyphicons-halflings-regular.woff",
+        "dist/fonts/glyphicons-halflings-regular.woff2"
+      ]
+    },
+    "bootstrap-material-design": {
+      "main": [
+        "dist/css/bootstrap-material-design.min.css",
+        "dist/js/material.min.js",
+        "dist/css/ripples.min.css",
+        "dist/js/ripples.min.js"
+      ],
+      "dependencies": {
+        "arrive": "*"
+      }
+    },
+    "bootstrap-sass": {
+      "main": []
+    },
+    "font-awesome": {
+      "main": [
+        "fonts/fontawesome-webfont.ttf",
+        "fonts/fontawesome-webfont.svg",
+        "fonts/fontawesome-webfont.eot",
+        "fonts/fontawesome-webfont.woff",
+        "fonts/fontawesome-webfont.woff2",
+        "css/font-awesome.min.css"
+      ]
+    },
+    "jquery": {
+      "main": "dist/jquery.min.js"
+    },
+    "lodash": {
+      "main": "dist/lodash.min.js"
+    },
+    "moment": {
+      "main": [
+        "min/moment.min.js",
+        "locale/pl.js"
+      ]
+    },
+    "ngstorage": {
+      "main": "ngStorage.min.js"
+    },
+    "ngtouch": {
+      "main": "build/ngTouch.min.js"
+    },
+    "restangular": {
+      "main": "dist/restangular.min.js"
+    }
+  }
+}

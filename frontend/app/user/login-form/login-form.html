@@ -1,0 +1,52 @@
+<form name="loginForm"
+      novalidate
+      promise-btn
+      ng-submit="$broadcast('show-errors-check-validity') && loginForm.$valid && $ctrl.login()">
+
+    <div class="alert alert-danger fx-fade-down"
+         ng-show="$ctrl.error">
+        <fa name="exclamation-circle"
+            fw></fa>
+        Niepoprawna nazwa użytkownika lub hasło.
+    </div>
+
+    <div class="form-group label-floating"
+         show-errors>
+        <label class="control-label">Nazwa użytkownika</label>
+        <input type="text"
+               autocomplete="off"
+               autocorrect="off"
+               autocapitalize="off"
+               spellcheck="false"
+               class="form-control"
+               ng-model="$ctrl.userData.username"
+               required
+               name="username">
+    </div>
+    <div class="form-group label-floating"
+         show-errors>
+        <label class="control-label">Hasło</label>
+        <input type="password"
+               ng-model="$ctrl.userData.password"
+               required
+               name="password"
+               class="form-control">
+    </div>
+    <div class="form-group">
+        <div class="checkbox">
+            <label>
+                <input type="checkbox"
+                       ng-model="$ctrl.userData.rememberMe">
+                Zapamiętaj mnie
+            </label>
+        </div>
+    </div>
+    <div class="form-group text-center">
+        <button class="btn btn-success btn-raised btn-lg check-issue-button">
+            <fa name="sign-in"
+                fw></fa>
+            Zaloguj
+        </button>
+    </div>
+</form>
+
