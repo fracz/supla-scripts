@@ -1,0 +1,31 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="flexible-grid" ng-if="$ctrl.devices">
+                <div ng-repeat="device in $ctrl.devices">
+                    <div class="well">
+                        <h4>
+                            <span class="badge pull-right">ID {{ device.id }}</span>
+                            {{ device.comment || device.name }}
+                        </h4>
+                        <div class="list-group">
+                            <div class="list-group-item" ng-repeat-start="channel in device.channels"
+                                 ng-hide="!channel.function.id">
+                                <div class="row-content">
+                                    <div class="least-content">ID {{ channel.id }}</div>
+                                    <h4 class="list-group-item-heading">
+                                        {{ channel.caption || channel.type.name.substr(5) }}
+                                    </h4>
+                                    <p class="list-group-item-text">{{ channel.function.name.substr(4) }}</p>
+                                </div>
+                            </div>
+                            <div class="list-group-separator" ng-repeat-end
+                                 ng-hide="$last || !channel.function.id"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <loader-dots ng-else></loader-dots>
+        </div>
+    </div>
+</div>

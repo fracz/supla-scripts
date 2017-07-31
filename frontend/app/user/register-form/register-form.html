@@ -1,0 +1,125 @@
+<div class="container">
+    <form name="registerForm"
+          novalidate
+          promise-btn
+          ng-submit="$broadcast('show-errors-check-validity') && registerForm.$valid && $ctrl.register()">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="alert alert-danger fx-fade-down"
+                     ng-show="$ctrl.error">
+                    <fa name="exclamation-circle"
+                        fw></fa>
+                    Niepoprawna nazwa użytkownika lub hasło.
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group label-floating"
+                     show-errors>
+                    <label class="control-label">Nazwa użytkownika</label>
+                    <input type="text"
+                           autocomplete="off"
+                           autocorrect="off"
+                           autocapitalize="off"
+                           spellcheck="false"
+                           class="form-control"
+                           ng-model="$ctrl.userData.username"
+                           required
+                           name="username">
+                    <span class="help-block">Nazwa używana w supla-scripts - nie musi być taka sama jak do supla-cloud.</span>
+                </div>
+                <div class="form-group label-floating"
+                     show-errors>
+                    <label class="control-label">Hasło</label>
+                    <input type="password"
+                           ng-model="$ctrl.userData.password"
+                           required
+                           ng-minlength="3"
+                           name="password"
+                           class="form-control">
+                    <span class="help-block">Hasło do supla-scripts - nie musi być takie samo jak do supla-cloud.</span>
+                </div>
+                <div class="form-group label-floating"
+                     show-errors>
+                    <label class="control-label">Serwer</label>
+                    <input type="url"
+                           ng-model="$ctrl.userData.apiCredentials.server"
+                           required
+                           name="server"
+                           class="form-control">
+                    <span class="help-block">Adres Twojego serwera SUPLA-Cloud.</span>
+                </div>
+                <div class="form-group label-floating"
+                     show-errors>
+                    <label class="control-label">ClientID</label>
+                    <input type="text"
+                           ng-model="$ctrl.userData.apiCredentials.clientId"
+                           required
+                           name="clientid"
+                           class="form-control">
+                </div>
+                <div class="form-group label-floating"
+                     show-errors>
+                    <label class="control-label">Secret</label>
+                    <input type="password"
+                           ng-model="$ctrl.userData.apiCredentials.secret"
+                           required
+                           name="secret"
+                           class="form-control">
+                </div>
+                <div class="form-group label-floating"
+                     show-errors>
+                    <label class="control-label">Username (API)</label>
+                    <input type="text"
+                           ng-model="$ctrl.userData.apiCredentials.username"
+                           required
+                           name="apiusername"
+                           class="form-control">
+                </div>
+                <div class="form-group label-floating"
+                     show-errors>
+                    <label class="control-label">Password (API)</label>
+                    <input type="password"
+                           ng-model="$ctrl.userData.apiCredentials.password"
+                           required
+                           name="apipassword"
+                           class="form-control">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="alert alert-warning">
+                        <p>
+                            <fa name="exclamation-triangle" fw class="pull-right" size="2"></fa>
+                            W tym formularzu wymagane jest podanie danych dostępowych do Twojego konta w SUPLA-Cloud.
+                        </p>
+                        <p><strong>Dzięki tym danym możliwe będzie pobranie listy Twoich urządzeń oraz kanałów a także
+                            odczytanie i zmiana ich stanu.</strong></p>
+                        <p>Podanie tych danych jest konieczne do działania
+                            supla-scripts i dokładam wszelkich starań by były one bezpieczne (nie są przechowywane
+                            otwartym
+                            tekstem w bazie danych oraz po ich zapisaniu nigdy nie są wysyłane do przeglądarki).</p>
+                        <p>Musisz mieć
+                            jednak świadomość że supla-scripts to rozwiązanie nieoficjalne i jeśli masz jakiekolwiek
+                            wątpliwości - nie zakładaj tu konta i poczekaj aż dodawane za pomocą skryptów
+                            funkcjonalności
+                            będą dostępne w oficjalnym oprogramowaniu udostępnianym przez supla.org.</p>
+                        <p>Jeśli nadal chcesz założyć tu konto, dane konieczne do wpisania formularzu znajdziesz w
+                            zakładce <em>RESTful API</em> w Twoim SUPLA-Cloud.</p>
+                        <p class="text-center">
+                            <img src="/img/restful-api-cloud.jpg" alt="RESTful API">
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group text-center">
+            <button type="submit" class="btn btn-success btn-raised btn-lg check-issue-button">
+                <fa name="user-plus"
+                    fw></fa>
+                Dodaj konto
+            </button>
+        </div>
+    </form>
+</div>

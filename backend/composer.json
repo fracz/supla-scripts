@@ -12,6 +12,7 @@
     "ramsey/uuid": "^3.6",
     "robmorgan/phinx": "^0.8",
     "slim/slim": "^3.8",
+    "supla/api-client": "dev-master",
     "symfony/console": "^3.3"
   },
   "autoload": {

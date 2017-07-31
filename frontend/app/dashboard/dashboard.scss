@@ -1,0 +1,22 @@
+@import "../styles";
+
+// https://stackoverflow.com/a/12117283/878514
+
+.flexible-grid {
+  @include column-count(4);
+  @include column-gap(15px);
+  @include on-and-down(1400px) {
+    @include column-count(3);
+  }
+  @include on-and-down(1000px) {
+    @include column-count(2);
+  }
+  @include on-and-down(700px) {
+    @include column-count(1);
+  }
+  width: 100%;
+  > div {
+    display: inline-block;
+    width: 100%;
+  }
+}

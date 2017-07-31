@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "83be963167e4960f1fe8024dd4105f7a",
+    "content-hash": "9563f5cdfc563211407ba2bfd797f747",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -1159,6 +1159,32 @@
             "time": "2017-03-19T17:55:20+00:00"
         },
         {
+            "name": "supla/api-client",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SUPLA/api-client-php.git",
+                "reference": "f9e0d8c31ffc28d23c97e128bf4c048e9bb7153c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SUPLA/api-client-php/zipball/f9e0d8c31ffc28d23c97e128bf4c048e9bb7153c",
+                "reference": "f9e0d8c31ffc28d23c97e128bf4c048e9bb7153c",
+                "shasum": ""
+            },
+            "require-dev": {
+                "squizlabs/php_codesniffer": "^2.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Supla\\ApiClient\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "time": "2017-06-24 18:24:41"
+        },
+        {
             "name": "symfony/config",
             "version": "v3.3.5",
             "source": {
@@ -1577,7 +1603,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "supla/api-client": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

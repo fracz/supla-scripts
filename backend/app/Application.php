@@ -20,9 +20,7 @@ use suplascripts\models\User;
  * @property-read Capsule $db
  * @property-read LoggerInterface $logger
  * @property-read \stdClass $currentToken
- * @property-read Client $metrics
  * @property-read \Slim\Collection $settings
- * @property-read \Swift_Mailer $mailer
  */
 class Application extends App
 {

@@ -9,5 +9,5 @@ angular.module('supla-scripts').component 'navbar',
       @currentUser = @Token.getCurrentUser()
 
     forgetUser: ->
-      @Token.forgetUser().then =>
-        @$state.go('home')
+      @Token.forgetRememberedToken()
+      @$state.go('home')

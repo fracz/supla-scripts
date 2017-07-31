@@ -46,9 +46,6 @@ angular.module('supla-scripts').service 'Token', (Restangular, $localStorage, $t
       delete $localStorage[LOCAL_STORAGE_KEY]
       dispatchAuthEvent()
 
-  Token.forgetUser = ->
-      Token.forgetRememberedToken()
-
   if Token.getRememberedToken()
     if jwtHelper.isTokenExpired(Token.getRememberedToken())
       Token.forgetRememberedToken()

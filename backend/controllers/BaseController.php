@@ -8,7 +8,6 @@ use Slim\Http\Response;
 use suplascripts\controllers\exceptions\ApiException;
 use suplascripts\controllers\exceptions\Http403Exception;
 use suplascripts\controllers\exceptions\Http404Exception;
-use suplascripts\models\client\CoordinationToken;
 use suplascripts\models\HasApp;
 use suplascripts\models\User;
 use Throwable;
@@ -73,11 +72,9 @@ abstract class BaseController
     {
         if ($e instanceof ApiException) {
             $this->getApp()->logger->warning('Action execution failed.', ['message' => $e->getMessage()]);
-            $this->getApp()->metrics->increment('error.api');
             return $this->response(['message' => $e->getMessage(), 'data' => $e->getData()])->withStatus($e->getCode());
         } else if ($e instanceof InvalidArgumentException) {
             $this->getApp()->logger->info('Validation failed.', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
-            $this->getApp()->metrics->increment('error.validation');
             return $this->response([
                 'message' => $e->getMessage(),
                 'reason' => $e->getPropertyPath(),
@@ -85,7 +82,6 @@ abstract class BaseController
         } else {
             error_log($e);
             $this->getApp()->logger->error($e->getMessage(), ['trace' => $e->getTraceAsString()]);
-            $this->getApp()->metrics->increment('error.exception');
             return $this->response([
                 'status' => 500,
                 'message' => $e->getMessage(),

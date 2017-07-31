@@ -4,12 +4,13 @@ namespace suplascripts\models;
 
 use Assert\Assert;
 use Assert\Assertion;
-use Assert\InvalidArgumentException;
+use suplascripts\models\supla\SuplaApi;
 
 /**
  * @property int $id
  * @property string $username
  * @property string $password
+ * @property string $apiCredentials
  * @property \DateTime $lastLoginDate
  */
 class User extends Model
@@ -37,13 +38,12 @@ class User extends Model
 
     public static function create(array $attributes = [])
     {
-        $user = new self($attributes);
-        $user->passwordExpiresOn = new \DateTime();
+        $user = new self([]);
         list($username, $attributes) = $user->validate($attributes);
         $user->username = trim($username);
-        if (isset($attributes[self::PASSWORD])) {
-            $user->setPassword($attributes[self::PASSWORD]);
-        }
+        $user->setApiCredentials($attributes[self::API_CREDENTIALS]);
+
+        $user->setPassword($attributes[self::PASSWORD]);
         $user->save();
         return $user;
     }
@@ -65,12 +65,27 @@ class User extends Model
             $attributes = $this->getAttributes();
         }
         Assertion::notEmptyKey($attributes, self::USERNAME);
+        Assertion::notEmptyKey($attributes, self::PASSWORD);
+        Assertion::notEmptyKey($attributes, self::API_CREDENTIALS);
         $username = $attributes[self::USERNAME];
         self::validateUsername($username);
+        self::validatePlainPassword($attributes[self::PASSWORD]);
         if (!$this->id) {
             self::validateUsernameUnique($username);
         }
         return [$username, $attributes];
+    }
+
+    public function setApiCredentials(array $apiCredentials)
+    {
+        $apiCredentials['server'] = preg_replace('#^https?://#', '', $apiCredentials['server']);
+        $this->apiCredentials = json_encode($apiCredentials);
+        (new SuplaApi($this))->getDevices();
+    }
+
+    public function getApiCredentials(): array
+    {
+        return json_decode($this->apiCredentials, true);
     }
 
     public function trackLastLogin()
@@ -95,15 +110,5 @@ class User extends Model
     {
         Assert::that($plainPassword)
             ->minLength(3, 'Too short password (min 3 characters).');
-    }
-
-    private static function isPlainPasswordValid(string $plainPassword): bool
-    {
-        try {
-            self::validatePlainPassword($plainPassword);
-            return true;
-        } catch (InvalidArgumentException $e) {
-            return false;
-        }
     }
 }

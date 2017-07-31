@@ -19,8 +19,16 @@ angular.module('supla-scripts')
     template: '<home-view></home-view>'
 
   .state 'login',
-    url: '/login'
+    url: '/login?register'
     template: '<login-view></login-view>'
+
+  .state 'dashboard',
+    url: '/dashboard'
+    template: '<dashboard></dashboard>'
+
+  .state 'thermostat',
+    url: '/thermostat'
+    template: '<thermostat-view></thermostat-view>'
 
   .state 'notFound',
     templateUrl: 'app/common/errors/404.html'

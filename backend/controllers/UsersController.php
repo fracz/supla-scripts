@@ -11,7 +11,7 @@ class UsersController extends BaseController
     public function postAction()
     {
         $parsedBody = $this->request()->getParsedBody();
-        $parsedBody = array_intersect_key($parsedBody, [User::USERNAME => '', User::PASSWORD => '']);
+        $parsedBody = array_intersect_key($parsedBody, [User::USERNAME => '', User::PASSWORD => '', User::API_CREDENTIALS => '']);
         return $this->getApp()->db->getConnection()->transaction(function () use ($parsedBody) {
             $createdUser = User::create($parsedBody);
             return $this->response($createdUser)

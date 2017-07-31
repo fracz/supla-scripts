@@ -3,6 +3,7 @@
 namespace suplascripts;
 
 use suplascripts\app\Application;
+use suplascripts\controllers\DevicesController;
 use suplascripts\controllers\SystemController;
 use suplascripts\controllers\TokensController;
 use suplascripts\controllers\UsersController;
@@ -18,7 +19,6 @@ $app->group('/api', function () use ($app) {
     $app->group('/tokens', function () use ($app) {
         $app->post('', TokensController::class . ':createToken');
         $app->put('', TokensController::class . ':refreshToken');
-        $app->delete('/user', TokensController::class . ':forgetUser');
     });
     $app->group('/users', function () use ($app) {
         $app->post('', UsersController::class . ':post');
@@ -26,6 +26,9 @@ $app->group('/api', function () use ($app) {
         $app->patch('/{id}', UsersController::class . ':patch');
         $app->put('/{id}', UsersController::class . ':put');
         $app->delete('/{id}', UsersController::class . ':delete');
+    });
+    $app->group('/devices', function () use ($app) {
+        $app->get('', DevicesController::class . ':getList');
     });
 });
 $app->run();

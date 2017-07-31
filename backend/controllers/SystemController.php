@@ -2,8 +2,6 @@
 
 namespace suplascripts\controllers;
 
-use suplascripts\models\client\CoordinationToken;
-
 class SystemController extends BaseController
 {
     public function getTimeAction()
