@@ -33,7 +33,7 @@ angular.module('supla-scripts')
 
   .state 'thermostat.rooms',
     url: '/rooms'
-    template: '<thermostat-rooms></thermostat-rooms>'
+    template: '<thermostat-rooms-list></thermostat-rooms-list>'
 
   .state 'thermostat.preview',
     url: '/preview'

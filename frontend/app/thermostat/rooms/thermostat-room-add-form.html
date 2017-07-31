@@ -3,11 +3,11 @@
     <form name="newRoomForm"
           novalidate
           promise-btn
-          ng-submit="$broadcast('show-errors-check-validity') && newRoomForm.$valid && $ctrl.login()">
+          ng-submit="$broadcast('show-errors-check-validity') && newRoomForm.$valid && $ctrl.addRoom()">
         <div class="row">
             <div class="col-md-3">
                 <h6>Podstawowe informacje</h6>
-                <div class="form-group label-floating"
+                <div class="form-group"
                      show-errors>
                     <label class="control-label">Nazwa pomieszczenia</label>
                     <input type="text"
@@ -18,27 +18,72 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <h6>Termometry</h6>
+                <h6>Termometry ({{ $ctrl.newRoom.thermometers.length }})</h6>
+                <div class="form-group" show-errors>
+                    <label class="control-label">Wybierz termometr</label>
+                    <input type="hidden" ng-model="$ctrl.newRoom.thermometers.length" name="thermometers"
+                           ng-pattern="/[1-9][0-9]*/" class="form-control" required>
+                    <channel-selector ng-model="newThermometer"
+                                      ng-change="$ctrl.onChannelAdd(newThermometer, 'thermometers'); newThermometer = undefined"
+                                      functions="['FNC_THERMOMETER', 'FNC_HUMIDITYANDTEMPERATURE']"
+                                      hide-ids="$ctrl.newRoom.thermometers"></channel-selector>
+                </div>
                 <div class="list-group" ng-if="$ctrl.newRoom.thermometers.length">
                     <div class="list-group-item" ng-repeat="channelId in $ctrl.newRoom.thermometers">
+                        <a ng-click="$ctrl.removeChannel(channelId, 'thermometers')" class="channel-delete-btn">
+                            <fa name="times-circle-o"></fa>
+                        </a>
                         <channel-state channel-id="channelId"></channel-state>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="control-label">Dodaj nowy termometr</label>
-                    <channel-selector ng-model="newThermometer"
-                                      ng-change="$ctrl.onChannelAdd(newThermometer, 'thermometers'); newThermometer = undefined"
-                                      functions="['FNC_THERMOMETER', 'FNC_HUMIDITYANDTEMPERATURE']"></channel-selector>
+            </div>
+            <div class="col-md-3">
+                <h6>Urządzenia grzejące ({{ $ctrl.newRoom.heaters.length }})</h6>
+                <div class="form-group" show-errors>
+                    <label class="control-label">Wybierz urządzenie</label>
+                    <input type="hidden" ng-model="$ctrl.newRoom.heaters.length" name="heaters"
+                           ng-pattern="/[1-9][0-9]*/" class="form-control" required>
+                    <channel-selector ng-model="newHeater"
+                                      ng-change="$ctrl.onChannelAdd(newHeater, 'heaters'); newHeater = undefined"
+                                      hide-ids="$ctrl.newRoom.heaters"
+                                      functions="['FNC_POWERSWITCH', 'FNC_CONTROLLINGTHEGATEWAYLOCK', 'FNC_CONTROLLINGTHEGATE', 'FNC_CONTROLLINGTHEGARAGEDOOR']"></channel-selector>
+                </div>
+                <div class="list-group" ng-if="$ctrl.newRoom.heaters.length">
+                    <div class="list-group-item" ng-repeat="channelId in $ctrl.newRoom.heaters">
+                        <a ng-click="$ctrl.removeChannel(channelId, 'heaters')" class="channel-delete-btn">
+                            <fa name="times-circle-o"></fa>
+                        </a>
+                        <channel-state channel-id="channelId"></channel-state>
+                    </div>
                 </div>
             </div>
             <div class="col-md-3">
-                <h6>Urządzenia grzejące</h6>
-                <channel-selector ng-model="newHeater"
-                                  ng-change="$ctrl.onChannelAdd(newHeater, 'heaters'); newHeater = undefined"
-                                  functions="['FNC_POWERSWITCH', 'FNC_CONTROLLINGTHEGATEWAYLOCK', 'FNC_CONTROLLINGTHEGATE', 'FNC_CONTROLLINGTHEGARAGEDOOR']"></channel-selector>
+                <h6>Urządzenia chłodzące ({{ $ctrl.newRoom.coolers.length }})</h6>
+                <div class="form-group" show-errors>
+                    <label class="control-label">Wybierz urządzenie</label>
+                    <input type="hidden" ng-model="$ctrl.newRoom.coolers.length" name="coolers"
+                           ng-pattern="/[1-9][0-9]*/" class="form-control" required>
+                    <channel-selector ng-model="newCooler"
+                                      hide-ids="$ctrl.newRoom.coolers"
+                                      ng-change="$ctrl.onChannelAdd(newCooler, 'coolers'); newCooler = undefined"
+                                      functions="['FNC_POWERSWITCH', 'FNC_CONTROLLINGTHEGATEWAYLOCK', 'FNC_CONTROLLINGTHEGATE', 'FNC_CONTROLLINGTHEGARAGEDOOR']"></channel-selector>
+                </div>
+                <div class="list-group" ng-if="$ctrl.newRoom.coolers.length">
+                    <div class="list-group-item" ng-repeat="channelId in $ctrl.newRoom.coolers">
+                        <a ng-click="$ctrl.removeChannel(channelId, 'coolers')" class="channel-delete-btn">
+                            <fa name="times-circle-o"></fa>
+                        </a>
+                        <channel-state channel-id="channelId"></channel-state>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-3">
-                <h6>Urządzenia chłodzące</h6>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 text-right">
+                <button type="submit" class="btn btn-primary">
+                    <fa name="plus" fw></fa>
+                    Dodaj pomieszczenie
+                </button>
             </div>
         </div>
     </form>

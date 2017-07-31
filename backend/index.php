@@ -6,6 +6,7 @@ use suplascripts\app\Application;
 use suplascripts\controllers\ChannelsController;
 use suplascripts\controllers\DevicesController;
 use suplascripts\controllers\SystemController;
+use suplascripts\controllers\thermostat\ThermostatRoomsController;
 use suplascripts\controllers\TokensController;
 use suplascripts\controllers\UsersController;
 
@@ -33,6 +34,10 @@ $app->group('/api', function () use ($app) {
     });
     $app->group('/channels', function () use ($app) {
         $app->get('/{id}', ChannelsController::class . ':get');
+    });
+
+    $app->group('/thermostat-rooms', function () use ($app) {
+        $app->post('', ThermostatRoomsController::class . ':post');
     });
 });
 $app->run();

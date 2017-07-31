@@ -12,5 +12,8 @@ angular.module('supla-scripts').component 'channelSelector',
       @Channels.getList(@functions).then (@channels) =>
         @ngModel.$render = => @chosenChannelId = @ngModel.$viewValue
 
+    isNotHidden: (channel) =>
+      channel.id not in (@hideIds or [])
+
     updateModel: ->
       @ngModel.$setViewValue(@chosenChannelId)

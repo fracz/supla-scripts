@@ -9,4 +9,7 @@
     <div ng-if="$ctrl.channel.humidity">
         Wilgotność: {{ $ctrl.channel.humidity | number:2 }}%
     </div>
+    <div ng-if="$ctrl.channel.on !== undefined">
+        Stan: {{ $ctrl.channel.on ? 'włączony' : 'wyłączony' }}
+    </div>
 </div>

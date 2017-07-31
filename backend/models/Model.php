@@ -21,6 +21,7 @@ use Ramsey\Uuid\Uuid;
 abstract class Model extends \Illuminate\Database\Eloquent\Model
 {
     use ColumnEncryptor;
+    use ColumnJsonEncoder;
 
     const ID = 'id';
     const CREATED_AT = 'createdAt';
@@ -29,6 +30,7 @@ abstract class Model extends \Illuminate\Database\Eloquent\Model
     public $incrementing = false; // tells eloquent that the id is not integer (sic!), http://stackoverflow.com/a/34715309/878514
 
     protected $encrypted = [];
+    protected $jsonEncoded = [];
 
     public function newInstance($attributes = [], $exists = false)
     {
