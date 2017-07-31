@@ -3,6 +3,7 @@
 namespace suplascripts;
 
 use suplascripts\app\Application;
+use suplascripts\controllers\ChannelsController;
 use suplascripts\controllers\DevicesController;
 use suplascripts\controllers\SystemController;
 use suplascripts\controllers\TokensController;
@@ -29,6 +30,9 @@ $app->group('/api', function () use ($app) {
     });
     $app->group('/devices', function () use ($app) {
         $app->get('', DevicesController::class . ':getList');
+    });
+    $app->group('/channels', function () use ($app) {
+        $app->get('/{id}', ChannelsController::class . ':get');
     });
 });
 $app->run();

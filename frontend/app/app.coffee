@@ -1,4 +1,5 @@
 angular.module 'supla-scripts', [
+  'angular-cache'
   'angular.filter'
   'angular-jwt'
   'angularMoment'
@@ -15,7 +16,6 @@ angular.module 'supla-scripts', [
   'ui.bootstrap.showErrors'
 ]
 .config(($compileProvider, ANGULAR_DEBUG_DATA_ENABLED) -> $compileProvider.debugInfoEnabled(ANGULAR_DEBUG_DATA_ENABLED))
-.run(-> $.material.init())
 .run (Restangular) -> # synchronize browser time with server's
   requestStartTime = Date.now()
   Restangular.one('time').withHttpConfig(skipErrorHandler: yes).get().then (serverTime) ->

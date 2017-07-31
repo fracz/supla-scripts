@@ -1,4 +1,4 @@
-<nav class="navbar" ng-if="$ctrl.currentUser">
+<nav class="navbar navbar-default" ng-if="$ctrl.currentUser">
     <div class="container-fluid">
         <div class="navbar-header page-scroll">
             <button type="button"
@@ -17,8 +17,8 @@
         <div class="collapse navbar-collapse"
              id="navbar-collapse">
             <ul class="nav navbar-nav">
-                <li ui-sref-active="active">
-                    <a ui-sref="thermostat">Termostat</a>
+                <li ui-sref-active="{active: 'thermostat'}">
+                    <a ui-sref="thermostat.preview">Termostat</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">

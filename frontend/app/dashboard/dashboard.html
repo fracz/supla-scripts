@@ -6,7 +6,7 @@
                     <div class="well">
                         <h4>
                             <span class="badge pull-right">ID {{ device.id }}</span>
-                            {{ device.comment || device.name }}
+                            {{ device | deviceLabel }}
                         </h4>
                         <div class="list-group">
                             <div class="list-group-item" ng-repeat-start="channel in device.channels"
@@ -14,7 +14,7 @@
                                 <div class="row-content">
                                     <div class="least-content">ID {{ channel.id }}</div>
                                     <h4 class="list-group-item-heading">
-                                        {{ channel.caption || channel.type.name.substr(5) }}
+                                        {{ channel | channelLabel }}
                                     </h4>
                                     <p class="list-group-item-text">{{ channel.function.name.substr(4) }}</p>
                                 </div>

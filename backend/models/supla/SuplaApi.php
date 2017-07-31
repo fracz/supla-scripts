@@ -24,6 +24,13 @@ class SuplaApi
         return $response->iodevices;
     }
 
+    public function getChannelWithState(int $channelId)
+    {
+        $response = $this->client->channel($channelId);
+        $this->handleError($response);
+        return $response;
+    }
+
     private function handleError($response)
     {
         if (!$response) {

@@ -1,0 +1,12 @@
+<div class="channel-state">
+    <span class="pull-right label" ng-class="$ctrl.channel.connected ? 'label-success' : 'label-danger'">
+        {{ $ctrl.channel.connected ? 'Połączony' : 'Rozłączony' }}
+    </span>
+    {{ $ctrl.channel | channelLabel }}
+    <div ng-if="$ctrl.channel.temperature">
+        Temperatura: {{ $ctrl.channel.temperature | number:2 }}&deg;C
+    </div>
+    <div ng-if="$ctrl.channel.humidity">
+        Wilgotność: {{ $ctrl.channel.humidity | number:2 }}%
+    </div>
+</div>

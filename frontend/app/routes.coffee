@@ -28,7 +28,16 @@ angular.module('supla-scripts')
 
   .state 'thermostat',
     url: '/thermostat'
+    abstract: true
     template: '<thermostat-view></thermostat-view>'
+
+  .state 'thermostat.rooms',
+    url: '/rooms'
+    template: '<thermostat-rooms></thermostat-rooms>'
+
+  .state 'thermostat.preview',
+    url: '/preview'
+    template: '<thermostat-preview></thermostat-preview>'
 
   .state 'notFound',
     templateUrl: 'app/common/errors/404.html'

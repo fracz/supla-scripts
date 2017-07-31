@@ -1,0 +1,5 @@
+<select class="form-control"
+        ng-model="$ctrl.chosenChannelId"
+        ng-change="$ctrl.updateModel()"
+        ng-options="channel.id as (channel | channelLabel:true) for channel in $ctrl.channels track by channel.id">
+</select>

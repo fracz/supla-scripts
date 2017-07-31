@@ -1,0 +1,45 @@
+<div class="well">
+    <h4>Nowe pomieszczenie</h4>
+    <form name="newRoomForm"
+          novalidate
+          promise-btn
+          ng-submit="$broadcast('show-errors-check-validity') && newRoomForm.$valid && $ctrl.login()">
+        <div class="row">
+            <div class="col-md-3">
+                <h6>Podstawowe informacje</h6>
+                <div class="form-group label-floating"
+                     show-errors>
+                    <label class="control-label">Nazwa pomieszczenia</label>
+                    <input type="text"
+                           class="form-control"
+                           ng-model="$ctrl.newRoom.name"
+                           required
+                           name="name">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <h6>Termometry</h6>
+                <div class="list-group" ng-if="$ctrl.newRoom.thermometers.length">
+                    <div class="list-group-item" ng-repeat="channelId in $ctrl.newRoom.thermometers">
+                        <channel-state channel-id="channelId"></channel-state>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Dodaj nowy termometr</label>
+                    <channel-selector ng-model="newThermometer"
+                                      ng-change="$ctrl.onChannelAdd(newThermometer, 'thermometers'); newThermometer = undefined"
+                                      functions="['FNC_THERMOMETER', 'FNC_HUMIDITYANDTEMPERATURE']"></channel-selector>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <h6>Urządzenia grzejące</h6>
+                <channel-selector ng-model="newHeater"
+                                  ng-change="$ctrl.onChannelAdd(newHeater, 'heaters'); newHeater = undefined"
+                                  functions="['FNC_POWERSWITCH', 'FNC_CONTROLLINGTHEGATEWAYLOCK', 'FNC_CONTROLLINGTHEGATE', 'FNC_CONTROLLINGTHEGARAGEDOOR']"></channel-selector>
+            </div>
+            <div class="col-md-3">
+                <h6>Urządzenia chłodzące</h6>
+            </div>
+        </div>
+    </form>
+</div>
