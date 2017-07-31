@@ -1,15 +1,22 @@
 <div class="channel-state">
-    <span class="pull-right label" ng-class="$ctrl.channel.connected ? 'label-success' : 'label-danger'">
-        {{ $ctrl.channel.connected ? 'Połączony' : 'Rozłączony' }}
-    </span>
-    {{ $ctrl.channel | channelLabel }}
-    <div ng-if="$ctrl.channel.temperature">
-        Temperatura: {{ $ctrl.channel.temperature | number:2 }}&deg;C
+    <div ng-if="$ctrl.channel.id">
+        <span class="pull-right label" ng-if="$ctrl.channel.connected | isDefined"
+              ng-class="$ctrl.channel.connected ? 'label-success' : 'label-danger'">
+            {{ $ctrl.channel.connected ? 'Połączony' : 'Rozłączony' }}
+        </span>
+        <loader-dots-small class="pull-right" ng-else></loader-dots-small>
+        {{ $ctrl.channel | channelLabel }}
+        <div ng-if="$ctrl.channel.temperature">
+            Temperatura: {{ $ctrl.channel.temperature | number:2 }}&deg;C
+        </div>
+        <div ng-if="$ctrl.channel.humidity">
+            Wilgotność: {{ $ctrl.channel.humidity | number:2 }}%
+        </div>
+        <div ng-if="$ctrl.channel.on !== undefined">
+            Stan: {{ $ctrl.channel.on ? 'włączony' : 'wyłączony' }}
+        </div>
     </div>
-    <div ng-if="$ctrl.channel.humidity">
-        Wilgotność: {{ $ctrl.channel.humidity | number:2 }}%
-    </div>
-    <div ng-if="$ctrl.channel.on !== undefined">
-        Stan: {{ $ctrl.channel.on ? 'włączony' : 'wyłączony' }}
+    <div ng-else class="text-center">
+        <loader-dots-small></loader-dots-small>
     </div>
 </div>

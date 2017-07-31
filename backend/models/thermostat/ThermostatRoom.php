@@ -37,12 +37,13 @@ class ThermostatRoom extends Model
         return $this->belongsTo(User::class, self::USER_ID);
     }
 
-    public function validate(array $attributes = null): array
+    public function validate(array $attributes = null): void
     {
         if (!$attributes) {
             $attributes = $this->getAttributes();
         }
         Assertion::notEmptyKey($attributes, self::NAME);
+        Assertion::notEmptyKey($attributes, self::THERMOMETERS);
         // TODO validate channels
     }
 }

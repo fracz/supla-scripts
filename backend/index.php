@@ -37,7 +37,10 @@ $app->group('/api', function () use ($app) {
     });
 
     $app->group('/thermostat-rooms', function () use ($app) {
+        $app->get('', ThermostatRoomsController::class . ':getList');
         $app->post('', ThermostatRoomsController::class . ':post');
+        $app->put('/{id}', ThermostatRoomsController::class . ':put');
+        $app->delete('/{id}', ThermostatRoomsController::class . ':delete');
     });
 });
 $app->run();

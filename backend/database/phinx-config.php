@@ -4,7 +4,7 @@
  */
 $settings = require_once __DIR__ . '/../settings.php';
 $dbSettings = $settings['db'];
-$dbName = $dbSettings['driver'] == 'sqlite' ? __DIR__ . '/../../' . $dbSettings['database'] : $dbSettings['database'];
+//$dbName = $dbSettings['driver'] == 'sqlite' ? __DIR__ . '/../../' . $dbSettings['database'] : $dbSettings['database'];
 return [
     'paths' => [
         'migrations' => __DIR__ . '/migrations',
@@ -17,7 +17,7 @@ return [
         'db' => [
             'adapter' => $dbSettings['driver'],
 //            'host' => $dbSettings['host'],
-            'name' => $dbName,
+            'name' => $dbSettings['database'],
 //            'user' => $dbSettings['username'],
 //            'pass' => $dbSettings['password']
         ]

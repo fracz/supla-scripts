@@ -1,0 +1,93 @@
+<h4>{{ $ctrl.room.id ? 'Edytuj' : 'Dodaj' }} pomieszczenie</h4>
+<form name="roomForm"
+      novalidate
+      promise-btn
+      ng-submit="$broadcast('show-errors-check-validity') && roomForm.$valid && $ctrl.onSubmit({savedRoom: $ctrl.room})">
+    <div class="row">
+        <div class="col-md-3">
+            <h6>Podstawowe informacje</h6>
+            <div class="form-group"
+                 show-errors>
+                <label class="control-label">Nazwa pomieszczenia</label>
+                <input type="text"
+                       class="form-control"
+                       ng-model="$ctrl.room.name"
+                       required
+                       name="name">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <h6>Termometry ({{ $ctrl.room.thermometers.length || 0}})</h6>
+            <div class="form-group" show-errors>
+                <label class="control-label">Wybierz termometr</label>
+                <input type="hidden" ng-model="$ctrl.room.thermometers" name="thermometers" class="form-control"
+                       required>
+                <channel-selector ng-model="newThermometer"
+                                  ng-change="$ctrl.onChannelAdd(newThermometer, 'thermometers'); newThermometer = undefined"
+                                  functions="['FNC_THERMOMETER', 'FNC_HUMIDITYANDTEMPERATURE']"
+                                  hide-ids="$ctrl.room.thermometers"></channel-selector>
+            </div>
+            <div class="list-group" ng-if="$ctrl.room.thermometers.length">
+                <div class="list-group-item" ng-repeat="channelId in $ctrl.room.thermometers">
+                    <a ng-click="$ctrl.removeChannel(channelId, 'thermometers')" class="channel-delete-btn">
+                        <fa name="times-circle-o"></fa>
+                    </a>
+                    <channel-state channel-id="channelId"></channel-state>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <h6>Urządzenia grzejące ({{ $ctrl.room.heaters.length || 0 }})</h6>
+            <div class="form-group" show-errors>
+                <label class="control-label">Wybierz urządzenie</label>
+                <input type="hidden" ng-model="$ctrl.room.heaters" name="heaters" class="form-control"
+                       ng-required="!$ctrl.room.coolers">
+                <channel-selector ng-model="newHeater"
+                                  ng-change="$ctrl.onChannelAdd(newHeater, 'heaters'); newHeater = undefined"
+                                  hide-ids="$ctrl.room.heaters"
+                                  functions="['FNC_POWERSWITCH', 'FNC_CONTROLLINGTHEGATEWAYLOCK', 'FNC_CONTROLLINGTHEGATE', 'FNC_CONTROLLINGTHEGARAGEDOOR']"></channel-selector>
+            </div>
+            <div class="list-group" ng-if="$ctrl.room.heaters.length">
+                <div class="list-group-item" ng-repeat="channelId in $ctrl.room.heaters">
+                    <a ng-click="$ctrl.removeChannel(channelId, 'heaters')" class="channel-delete-btn">
+                        <fa name="times-circle-o"></fa>
+                    </a>
+                    <channel-state channel-id="channelId"></channel-state>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <h6>Urządzenia chłodzące ({{ $ctrl.room.coolers.length || 0}})</h6>
+            <div class="form-group" show-errors>
+                <label class="control-label">Wybierz urządzenie</label>
+                <input type="hidden" ng-model="$ctrl.room.coolers" name="coolers" class="form-control"
+                       ng-required="!$ctrl.room.heaters">
+                <channel-selector ng-model="newCooler"
+                                  hide-ids="$ctrl.room.coolers"
+                                  ng-change="$ctrl.onChannelAdd(newCooler, 'coolers'); newCooler = undefined"
+                                  functions="['FNC_POWERSWITCH', 'FNC_CONTROLLINGTHEGATEWAYLOCK', 'FNC_CONTROLLINGTHEGATE', 'FNC_CONTROLLINGTHEGARAGEDOOR']"></channel-selector>
+            </div>
+            <div class="list-group" ng-if="$ctrl.room.coolers.length">
+                <div class="list-group-item" ng-repeat="channelId in $ctrl.room.coolers">
+                    <a ng-click="$ctrl.removeChannel(channelId, 'coolers')" class="channel-delete-btn">
+                        <fa name="times-circle-o"></fa>
+                    </a>
+                    <channel-state channel-id="channelId"></channel-state>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 text-right">
+            <button type="button" class="btn btn-default" ng-click="$ctrl.onCancel()">
+                <fa name="times" fw></fa>
+                Anuluj
+            </button>
+            <button type="submit" class="btn btn-primary">
+                <fa name="{{ $ctrl.room.id ? 'save' : 'plus' }}" fw></fa>
+                {{ $ctrl.room.id ? 'Zapisz' : 'Dodaj' }} pomieszczenie
+            </button>
+        </div>
+    </div>
+</form>
+

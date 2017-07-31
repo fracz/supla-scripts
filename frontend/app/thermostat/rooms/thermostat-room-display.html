@@ -1,0 +1,37 @@
+<div class="btn-group btn-group-sm pull-right">
+    <button class="btn btn-default" ng-click="$ctrl.onEdit()">
+        <fa name="edit" fw></fa>
+        Edytuj
+    </button>
+    <button class="btn btn-danger" ng-click="$ctrl.onDelete()" promise-btn>
+        <fa name="trash" fw></fa>
+        Usuń
+    </button>
+</div>
+<h4>{{ $ctrl.room.name }}</h4>
+<div class="row">
+    <div class="col-md-4">
+        <h6>Termometry ({{$ctrl.room.thermometers.length}})</h6>
+        <div class="list-group">
+            <div class="list-group-item" ng-repeat="channelId in $ctrl.room.thermometers">
+                <channel-state channel-id="channelId"></channel-state>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <h6>Urządzenia grzejące ({{$ctrl.room.heaters.length || 0}})</h6>
+        <div class="list-group">
+            <div class="list-group-item" ng-repeat="channelId in $ctrl.room.heaters">
+                <channel-state channel-id="channelId"></channel-state>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <h6>Urządzenia chłodzące ({{$ctrl.room.coolers.length || 0}})</h6>
+        <div class="list-group">
+            <div class="list-group-item" ng-repeat="channelId in $ctrl.room.coolers">
+                <channel-state channel-id="channelId"></channel-state>
+            </div>
+        </div>
+    </div>
+</div>
