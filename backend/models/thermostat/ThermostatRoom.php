@@ -1,11 +1,10 @@
 <?php
 
-namespace suplascripts\models;
+namespace suplascripts\models\thermostat;
 
-use Assert\Assert;
 use Assert\Assertion;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use suplascripts\models\supla\SuplaApi;
+use suplascripts\models\Model;
 
 /**
  * @property int $id
@@ -33,7 +32,8 @@ class ThermostatRoom extends Model
         return $room;
     }
 
-    public function user(): BelongsTo {
+    public function user(): BelongsTo
+    {
         return $this->belongsTo(User::class, self::USER_ID);
     }
 

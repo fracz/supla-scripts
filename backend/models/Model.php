@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Ramsey\Uuid\Uuid;
+use suplascripts\models\encoders\ColumnEncoders;
 
 /**
  * @property string $id
@@ -20,8 +21,7 @@ use Ramsey\Uuid\Uuid;
  */
 abstract class Model extends \Illuminate\Database\Eloquent\Model
 {
-    use ColumnEncryptor;
-    use ColumnJsonEncoder;
+    use ColumnEncoders;
 
     const ID = 'id';
     const CREATED_AT = 'createdAt';
@@ -31,6 +31,16 @@ abstract class Model extends \Illuminate\Database\Eloquent\Model
 
     protected $encrypted = [];
     protected $jsonEncoded = [];
+
+    /**
+     * Model constructor.
+     */
+    public function __construct(array $attributes = [])
+    {
+        $this->initializeEncoders();
+        parent::__construct($attributes);
+    }
+
 
     public function newInstance($attributes = [], $exists = false)
     {
@@ -57,6 +67,16 @@ abstract class Model extends \Illuminate\Database\Eloquent\Model
         if (!$instance->id) {
             $instance->id = Uuid::getFactory()->uuid4();
         }
+    }
+
+    public function getEncrypted(): array
+    {
+        return $this->encrypted;
+    }
+
+    public function getJsonEncoded()
+    {
+        return $this->jsonEncoded;
     }
 
     protected function serializeDate(DateTimeInterface $date)

@@ -2,7 +2,7 @@
 
 namespace suplascripts\models\observers;
 
-use suplascripts\models\ThermostatRoom;
+use suplascripts\models\thermostat\ThermostatRoom;
 use suplascripts\models\User;
 
 class ObserverRegisterer
