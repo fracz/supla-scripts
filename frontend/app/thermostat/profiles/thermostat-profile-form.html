@@ -1,0 +1,101 @@
+<h4>{{ $ctrl.room.id ? 'Edytuj' : 'Dodaj' }} profil</h4>
+<form name="profileForm"
+      novalidate
+      promise-btn
+      ng-submit="$broadcast('show-errors-check-validity') && profileForm.$valid && $ctrl.onSubmit({savedProfile: $ctrl.profile})">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group" show-errors>
+                <label class="control-label">Nazwa profilu</label>
+                <input type="text" class="form-control" required name="name" ng-model="$ctrl.profile.name">
+            </div>
+        </div>
+        <div class="col-md-8">
+            <table class="table thermostat-profile-table">
+                <thead>
+                <tr>
+                    <th>Pomieszczenie</th>
+                    <th>Grzej od</th>
+                    <th>Grzej do</th>
+                    <th>Schładzaj od</th>
+                    <th>Schładzaj do</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="room in $ctrl.rooms">
+                    <td>
+                        <h4>{{ room.name }}</h4>
+                        <span ng-repeat="channelId in room.thermometers">
+                            <channel-state-temperature channel-id="channelId"></channel-state-temperature><span
+                                ng-if="!$last">,</span>
+                        </span>
+                    </td>
+                    <td>
+                        <span ng-if="room.heaters.length">
+                            <span class="input-group">
+                            <input type="number" class="form-control" ng-model="profile.roomsConfig[room.id].heatFrom"
+                                   step="0.2">
+                                <span class="input-group-addon">&deg;C</span>
+                            </span>
+                        </span>
+                        <em ng-else>brak urządzeń grzewczych</em>
+                    </td>
+                    <td>
+                        <span ng-if="room.heaters.length">
+                            <span class="input-group">
+                            <input type="number" class="form-control" ng-model="profile.roomsConfig[room.id].heatTo"
+                                   step="0.2">
+                                <span class="input-group-addon">&deg;C</span>
+                            </span>
+                        </span>
+                        <em ng-else>-</em>
+                    </td>
+                    <td>
+                        <span ng-if="room.coolers.length">
+                            <span class="input-group">
+                            <input type="number" class="form-control" ng-model="profile.roomsConfig[room.id].coolFrom"
+                                   step="0.2">
+                                <span class="input-group-addon">&deg;C</span>
+                            </span>
+                        </span>
+                        <em ng-else>brak urządzeń chłodzących</em>
+                    </td>
+                    <td>
+                        <span ng-if="room.coolers.length">
+                            <span class="input-group">
+                            <input type="number" class="form-control" ng-model="profile.roomsConfig[room.id].coolTo"
+                                   step="0.2">
+                                <span class="input-group-addon">&deg;C</span>
+                            </span>
+                        </span>
+                        <em ng-else>-</em>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <label>Czasowa aktywacja profilu</label>
+                <div class="list-group">
+                    <div class="list-group-item">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 text-right">
+            <button type="button" class="btn btn-default" ng-click="$ctrl.onCancel()">
+                <fa name="times" fw></fa>
+                Anuluj
+            </button>
+            <button type="submit" class="btn btn-primary">
+                <fa name="{{ $ctrl.room.id ? 'save' : 'plus' }}" fw></fa>
+                {{ $ctrl.room.id ? 'Zapisz' : 'Dodaj' }} profil
+            </button>
+        </div>
+    </div>
+</form>
+

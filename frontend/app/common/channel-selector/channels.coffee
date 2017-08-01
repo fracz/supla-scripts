@@ -1,10 +1,14 @@
-angular.module('supla-scripts').service 'Channels', (Restangular, Devices) ->
+angular.module('supla-scripts').service 'Channels', (Restangular, Devices, CacheFactory) ->
 
   Channels = Restangular.service('channels')
 
+  channelsCache = CacheFactory.get('channelsCache') or CacheFactory 'channelsCache',
+    maxAge: 30 * 1000
+    deleteOnExpire: 'aggressive'
+
   addChannelMethods = (channel) ->
     channel.getState = ->
-      Channels.one(channel.id).get().then (channelWithState) ->
+      Channels.one(channel.id).withHttpConfig(cache: channelsCache).get().then (channelWithState) ->
         angular.extend(channel, channelWithState)
 
   service =

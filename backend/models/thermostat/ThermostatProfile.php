@@ -9,28 +9,26 @@ use suplascripts\models\User;
 
 /**
  * @property string $name
- * @property string $thermometers
- * @property string $heaters
- * @property string $coolers
+ * @property string $roomsConfig
+ * @property string $activeOn
  * @property string $userId
  */
-class ThermostatRoom extends Model
+class ThermostatProfile extends Model
 {
-    const TABLE_NAME = 'thermostat_rooms';
+    const TABLE_NAME = 'thermostat_profiles';
     const NAME = 'name';
-    const THERMOMETERS = 'thermometers';
-    const HEATERS = 'heaters';
-    const COOLERS = 'coolers';
+    const ROOMS_CONFIG = 'roomsConfig';
+    const ACTIVE_ON = 'activeOn';
     const USER_ID = 'userId';
 
-    protected $fillable = [self::NAME, self::THERMOMETERS, self::HEATERS, self::COOLERS];
-    protected $jsonEncoded = [self::THERMOMETERS, self::HEATERS, self::COOLERS];
+    protected $fillable = [self::NAME, self::ROOMS_CONFIG, self::ACTIVE_ON];
+    protected $jsonEncoded = [self::ROOMS_CONFIG, self::ACTIVE_ON];
 
     public static function create(array $attributes = [])
     {
-        $room = new self($attributes);
-        $room->save();
-        return $room;
+        $profile = new self($attributes);
+        $profile->save();
+        return $profile;
     }
 
     public function user(): BelongsTo
@@ -44,7 +42,6 @@ class ThermostatRoom extends Model
             $attributes = $this->getAttributes();
         }
         Assertion::notEmptyKey($attributes, self::NAME);
-        Assertion::notEmptyKey($attributes, self::THERMOMETERS);
-        // TODO validate channels
+        Assertion::notEmptyKey($attributes, self::ROOMS_CONFIG);
     }
 }

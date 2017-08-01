@@ -7,7 +7,7 @@
         <loader-dots-small class="pull-right" ng-else></loader-dots-small>
         {{ $ctrl.channel | channelLabel }}
         <div ng-if="$ctrl.channel.temperature">
-            Temperatura: {{ $ctrl.channel.temperature | number:2 }}&deg;C
+            Temperatura: <channel-state-temperature channel-id="$ctrl.channelId"></channel-state-temperature>
         </div>
         <div ng-if="$ctrl.channel.humidity">
             Wilgotność: {{ $ctrl.channel.humidity | number:2 }}%

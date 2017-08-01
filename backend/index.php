@@ -6,6 +6,7 @@ use suplascripts\app\Application;
 use suplascripts\controllers\ChannelsController;
 use suplascripts\controllers\DevicesController;
 use suplascripts\controllers\SystemController;
+use suplascripts\controllers\thermostat\ThermostatProfilesController;
 use suplascripts\controllers\thermostat\ThermostatRoomsController;
 use suplascripts\controllers\TokensController;
 use suplascripts\controllers\UsersController;
@@ -41,6 +42,12 @@ $app->group('/api', function () use ($app) {
         $app->post('', ThermostatRoomsController::class . ':post');
         $app->put('/{id}', ThermostatRoomsController::class . ':put');
         $app->delete('/{id}', ThermostatRoomsController::class . ':delete');
+    });
+    $app->group('/thermostat-profiles', function () use ($app) {
+        $app->get('', ThermostatProfilesController::class . ':getList');
+        $app->post('', ThermostatProfilesController::class . ':post');
+        $app->put('/{id}', ThermostatProfilesController::class . ':put');
+        $app->delete('/{id}', ThermostatProfilesController::class . ':delete');
     });
 });
 $app->run();

@@ -1,0 +1,24 @@
+<div class="alert alert-info" ng-if="$ctrl.profiles.length === 0">
+    <fa name="info-circle" fw class="pull-right" size="2"></fa>
+    <p>Zdefiniuj teraz profile temperatur, tj. określ maksymalną i minimalną temperaturę w każdym pomieszczeniu.</p>
+    <p>Określ także kiedy ma być aktywny każdy ze zdefiniowanych profili. Zadbaj o to by profile nie nakładały się na
+    siebie - jeśli tak się stanie, termostat wybierze jeden z profilów. Jeśli na dany okres nie będzie zdefiniowany żaden
+    profil - termostat przerwie wtedy pracę (wyłączając wszystkie urządzenia).</p>
+</div>
+
+<div class="well" ng-repeat="profile in $ctrl.profiles">
+    <thermostat-profile-form ng-if="profile.editing" profile="room" on-submit="$ctrl.saveRoom(profile, savedProfile)" on-cancel="profile.editing = false"></thermostat-profile-form>
+    <thermostat-profile-display ng-else profile="profile" on-edit="profile.editing = true" on-delete="$ctrl.deleteProfile(profile)"></thermostat-profile-display>
+</div>
+
+<div class="text-right" ng-if="!$ctrl.adding">
+    <button class="btn btn-primary" ng-click="$ctrl.adding = true">
+        <fa name="plus" fw></fa>
+        Dodaj nowy profil
+    </button>
+</div>
+
+<div class="well fx-fade-right" ng-else>
+    <thermostat-profile-form on-submit="$ctrl.addNewProfile(savedProfile)" on-cancel="$ctrl.adding = false"></thermostat-profile-form>
+</div>
+
