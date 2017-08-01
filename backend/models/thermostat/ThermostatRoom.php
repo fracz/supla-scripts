@@ -45,6 +45,8 @@ class ThermostatRoom extends Model
         }
         Assertion::notEmptyKey($attributes, self::NAME);
         Assertion::notEmptyKey($attributes, self::THERMOMETERS);
-        // TODO validate channels
+        Assertion::keyExists($attributes, self::HEATERS);
+        Assertion::keyExists($attributes, self::COOLERS);
+        Assertion::greaterThan(count($attributes[self::HEATERS]) + count($attributes[self::COOLERS]), 0, 'You need to define at least one device!');
     }
 }

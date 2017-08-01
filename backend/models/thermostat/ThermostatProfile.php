@@ -42,6 +42,21 @@ class ThermostatProfile extends Model
             $attributes = $this->getAttributes();
         }
         Assertion::notEmptyKey($attributes, self::NAME);
-        Assertion::notEmptyKey($attributes, self::ROOMS_CONFIG);
+        Assertion::notEmptyKey($attributes, self::ROOMS_CONFIG, 'You must enter at least one temperature configuration.');
+        Assertion::keyExists($attributes, self::ACTIVE_ON);
+        Assertion::isArray($attributes[self::ROOMS_CONFIG]);
+        Assertion::isArray($attributes[self::ACTIVE_ON]);
+        foreach($attributes[self::ROOMS_CONFIG] as $roomConfig) {
+            if (isset($roomConfig['heatTo']) || isset($roomConfig['heatFrom'])) {
+                Assertion::notEmptyKey($roomConfig, 'heatTo', 'Heat to value must be provided if heat from is set.');
+                Assertion::notEmptyKey($roomConfig, 'heatFrom', 'Heat from value must be provided if heat to is set.');
+                Assertion::greaterThan($roomConfig['heatTo'], $roomConfig['heatFrom'], 'Heat from value must be less than heat to value.');
+            }
+            if (isset($roomConfig['coolTo']) || isset($roomConfig['coolFrom'])) {
+                Assertion::notEmptyKey($roomConfig, 'coolTo', 'Cool to value must be provided if cool from is set.');
+                Assertion::notEmptyKey($roomConfig, 'coolFrom', 'Cool from value must be provided if cool to is set.');
+                Assertion::greaterThan($roomConfig['coolFrom'], $roomConfig['coolTo'], 'Cool to value must be less than heat from value.');
+            }
+        }
     }
 }

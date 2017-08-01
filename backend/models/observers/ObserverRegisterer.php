@@ -13,6 +13,7 @@ class ObserverRegisterer
         User::observe(ModelValidator::class);
         ThermostatRoom::observe(ModelValidator::class);
         ThermostatRoom::observe(UserIdSetter::class);
+        ThermostatProfile::observe(UserIdSetter::class);
         ThermostatProfile::observe(ModelValidator::class);
     }
 }

@@ -17,6 +17,7 @@
     "angular-promise-buttons": "0.1.21",
     "angular-toastr": "2.1.1",
     "angular-ui-router": "0.4.2",
+    "angularjs-slider": "6.2.3",
     "bootstrap": "3.3.7",
     "bootswatch": "3.3.7",
     "ng-elif": "0.1.5",
@@ -68,6 +69,15 @@
     },
     "angular-ui-router": {
       "main": "release/angular-ui-router.min.js"
+    },
+    "angularjs-slider": {
+      "main": [
+        "dist/rzslider.min.js",
+        "dist/rzslider.min.css"
+      ],
+      "dependencies": {
+        "angular": "*"
+      }
     },
     "bootstrap": {
       "main": [

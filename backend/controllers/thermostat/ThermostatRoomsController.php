@@ -33,7 +33,7 @@ class ThermostatRoomsController extends BaseController
         if ($room->userId != $this->getCurrentUser()->id) {
             throw new Http403Exception();
         }
-        $parsedBody = $this->request()->getParsedBody();
+        $parsedBody = array_merge(['heaters' => [], 'coolers' => []], $this->request()->getParsedBody());
         $room->update($parsedBody);
         $room->save();
         return $this->response($room);

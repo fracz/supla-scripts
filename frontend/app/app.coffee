@@ -10,6 +10,7 @@ angular.module 'supla-scripts', [
   'ngStorage'
   'picardy.fontawesome'
   'restangular'
+  'rzModule'
   'toastr'
   'ui.router'
   'ui.bootstrap'

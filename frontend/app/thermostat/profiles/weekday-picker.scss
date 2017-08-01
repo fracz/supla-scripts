@@ -1,0 +1,8 @@
+.weekday-picker {
+  height: 50px;
+  padding-top: 12px;
+  > label {
+    font-size: 1.3em;
+    width: (100% / 7);
+  }
+}

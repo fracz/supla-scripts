@@ -2,13 +2,14 @@ angular.module('supla-scripts').component 'thermostatProfileForm',
   templateUrl: 'app/thermostat/profiles/thermostat-profile-form.html'
   bindings:
     profile: '<'
+    rooms: '<'
     onSubmit: '&'
     onCancel: '&'
-  controller: (ThermostatRooms) ->
+  controller: ->
     new class
       $onInit: ->
-        ThermostatRooms.getList().then((@rooms) =>)
         if @profile
           @profile = angular.copy(@profile.plain())
         else
           @profile = {}
+        @profile.activeOn ?= []

@@ -1,8 +1,9 @@
 angular.module('supla-scripts').component 'thermostatProfilesList',
   templateUrl: 'app/thermostat/profiles/thermostat-profiles-list.html'
-  controller: (ThermostatProfiles) ->
+  controller: (ThermostatRooms, ThermostatProfiles) ->
     new class
       $onInit: ->
+        ThermostatRooms.getList().then((@rooms) =>)
         ThermostatProfiles.getList().then (@profiles) =>
           @adding = true if not @profiles.length
 
@@ -18,4 +19,4 @@ angular.module('supla-scripts').component 'thermostatProfilesList',
 
       deleteProfile: (profile) ->
         profile.remove().then =>
-          @profile.splice(@profile.indexOf(profile), 1)
+          @profiles.splice(@profiles.indexOf(profile), 1)

@@ -18,10 +18,8 @@
         </div>
         <div class="col-md-3">
             <h6>Termometry ({{ $ctrl.room.thermometers.length || 0}})</h6>
-            <div class="form-group" show-errors>
+            <div class="form-group">
                 <label class="control-label">Wybierz termometr</label>
-                <input type="hidden" ng-model="$ctrl.room.thermometers" name="thermometers" class="form-control"
-                       required>
                 <channel-selector ng-model="newThermometer"
                                   ng-change="$ctrl.onChannelAdd(newThermometer, 'thermometers'); newThermometer = undefined"
                                   functions="['FNC_THERMOMETER', 'FNC_HUMIDITYANDTEMPERATURE']"
@@ -38,10 +36,8 @@
         </div>
         <div class="col-md-3">
             <h6>Urządzenia grzejące ({{ $ctrl.room.heaters.length || 0 }})</h6>
-            <div class="form-group" show-errors>
+            <div class="form-group">
                 <label class="control-label">Wybierz urządzenie</label>
-                <input type="hidden" ng-model="$ctrl.room.heaters" name="heaters" class="form-control"
-                       ng-required="!$ctrl.room.coolers">
                 <channel-selector ng-model="newHeater"
                                   ng-change="$ctrl.onChannelAdd(newHeater, 'heaters'); newHeater = undefined"
                                   hide-ids="$ctrl.room.heaters"

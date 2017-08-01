@@ -36,11 +36,11 @@ class ThermostatTables extends Migration
             ->addColumn(ThermostatProfile::USER_ID, 'uuid')
             ->addColumn(ThermostatProfile::ROOMS_CONFIG, 'text')
             ->addColumn(ThermostatProfile::ACTIVE_ON, 'text')
-            ->addTimestamps(ThermostatRoom::CREATED_AT, ThermostatRoom::UPDATED_AT)
-            ->addForeignKey(ThermostatRoom::USER_ID, User::TABLE_NAME, User::ID)
+            ->addTimestamps(ThermostatProfile::CREATED_AT, ThermostatRoom::UPDATED_AT)
+            ->addForeignKey(ThermostatProfile::USER_ID, User::TABLE_NAME, User::ID)
             ->create();
-        $this->table(ThermostatRoom::TABLE_NAME)
-            ->changeColumn(ThermostatRoom::ID, 'uuid')
+        $this->table(ThermostatProfile::TABLE_NAME)
+            ->changeColumn(ThermostatProfile::ID, 'uuid')
             ->update();
     }
 }

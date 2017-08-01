@@ -1,4 +1,4 @@
-<h4>{{ $ctrl.room.id ? 'Edytuj' : 'Dodaj' }} profil</h4>
+<h4>{{ $ctrl.profile.id ? 'Edytuj' : 'Dodaj' }} profil</h4>
 <form name="profileForm"
       novalidate
       promise-btn
@@ -33,7 +33,8 @@
                     <td>
                         <span ng-if="room.heaters.length">
                             <span class="input-group">
-                            <input type="number" class="form-control" ng-model="profile.roomsConfig[room.id].heatFrom"
+                            <input type="number" class="form-control"
+                                   ng-model="$ctrl.profile.roomsConfig[room.id].heatFrom"
                                    step="0.2">
                                 <span class="input-group-addon">&deg;C</span>
                             </span>
@@ -43,7 +44,8 @@
                     <td>
                         <span ng-if="room.heaters.length">
                             <span class="input-group">
-                            <input type="number" class="form-control" ng-model="profile.roomsConfig[room.id].heatTo"
+                            <input type="number" class="form-control"
+                                   ng-model="$ctrl.profile.roomsConfig[room.id].heatTo"
                                    step="0.2">
                                 <span class="input-group-addon">&deg;C</span>
                             </span>
@@ -53,7 +55,8 @@
                     <td>
                         <span ng-if="room.coolers.length">
                             <span class="input-group">
-                            <input type="number" class="form-control" ng-model="profile.roomsConfig[room.id].coolFrom"
+                            <input type="number" class="form-control"
+                                   ng-model="$ctrl.profile.roomsConfig[room.id].coolFrom"
                                    step="0.2">
                                 <span class="input-group-addon">&deg;C</span>
                             </span>
@@ -63,7 +66,8 @@
                     <td>
                         <span ng-if="room.coolers.length">
                             <span class="input-group">
-                            <input type="number" class="form-control" ng-model="profile.roomsConfig[room.id].coolTo"
+                            <input type="number" class="form-control"
+                                   ng-model="$ctrl.profile.roomsConfig[room.id].coolTo"
                                    step="0.2">
                                 <span class="input-group-addon">&deg;C</span>
                             </span>
@@ -74,15 +78,26 @@
                 </tbody>
             </table>
         </div>
-        <div class="row">
-            <div class="col-xs-12">
-                <label>Czasowa aktywacja profilu</label>
-                <div class="list-group">
-                    <div class="list-group-item">
-
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <label>Czasowa aktywacja profilu</label>
+            <div class="list-group">
+                <div class="list-group-item" ng-repeat="timeSlot in $ctrl.profile.activeOn">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <time-range-picker ng-model="timeSlot.timeRange"></time-range-picker>
+                        </div>
+                        <div class="col-md-6">
+                            <weekday-picker ng-model="timeSlot.weekdays"></weekday-picker>
+                        </div>
                     </div>
                 </div>
             </div>
+            <button type="button" class="btn btn-default" ng-click="$ctrl.profile.activeOn.push({})">
+                <fa name="clock-o" fw></fa>
+                Dodaj warunek
+            </button>
         </div>
     </div>
     <div class="row">
@@ -92,8 +107,8 @@
                 Anuluj
             </button>
             <button type="submit" class="btn btn-primary">
-                <fa name="{{ $ctrl.room.id ? 'save' : 'plus' }}" fw></fa>
-                {{ $ctrl.room.id ? 'Zapisz' : 'Dodaj' }} profil
+                <fa name="{{ $ctrl.profile.id ? 'save' : 'plus' }}" fw></fa>
+                {{ $ctrl.profile.id ? 'Zapisz' : 'Dodaj' }} profil
             </button>
         </div>
     </div>

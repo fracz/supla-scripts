@@ -9,12 +9,13 @@ angular.module('supla-scripts').component 'thermostatRoomForm',
       if @room
         @room = angular.copy(@room.plain())
       else
-        @room = {}
+        @room =
+          thermometers: []
+          heaters: []
+          coolers: []
       
     onChannelAdd: (channelId, group) ->
-      @room[group] ?= []
       @room[group].push(channelId)
 
     removeChannel: (channelId, group) ->
       @room[group].splice(@room[group].indexOf(channelId), 1)
-      delete @room[group] if not @room[group].length
