@@ -13,8 +13,8 @@ angular.module 'supla-scripts', [
   'rzModule'
   'toastr'
   'ui.router'
-  'ui.bootstrap'
   'ui.bootstrap.showErrors'
+  'uiSwitch'
 ]
 .config(($compileProvider, ANGULAR_DEBUG_DATA_ENABLED) -> $compileProvider.debugInfoEnabled(ANGULAR_DEBUG_DATA_ENABLED))
 .run (Restangular) -> # synchronize browser time with server's

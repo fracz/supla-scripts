@@ -1,0 +1,88 @@
+.thermostat-header {
+  .switch {
+    vertical-align: middle;
+    margin-left: 10px;
+  }
+  select {
+    max-width: 150px;
+    display: inline-block;
+    margin: 0 15px 0 5px;
+  }
+}
+
+.thermostat-room-preview {
+  h3 {
+    margin-top: 0;
+  }
+  .temperature {
+    text-align: center;
+    font-size: 3em;
+    font-weight: bold;
+    .arrow {
+      margin-left: 10px;
+      animation: passing-down 2s linear infinite;
+      color: #3498db;
+      &.heating {
+        color: #e74c3c;
+        animation: passing-up 2s linear infinite;
+      }
+    }
+  }
+  .target {
+    margin-bottom: 10px;
+  }
+  .switch.red.checked {
+    background-color: #e74c3c;
+    border-color: #e74c3c;
+  }
+  .switch.blue.checked {
+    background-color: #3498db;
+    border-color: #3498db;
+  }
+}
+
+@keyframes passing-down {
+  0% {
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    opacity: 0;
+  }
+
+  50% {
+    -webkit-transform: translateY(0%);
+    -ms-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+
+  100% {
+    -webkit-transform: translateY(50%);
+    -ms-transform: translateY(50%);
+    transform: translateY(50%);
+    opacity: 0;
+  }
+}
+
+@keyframes passing-up {
+  0% {
+    -webkit-transform: translateY(50%);
+    -ms-transform: translateY(50%);
+    transform: translateY(50%);
+    opacity: 0;
+  }
+
+  50% {
+    -webkit-transform: translateY(0%);
+    -ms-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+
+  100% {
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    opacity: 0;
+  }
+}
