@@ -30,7 +30,7 @@ class JwtAndBasicAuthorizationMiddleware
                 '/api/time',
                 '/api/tokens/new',
                 '/api/thermostats/preview',
-                '/api/user' // TODO chyba za dużo
+                '/api/users' // TODO chyba za dużo
             ],
         ];
 
