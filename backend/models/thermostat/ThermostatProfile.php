@@ -9,8 +9,8 @@ use suplascripts\models\User;
 
 /**
  * @property string $name
- * @property string $roomsConfig
- * @property string $activeOn
+ * @property mixed $roomsConfig
+ * @property array $activeOn
  * @property string $userId
  */
 class ThermostatProfile extends Model
@@ -45,6 +45,7 @@ class ThermostatProfile extends Model
         Assertion::keyExists($attributes, self::ACTIVE_ON);
         Assertion::isArray($attributes[self::ROOMS_CONFIG]);
         Assertion::isArray($attributes[self::ACTIVE_ON]);
+
         foreach($attributes[self::ROOMS_CONFIG] as $roomConfig) {
             if (isset($roomConfig['heatTo']) || isset($roomConfig['heatFrom'])) {
                 Assertion::notEmptyKey($roomConfig, 'heatTo', 'Heat to value must be provided if heat from is set.');

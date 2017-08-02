@@ -3,7 +3,7 @@
  * https://siipo.la/blog/how-to-use-eloquent-orm-migrations-outside-laravel
  */
 $settings = require_once __DIR__ . '/../settings.php';
-$dbSettings = $settings['db'];
+$dbSettings = \suplascripts\app\Application::getInstance()->getSetting('db');
 //$dbName = $dbSettings['driver'] == 'sqlite' ? __DIR__ . '/../../' . $dbSettings['database'] : $dbSettings['database'];
 return [
     'paths' => [

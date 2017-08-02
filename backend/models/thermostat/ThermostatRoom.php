@@ -5,13 +5,14 @@ namespace suplascripts\models\thermostat;
 use Assert\Assertion;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use suplascripts\models\Model;
+use suplascripts\models\supla\SuplaApi;
 use suplascripts\models\User;
 
 /**
  * @property string $name
- * @property string $thermometers
- * @property string $heaters
- * @property string $coolers
+ * @property int[] $thermometers
+ * @property int[] $heaters
+ * @property int[] $coolers
  * @property string $userId
  */
 class ThermostatRoom extends Model
@@ -35,6 +36,16 @@ class ThermostatRoom extends Model
     public function thermostat(): BelongsTo
     {
         return $this->belongsTo(Thermostat::class, self::THERMOSTAT_ID);
+    }
+
+    public function getCurrentTemperature(): float
+    {
+        $api = new SuplaApi($this->user()->first());
+        $temperatures = array_map(function ($channelId) use ($api) {
+            return $api->getChannelWithState($channelId)->temperature;
+        }, $this->thermometers);
+        $temperatures = array_filter($temperatures);
+        return array_sum($temperatures) / count($temperatures);
     }
 
     public function validate(array $attributes = null): void

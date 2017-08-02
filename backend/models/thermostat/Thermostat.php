@@ -8,21 +8,23 @@ use suplascripts\models\Model;
 
 /**
  * @property bool $enabled
- * @property mixed $state
+ * @property mixed $roomsState
+ * @property mixed $devicesState
  * @property \DateTime $nextProfileChange
  */
 class Thermostat extends Model
 {
     const TABLE_NAME = 'thermostats';
     const ENABLED = 'enabled';
-    const STATE = 'state';
+    const ROOMS_STATE = 'roomsState';
+    const DEVICES_STATE = 'devicesState';
     const NEXT_PROFILE_CHANGE = 'nextProfileChange';
     const ACTIVE_PROFILE_ID = 'activeProfileId';
     const USER_ID = 'userId';
 
     protected $dates = [self::NEXT_PROFILE_CHANGE];
     protected $fillable = [self::ENABLED];
-    protected $jsonEncoded = [self::STATE];
+    protected $jsonEncoded = [self::ROOMS_STATE, self::DEVICES_STATE];
 
     public static function create()
     {

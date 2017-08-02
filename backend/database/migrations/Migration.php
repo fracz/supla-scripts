@@ -3,6 +3,7 @@
 namespace suplascripts\database\migrations;
 
 use Phinx\Migration\AbstractMigration;
+use Slim\App;
 use suplascripts\app\Application;
 
 require __DIR__ . '/../../vendor/autoload.php';
@@ -34,7 +35,7 @@ abstract class Migration extends AbstractMigration
     public function init()
     {
         if (!self::$application) {
-            self::$application = new Application();
+            self::$application = Application::getInstance();
         }
     }
 }

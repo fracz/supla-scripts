@@ -1,9 +1,11 @@
 angular.module('supla-scripts').component 'thermostatProfilesList',
   templateUrl: 'app/thermostat/profiles/thermostat-profiles-list.html'
-  controller: (ThermostatRooms, ThermostatProfiles) ->
+  controller: (ThermostatRooms, ThermostatProfiles, $state) ->
     new class
       $onInit: ->
-        ThermostatRooms.getList().then((@rooms) =>)
+        ThermostatRooms.getList().then (@rooms) =>
+          if not @rooms.length
+            $state.go('^.rooms')
         ThermostatProfiles.getList().then (@profiles) =>
           @adding = true if not @profiles.length
 

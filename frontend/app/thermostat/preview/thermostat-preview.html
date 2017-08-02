@@ -1,18 +1,21 @@
-<div class="container-fluid">
+<div class="container">
     <loader-dots ng-if="!$ctrl.thermostat"></loader-dots>
     <div ng-else class="row thermostat-header">
         <div class="col-xs-12 text-right">
             <div class="form-group">
                 <label>Aktywny profil:</label>
-                <select class="form-control" ng-model="$ctrl.thermostat.activeProfile"
+                <select class="form-control" ng-model="$ctrl.thermostat.activeProfile.id"
+                        ng-change="$ctrl.updateActiveProfile()"
                         ng-options="profile.id as profile.name for profile in $ctrl.thermostat.profiles">
-                    <option value="">-</option>
+                    <option value="">Brak</option>
                 </select>
                 <label>Włącz / wyłącz termostat:</label>
-                <switch ng-model="enabled"></switch>
+                <switch ng-model="$ctrl.thermostat.enabled" ng-change="$ctrl.toggleEnabled()"></switch>
             </div>
         </div>
     </div>
+</div>
+<div class="container-fluid">
     <div class="row">
         <div class="col-xs-12">
             <div class="flexible-grid">
@@ -26,31 +29,27 @@
                         </h3>
                         <div class="temperature">
                             {{ $ctrl.thermostat.channels[room.thermometers[0]].temperature | number:1 }}&deg;C
-                            <span ng-if="$ctrl.thermostat.roomState[room.id].heating || $ctrl.thermostat.roomState[room.id].cooling">
-                                <fa name="caret-{{ $ctrl.thermostat.roomState[room.id].heating ? 'up' : 'down' }}"
-                                    class="arrow" ng-class="$ctrl.thermostat.roomState[room.id].heating ? 'heating' : 'cooling'"></fa>
+                            <span ng-if="$ctrl.thermostat.roomState[room.id].action" class="arrow-container">
+                                <fa name="caret-{{ $ctrl.thermostat.roomState[room.id].action == 'heating' ? 'up' : 'down' }}"
+                                    class="arrow"
+                                    ng-class="$ctrl.thermostat.roomState[room.id].action == 'heating' ? 'heating' : 'cooling'"></fa>
                             </span>
                         </div>
                         <div class="target text-center" ng-if="$ctrl.thermostat.roomState[room.id].target">
                             Cel: {{ $ctrl.thermostat.roomState[room.id].target | number:1 }}&deg;C
                         </div>
-                        <div class="row">
-                            <div class="col-xs-6 text-center">
-                                <label>Ogrzewanie</label>
-                                <div>
-                                    <switch ng-model="$ctrl.thermostat.roomState[room.id].heating" class="red"></switch>
-                                </div>
-                            </div>
-                            <div class="col-xs-6 text-center">
-                                <label>Ochładzanie</label>
-                                <div>
-                                    <switch ng-model="$ctrl.thermostat.roomState[room.id].cooling" class="blue"></switch>
-                                </div>
-                            </div>
-                        </div>
-                        <!--<div class="list-group">-->
-                        <!--<div class="list-group-item">-->
-                        <!--<switch ng-model="room.heating"></switch>-->
+                        <!--<div class="row">-->
+                        <!--<div class="col-xs-6 text-center">-->
+                        <!--<label>Ogrzewanie</label>-->
+                        <!--<div>-->
+                        <!--<switch ng-model="$ctrl.thermostat.roomState[room.id].heating" class="red" disabled="true"></switch>-->
+                        <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="col-xs-6 text-center">-->
+                        <!--<label>Ochładzanie</label>-->
+                        <!--<div>-->
+                        <!--<switch ng-model="$ctrl.thermostat.roomState[room.id].cooling" class="blue" disabled="true"></switch>-->
+                        <!--</div>-->
                         <!--</div>-->
                         <!--</div>-->
                     </div>

@@ -14,8 +14,11 @@ class ThermostatProfilesController extends BaseController
         $this->ensureAuthenticated();
         $parsedBody = $this->request()->getParsedBody();
         return $this->getApp()->db->getConnection()->transaction(function () use ($parsedBody) {
+            /** @var Thermostat $thermostat */
             $thermostat = Thermostat::firstOrCreate([Thermostat::USER_ID => $this->getCurrentUser()->id]);
             $createdProfile = $thermostat->profiles()->create($parsedBody);
+            $thermostat->nextProfileChange = new \DateTime();
+            $thermostat->save();
             return $this->response($createdProfile)
                 ->withStatus(201);
         });
@@ -31,6 +34,7 @@ class ThermostatProfilesController extends BaseController
     public function putAction($id)
     {
         $this->ensureAuthenticated();
+        /** @var ThermostatProfile $profile */
         $profile = $this->ensureExists(ThermostatProfile::find($id)->first());
         if ($profile->userId != $this->getCurrentUser()->id) {
             throw new Http403Exception();
@@ -38,6 +42,9 @@ class ThermostatProfilesController extends BaseController
         $parsedBody = $this->request()->getParsedBody();
         $profile->update($parsedBody);
         $profile->save();
+        $thermostat = $profile->thermostat()->first();
+        $thermostat->nextProfileChange = new \DateTime();
+        $thermostat->save();
         return $this->response($profile);
     }
 

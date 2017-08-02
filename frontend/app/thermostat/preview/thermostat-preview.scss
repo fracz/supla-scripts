@@ -4,7 +4,7 @@
     margin-left: 10px;
   }
   select {
-    max-width: 150px;
+    max-width: 250px;
     display: inline-block;
     margin: 0 15px 0 5px;
   }
@@ -18,8 +18,12 @@
     text-align: center;
     font-size: 3em;
     font-weight: bold;
+    .arrow-container {
+      position: relative;
+    }
     .arrow {
-      margin-left: 10px;
+      position: absolute;
+      left: 10px;
       animation: passing-down 2s linear infinite;
       color: #3498db;
       &.heating {

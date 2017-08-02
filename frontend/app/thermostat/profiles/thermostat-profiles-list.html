@@ -9,23 +9,27 @@
             profil - termostat przerwie wtedy pracę (wyłączając wszystkie urządzenia).</p>
     </div>
 
-    <div class="well" ng-repeat="profile in $ctrl.profiles">
-        <thermostat-profile-form rooms="$ctrl.rooms" ng-if="profile.editing" profile="profile"
-                                 on-submit="$ctrl.saveProfile(profile, savedProfile)"
-                                 on-cancel="profile.editing = false"></thermostat-profile-form>
-        <thermostat-profile-display rooms="$ctrl.rooms" ng-else profile="profile" on-edit="profile.editing = true"
-                                    on-delete="$ctrl.deleteProfile(profile)"></thermostat-profile-display>
-    </div>
+    <loader-dots ng-if="!$ctrl.profiles"></loader-dots>
 
-    <div class="text-right" ng-if="!$ctrl.adding">
-        <button class="btn btn-primary" ng-click="$ctrl.adding = true">
-            <fa name="plus" fw></fa>
-            Dodaj nowy profil
-        </button>
-    </div>
+    <div ng-else>
+        <div class="well" ng-repeat="profile in $ctrl.profiles">
+            <thermostat-profile-form rooms="$ctrl.rooms" ng-if="profile.editing" profile="profile"
+                                     on-submit="$ctrl.saveProfile(profile, savedProfile)"
+                                     on-cancel="profile.editing = false"></thermostat-profile-form>
+            <thermostat-profile-display rooms="$ctrl.rooms" ng-else profile="profile" on-edit="profile.editing = true"
+                                        on-delete="$ctrl.deleteProfile(profile)"></thermostat-profile-display>
+        </div>
 
-    <div class="well fx-fade-right" ng-else>
-        <thermostat-profile-form rooms="$ctrl.rooms" on-submit="$ctrl.addNewProfile(savedProfile)"
-                                 on-cancel="$ctrl.adding = false"></thermostat-profile-form>
+        <div class="text-right" ng-if="!$ctrl.adding">
+            <button class="btn btn-primary" ng-click="$ctrl.adding = true">
+                <fa name="plus" fw></fa>
+                Dodaj nowy profil
+            </button>
+        </div>
+
+        <div class="well fx-fade-right" ng-else>
+            <thermostat-profile-form rooms="$ctrl.rooms" on-submit="$ctrl.addNewProfile(savedProfile)"
+                                     on-cancel="$ctrl.adding = false"></thermostat-profile-form>
+        </div>
     </div>
 </div>
