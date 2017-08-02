@@ -29,6 +29,7 @@ class JwtAndBasicAuthorizationMiddleware
             'passthrough' => [
                 '/api/time',
                 '/api/tokens/new',
+                '/api/thermostats/preview',
             ],
         ];
 

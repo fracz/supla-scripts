@@ -43,6 +43,11 @@ angular.module('supla-scripts')
     url: '/preview'
     template: '<thermostat-preview></thermostat-preview>'
 
+  .state 'thermostatPreview',
+    url: '/thermostat-preview/:slug'
+    template: '<thermostat-preview slug="slug"></thermostat-preview>'
+    controller: ($scope, $stateParams) -> $scope.slug = $stateParams.slug
+
   .state 'notFound',
     templateUrl: 'app/common/errors/404.html'
 
@@ -68,6 +73,6 @@ angular.module('supla-scripts').decorator '$state', ($delegate) ->
 
 angular.module('supla-scripts').run ($rootScope, Token, $state) ->
   $rootScope.$on '$stateChangeStart', (event, toState) ->
-    if not Token.getRememberedToken() and toState.name not in ['login', 'register']
+    if not Token.getRememberedToken() and toState.name not in ['login', 'register', 'thermostatPreview', 'notFound']
       event.preventDefault()
       $state.go('login')

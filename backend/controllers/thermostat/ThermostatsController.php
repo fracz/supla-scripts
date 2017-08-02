@@ -17,11 +17,19 @@ class ThermostatsController extends BaseController
         return $this->thermostatResponse($thermostat);
     }
 
-    public function patchAction($id)
+    public function getBySlugAction($params)
     {
         /** @var Thermostat $thermostat */
-        $thermostat = $this->ensureExists(Thermostat::find($id)->first());
-        if ($thermostat->userId != $this->getCurrentUser()->id) {
+        $thermostat = $this->ensureExists(Thermostat::where([Thermostat::SLUG => $params['slug']])->first());
+        return $this->thermostatResponse($thermostat);
+    }
+
+    public function patchAction($params)
+    {
+        /** @var Thermostat $thermostat */
+        $thermostat = $this->ensureExists(Thermostat::find($params['id']));
+        if ((!$this->getCurrentUser() && $thermostat->slug != $params['slug'])
+            || ($this->getCurrentUser() && $thermostat->userId != $this->getCurrentUser()->id)) {
             throw new Http403Exception();
         }
         $parsedBody = $this->request()->getParsedBody();
@@ -42,7 +50,7 @@ class ThermostatsController extends BaseController
 
     private function thermostatResponse(Thermostat $thermostat)
     {
-        $api = new SuplaApi($this->getCurrentUser());
+        $api = new SuplaApi($thermostat->user()->first());
         $channelsToFetch = [];
         $channels = [];
         foreach ($thermostat->rooms()->get() as $room) {
@@ -62,6 +70,7 @@ class ThermostatsController extends BaseController
             'nextProfileChange' => $thermostat->nextProfileChange->format(\DateTime::ATOM),
             'channels' => $channels,
             'roomState' => $thermostat->roomsState,
+            'slug' => $thermostat->slug,
         ]);
     }
 }

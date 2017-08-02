@@ -19,6 +19,7 @@ class ThermostatTables extends Migration
     {
         $this->table(Thermostat::TABLE_NAME)
             ->addColumn(Thermostat::ENABLED, 'boolean', ['default' => false])
+            ->addColumn(Thermostat::SLUG, 'string')
             ->addColumn(Thermostat::ROOMS_STATE, 'text', ['default' => '[]'])
             ->addColumn(Thermostat::DEVICES_STATE, 'text', ['default' => '[]'])
             ->addColumn(Thermostat::NEXT_PROFILE_CHANGE, 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])

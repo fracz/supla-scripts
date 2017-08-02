@@ -41,6 +41,8 @@ $app->group('/api', function () use ($app) {
     $app->group('/thermostats', function () use ($app) {
         $app->get('/default', ThermostatsController::class . ':getDefault');
         $app->patch('/{id}', ThermostatsController::class . ':patch');
+        $app->get('/preview/{slug}', ThermostatsController::class . ':getBySlug');
+        $app->patch('/preview/{slug}/{id}', ThermostatsController::class . ':patch');
     });
     $app->group('/thermostat-rooms', function () use ($app) {
         $app->get('', ThermostatRoomsController::class . ':getList');

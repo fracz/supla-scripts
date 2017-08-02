@@ -54,7 +54,7 @@ class ThermostatRoom extends Model
             $attributes = $this->getAttributes();
         }
         Assertion::notEmptyKey($attributes, self::NAME);
-        Assertion::notEmptyKey($attributes, self::THERMOMETERS);
+        Assertion::notEmptyKey($attributes, self::THERMOMETERS, 'Room has to have at least one thermometer.');
         Assertion::keyExists($attributes, self::HEATERS);
         Assertion::keyExists($attributes, self::COOLERS);
         Assertion::greaterThan(count($attributes[self::HEATERS]) + count($attributes[self::COOLERS]), 0, 'You need to define at least one device!');

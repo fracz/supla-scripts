@@ -4,11 +4,13 @@ namespace suplascripts\models\thermostat;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Ramsey\Uuid\Uuid;
 use suplascripts\models\Model;
 use suplascripts\models\User;
 
 /**
  * @property bool $enabled
+ * @property string $slug
  * @property mixed $roomsState
  * @property mixed $devicesState
  * @property \DateTime $nextProfileChange
@@ -18,6 +20,7 @@ class Thermostat extends Model
     const TABLE_NAME = 'thermostats';
     const ENABLED = 'enabled';
     const ROOMS_STATE = 'roomsState';
+    const SLUG = 'slug';
     const DEVICES_STATE = 'devicesState';
     const NEXT_PROFILE_CHANGE = 'nextProfileChange';
     const ACTIVE_PROFILE_ID = 'activeProfileId';
@@ -26,13 +29,6 @@ class Thermostat extends Model
     protected $dates = [self::NEXT_PROFILE_CHANGE];
     protected $fillable = [self::ENABLED];
     protected $jsonEncoded = [self::ROOMS_STATE, self::DEVICES_STATE];
-
-    public static function create()
-    {
-        $thermostat = new self();
-        $thermostat->save();
-        return $thermostat;
-    }
 
     public function user(): BelongsTo
     {
@@ -52,6 +48,14 @@ class Thermostat extends Model
     public function activeProfile(): BelongsTo
     {
         return $this->belongsTo(ThermostatProfile::class, self::ACTIVE_PROFILE_ID);
+    }
+
+    public function save(array $options = [])
+    {
+        if (!$this->exists) {
+            $this->slug = Uuid::getFactory()->uuid4();
+        }
+        return parent::save($options);
     }
 
 

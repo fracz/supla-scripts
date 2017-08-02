@@ -1,5 +1,7 @@
 angular.module('supla-scripts').component 'thermostatPreview',
   templateUrl: 'app/thermostat/preview/thermostat-preview.html'
+  bindings:
+    slug: '<'
   controller: (Thermostats, ScopeInterval, $scope, $state) ->
     new class
       $onInit: ->
@@ -7,14 +9,18 @@ angular.module('supla-scripts').component 'thermostatPreview',
         ScopeInterval($scope, @fetch, 15000, 5000)
 
       fetch: =>
-        Thermostats.one('default').withHttpConfig(skipErrorHandler: yes).get()
-        .then((@thermostat) =>)
-        .catch (response) ->
-          if response.status is 404
+        endpoint = Thermostats.one('default').withHttpConfig(skipErrorHandler: yes)
+        endpoint = Thermostats.one('preview').one(@slug) if @slug
+        endpoint.get()
+        .then(@receiveThermostat)
+        .catch (response) =>
+          if response.status is 404 and not @slug
             $state.go('^.profiles')
 
+      receiveThermostat: (@thermostat) =>
+
       toggleEnabled: ->
-        @thermostat.patch(enabled: @thermostat.enabled).then((@thermostat) =>)
+        @thermostat.patch(enabled: @thermostat.enabled).then(@receiveThermostat)
 
       updateActiveProfile: ->
-        @thermostat.patch(activeProfileId: @thermostat.activeProfile.id).then((@thermostat) =>)
+        @thermostat.patch(activeProfileId: @thermostat.activeProfile.id).then(@receiveThermostat)
