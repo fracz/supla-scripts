@@ -1,5 +1,5 @@
 {
-  "displayErrorDetails": true,
+  "displayErrorDetails": false,
   "db": {
     "driver": "sqlite",
     "database": "backend/var/suplascripts.db",

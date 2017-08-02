@@ -9,8 +9,8 @@ use Illuminate\Events\Dispatcher;
 use M6Web\Component\Statsd\Client;
 use Psr\Log\LoggerInterface;
 use Slim\App;
+use Slim\Middleware\JwtAuthentication;
 use suplascripts\database\EloquentExceptionHandler;
-use suplascripts\middlewares\JwtCheckerMiddleware;
 use suplascripts\models\observers\ObserverRegisterer;
 use suplascripts\models\User;
 
@@ -40,7 +40,7 @@ class Application extends App
         }
         parent::__construct(['settings' => $config]);
         $this->configureServices();
-        $this->add(new JwtCheckerMiddleware());
+        $this->addAuthorizationMiddlewares();
         ObserverRegisterer::registerModelObservers();
     }
 
@@ -70,6 +70,26 @@ class Application extends App
         $this->getContainer()['logger'] = function () {
             return new UserAndUrlAwareLogger();
         };
+    }
+
+    private function addAuthorizationMiddlewares()
+    {
+        $passthrough = [
+            '/api/time',
+            '/api/tokens/new',
+        ];
+        $container = $this->getContainer();
+        $this->add(new JwtAuthentication([
+            'path' => '/api',
+            'logger' => $this->logger,
+            'secure' => !$this->getSetting('displayErrorDetails'),
+            'secret' => $this->getSetting('jwt')['key'],
+            'passthrough' => $passthrough,
+            'algorithm' => ['HS256'],
+            'callback' => function ($request, $response, $arguments) use ($container) {
+                $container['currentToken'] = $arguments['decoded'];
+            }
+        ]));
     }
 
     public static function getInstance(): Application

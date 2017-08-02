@@ -21,7 +21,7 @@ $app = new Application();
 $app->group('/api', function () use ($app) {
     $app->get('/time', SystemController::class . ':getTime');
     $app->group('/tokens', function () use ($app) {
-        $app->post('', TokensController::class . ':createToken');
+        $app->post('/new', TokensController::class . ':createToken');
         $app->put('', TokensController::class . ':refreshToken');
     });
     $app->group('/users', function () use ($app) {
