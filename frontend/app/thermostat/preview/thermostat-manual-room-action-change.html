@@ -1,0 +1,14 @@
+<div class="row">
+    <div class="col-xs-6 col-12-if-alone text-center" ng-if="$ctrl.room.heaters.length">
+        <label>Ogrzewanie</label>
+        <div>
+            <switch ng-model="$ctrl.heating" class="red" ng-change="$ctrl.onChanged('heating')"></switch>
+        </div>
+    </div>
+    <div class="col-xs-6 col-12-if-alone text-center" ng-if="$ctrl.room.coolers.length">
+        <label>Ochładzanie</label>
+        <div>
+            <switch ng-model="$ctrl.cooling" class="blue" ng-change="$ctrl.onChanged('cooling')"></switch>
+        </div>
+    </div>
+</div>

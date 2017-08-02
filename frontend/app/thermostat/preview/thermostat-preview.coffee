@@ -24,3 +24,9 @@ angular.module('supla-scripts').component 'thermostatPreview',
 
       updateActiveProfile: ->
         @thermostat.patch(activeProfileId: @thermostat.activeProfile.id).then(@receiveThermostat)
+
+      setRoomAction: (room, action) ->
+        @thermostat.patch(roomAction: {roomId: room.id, action}).then(@receiveThermostat)
+
+      clearRoomAction: (room) ->
+        @thermostat.patch(roomAction: {roomId: room.id, clear: yes}).then(@receiveThermostat)

@@ -2,6 +2,8 @@
 
 namespace suplascripts\controllers\thermostat;
 
+use suplascripts\models\thermostat\Thermostat;
+
 class ThermostatRoomConfig
 {
     private $config;
@@ -31,6 +33,30 @@ class ThermostatRoomConfig
     public function cool()
     {
         $this->state['action'] = 'cooling';
+    }
+
+    public function forceAction($action, int $minutes)
+    {
+        $this->state['action'] = $action;
+        $this->state['forcedAction'] = true;
+        $this->state['forcedUntil'] = time() + $minutes * 60;
+        unset($this->state['target']);
+    }
+
+    public function hasForcedAction()
+    {
+        $isForced = isset($this->state['forcedAction']) && time() < $this->state['forcedUntil'];
+        if (!$isForced && isset($this->state['forcedAction'])) {
+            $this->clearForcedAction();
+        }
+        return $isForced;
+    }
+
+    public function clearForcedAction()
+    {
+        unset($this->state['forcedAction']);
+        unset($this->state['forcedUntil']);
+        $this->turnOff();
     }
 
     public function turnOff()
@@ -85,11 +111,18 @@ class ThermostatRoomConfig
 
     public function getState(): array
     {
-        if ($this->isCooling()) {
-            $this->state['target'] = $this->getCoolTo();
-        } else if ($this->isHeating()) {
-            $this->state['target'] = $this->getHeatTo();
+        if (!$this->hasForcedAction()) {
+            if ($this->isCooling()) {
+                $this->state['target'] = $this->getCoolTo();
+            } else if ($this->isHeating()) {
+                $this->state['target'] = $this->getHeatTo();
+            }
         }
         return $this->state;
+    }
+
+    public function updateState(Thermostat $thermostat, $roomId)
+    {
+        $thermostat->roomsState = array_merge($thermostat->roomsState, [$roomId => $this->getState()]);
     }
 }

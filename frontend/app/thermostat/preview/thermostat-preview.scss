@@ -1,3 +1,5 @@
+@import "../../styles";
+
 .thermostat-header {
   padding-top: 10px;
   .switch {
@@ -45,6 +47,11 @@
     border-color: #3498db;
   }
 }
+
+.col-12-if-alone:only-child {
+  @include make-xs-column(12);
+}
+
 
 @keyframes passing-down {
   0% {

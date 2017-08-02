@@ -39,20 +39,14 @@
                             <div class="target text-center" ng-if="$ctrl.thermostat.roomState[room.id].target">
                                 Cel: {{ $ctrl.thermostat.roomState[room.id].target | number:1 }}&deg;C
                             </div>
-                            <!--<div class="row">-->
-                            <!--<div class="col-xs-6 text-center">-->
-                            <!--<label>Ogrzewanie</label>-->
-                            <!--<div>-->
-                            <!--<switch ng-model="$ctrl.thermostat.roomState[room.id].heating" class="red" disabled="true"></switch>-->
-                            <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="col-xs-6 text-center">-->
-                            <!--<label>Ochładzanie</label>-->
-                            <!--<div>-->
-                            <!--<switch ng-model="$ctrl.thermostat.roomState[room.id].cooling" class="blue" disabled="true"></switch>-->
-                            <!--</div>-->
-                            <!--</div>-->
-                            <!--</div>-->
+                            <div class="target text-center" ng-if="$ctrl.thermostat.roomState[room.id].forcedAction">
+                                Manualnie ustalony stan wygaśnie za {{ $ctrl.thermostat.roomState[room.id].forcedUntil | unixToDate | fromNow:true }}
+                                <div><a ng-click="$ctrl.clearRoomAction(room)">wróć do sterowania automatycznego</a></div>
+                            </div>
+                            <thermostat-manual-room-action-change
+                                    room="room"
+                                    room-state="$ctrl.thermostat.roomState[room.id]"
+                                    on-action-change="$ctrl.setRoomAction(room, action)"></thermostat-manual-room-action-change>
                         </div>
                     </div>
                 </div>

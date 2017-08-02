@@ -65,7 +65,7 @@ class DispatchThermostatCommand extends Command
                 $thermostat->activeProfile()->dissociate();
                 $thermostat->nextProfileChange = $closestStart;
                 $thermostat->save();
-                $output->writeln('No profile active for thermostat ' . $thermostat->id);
+                $output->writeln('Deactivated all profiles for thermostat ' . $thermostat->id);
             }
         }
     }
@@ -75,30 +75,28 @@ class DispatchThermostatCommand extends Command
         /** @var ThermostatProfile $profile */
         $profile = $thermostat->activeProfile()->first();
         $roomsConfig = $profile ? $profile->roomsConfig ?? [] : [];
-        if (!count($roomsConfig)) {
-            $thermostat->roomsState = [];
-        } else {
-            foreach ($thermostat->rooms()->get() as $room) {
-                /** @var ThermostatRoom $room */
-                if (isset($roomsConfig[$room->id])) {
-                    $roomConfig = $roomsConfig[$room->id];
-                    $roomState = $thermostat->roomsState[$room->id] ?? [];
-                    $decidor = new ThermostatRoomConfig($roomConfig, $roomState);
-                    $currentTemperature = $room->getCurrentTemperature();
-                    if ($decidor->shouldCool($currentTemperature) && !$decidor->isCooling()) {
-                        $output->writeln('Started cooling of room ' . $room->id);
-                        $decidor->cool();
-                    } else if ($decidor->shouldHeat($currentTemperature) && !$decidor->isHeating()) {
-                        $output->writeln('Started heating of room ' . $room->id);
-                        $decidor->heat();
-                    } else if (!$decidor->shouldCool($currentTemperature) && !$decidor->shouldHeat($currentTemperature)
-                        && ($decidor->isHeating() || $decidor->isCooling())) {
-                        $output->writeln('Turned off cooling and heating of room ' . $room->id);
-                        $decidor->turnOff();
-                    }
-                    $thermostat->roomsState = array_merge($thermostat->roomsState, [$room->id => $decidor->getState()]);
+        foreach ($thermostat->rooms()->get() as $room) {
+            /** @var ThermostatRoom $room */
+            if (isset($roomsConfig[$room->id])) {
+                $roomConfig = $roomsConfig[$room->id];
+                $roomState = $thermostat->roomsState[$room->id] ?? [];
+                $decidor = new ThermostatRoomConfig($roomConfig, $roomState);
+                $currentTemperature = $room->getCurrentTemperature();
+                if ($decidor->hasForcedAction()) {
+                } else if ($decidor->shouldCool($currentTemperature) && !$decidor->isCooling()) {
+                    $output->writeln('Started cooling of room ' . $room->id);
+                    $decidor->cool();
+                } else if ($decidor->shouldHeat($currentTemperature) && !$decidor->isHeating()) {
+                    $output->writeln('Started heating of room ' . $room->id);
+                    $decidor->heat();
+                } else if (!$decidor->shouldCool($currentTemperature) && !$decidor->shouldHeat($currentTemperature)
+                    && ($decidor->isHeating() || $decidor->isCooling())) {
+                    $output->writeln('Turned off cooling and heating of room ' . $room->id);
+                    $decidor->turnOff();
                 }
+                $decidor->updateState($thermostat, $room->id);
             }
+
         }
         $thermostat->save();
     }

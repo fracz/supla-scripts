@@ -44,6 +44,16 @@ class ThermostatsController extends BaseController
                 $thermostat->activeProfile()->dissociate();
             }
         }
+        if (isset($parsedBody['roomAction'])) {
+            $roomId = $parsedBody['roomAction']['roomId'] ?? '';
+            $room = new ThermostatRoomConfig([], $thermostat->roomsState[$roomId] ?? []);
+            if (isset($parsedBody['roomAction']['clear'])) {
+                $room->clearForcedAction();
+            } else {
+                $room->forceAction($parsedBody['roomAction']['action'], 30);
+            }
+            $room->updateState($thermostat, $parsedBody['roomAction']['roomId']);
+        }
         $thermostat->save();
         return $this->thermostatResponse($thermostat);
     }
