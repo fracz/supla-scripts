@@ -5,9 +5,12 @@ namespace suplascripts\app;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
+use suplascripts\models\HasApp;
 
 class UserAndUrlAwareLogger implements LoggerInterface
 {
+    use HasApp;
+
     /** @var Logger */
     private $logger;
 
@@ -20,9 +23,10 @@ class UserAndUrlAwareLogger implements LoggerInterface
 
     private function buildContext(array $context): array
     {
+        $currentUser = $this->getApp()->getCurrentUser();
         return array_merge([
             'url' => (string)Application::getInstance()->request->getUri(),
-            'userToken' => Application::getInstance()->getContainer()->has('currentToken') ? Application::getInstance()->currentToken : null,
+            'username' => $currentUser ? $currentUser->username : null,
         ], $context);
     }
 

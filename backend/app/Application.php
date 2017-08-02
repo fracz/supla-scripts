@@ -6,10 +6,9 @@ use Illuminate\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Events\Dispatcher;
-use M6Web\Component\Statsd\Client;
 use Psr\Log\LoggerInterface;
 use Slim\App;
-use Slim\Middleware\JwtAuthentication;
+use suplascripts\app\authorization\JwtAndBasicAuthorizationMiddleware;
 use suplascripts\database\EloquentExceptionHandler;
 use suplascripts\models\observers\ObserverRegisterer;
 use suplascripts\models\User;
@@ -19,7 +18,6 @@ use suplascripts\models\User;
  * @property-read \Slim\Http\Response $response
  * @property-read Capsule $db
  * @property-read LoggerInterface $logger
- * @property-read \stdClass $currentToken
  * @property-read \Slim\Collection $settings
  */
 class Application extends App
@@ -40,7 +38,7 @@ class Application extends App
         }
         parent::__construct(['settings' => $config]);
         $this->configureServices();
-        $this->addAuthorizationMiddlewares();
+        $this->add(new JwtAndBasicAuthorizationMiddleware());
         ObserverRegisterer::registerModelObservers();
     }
 
@@ -72,26 +70,6 @@ class Application extends App
         };
     }
 
-    private function addAuthorizationMiddlewares()
-    {
-        $passthrough = [
-            '/api/time',
-            '/api/tokens/new',
-        ];
-        $container = $this->getContainer();
-        $this->add(new JwtAuthentication([
-            'path' => '/api',
-            'logger' => $this->logger,
-            'secure' => !$this->getSetting('displayErrorDetails'),
-            'secret' => $this->getSetting('jwt')['key'],
-            'passthrough' => $passthrough,
-            'algorithm' => ['HS256'],
-            'callback' => function ($request, $response, $arguments) use ($container) {
-                $container['currentToken'] = $arguments['decoded'];
-            }
-        ]));
-    }
-
     public static function getInstance(): Application
     {
         return self::$instance;
@@ -108,14 +86,18 @@ class Application extends App
     }
 
     /**
-     * @return User
+     * @return User|null
      */
     public function getCurrentUser()
     {
-        if ($this->getContainer()->has('currentToken')) {
+        if ($this->getContainer()->has('currentUser')) {
+            return $this->currentUser;
+        } else if ($this->getContainer()->has('currentToken')) {
             $token = $this->currentToken;
             if (isset($token->user)) {
-                return User::find($token->user->id);
+                $user = User::find($token->user->id);
+                $this->getContainer()['currentUser'] = $user;
+                return $this->getCurrentUser();
             }
         }
         return null;
