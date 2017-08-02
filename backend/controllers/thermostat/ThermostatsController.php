@@ -59,6 +59,7 @@ class ThermostatsController extends BaseController
             'profiles' => $thermostat->profiles()->get(),
             'rooms' => $thermostat->rooms()->get(),
             'activeProfile' => $thermostat->activeProfile()->first(),
+            'nextProfileChange' => $thermostat->nextProfileChange->format(\DateTime::ATOM),
             'channels' => $channels,
             'roomState' => $thermostat->roomsState,
         ]);

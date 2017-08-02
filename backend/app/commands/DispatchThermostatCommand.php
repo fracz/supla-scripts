@@ -4,6 +4,7 @@ namespace suplascripts\app\commands;
 
 use Cron\CronExpression;
 use suplascripts\controllers\thermostat\ThermostatRoomConfig;
+use suplascripts\models\supla\SuplaApi;
 use suplascripts\models\thermostat\Thermostat;
 use suplascripts\models\thermostat\ThermostatProfile;
 use suplascripts\models\thermostat\ThermostatProfileTimeSpan;
@@ -28,6 +29,7 @@ class DispatchThermostatCommand extends Command
         foreach ($activeThermostats as $thermostat) {
             $this->changeProfileIfNeeded($thermostat, $output);
             $this->chooseActionsForRooms($thermostat, $output);
+            $this->adjustDevicesToRoomActions($thermostat, $output);
         }
     }
 
@@ -98,6 +100,41 @@ class DispatchThermostatCommand extends Command
                 }
             }
         }
+        $thermostat->save();
+    }
+
+    private function adjustDevicesToRoomActions(Thermostat $thermostat, OutputInterface $output)
+    {
+        $desiredDevicesTurnedOn = [];
+        foreach ($thermostat->rooms()->get() as $room) {
+            /** @var ThermostatRoom $room */
+            $decidor = new ThermostatRoomConfig([], $thermostat->roomsState[$room->id] ?? []);
+            if ($decidor->isCooling()) {
+                $desiredDevicesTurnedOn = array_merge($desiredDevicesTurnedOn, $room->coolers);
+            } else if ($decidor->isHeating()) {
+                $desiredDevicesTurnedOn = array_merge($desiredDevicesTurnedOn, $room->heaters);
+            }
+        }
+        $actualDevicesTurnedOn = $thermostat->devicesState;
+        $desiredDevicesTurnedOn = array_unique($desiredDevicesTurnedOn);
+        $api = new SuplaApi($thermostat->user()->first());
+        foreach (array_diff($desiredDevicesTurnedOn, $actualDevicesTurnedOn) as $channelIdToTurnOn) {
+            $output->writeln("Turning on channel " . $channelIdToTurnOn);
+            if (!$api->turnOn($channelIdToTurnOn)) {
+                $output->writeln("Failed to turn on channel " . $channelIdToTurnOn);
+                $desiredDevicesTurnedOn = array_filter($desiredDevicesTurnedOn, function ($element) use ($channelIdToTurnOn) {
+                    return $channelIdToTurnOn != $element;
+                });
+            }
+        }
+        foreach (array_diff($actualDevicesTurnedOn, $desiredDevicesTurnedOn) as $channelIdToTurnOff) {
+            $output->writeln("Turning off channel " . $channelIdToTurnOff);
+            if (!$api->turnOff($channelIdToTurnOff)) {
+                $output->writeln("Failed to turn off channel " . $channelIdToTurnOn);
+                $desiredDevicesTurnedOn[] = $channelIdToTurnOff;
+            }
+        }
+        $thermostat->devicesState = array_values(array_unique($desiredDevicesTurnedOn));
         $thermostat->save();
     }
 }

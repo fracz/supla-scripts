@@ -9,22 +9,26 @@
         <p>W kolejnym kroku ustalisz żądane temperatury w każdym ze zdefiniowanych tutaj pomieszczeń.</p>
     </div>
 
-    <div class="well" ng-repeat="room in $ctrl.rooms">
-        <thermostat-room-form ng-if="room.editing" room="room" on-submit="$ctrl.saveRoom(room, savedRoom)"
-                              on-cancel="room.editing = false"></thermostat-room-form>
-        <thermostat-room-display ng-else room="room" on-edit="room.editing = true"
-                                 on-delete="$ctrl.deleteRoom(room)"></thermostat-room-display>
-    </div>
+    <loader-dots ng-if="!$ctrl.rooms"></loader-dots>
 
-    <div class="text-right" ng-if="!$ctrl.adding">
-        <button class="btn btn-primary" ng-click="$ctrl.adding = true">
-            <fa name="plus" fw></fa>
-            Dodaj nowe pomieszczenie
-        </button>
-    </div>
+    <div ng-else>
+        <div class="well" ng-repeat="room in $ctrl.rooms">
+            <thermostat-room-form ng-if="room.editing" room="room" on-submit="$ctrl.saveRoom(room, savedRoom)"
+                                  on-cancel="room.editing = false"></thermostat-room-form>
+            <thermostat-room-display ng-else room="room" on-edit="room.editing = true"
+                                     on-delete="$ctrl.deleteRoom(room)"></thermostat-room-display>
+        </div>
 
-    <div class="well fx-fade-right" ng-else>
-        <thermostat-room-form on-submit="$ctrl.addNewRoom(savedRoom)"
-                              on-cancel="$ctrl.adding = false"></thermostat-room-form>
+        <div class="text-right" ng-if="!$ctrl.adding">
+            <button class="btn btn-primary" ng-click="$ctrl.adding = true">
+                <fa name="plus" fw></fa>
+                Dodaj nowe pomieszczenie
+            </button>
+        </div>
+
+        <div class="well fx-fade-right" ng-else>
+            <thermostat-room-form on-submit="$ctrl.addNewRoom(savedRoom)"
+                                  on-cancel="$ctrl.adding = false"></thermostat-room-form>
+        </div>
     </div>
 </div>

@@ -31,6 +31,30 @@ class SuplaApi
         return $response;
     }
 
+    public function turnOn(int $channelId) {
+        $result = $this->client->channelTurnOn($channelId);
+        if ($result === false) {
+            $result = $this->toggleUnpredictable($channelId);
+        }
+        return $result !== false;
+    }
+
+    public function turnOff(int $channelId) {
+        $result = $this->client->channelTurnOff($channelId);
+        if ($result === false) {
+            $result = $this->toggleUnpredictable($channelId);
+        }
+        return $result !== false;
+    }
+
+    private function toggleUnpredictable(int $channelId) {
+        $result = $this->client->channelOpenClose($channelId);
+        if ($result === false) {
+            $result = $this->client->channelOpen($channelId);
+        }
+        return $result !== false;
+    }
+
     private function handleError($response)
     {
         if (!$response) {

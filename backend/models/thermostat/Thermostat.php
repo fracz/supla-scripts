@@ -5,6 +5,7 @@ namespace suplascripts\models\thermostat;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use suplascripts\models\Model;
+use suplascripts\models\User;
 
 /**
  * @property bool $enabled
@@ -31,6 +32,11 @@ class Thermostat extends Model
         $thermostat = new self();
         $thermostat->save();
         return $thermostat;
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, self::USER_ID);
     }
 
     public function rooms(): HasMany

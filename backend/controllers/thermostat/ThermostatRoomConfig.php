@@ -21,7 +21,6 @@ class ThermostatRoomConfig
     public function heat()
     {
         $this->state['action'] = 'heating';
-        $this->state['target'] = $this->getHeatTo();
     }
 
     public function isCooling(): bool
@@ -32,7 +31,6 @@ class ThermostatRoomConfig
     public function cool()
     {
         $this->state['action'] = 'cooling';
-        $this->state['target'] = $this->getCoolTo();
     }
 
     public function turnOff()
@@ -87,6 +85,11 @@ class ThermostatRoomConfig
 
     public function getState(): array
     {
+        if ($this->isCooling()) {
+            $this->state['target'] = $this->getCoolTo();
+        } else if ($this->isHeating()) {
+            $this->state['target'] = $this->getHeatTo();
+        }
         return $this->state;
     }
 }
