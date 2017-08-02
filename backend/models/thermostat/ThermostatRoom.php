@@ -22,20 +22,19 @@ class ThermostatRoom extends Model
     const HEATERS = 'heaters';
     const COOLERS = 'coolers';
     const USER_ID = 'userId';
+    const THERMOSTAT_ID = 'thermostatId';
 
     protected $fillable = [self::NAME, self::THERMOMETERS, self::HEATERS, self::COOLERS];
     protected $jsonEncoded = [self::THERMOMETERS, self::HEATERS, self::COOLERS];
 
-    public static function create(array $attributes = [])
-    {
-        $room = new self($attributes);
-        $room->save();
-        return $room;
-    }
-
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, self::USER_ID);
+    }
+
+    public function thermostat(): BelongsTo
+    {
+        return $this->belongsTo(Thermostat::class, self::THERMOSTAT_ID);
     }
 
     public function validate(array $attributes = null): void

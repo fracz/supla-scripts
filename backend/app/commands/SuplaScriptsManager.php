@@ -13,6 +13,8 @@ class SuplaScriptsManager extends Application
             new InitializeApplicationCommand(),
             new MigrateDbCommand(),
             new GenerateEncryptionKeyCommand(),
+            new DispatchCyclicTasksCommand(),
+            new DispatchThermostatCommand(),
         ]);
     }
 }

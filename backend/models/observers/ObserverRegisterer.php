@@ -2,6 +2,7 @@
 
 namespace suplascripts\models\observers;
 
+use suplascripts\models\thermostat\Thermostat;
 use suplascripts\models\thermostat\ThermostatProfile;
 use suplascripts\models\thermostat\ThermostatRoom;
 use suplascripts\models\User;
@@ -11,6 +12,7 @@ class ObserverRegisterer
     public static function registerModelObservers()
     {
         User::observe(ModelValidator::class);
+        Thermostat::observe(UserIdSetter::class);
         ThermostatRoom::observe(ModelValidator::class);
         ThermostatRoom::observe(UserIdSetter::class);
         ThermostatProfile::observe(UserIdSetter::class);

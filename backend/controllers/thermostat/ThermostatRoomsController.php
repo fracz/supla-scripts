@@ -4,16 +4,19 @@ namespace suplascripts\controllers\thermostat;
 
 use suplascripts\controllers\BaseController;
 use suplascripts\controllers\exceptions\Http403Exception;
+use suplascripts\models\thermostat\Thermostat;
 use suplascripts\models\thermostat\ThermostatRoom;
 
 class ThermostatRoomsController extends BaseController
 {
     public function postAction()
     {
-        $this->ensureAuthenticated();
         $parsedBody = $this->request()->getParsedBody();
         return $this->getApp()->db->getConnection()->transaction(function () use ($parsedBody) {
-            $createdRoom = ThermostatRoom::create($parsedBody);
+            /** @var Thermostat $thermostat */
+            $thermostat = Thermostat::firstOrCreate([ThermostatRoom::USER_ID => $this->getCurrentUser()->id]);
+            $createdRoom = $thermostat->rooms()->create($parsedBody);
+            $createdRoom->save();
             return $this->response($createdRoom)
                 ->withStatus(201);
         });
@@ -21,14 +24,12 @@ class ThermostatRoomsController extends BaseController
 
     public function getListAction()
     {
-        $this->ensureAuthenticated();
         $rooms = ThermostatRoom::where([ThermostatRoom::USER_ID => $this->getCurrentUser()->id])->get();
         return $this->response($rooms);
     }
 
     public function putAction($id)
     {
-        $this->ensureAuthenticated();
         $room = $this->ensureExists(ThermostatRoom::find($id)->first());
         if ($room->userId != $this->getCurrentUser()->id) {
             throw new Http403Exception();
@@ -41,7 +42,6 @@ class ThermostatRoomsController extends BaseController
 
     public function deleteAction($id)
     {
-        $this->ensureAuthenticated();
         $room = $this->ensureExists(ThermostatRoom::find($id)->first());
         if ($room->userId != $this->getCurrentUser()->id) {
             throw new Http403Exception();

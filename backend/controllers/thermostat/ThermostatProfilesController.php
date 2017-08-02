@@ -4,8 +4,8 @@ namespace suplascripts\controllers\thermostat;
 
 use suplascripts\controllers\BaseController;
 use suplascripts\controllers\exceptions\Http403Exception;
+use suplascripts\models\thermostat\Thermostat;
 use suplascripts\models\thermostat\ThermostatProfile;
-use suplascripts\models\thermostat\ThermostatRoom;
 
 class ThermostatProfilesController extends BaseController
 {
@@ -14,7 +14,8 @@ class ThermostatProfilesController extends BaseController
         $this->ensureAuthenticated();
         $parsedBody = $this->request()->getParsedBody();
         return $this->getApp()->db->getConnection()->transaction(function () use ($parsedBody) {
-            $createdProfile = ThermostatProfile::create($parsedBody);
+            $thermostat = Thermostat::firstOrCreate([Thermostat::USER_ID => $this->getCurrentUser()->id]);
+            $createdProfile = $thermostat->profiles()->create($parsedBody);
             return $this->response($createdProfile)
                 ->withStatus(201);
         });

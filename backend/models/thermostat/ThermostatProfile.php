@@ -20,20 +20,19 @@ class ThermostatProfile extends Model
     const ROOMS_CONFIG = 'roomsConfig';
     const ACTIVE_ON = 'activeOn';
     const USER_ID = 'userId';
+    const THERMOSTAT_ID = 'thermostatId';
 
     protected $fillable = [self::NAME, self::ROOMS_CONFIG, self::ACTIVE_ON];
     protected $jsonEncoded = [self::ROOMS_CONFIG, self::ACTIVE_ON];
 
-    public static function create(array $attributes = [])
-    {
-        $profile = new self($attributes);
-        $profile->save();
-        return $profile;
-    }
-
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, self::USER_ID);
+    }
+
+    public function thermostat(): BelongsTo
+    {
+        return $this->belongsTo(Thermostat::class, self::THERMOSTAT_ID);
     }
 
     public function validate(array $attributes = null): void
