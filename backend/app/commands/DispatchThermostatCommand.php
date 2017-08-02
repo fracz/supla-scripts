@@ -63,10 +63,10 @@ class DispatchThermostatCommand extends Command
             }
             if ($activeProfile) {
                 $thermostat->activeProfile()->dissociate();
-                $thermostat->nextProfileChange = $closestStart;
-                $thermostat->save();
                 $output->writeln('Deactivated all profiles for thermostat ' . $thermostat->id);
             }
+            $thermostat->nextProfileChange = $closestStart;
+            $thermostat->save();
         }
     }
 

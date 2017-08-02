@@ -20,7 +20,7 @@ class ThermostatProfileTimeSpan
     }
 
     public function getEndCronExpression() {
-        return $this->getCronExpression($this->timeRange['timeEnd'] ?? 1439);
+        return $this->getCronExpression(min($this->timeRange['timeEnd'] ?? 1439, 1439));
     }
 
     private function getCronExpression($timeInMinutes) {
