@@ -4,7 +4,7 @@
  */
 $settings = require_once __DIR__ . '/../settings.php';
 $dbSettings = \suplascripts\app\Application::getInstance()->getSetting('db');
-//$dbName = $dbSettings['driver'] == 'sqlite' ? __DIR__ . '/../../' . $dbSettings['database'] : $dbSettings['database'];
+
 return [
     'paths' => [
         'migrations' => __DIR__ . '/migrations',
@@ -16,10 +16,10 @@ return [
         'default_database' => 'db',
         'db' => [
             'adapter' => $dbSettings['driver'],
-//            'host' => $dbSettings['host'],
+            'host' => $dbSettings['host'] ?? 'localhost',
             'name' => $dbSettings['database'],
-//            'user' => $dbSettings['username'],
-//            'pass' => $dbSettings['password']
+            'user' => $dbSettings['username'] ?? '',
+            'pass' => $dbSettings['password'] ?? '',
         ]
     ]
 ];

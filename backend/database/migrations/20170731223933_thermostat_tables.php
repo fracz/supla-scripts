@@ -27,7 +27,6 @@ class ThermostatTables extends Migration
             ->addColumn(Thermostat::USER_ID, 'uuid')
             ->addForeignKey(Thermostat::USER_ID, User::TABLE_NAME, User::ID, ['delete' => 'CASCADE'])
             ->addColumn(Thermostat::ACTIVE_PROFILE_ID, 'uuid', ['null' => true])
-            ->addForeignKey(Thermostat::ACTIVE_PROFILE_ID, ThermostatProfile::TABLE_NAME, ThermostatProfile::ID, ['delete' => 'SET_NULL'])
             ->create();
         $this->table(Thermostat::TABLE_NAME)
             ->changeColumn(Thermostat::ID, 'uuid')
@@ -66,6 +65,9 @@ class ThermostatTables extends Migration
             ->create();
         $this->table(ThermostatProfile::TABLE_NAME)
             ->changeColumn(ThermostatProfile::ID, 'uuid')
+            ->update();
+        $this->table(Thermostat::TABLE_NAME)
+            ->addForeignKey(Thermostat::ACTIVE_PROFILE_ID, ThermostatProfile::TABLE_NAME, ThermostatProfile::ID, ['delete' => 'SET_NULL'])
             ->update();
     }
 }
