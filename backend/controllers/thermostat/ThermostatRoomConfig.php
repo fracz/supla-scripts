@@ -35,6 +35,14 @@ class ThermostatRoomConfig
         $this->state['action'] = 'cooling';
     }
 
+    public function hasAction(): bool {
+        return $this->isCooling() || $this->isHeating();
+    }
+
+    public function hasConfig(): bool {
+        return $this->hasHeatingConfiguration() || $this->hasCoolingConfiguration();
+    }
+
     public function forceAction($action, int $minutes)
     {
         $this->state['action'] = $action;

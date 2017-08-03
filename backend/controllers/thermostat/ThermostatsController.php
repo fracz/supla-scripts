@@ -2,11 +2,13 @@
 
 namespace suplascripts\controllers\thermostat;
 
+use suplascripts\app\commands\DispatchThermostatCommand;
 use suplascripts\controllers\BaseController;
 use suplascripts\controllers\exceptions\Http403Exception;
 use suplascripts\models\supla\SuplaApi;
 use suplascripts\models\thermostat\Thermostat;
 use suplascripts\models\thermostat\ThermostatProfile;
+use Symfony\Component\Console\Output\NullOutput;
 
 class ThermostatsController extends BaseController
 {
@@ -55,7 +57,15 @@ class ThermostatsController extends BaseController
             $room->updateState($thermostat, $parsedBody['roomAction']['roomId']);
         }
         $thermostat->save();
+        if ($thermostat->enabled) {
+            $this->adjustThermostat($thermostat);
+        }
         return $this->thermostatResponse($thermostat);
+    }
+
+    private function adjustThermostat(Thermostat $thermostat) {
+        $command = new DispatchThermostatCommand();
+        $command->adjust($thermostat, new NullOutput());
     }
 
     private function thermostatResponse(Thermostat $thermostat)

@@ -27,10 +27,15 @@ class DispatchThermostatCommand extends Command
         $activeThermostats = Thermostat::where([Thermostat::ENABLED => true])->get();
         $output->writeln('<info>Active thermostats: ' . count($activeThermostats) . '</info>');
         foreach ($activeThermostats as $thermostat) {
-            $this->changeProfileIfNeeded($thermostat, $output);
-            $this->chooseActionsForRooms($thermostat, $output);
-            $this->adjustDevicesToRoomActions($thermostat, $output);
+            $this->adjust($thermostat, $output);
         }
+    }
+
+    public function adjust(Thermostat $thermostat, OutputInterface $output)
+    {
+        $this->changeProfileIfNeeded($thermostat, $output);
+        $this->chooseActionsForRooms($thermostat, $output);
+        $this->adjustDevicesToRoomActions($thermostat, $output);
     }
 
     private function changeProfileIfNeeded(Thermostat $thermostat, OutputInterface $output)
@@ -76,11 +81,11 @@ class DispatchThermostatCommand extends Command
         $profile = $thermostat->activeProfile()->first();
         $roomsConfig = $profile ? $profile->roomsConfig ?? [] : [];
         foreach ($thermostat->rooms()->get() as $room) {
+            $roomState = $thermostat->roomsState[$room->id] ?? [];
+            $roomConfig = $roomsConfig[$room->id] ?? [];
+            $decidor = new ThermostatRoomConfig($roomConfig, $roomState);
             /** @var ThermostatRoom $room */
-            if (isset($roomsConfig[$room->id])) {
-                $roomConfig = $roomsConfig[$room->id];
-                $roomState = $thermostat->roomsState[$room->id] ?? [];
-                $decidor = new ThermostatRoomConfig($roomConfig, $roomState);
+            if ($decidor->hasConfig()) {
                 $currentTemperature = $room->getCurrentTemperature();
                 if ($decidor->hasForcedAction()) {
                 } else if ($decidor->shouldCool($currentTemperature) && !$decidor->isCooling()) {
@@ -94,6 +99,9 @@ class DispatchThermostatCommand extends Command
                     $output->writeln('Turned off cooling and heating of room ' . $room->id);
                     $decidor->turnOff();
                 }
+                $decidor->updateState($thermostat, $room->id);
+            } else if ($decidor->hasAction() && !$decidor->hasForcedAction()) {
+                $decidor->turnOff();
                 $decidor->updateState($thermostat, $room->id);
             }
 
