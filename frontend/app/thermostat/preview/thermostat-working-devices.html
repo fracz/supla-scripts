@@ -1,0 +1,12 @@
+<div class="row" ng-if="$ctrl.thermostat.turnedOnDevices.length > 0">
+    <div class="col-xs-12">
+        <h4>Działające urządzenia ({{$ctrl.thermostat.turnedOnDevices.length}})</h4>
+        <div class="row">
+            <div class="col-sm-6 col-md-4 col-lg-2" ng-repeat="channelData in $ctrl.thermostat.turnedOnDevices">
+                <div class="well">
+                    <channel-state channel="channelData"></channel-state>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

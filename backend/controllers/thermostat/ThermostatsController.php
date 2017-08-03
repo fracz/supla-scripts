@@ -40,7 +40,7 @@ class ThermostatsController extends BaseController
         }
         if (array_key_exists('activeProfileId', $parsedBody)) {
             if ($parsedBody['activeProfileId']) {
-                $profile = $this->ensureExists(ThermostatProfile::where([ThermostatProfile::USER_ID => $this->getCurrentUser()->id, ThermostatProfile::ID => $parsedBody['activeProfileId']])->first());
+                $profile = $this->ensureExists($thermostat->profiles()->find($parsedBody['activeProfileId'])->first());
                 $thermostat->activeProfile()->associate($profile);
             } else {
                 $thermostat->activeProfile()->dissociate();
@@ -63,7 +63,8 @@ class ThermostatsController extends BaseController
         return $this->thermostatResponse($thermostat);
     }
 
-    private function adjustThermostat(Thermostat $thermostat) {
+    private function adjustThermostat(Thermostat $thermostat)
+    {
         $command = new DispatchThermostatCommand();
         $command->adjust($thermostat, new NullOutput());
     }
@@ -89,7 +90,10 @@ class ThermostatsController extends BaseController
             'activeProfile' => $thermostat->activeProfile()->first(),
             'nextProfileChange' => $thermostat->nextProfileChange->format(\DateTime::ATOM),
             'channels' => $channels,
-            'roomState' => $thermostat->roomsState,
+            'roomsState' => $thermostat->roomsState,
+            'turnedOnDevices' => array_map(function ($channelId) use ($api) {
+                return $api->getChannelWithState($channelId);
+            }, $thermostat->devicesState ?? []),
             'slug' => $thermostat->slug,
         ]);
     }

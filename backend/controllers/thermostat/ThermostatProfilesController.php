@@ -18,6 +18,9 @@ class ThermostatProfilesController extends BaseController
             $thermostat = Thermostat::firstOrCreate([Thermostat::USER_ID => $this->getCurrentUser()->id]);
             $createdProfile = $thermostat->profiles()->create($parsedBody);
             $thermostat->nextProfileChange = new \DateTime();
+            if ($thermostat->profiles()->count() == 1) {
+                $thermostat->enabled = true;
+            }
             $thermostat->save();
             return $this->response($createdProfile)
                 ->withStatus(201);

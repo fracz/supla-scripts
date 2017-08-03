@@ -57,6 +57,4 @@ class Thermostat extends Model
         }
         return parent::save($options);
     }
-
-
 }

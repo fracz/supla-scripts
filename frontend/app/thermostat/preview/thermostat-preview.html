@@ -2,7 +2,7 @@
 <div ng-else>
     <div ng-class="$ctrl.slug ? 'container-fluid' : 'container'">
         <div class="row thermostat-header">
-            <div class="col-xs-12 text-right">
+            <div class="col-xs-12 text-center">
                 <div class="form-group">
                     <label>Aktywny profil:</label>
                     <select class="form-control" ng-model="$ctrl.thermostat.activeProfile.id"
@@ -10,8 +10,10 @@
                             ng-options="profile.id as profile.name for profile in $ctrl.thermostat.profiles">
                         <option value="">Brak</option>
                     </select>
-                    <label>Włącz / wyłącz termostat:</label>
-                    <switch ng-model="$ctrl.thermostat.enabled" ng-change="$ctrl.toggleEnabled()"></switch>
+                    <span ng-if="!$ctrl.slug">
+                        <label>Włącz / wyłącz termostat:</label>
+                        <switch ng-model="$ctrl.thermostat.enabled" ng-change="$ctrl.toggleEnabled()"></switch>
+                    </span>
                 </div>
             </div>
         </div>
@@ -30,31 +32,32 @@
                             </h3>
                             <div class="temperature">
                                 {{ $ctrl.thermostat.channels[room.thermometers[0]].temperature | number:1 }}&deg;C
-                                <span ng-if="$ctrl.thermostat.roomState[room.id].action" class="arrow-container">
-                                <fa name="caret-{{ $ctrl.thermostat.roomState[room.id].action == 'heating' ? 'up' : 'down' }}"
+                                <span ng-if="$ctrl.thermostat.roomsState[room.id].action" class="arrow-container">
+                                <fa name="caret-{{ $ctrl.thermostat.roomsState[room.id].action == 'heating' ? 'up' : 'down' }}"
                                     class="arrow"
-                                    ng-class="$ctrl.thermostat.roomState[room.id].action == 'heating' ? 'heating' : 'cooling'"></fa>
+                                    ng-class="$ctrl.thermostat.roomsState[room.id].action == 'heating' ? 'heating' : 'cooling'"></fa>
                             </span>
                             </div>
-                            <div class="target text-center" ng-if="$ctrl.thermostat.roomState[room.id].target">
-                                Cel: {{ $ctrl.thermostat.roomState[room.id].target | number:1 }}&deg;C
+                            <div class="target text-center" ng-if="$ctrl.thermostat.roomsState[room.id].target">
+                                Cel: {{ $ctrl.thermostat.roomsState[room.id].target | number:1 }}&deg;C
                             </div>
-                            <div class="target text-center" ng-if="$ctrl.thermostat.roomState[room.id].forcedAction">
-                                Manualnie ustalony stan wygaśnie za {{ $ctrl.thermostat.roomState[room.id].forcedUntil | unixToDate | fromNow:true }}
+                            <div class="target text-center" ng-if="$ctrl.thermostat.roomsState[room.id].forcedAction">
+                                Manualnie ustalony stan wygaśnie za {{ $ctrl.thermostat.roomsState[room.id].forcedUntil | unixToDate | fromNow:true }}
                                 <div><a ng-click="$ctrl.clearRoomAction(room)">wróć do sterowania automatycznego</a></div>
                             </div>
                             <thermostat-manual-room-action-change
                                     room="room"
-                                    room-state="$ctrl.thermostat.roomState[room.id]"
+                                    room-state="$ctrl.thermostat.roomsState[room.id]"
                                     on-action-change="$ctrl.setRoomAction(room, action)"></thermostat-manual-room-action-change>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <thermostat-working-devices thermostat="$ctrl.thermostat"></thermostat-working-devices>
         <div class="row">
             <div class="col-xs-12 text-center">
-                <p class="text-muted">Kolejna automatyczna zmiana profilu: {{ $ctrl.thermostat.nextProfileChange |
+                <p class="text-muted">Kolejna automatyczna zmiana profilu nastąpi po {{ $ctrl.thermostat.nextProfileChange |
                     date:'short' }}</p>
                 <p class="text-muted" ng-hide="$ctrl.slug">
                     Ten widok dostępny jest bez logowania pod adresem {{ $ctrl.thermostat.slug | thermostatPreviewUrl }}

@@ -10,6 +10,7 @@ class SuplaApi
     /** @var SuplaApiClient */
     private $client;
 
+    private $devices;
 
     public function __construct(User $user)
     {
@@ -19,19 +20,29 @@ class SuplaApi
 
     public function getDevices(): array
     {
-        $response = $this->client->ioDevices();
-        $this->handleError($response);
-        return $response->iodevices;
+        if (!$this->devices) {
+            $response = $this->client->ioDevices();
+            $this->handleError($response);
+            $this->devices = $response->iodevices;
+        }
+        return $this->devices;
     }
 
     public function getChannelWithState(int $channelId)
     {
-        $response = $this->client->channel($channelId);
-        $this->handleError($response);
-        return $response;
+        foreach ($this->getDevices() as $device) {
+            foreach ($device->channels as $channel) {
+                if ($channel->id == $channelId) {
+                    $state = $this->client->channel($channelId);
+                    $this->handleError($state);
+                    return (object)array_merge((array)$channel, (array)$state);
+                }
+            }
+        }
     }
 
-    public function turnOn(int $channelId) {
+    public function turnOn(int $channelId)
+    {
         $result = $this->client->channelTurnOn($channelId);
         if ($result === false) {
             $result = $this->toggleUnpredictable($channelId);
@@ -39,7 +50,8 @@ class SuplaApi
         return $result !== false;
     }
 
-    public function turnOff(int $channelId) {
+    public function turnOff(int $channelId)
+    {
         $result = $this->client->channelTurnOff($channelId);
         if ($result === false) {
             $result = $this->toggleUnpredictable($channelId);
@@ -47,7 +59,8 @@ class SuplaApi
         return $result !== false;
     }
 
-    private function toggleUnpredictable(int $channelId) {
+    private function toggleUnpredictable(int $channelId)
+    {
         $result = $this->client->channelOpenClose($channelId);
         if ($result === false) {
             $result = $this->client->channelOpen($channelId);
