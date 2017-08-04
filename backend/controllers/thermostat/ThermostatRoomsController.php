@@ -17,6 +17,7 @@ class ThermostatRoomsController extends BaseController
             $thermostat = Thermostat::firstOrCreate([ThermostatRoom::USER_ID => $this->getCurrentUser()->id]);
             $createdRoom = $thermostat->rooms()->create($parsedBody);
             $createdRoom->save();
+            $thermostat->log('Utworzono pomieszczenie ' . $createdRoom->name);
             return $this->response($createdRoom)
                 ->withStatus(201);
         });
@@ -37,6 +38,7 @@ class ThermostatRoomsController extends BaseController
         $parsedBody = array_merge(['heaters' => [], 'coolers' => []], $this->request()->getParsedBody());
         $room->update($parsedBody);
         $room->save();
+        $room->thermostat()->first()->log('Zmieniono pomieszczenie ' . $room->name);
         return $this->response($room);
     }
 
@@ -46,6 +48,7 @@ class ThermostatRoomsController extends BaseController
         if ($room->userId != $this->getCurrentUser()->id) {
             throw new Http403Exception();
         }
+        $room->thermostat()->first()->log('Usunięto pomieszczenie ' . $room->name);
         $room->delete();
         return $this->response()->withStatus(204);
     }

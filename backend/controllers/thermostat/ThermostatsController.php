@@ -7,7 +7,7 @@ use suplascripts\controllers\BaseController;
 use suplascripts\controllers\exceptions\Http403Exception;
 use suplascripts\models\supla\SuplaApi;
 use suplascripts\models\thermostat\Thermostat;
-use suplascripts\models\thermostat\ThermostatProfile;
+use suplascripts\models\thermostat\ThermostatRoomConfig;
 use Symfony\Component\Console\Output\NullOutput;
 
 class ThermostatsController extends BaseController
@@ -37,12 +37,15 @@ class ThermostatsController extends BaseController
         $parsedBody = $this->request()->getParsedBody();
         if (isset($parsedBody['enabled'])) {
             $thermostat->enabled = boolval($parsedBody['enabled']);
+            $thermostat->log(($thermostat->enabled ? 'Włączono' : 'Wyłączono') . ' termostat.');
         }
         if (array_key_exists('activeProfileId', $parsedBody)) {
             if ($parsedBody['activeProfileId']) {
                 $profile = $this->ensureExists($thermostat->profiles()->find($parsedBody['activeProfileId'])->first());
                 $thermostat->activeProfile()->associate($profile);
+                $thermostat->log('Manualnie ustawiono profil na ' . $profile->name);
             } else {
+                $thermostat->log('Manualnie wyłączono profil.');
                 $thermostat->activeProfile()->dissociate();
             }
         }
@@ -50,9 +53,12 @@ class ThermostatsController extends BaseController
             $roomId = $parsedBody['roomAction']['roomId'] ?? '';
             $room = new ThermostatRoomConfig([], $thermostat->roomsState[$roomId] ?? []);
             if (isset($parsedBody['roomAction']['clear'])) {
+                $thermostat->log('Manualnie powrócono do automatycznego sterowania pomieszczeniem ' . $roomId);
                 $room->clearForcedAction();
             } else {
                 $room->forceAction($parsedBody['roomAction']['action'], 30);
+                $actionLabel = $room->isCooling() ? 'chłodzenia' : ($room->isHeating() ? 'ogrzewania' : 'brak');
+                $thermostat->log("Manualnie ustalono akcję $actionLabel na 30 minut dla pomieszczenia $roomId");
             }
             $room->updateState($thermostat, $parsedBody['roomAction']['roomId']);
         }
@@ -66,7 +72,7 @@ class ThermostatsController extends BaseController
     private function adjustThermostat(Thermostat $thermostat)
     {
         $command = new DispatchThermostatCommand();
-        $command->adjust($thermostat, new NullOutput());
+        $command->adjust($thermostat);
     }
 
     private function thermostatResponse(Thermostat $thermostat)

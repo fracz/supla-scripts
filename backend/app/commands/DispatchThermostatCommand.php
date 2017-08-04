@@ -3,12 +3,12 @@
 namespace suplascripts\app\commands;
 
 use Cron\CronExpression;
-use suplascripts\controllers\thermostat\ThermostatRoomConfig;
 use suplascripts\models\supla\SuplaApi;
 use suplascripts\models\thermostat\Thermostat;
 use suplascripts\models\thermostat\ThermostatProfile;
 use suplascripts\models\thermostat\ThermostatProfileTimeSpan;
 use suplascripts\models\thermostat\ThermostatRoom;
+use suplascripts\models\thermostat\ThermostatRoomConfig;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -25,20 +25,19 @@ class DispatchThermostatCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $activeThermostats = Thermostat::where([Thermostat::ENABLED => true])->get();
-        $output->writeln('<info>Active thermostats: ' . count($activeThermostats) . '</info>');
         foreach ($activeThermostats as $thermostat) {
             $this->adjust($thermostat, $output);
         }
     }
 
-    public function adjust(Thermostat $thermostat, OutputInterface $output)
+    public function adjust(Thermostat $thermostat)
     {
-        $this->changeProfileIfNeeded($thermostat, $output);
-        $this->chooseActionsForRooms($thermostat, $output);
-        $this->adjustDevicesToRoomActions($thermostat, $output);
+        $this->changeProfileIfNeeded($thermostat);
+        $this->chooseActionsForRooms($thermostat);
+        $this->adjustDevicesToRoomActions($thermostat);
     }
 
-    private function changeProfileIfNeeded(Thermostat $thermostat, OutputInterface $output)
+    private function changeProfileIfNeeded(Thermostat $thermostat)
     {
         $now = time();
         if ($thermostat->nextProfileChange->getTimestamp() <= $now) {
@@ -57,7 +56,7 @@ class DispatchThermostatCommand extends Command
                                 $thermostat->activeProfile()->associate($profile);
                                 $thermostat->nextProfileChange = $endsToday;
                                 $thermostat->save();
-                                $output->writeln('Updated active profile for thermostat ' . $thermostat->id);
+                                $thermostat->log('Włączono profil ' . $profile->name);
                             }
                             return;
                         } else if ($startsToday->getTimestamp() > $now && $startsToday < $closestStart) {
@@ -67,15 +66,15 @@ class DispatchThermostatCommand extends Command
                 }
             }
             if ($activeProfile) {
+                $thermostat->log('Wyłączono profil ' . $thermostat->activeProfile()->get()->name);
                 $thermostat->activeProfile()->dissociate();
-                $output->writeln('Deactivated all profiles for thermostat ' . $thermostat->id);
             }
             $thermostat->nextProfileChange = $closestStart;
             $thermostat->save();
         }
     }
 
-    private function chooseActionsForRooms(Thermostat $thermostat, OutputInterface $output)
+    private function chooseActionsForRooms(Thermostat $thermostat)
     {
         /** @var ThermostatProfile $profile */
         $profile = $thermostat->activeProfile()->first();
@@ -89,14 +88,14 @@ class DispatchThermostatCommand extends Command
                 $currentTemperature = $room->getCurrentTemperature();
                 if ($decidor->hasForcedAction()) {
                 } else if ($decidor->shouldCool($currentTemperature) && !$decidor->isCooling()) {
-                    $output->writeln('Started cooling of room ' . $room->id);
+                    $thermostat->log('Rozpoczęto ochładzanie pomieszczenia ' . $room->name);
                     $decidor->cool();
                 } else if ($decidor->shouldHeat($currentTemperature) && !$decidor->isHeating()) {
-                    $output->writeln('Started heating of room ' . $room->id);
+                    $thermostat->log('Rozpoczęto ogrzewanie pomieszczenia ' . $room->name);
                     $decidor->heat();
                 } else if (!$decidor->shouldCool($currentTemperature) && !$decidor->shouldHeat($currentTemperature)
                     && ($decidor->isHeating() || $decidor->isCooling())) {
-                    $output->writeln('Turned off cooling and heating of room ' . $room->id);
+                    $thermostat->log('Zakończono ochładzanie lub ogrzewanie pomieszczenia ' . $room->name);
                     $decidor->turnOff();
                 }
                 $decidor->updateState($thermostat, $room->id);
@@ -109,7 +108,7 @@ class DispatchThermostatCommand extends Command
         $thermostat->save();
     }
 
-    private function adjustDevicesToRoomActions(Thermostat $thermostat, OutputInterface $output)
+    private function adjustDevicesToRoomActions(Thermostat $thermostat)
     {
         $desiredDevicesTurnedOn = [];
         foreach ($thermostat->rooms()->get() as $room) {
@@ -125,18 +124,18 @@ class DispatchThermostatCommand extends Command
         $desiredDevicesTurnedOn = array_unique($desiredDevicesTurnedOn);
         $api = new SuplaApi($thermostat->user()->first());
         foreach (array_diff($desiredDevicesTurnedOn, $actualDevicesTurnedOn) as $channelIdToTurnOn) {
-            $output->writeln("Turning on channel " . $channelIdToTurnOn);
+            $thermostat->log('Włączono kanał #' . $channelIdToTurnOn);
             if (!$api->turnOn($channelIdToTurnOn)) {
-                $output->writeln("Failed to turn on channel " . $channelIdToTurnOn);
+                $thermostat->log("Failed to turn on channel #" . $channelIdToTurnOn);
                 $desiredDevicesTurnedOn = array_filter($desiredDevicesTurnedOn, function ($element) use ($channelIdToTurnOn) {
                     return $channelIdToTurnOn != $element;
                 });
             }
         }
         foreach (array_diff($actualDevicesTurnedOn, $desiredDevicesTurnedOn) as $channelIdToTurnOff) {
-            $output->writeln("Turning off channel " . $channelIdToTurnOff);
+            $thermostat->log('Wyłączono kanał #' . $channelIdToTurnOff);
             if (!$api->turnOff($channelIdToTurnOff)) {
-                $output->writeln("Failed to turn off channel " . $channelIdToTurnOn);
+                $thermostat->log("Failed to turn off channel #" . $channelIdToTurnOff);
                 $desiredDevicesTurnedOn[] = $channelIdToTurnOff;
             }
         }

@@ -5,6 +5,7 @@ namespace suplascripts;
 use suplascripts\app\Application;
 use suplascripts\controllers\ChannelsController;
 use suplascripts\controllers\DevicesController;
+use suplascripts\controllers\LogsController;
 use suplascripts\controllers\SystemController;
 use suplascripts\controllers\thermostat\ThermostatsController;
 use suplascripts\controllers\thermostat\ThermostatProfilesController;
@@ -36,6 +37,9 @@ $app->group('/api', function () use ($app) {
     });
     $app->group('/channels', function () use ($app) {
         $app->get('/{id}', ChannelsController::class . ':get');
+    });
+    $app->group('/logs', function () use ($app) {
+        $app->get('', LogsController::class . ':getLatest');
     });
 
     $app->group('/thermostats', function () use ($app) {

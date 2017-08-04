@@ -57,4 +57,9 @@ class Thermostat extends Model
         }
         return parent::save($options);
     }
+
+    public function log($data)
+    {
+        $this->user()->first()->log('thermostat', $data);
+    }
 }

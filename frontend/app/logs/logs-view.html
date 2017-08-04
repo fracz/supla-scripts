@@ -1,0 +1,24 @@
+<loader-dots ng-if="!$ctrl.logs"></loader-dots>
+<div ng-else class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Kiedy?</th>
+                    <th>Moduł</th>
+                    <th>Treść</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="entry in $ctrl.logs">
+                    <td>{{ entry.createdAt | date: 'short' }}</td>
+                    <td>{{ entry.module }}</td>
+                    <td>{{ entry.data }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

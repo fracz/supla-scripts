@@ -18,7 +18,9 @@ class ThermostatProfilesController extends BaseController
             $thermostat = Thermostat::firstOrCreate([Thermostat::USER_ID => $this->getCurrentUser()->id]);
             $createdProfile = $thermostat->profiles()->create($parsedBody);
             $thermostat->nextProfileChange = new \DateTime();
+            $thermostat->log('Utworzono nowy profil o nazwie ' . $createdProfile->name);
             if ($thermostat->profiles()->count() == 1) {
+                $thermostat->log('Termostat został aktywowany.');
                 $thermostat->enabled = true;
             }
             $thermostat->save();
@@ -45,6 +47,7 @@ class ThermostatProfilesController extends BaseController
         $parsedBody = $this->request()->getParsedBody();
         $profile->update($parsedBody);
         $profile->save();
+        $profile->thermostat()->first()->log('Wprowadzono zmiany w profilu ' . $profile->name);
         $thermostat = $profile->thermostat()->first();
         $thermostat->nextProfileChange = new \DateTime();
         $thermostat->save();
@@ -58,6 +61,7 @@ class ThermostatProfilesController extends BaseController
         if ($profile->userId != $this->getCurrentUser()->id) {
             throw new Http403Exception();
         }
+        $profile->thermostat()->first()->log('Usunięto profil ' . $profile->name);
         $profile->delete();
         return $this->response()->withStatus(204);
     }

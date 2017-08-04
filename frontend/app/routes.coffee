@@ -48,6 +48,10 @@ angular.module('supla-scripts')
     template: '<thermostat-preview slug="slug"></thermostat-preview>'
     controller: ($scope, $stateParams) -> $scope.slug = $stateParams.slug
 
+  .state 'logs',
+    url: '/logs'
+    template: '<logs-view></logs-view>'
+
   .state 'notFound',
     templateUrl: 'app/common/errors/404.html'
 

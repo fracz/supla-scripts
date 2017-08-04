@@ -1,8 +1,6 @@
 <?php
 
-namespace suplascripts\controllers\thermostat;
-
-use suplascripts\models\thermostat\Thermostat;
+namespace suplascripts\models\thermostat;
 
 class ThermostatRoomConfig
 {
@@ -35,11 +33,13 @@ class ThermostatRoomConfig
         $this->state['action'] = 'cooling';
     }
 
-    public function hasAction(): bool {
+    public function hasAction(): bool
+    {
         return $this->isCooling() || $this->isHeating();
     }
 
-    public function hasConfig(): bool {
+    public function hasConfig(): bool
+    {
         return $this->hasHeatingConfiguration() || $this->hasCoolingConfiguration();
     }
 

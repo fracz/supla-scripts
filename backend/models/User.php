@@ -4,6 +4,7 @@ namespace suplascripts\models;
 
 use Assert\Assert;
 use Assert\Assertion;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use suplascripts\models\supla\SuplaApi;
 
 /**
@@ -92,6 +93,19 @@ class User extends Model
     {
         $this->lastLoginDate = new \DateTime();
         $this->save();
+    }
+
+    public function logs(): HasMany
+    {
+        return $this->hasMany(LogEntry::class, LogEntry::USER_ID);
+    }
+
+    public function log(string $module, $data)
+    {
+        $this->logs()->create([
+            LogEntry::MODULE => $module,
+            LogEntry::DATA => $data,
+        ])->save();
     }
 
     public static function validateUsername(string $username): void
