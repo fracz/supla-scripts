@@ -18,8 +18,8 @@ angular.module('supla-scripts').component 'thermostatPreview',
           @intervalPromise = endpoint.get()
             .then(@receiveThermostat)
             .catch (response) =>
-            if response.status is 404 and not @slug
-              $state.go('^.profiles')
+              if response.status is 404 and not @slug
+                $state.go('^.profiles')
 
       changeStateManually: (request) =>
         if not @changingPromise
