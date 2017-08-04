@@ -1,18 +1,20 @@
 <loader-dots ng-if="!$ctrl.thermostat"></loader-dots>
-<div ng-else>
+<div ng-else loading-cover="$ctrl.changingPromise">
     <div ng-class="$ctrl.slug ? 'container-fluid' : 'container'">
         <div class="row thermostat-header">
             <div class="col-xs-12 text-center">
                 <div class="form-group">
                     <label>Aktywny profil:</label>
                     <select class="form-control" ng-model="$ctrl.thermostat.activeProfile.id"
+                            ng-disabled="$ctrl.changingPromise"
                             ng-change="$ctrl.updateActiveProfile()"
                             ng-options="profile.id as profile.name for profile in $ctrl.thermostat.profiles">
                         <option value="">Brak</option>
                     </select>
                     <span ng-if="!$ctrl.slug">
                         <label>Włącz / wyłącz termostat:</label>
-                        <switch ng-model="$ctrl.thermostat.enabled" ng-change="$ctrl.toggleEnabled()"></switch>
+                        <switch ng-model="$ctrl.thermostat.enabled" ng-change="$ctrl.toggleEnabled()"
+                                ng-disabled="$ctrl.changingPromise"></switch>
                     </span>
                 </div>
             </div>
@@ -21,8 +23,9 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-12">
-                <div class="flexible-grid">
-                    <div ng-repeat="room in $ctrl.thermostat.rooms">
+                <div ng-class="$ctrl.thermostat.rooms.length > 4 ? 'flexible-grid' : 'row'">
+                    <div ng-repeat="room in $ctrl.thermostat.rooms"
+                         ng-class="$ctrl.thermostat.rooms.length > 4 ? '' : 'col-lg-3 col-md-4 col-sm-6'">
                         <div class="well thermostat-room-preview">
                             <h3 class="text-center">
                             <span class="badge pull-right">
@@ -42,8 +45,10 @@
                                 Cel: {{ $ctrl.thermostat.roomsState[room.id].target | number:1 }}&deg;C
                             </div>
                             <div class="target text-center" ng-if="$ctrl.thermostat.roomsState[room.id].forcedAction">
-                                Manualnie ustalony stan wygaśnie za {{ $ctrl.thermostat.roomsState[room.id].forcedUntil | unixToDate | fromNow:true }}
-                                <div><a ng-click="$ctrl.clearRoomAction(room)">wróć do sterowania automatycznego</a></div>
+                                Manualnie ustalony stan wygaśnie za {{ $ctrl.thermostat.roomsState[room.id].forcedUntil
+                                | unixToDate | fromNow:true }}
+                                <div><a ng-click="$ctrl.clearRoomAction(room)">wróć do sterowania automatycznego</a>
+                                </div>
                             </div>
                             <thermostat-manual-room-action-change
                                     room="room"
@@ -57,7 +62,8 @@
         <thermostat-working-devices thermostat="$ctrl.thermostat"></thermostat-working-devices>
         <div class="row">
             <div class="col-xs-12 text-center">
-                <p class="text-muted">Kolejna automatyczna zmiana profilu nastąpi po {{ $ctrl.thermostat.nextProfileChange |
+                <p class="text-muted">Kolejna automatyczna zmiana profilu nastąpi po {{
+                    $ctrl.thermostat.nextProfileChange |
                     date:'short' }}</p>
                 <p class="text-muted" ng-hide="$ctrl.slug">
                     Ten widok dostępny jest bez logowania pod adresem {{ $ctrl.thermostat.slug | thermostatPreviewUrl }}
