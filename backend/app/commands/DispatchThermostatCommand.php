@@ -66,7 +66,7 @@ class DispatchThermostatCommand extends Command
                 }
             }
             if ($activeProfile) {
-                $thermostat->log('Wyłączono profil ' . $thermostat->activeProfile()->get()->name);
+                $thermostat->log('Wyłączono profil ' . $thermostat->activeProfile()->first()->name);
                 $thermostat->activeProfile()->dissociate();
             }
             $thermostat->nextProfileChange = $closestStart;

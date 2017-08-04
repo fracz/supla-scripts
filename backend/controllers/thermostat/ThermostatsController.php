@@ -7,8 +7,8 @@ use suplascripts\controllers\BaseController;
 use suplascripts\controllers\exceptions\Http403Exception;
 use suplascripts\models\supla\SuplaApi;
 use suplascripts\models\thermostat\Thermostat;
+use suplascripts\models\thermostat\ThermostatProfile;
 use suplascripts\models\thermostat\ThermostatRoomConfig;
-use Symfony\Component\Console\Output\NullOutput;
 
 class ThermostatsController extends BaseController
 {
@@ -41,7 +41,7 @@ class ThermostatsController extends BaseController
         }
         if (array_key_exists('activeProfileId', $parsedBody)) {
             if ($parsedBody['activeProfileId']) {
-                $profile = $this->ensureExists($thermostat->profiles()->find($parsedBody['activeProfileId'])->first());
+                $profile = $this->ensureExists($thermostat->profiles()->find([ThermostatProfile::ID => $parsedBody['activeProfileId']])->first());
                 $thermostat->activeProfile()->associate($profile);
                 $thermostat->log('Manualnie ustawiono profil na ' . $profile->name);
             } else {
