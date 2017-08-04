@@ -52,12 +52,10 @@ class DispatchThermostatCommand extends Command
                         $startsToday = CronExpression::factory($timeSpan->getStartCronExpression())->getNextRunDate($today, 0, true);
                         $endsToday = CronExpression::factory($timeSpan->getEndCronExpression())->getNextRunDate($today, 0, true);
                         if ($startsToday->getTimestamp() <= $now && $endsToday->getTimestamp() >= $now) {
-                            if (!$activeProfile || $activeProfile->id != $profile->id) {
-                                $thermostat->activeProfile()->associate($profile);
-                                $thermostat->nextProfileChange = $endsToday;
-                                $thermostat->save();
-                                $thermostat->log('Włączono profil ' . $profile->name);
-                            }
+                            $thermostat->activeProfile()->associate($profile);
+                            $thermostat->nextProfileChange = $endsToday;
+                            $thermostat->save();
+                            $thermostat->log('Włączono profil ' . $profile->name);
                             return;
                         } else if ($startsToday->getTimestamp() > $now && $startsToday < $closestStart) {
                             $closestStart = $startsToday;
