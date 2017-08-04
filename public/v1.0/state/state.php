@@ -6,8 +6,12 @@ $client = new \SuplaScripts\ConfiguredSuplaApiClient();
 
 $channel = $_GET['channel'];
 
-if ($client->channel($channel)->on) {
-    echo 'ON';
+$channelInfo = $client->channel($channel);
+
+if (isset($channelInfo->on)) {
+    echo $channelInfo->on ? 'ON' : 'OFF';
+} else if (isset($channelInfo->hi)) {
+    echo $channelInfo->hi ? 'CLOSED' : 'OPENED';
 } else {
-    echo 'OFF';
+    echo 'DUNNO';
 }
