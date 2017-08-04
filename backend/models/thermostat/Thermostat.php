@@ -53,6 +53,8 @@ class Thermostat extends Model
     public function save(array $options = [])
     {
         if (!$this->exists) {
+            $this->roomsState = [];
+            $this->devicesState = [];
             $this->slug = Uuid::getFactory()->uuid4();
         }
         return parent::save($options);

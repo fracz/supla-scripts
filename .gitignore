@@ -4,6 +4,7 @@ node_modules/
 *.log
 public/*
 !public/img/
+!public/v1.0/
 /.*
 /config.json
 volumes/
