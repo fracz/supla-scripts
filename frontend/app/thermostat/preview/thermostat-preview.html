@@ -34,15 +34,29 @@
                                 {{ room.name }}
                             </h3>
                             <div class="temperature">
-                                {{ $ctrl.thermostat.channels[room.thermometers[0]].temperature | number:1 }}&deg;C
+                                {{ $ctrl.thermostat.channels[room.thermometers[0]].temperature | temperature }}
                                 <span ng-if="$ctrl.thermostat.roomsState[room.id].action" class="arrow-container">
-                                <fa name="caret-{{ $ctrl.thermostat.roomsState[room.id].action == 'heating' ? 'up' : 'down' }}"
-                                    class="arrow"
-                                    ng-class="$ctrl.thermostat.roomsState[room.id].action == 'heating' ? 'heating' : 'cooling'"></fa>
-                            </span>
+                                    <fa name="caret-{{ $ctrl.thermostat.roomsState[room.id].action == 'heating' ? 'up' : 'down' }}"
+                                        class="arrow"
+                                        ng-class="$ctrl.thermostat.roomsState[room.id].action == 'heating' ? 'heating' : 'cooling'"></fa>
+                                </span>
+                            </div>
+                            <div class="targets text-center" ng-if="!$ctrl.thermostat.roomsState[room.id].action && !$ctrl.thermostat.roomsState[room.id].forcedAction">
+                                <span ng-if="$ctrl.thermostat.activeProfile.roomsConfig[room.id].heatFrom"
+                                      title="Automatycznie ogrzewa od {{ $ctrl.thermostat.activeProfile.roomsConfig[room.id].heatFrom | temperature }}">
+                                    <fa name="caret-up" fw
+                                        class="arrow heating"></fa>
+                                    {{ $ctrl.thermostat.activeProfile.roomsConfig[room.id].heatFrom | temperature }}
+                                </span>
+                                <span ng-if="$ctrl.thermostat.activeProfile.roomsConfig[room.id].coolFrom"
+                                      title="Automatycznie ochładza od {{ $ctrl.thermostat.activeProfile.roomsConfig[room.id].coolFrom | temperature }}">
+                                    <fa name="caret-down" fw
+                                        class="arrow cooling"></fa>
+                                    {{ $ctrl.thermostat.activeProfile.roomsConfig[room.id].coolFrom | temperature }}
+                                </span>
                             </div>
                             <div class="target text-center" ng-if="$ctrl.thermostat.roomsState[room.id].target">
-                                Cel: {{ $ctrl.thermostat.roomsState[room.id].target | number:1 }}&deg;C
+                                Cel: {{ $ctrl.thermostat.roomsState[room.id].target | temperature }}
                             </div>
                             <div class="target text-center" ng-if="$ctrl.thermostat.roomsState[room.id].forcedAction">
                                 <div ng-if="$ctrl.thermostat.roomsState[room.id].forcedUntil | unixToDate | isInNearFuture">

@@ -17,6 +17,12 @@
   h3 {
     margin-top: 0;
   }
+  .arrow {
+    color: #3498db;
+    &.heating {
+      color: #e74c3c;
+    }
+  }
   .temperature {
     text-align: center;
     font-size: 3em;
@@ -28,14 +34,12 @@
       position: absolute;
       left: 10px;
       animation: passing-down 2s linear infinite;
-      color: #3498db;
       &.heating {
-        color: #e74c3c;
         animation: passing-up 2s linear infinite;
       }
     }
   }
-  .target {
+  .target, .targets {
     margin-bottom: 10px;
   }
   .switch.red.checked {
@@ -51,7 +55,6 @@
 .col-12-if-alone:only-child {
   @include make-xs-column(12);
 }
-
 
 @keyframes passing-down {
   0% {
