@@ -42,10 +42,10 @@ class ThermostatRoom extends Model
     {
         $api = new SuplaApi($this->user()->first());
         $temperatures = array_map(function ($channelId) use ($api) {
-            return $api->getChannelWithState($channelId)->temperature;
+            return $api->getChannelWithState($channelId)->temperature ?? 0;
         }, $this->thermometers);
         $temperatures = array_filter($temperatures);
-        return array_sum($temperatures) / count($temperatures);
+        return array_sum($temperatures) / (count($temperatures) ?: 1);
     }
 
     public function validate(array $attributes = null): void

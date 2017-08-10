@@ -83,17 +83,20 @@ class DispatchThermostatCommand extends Command
             $decidor = new ThermostatRoomConfig($roomConfig, $roomState);
             /** @var ThermostatRoom $room */
             if ($decidor->hasConfig()) {
-                $currentTemperature = $room->getCurrentTemperature();
                 if ($decidor->hasForcedAction()) {
-                } else if ($decidor->shouldCool($currentTemperature) && !$decidor->isCooling()) {
-                    $thermostat->log('Rozpoczęto ochładzanie pomieszczenia ' . $room->name);
+                    continue;
+                }
+                $currentTemperature = $room->getCurrentTemperature();
+                $currentTemperatureFormatted = number_format($currentTemperature, 1) . '°C';
+                if ($decidor->shouldCool($currentTemperature) && !$decidor->isCooling()) {
+                    $thermostat->log("Rozpoczęto ochładzanie pomieszczenia $room->name, temperatura: $currentTemperatureFormatted");
                     $decidor->cool();
                 } else if ($decidor->shouldHeat($currentTemperature) && !$decidor->isHeating()) {
-                    $thermostat->log('Rozpoczęto ogrzewanie pomieszczenia ' . $room->name);
+                    $thermostat->log("Rozpoczęto ogrzewanie pomieszczenia $room->name, temperatura: $currentTemperatureFormatted");
                     $decidor->heat();
                 } else if (!$decidor->shouldCool($currentTemperature) && !$decidor->shouldHeat($currentTemperature)
                     && ($decidor->isHeating() || $decidor->isCooling())) {
-                    $thermostat->log('Zakończono ochładzanie lub ogrzewanie pomieszczenia ' . $room->name);
+                    $thermostat->log("Zakończono ochładzanie lub ogrzewanie pomieszczenia $room->name, temperatura: $currentTemperatureFormatted");
                     $decidor->turnOff();
                 }
                 $decidor->updateState($thermostat, $room->id);
