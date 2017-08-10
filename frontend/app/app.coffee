@@ -11,6 +11,7 @@ angular.module 'supla-scripts', [
   'picardy.fontawesome'
   'restangular'
   'rzModule'
+  'swangular'
   'toastr'
   'ui.router'
   'ui.bootstrap.showErrors'

@@ -2,6 +2,7 @@
 
 namespace suplascripts\controllers\thermostat;
 
+use Assert\Assertion;
 use suplascripts\app\commands\DispatchThermostatCommand;
 use suplascripts\controllers\BaseController;
 use suplascripts\controllers\exceptions\Http403Exception;
@@ -56,9 +57,12 @@ class ThermostatsController extends BaseController
                 $thermostat->log('Manualnie powrócono do automatycznego sterowania pomieszczeniem ' . $roomId);
                 $room->clearForcedAction();
             } else {
-                $room->forceAction($parsedBody['roomAction']['action'], 30);
+                $time = $parsedBody['roomAction']['time'] ?? 30;
+                Assertion::greaterThan($time, 0);
+                $room->forceAction($parsedBody['roomAction']['action'], $time);
                 $actionLabel = $room->isCooling() ? 'chłodzenia' : ($room->isHeating() ? 'ogrzewania' : 'brak');
-                $thermostat->log("Manualnie ustalono akcję $actionLabel na 30 minut dla pomieszczenia $roomId");
+                $timeLog = $time > 100 ? '' : " na $time minut";
+                $thermostat->log("Manualnie ustalono akcję $actionLabel$timeLog dla pomieszczenia $roomId");
             }
             $room->updateState($thermostat, $parsedBody['roomAction']['roomId']);
         }

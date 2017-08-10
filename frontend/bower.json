@@ -23,7 +23,8 @@
     "ng-elif": "0.1.5",
     "ngFx": "1.1.0",
     "ngstorage": "0.3.11",
-    "restangular": "1.6.1"
+    "restangular": "1.6.1",
+    "swangular": "^1.3.9"
   },
   "resolutions": {
     "angular": "1.6.5",
