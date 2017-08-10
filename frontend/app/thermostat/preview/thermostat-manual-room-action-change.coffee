@@ -11,10 +11,6 @@ angular.module('supla-scripts').component 'thermostatManualRoomActionChange',
         @heating = @roomState?.action == 'heating'
 
       onChanged: (what) ->
-        if what == 'cooling'
-          @heating = off
-        else
-          @cooling = off
         action = if @[what] then what else null
         actionName = if action then 'włączyć' else 'wyłączyć'
         timeChooseModal = swangular.open
@@ -24,7 +20,13 @@ angular.module('supla-scripts').component 'thermostatManualRoomActionChange',
           showCancelButton: yes
           showConfirmButton: no
           cancelButtonText: 'Anuluj'
+        .catch =>
+          @[what] = !@[what]
         $scope.chooseTime = (time) =>
           swangular.closeModal(timeChooseModal)
+          if what == 'cooling'
+            @heating = off
+          else
+            @cooling = off
           @onActionChange({action, time})
         return
