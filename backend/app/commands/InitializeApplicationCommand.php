@@ -26,6 +26,7 @@ class InitializeApplicationCommand extends Command
             $output->writeln('<error>There is no config.json.</error>');
         } else {
             $this->getApplication()->setAutoExit(false);
+            $this->getApplication()->run(new StringInput('encryptionKey:generate'), $output);
             $this->getApplication()->run(new StringInput('db:migrate'), $output);
         }
     }
