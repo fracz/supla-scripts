@@ -45,7 +45,7 @@
             </div>
             <div class="list-group" ng-if="$ctrl.room.heaters.length">
                 <div class="list-group-item" ng-repeat="channelId in $ctrl.room.heaters">
-                    <a ng-click="$ctrl.removeChannel(channelId, 'heaters')" class="channel-delete-btn">
+                    <a ng-click="$ctrl.removeChannel(channelId, 'heaters')" class="floating-delete-btn">
                         <fa name="times-circle-o"></fa>
                     </a>
                     <channel-state channel-id="channelId"></channel-state>

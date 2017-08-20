@@ -1,6 +1,8 @@
-.channel-delete-btn {
+.floating-delete-btn {
   float: right;
   position: relative;
   top: -20px;
-  right: -20px;
+  right: -10px;
+  width: 0;
+  overflow: visible;
 }

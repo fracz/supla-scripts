@@ -13,3 +13,6 @@ angular.module('supla-scripts').component 'thermostatProfileForm',
         else
           @profile = {}
         @profile.activeOn ?= []
+
+      removeTimeSlot: (timeSlot) ->
+        @profile.activeOn.splice(@profile.activeOn.indexOf(timeSlot), 1)

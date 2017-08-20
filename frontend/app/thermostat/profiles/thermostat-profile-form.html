@@ -89,6 +89,9 @@
                             <time-range-picker ng-model="timeSlot.timeRange"></time-range-picker>
                         </div>
                         <div class="col-md-6">
+                            <a ng-click="$ctrl.removeTimeSlot(timeSlot)" class="floating-delete-btn">
+                                <fa name="times-circle-o"></fa>
+                            </a>
                             <weekday-picker ng-model="timeSlot.weekdays"></weekday-picker>
                         </div>
                     </div>

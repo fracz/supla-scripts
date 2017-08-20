@@ -12,7 +12,7 @@
 <div class="row">
     <div class="col-sm-4">
         <h6>Aktywny</h6>
-        <ul>
+        <ul ng-if="$ctrl.profile.activeOn.length > 0">
             <li ng-repeat="timeSpan in $ctrl.profile.activeOn">
                 <span ng-if="!timeSpan.weekdays.length || timeSpan.weekdays.length == 7">Codziennie</span>
                 <span ng-else>
@@ -25,6 +25,7 @@
                 a {{ (timeSpan.timeRange.timeEnd || 1440) | minutesToHumanTime }}
             </li>
         </ul>
+        <div ng-else>Profil nie jest aktywowany automatycznie</div>
     </div>
     <div class="col-sm-8">
         <table class="table">
