@@ -41,7 +41,7 @@
                 <channel-selector ng-model="newHeater"
                                   ng-change="$ctrl.onChannelAdd(newHeater, 'heaters'); newHeater = undefined"
                                   hide-ids="$ctrl.room.heaters"
-                                  functions="['FNC_POWERSWITCH', 'FNC_CONTROLLINGTHEGATEWAYLOCK', 'FNC_CONTROLLINGTHEGATE', 'FNC_CONTROLLINGTHEGARAGEDOOR']"></channel-selector>
+                                  functions="['FNC_POWERSWITCH', 'FNC_LIGHTSWITCH', 'FNC_CONTROLLINGTHEGATEWAYLOCK', 'FNC_CONTROLLINGTHEGATE', 'FNC_CONTROLLINGTHEGARAGEDOOR']"></channel-selector>
             </div>
             <div class="list-group" ng-if="$ctrl.room.heaters.length">
                 <div class="list-group-item" ng-repeat="channelId in $ctrl.room.heaters">
@@ -61,7 +61,7 @@
                 <channel-selector ng-model="newCooler"
                                   hide-ids="$ctrl.room.coolers"
                                   ng-change="$ctrl.onChannelAdd(newCooler, 'coolers'); newCooler = undefined"
-                                  functions="['FNC_POWERSWITCH', 'FNC_CONTROLLINGTHEGATEWAYLOCK', 'FNC_CONTROLLINGTHEGATE', 'FNC_CONTROLLINGTHEGARAGEDOOR']"></channel-selector>
+                                  functions="['FNC_POWERSWITCH', 'FNC_LIGHTSWITCH', 'FNC_CONTROLLINGTHEGATEWAYLOCK', 'FNC_CONTROLLINGTHEGATE', 'FNC_CONTROLLINGTHEGARAGEDOOR']"></channel-selector>
             </div>
             <div class="list-group" ng-if="$ctrl.room.coolers.length">
                 <div class="list-group-item" ng-repeat="channelId in $ctrl.room.coolers">
