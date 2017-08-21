@@ -22,7 +22,7 @@ class ThermostatTables extends Migration
             ->addColumn(Thermostat::SLUG, 'string')
             ->addColumn(Thermostat::ROOMS_STATE, 'text')
             ->addColumn(Thermostat::DEVICES_STATE, 'text')
-            ->addColumn(Thermostat::NEXT_PROFILE_CHANGE, 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
+            ->addColumn(Thermostat::NEXT_PROFILE_CHANGE, 'timestamp', ['default' => '2017-01-01 00:00:00'])
             ->addTimestamps(Thermostat::CREATED_AT, Thermostat::UPDATED_AT)
             ->addColumn(Thermostat::USER_ID, 'uuid')
             ->addForeignKey(Thermostat::USER_ID, User::TABLE_NAME, User::ID, ['delete' => 'CASCADE'])
