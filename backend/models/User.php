@@ -6,6 +6,7 @@ use Assert\Assert;
 use Assert\Assertion;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use suplascripts\models\supla\SuplaApi;
+use suplascripts\models\thermostat\Thermostat;
 
 /**
  * @property int $id
@@ -47,6 +48,11 @@ class User extends Model
         $user->setPassword($attributes[self::PASSWORD]);
         $user->save();
         return $user;
+    }
+
+    public function thermostats(): HasMany
+    {
+        return $this->hasMany(Thermostat::class, Thermostat::USER_ID);
     }
 
     public function setPassword($plainPassword)

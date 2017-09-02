@@ -9,6 +9,7 @@ use suplascripts\models\Model;
 use suplascripts\models\User;
 
 /**
+ * @property string $label
  * @property bool $enabled
  * @property string $slug
  * @property mixed $roomsState
@@ -18,6 +19,7 @@ use suplascripts\models\User;
 class Thermostat extends Model
 {
     const TABLE_NAME = 'thermostats';
+    const LABEL = 'label';
     const ENABLED = 'enabled';
     const ROOMS_STATE = 'roomsState';
     const SLUG = 'slug';
@@ -27,7 +29,7 @@ class Thermostat extends Model
     const USER_ID = 'userId';
 
     protected $dates = [self::NEXT_PROFILE_CHANGE];
-    protected $fillable = [self::ENABLED];
+    protected $fillable = [self::LABEL, self::ENABLED];
     protected $jsonEncoded = [self::ROOMS_STATE, self::DEVICES_STATE];
 
     public function user(): BelongsTo

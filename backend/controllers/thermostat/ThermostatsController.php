@@ -13,11 +13,27 @@ use suplascripts\models\thermostat\ThermostatRoomConfig;
 
 class ThermostatsController extends BaseController
 {
-    public function getDefaultAction()
+    public function getAction($id)
     {
         /** @var Thermostat $thermostat */
-        $thermostat = $this->ensureExists(Thermostat::where([Thermostat::USER_ID => $this->getCurrentUser()->id])->first());
+        $thermostat = $this->ensureExists(Thermostat::find($id));
         return $this->thermostatResponse($thermostat);
+    }
+
+    public function getListAction()
+    {
+        $this->ensureAuthenticated();
+        $thermostats = Thermostat::where([Thermostat::USER_ID => $this->getCurrentUser()->id])->get();
+        return $this->response($thermostats);
+    }
+
+    public function postAction()
+    {
+        $this->ensureAuthenticated();
+        $parsedBody = $this->request()->getParsedBody();
+        $thermostat = $this->getCurrentUser()->thermostats()->create([Thermostat::LABEL => $parsedBody['label']]);
+        $thermostat->save();
+        return $this->response($thermostat)->withStatus(201);
     }
 
     public function getBySlugAction($params)

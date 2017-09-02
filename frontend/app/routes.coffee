@@ -26,10 +26,14 @@ angular.module('supla-scripts')
     url: '/dashboard'
     template: '<dashboard></dashboard>'
 
+  .state 'thermostats',
+    url: '/thermostats'
+    template: '<thermostats-list></thermostats-list>'
+
   .state 'thermostat',
-    url: '/thermostat'
+    url: '/thermostat/{id}'
     abstract: true
-    template: '<thermostat-view></thermostat-view>'
+    template: '<thermostats-view></thermostats-view>'
 
   .state 'thermostat.rooms',
     url: '/rooms'

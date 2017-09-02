@@ -7,9 +7,9 @@ use suplascripts\controllers\ChannelsController;
 use suplascripts\controllers\DevicesController;
 use suplascripts\controllers\LogsController;
 use suplascripts\controllers\SystemController;
-use suplascripts\controllers\thermostat\ThermostatsController;
 use suplascripts\controllers\thermostat\ThermostatProfilesController;
 use suplascripts\controllers\thermostat\ThermostatRoomsController;
+use suplascripts\controllers\thermostat\ThermostatsController;
 use suplascripts\controllers\TokensController;
 use suplascripts\controllers\UsersController;
 
@@ -43,12 +43,14 @@ $app->group('/api', function () use ($app) {
     });
 
     $app->group('/thermostats', function () use ($app) {
-        $app->get('/default', ThermostatsController::class . ':getDefault');
+        $app->get('', ThermostatsController::class . ':getList');
+        $app->post('', ThermostatsController::class . ':post');
+        $app->get('/{id}', ThermostatsController::class . ':get');
         $app->patch('/{id}', ThermostatsController::class . ':patch');
         $app->get('/preview/{slug}', ThermostatsController::class . ':getBySlug');
         $app->patch('/preview/{slug}/{id}', ThermostatsController::class . ':patch');
     });
-    $app->group('/thermostat-rooms', function () use ($app) {
+    $app->group('/thermostats/{thermostatId}/thermostat-rooms', function () use ($app) {
         $app->get('', ThermostatRoomsController::class . ':getList');
         $app->post('', ThermostatRoomsController::class . ':post');
         $app->put('/{id}', ThermostatRoomsController::class . ':put');

@@ -1,0 +1,40 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="alert alert-info" ng-if="$ctrl.thermostats.length === 0">
+                <fa name="info-circle" fw class="pull-right" size="2"></fa>
+                <p>Nie masz jeszcze żadnych termostatów. Dodaj nowy za pomocą formularza poniżej.</p>
+            </div>
+
+            <loader-dots ng-if="!$ctrl.thermostats"></loader-dots>
+
+            <div ng-else>
+                <div class="list-group">
+                    <a ng-repeat="thermostat in $ctrl.thermostats" ui-sref="thermostat.preview(thermostat)"
+                       class="list-group-item">
+                        <h4>{{ thermostat.label }}</h4>
+                    </a>
+                </div>
+                <form ng-submit="newThermostatForm.$valid && $ctrl.createNew()" name="newThermostatForm" promise-btn>
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-6">
+                            <div class="form-group">
+                                <span class="input-group">
+                                    <input type="text" class="form-control" placeholder="Nazwa nowego termostatu"
+                                           ng-model="$ctrl.newLabel">
+                                    <span class="input-group-btn">
+                                        <button type="submit" class="btn btn-primary">
+                                            <fa name="plus-circle" fw></fa>
+                                            Dodaj
+                                        </button>
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div ui-view></div>
