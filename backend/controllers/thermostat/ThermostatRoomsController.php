@@ -9,12 +9,11 @@ use suplascripts\models\thermostat\ThermostatRoom;
 
 class ThermostatRoomsController extends BaseController
 {
-    public function postAction()
+    public function postAction($id)
     {
+        $thermostat = $this->getThermostat($id);
         $parsedBody = $this->request()->getParsedBody();
-        return $this->getApp()->db->getConnection()->transaction(function () use ($parsedBody) {
-            /** @var Thermostat $thermostat */
-            $thermostat = Thermostat::firstOrCreate([ThermostatRoom::USER_ID => $this->getCurrentUser()->id]);
+        return $this->getApp()->db->getConnection()->transaction(function () use ($thermostat, $parsedBody) {
             $createdRoom = $thermostat->rooms()->create($parsedBody);
             $createdRoom->save();
             $thermostat->log('Utworzono pomieszczenie ' . $createdRoom->name);
@@ -23,9 +22,19 @@ class ThermostatRoomsController extends BaseController
         });
     }
 
-    public function getListAction()
+    private function getThermostat($params): Thermostat
     {
-        $rooms = ThermostatRoom::where([ThermostatRoom::USER_ID => $this->getCurrentUser()->id])->get();
+        $this->ensureAuthenticated();
+        return $this->ensureExists(Thermostat::where([
+            Thermostat::USER_ID => $this->getCurrentUser()->id,
+            Thermostat::ID => $params['thermostatId']
+        ])->first());
+    }
+
+    public function getListAction($params)
+    {
+        $thermostat = $this->getThermostat($params);
+        $rooms = $thermostat->rooms()->get();
         return $this->response($rooms);
     }
 

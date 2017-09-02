@@ -33,15 +33,20 @@ angular.module('supla-scripts')
   .state 'thermostat',
     url: '/thermostat/{id}'
     abstract: true
-    template: '<thermostats-view></thermostats-view>'
+    template: '<thermostat-details thermostat="thermostat"></thermostat-details>'
+    controller: ($scope, thermostat) -> $scope.thermostat = thermostat
+    resolve:
+      thermostat: (Thermostats, $stateParams) -> Thermostats.one($stateParams.id).get()
 
   .state 'thermostat.rooms',
     url: '/rooms'
-    template: '<thermostat-rooms-list></thermostat-rooms-list>'
+    template: '<thermostat-rooms-list thermostat="thermostat"></thermostat-rooms-list>'
+    controller: ($scope, thermostat) -> $scope.thermostat = thermostat
 
   .state 'thermostat.profiles',
     url: '/profiles'
-    template: '<thermostat-profiles-list></thermostat-profiles-list>'
+    template: '<thermostat-profiles-list thermostat="thermostat"></thermostat-profiles-list>'
+    controller: ($scope, thermostat) -> $scope.thermostat = thermostat
 
   .state 'thermostat.preview',
     url: '/preview'

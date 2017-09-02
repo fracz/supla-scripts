@@ -1,16 +1,18 @@
 angular.module('supla-scripts').component 'thermostatProfilesList',
   templateUrl: 'app/thermostat/profiles/thermostat-profiles-list.html'
-  controller: (ThermostatRooms, ThermostatProfiles, $state) ->
+  bindings:
+    thermostat: '<'
+  controller: ($state) ->
     new class
       $onInit: ->
-        ThermostatRooms.getList().then (@rooms) =>
+        @thermostat.all('thermostat-rooms').getList().then (@rooms) =>
           if not @rooms.length
             $state.go('^.rooms')
-        ThermostatProfiles.getList().then (@profiles) =>
+        @thermostat.all('thermostat-profiles').getList().then (@profiles) =>
           @adding = true if not @profiles.length
 
       addNewProfile: (profile) ->
-        ThermostatProfiles.post(profile).then (savedProfile) =>
+        @thermostat.all('thermostat-profiles').post(profile).then (savedProfile) =>
           @adding = false
           @profiles.push(savedProfile)
 

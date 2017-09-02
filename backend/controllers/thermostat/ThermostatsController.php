@@ -16,7 +16,7 @@ class ThermostatsController extends BaseController
     public function getAction($id)
     {
         /** @var Thermostat $thermostat */
-        $thermostat = $this->ensureExists(Thermostat::find($id));
+        $thermostat = $this->ensureExists(Thermostat::find($id)->first());
         return $this->thermostatResponse($thermostat);
     }
 
@@ -110,6 +110,7 @@ class ThermostatsController extends BaseController
         }
         return $this->response([
             'id' => $thermostat->id,
+            'label' => $thermostat->label,
             'enabled' => boolval($thermostat->enabled),
             'profiles' => $thermostat->profiles()->get(),
             'rooms' => $thermostat->rooms()->get(),

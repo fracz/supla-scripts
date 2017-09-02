@@ -9,13 +9,12 @@ use suplascripts\models\thermostat\ThermostatProfile;
 
 class ThermostatProfilesController extends BaseController
 {
-    public function postAction()
+    public function postAction($params)
     {
         $this->ensureAuthenticated();
         $parsedBody = $this->request()->getParsedBody();
-        return $this->getApp()->db->getConnection()->transaction(function () use ($parsedBody) {
-            /** @var Thermostat $thermostat */
-            $thermostat = Thermostat::firstOrCreate([Thermostat::USER_ID => $this->getCurrentUser()->id]);
+        $thermostat = $this->getThermostat($params);
+        return $this->getApp()->db->getConnection()->transaction(function () use ($thermostat, $parsedBody) {
             $createdProfile = $thermostat->profiles()->create($parsedBody);
             $thermostat->nextProfileChange = new \DateTime();
             $thermostat->log('Utworzono nowy profil o nazwie ' . $createdProfile->name);
@@ -29,10 +28,19 @@ class ThermostatProfilesController extends BaseController
         });
     }
 
-    public function getListAction()
+    private function getThermostat($params): Thermostat
     {
         $this->ensureAuthenticated();
-        $profiles = ThermostatProfile::where([ThermostatProfile::USER_ID => $this->getCurrentUser()->id])->get();
+        return $this->ensureExists(Thermostat::where([
+            Thermostat::USER_ID => $this->getCurrentUser()->id,
+            Thermostat::ID => $params['thermostatId']
+        ])->first());
+    }
+
+    public function getListAction($params)
+    {
+        $thermostat = $this->getThermostat($params);
+        $profiles = $thermostat->profiles()->get();
         return $this->response($profiles);
     }
 

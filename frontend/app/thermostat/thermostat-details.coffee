@@ -1,2 +1,4 @@
-angular.module('supla-scripts').component 'thermostatView',
-  templateUrl: 'app/thermostat/thermostat-view.html'
+angular.module('supla-scripts').component 'thermostatDetails',
+  templateUrl: 'app/thermostat/thermostat-details.html'
+  bindings:
+    thermostat: '<'

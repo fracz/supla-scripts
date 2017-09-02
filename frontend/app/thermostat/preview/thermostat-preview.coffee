@@ -2,7 +2,7 @@ angular.module('supla-scripts').component 'thermostatPreview',
   templateUrl: 'app/thermostat/preview/thermostat-preview.html'
   bindings:
     slug: '<'
-  controller: (Thermostats, ScopeInterval, $scope, $state) ->
+  controller: (Thermostats, ScopeInterval, $scope, $state, $stateParams) ->
     new class
       intervalPromise: null
       changingPromise: null
@@ -13,7 +13,7 @@ angular.module('supla-scripts').component 'thermostatPreview',
 
       fetch: =>
         if not @changingPromise
-          endpoint = Thermostats.one('default').withHttpConfig(skipErrorHandler: yes)
+          endpoint = Thermostats.one($stateParams.id).withHttpConfig(skipErrorHandler: yes)
           endpoint = Thermostats.one('preview').one(@slug) if @slug
           @intervalPromise = endpoint.get()
             .then(@receiveThermostat)

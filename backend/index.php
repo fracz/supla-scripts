@@ -53,10 +53,10 @@ $app->group('/api', function () use ($app) {
     $app->group('/thermostats/{thermostatId}/thermostat-rooms', function () use ($app) {
         $app->get('', ThermostatRoomsController::class . ':getList');
         $app->post('', ThermostatRoomsController::class . ':post');
-        $app->put('/{id}', ThermostatRoomsController::class . ':put');
-        $app->delete('/{id}', ThermostatRoomsController::class . ':delete');
+        $app->put('/{roomId}', ThermostatRoomsController::class . ':put');
+        $app->delete('/{roomId}', ThermostatRoomsController::class . ':delete');
     });
-    $app->group('/thermostat-profiles', function () use ($app) {
+    $app->group('/thermostats/{thermostatId}/thermostat-profiles', function () use ($app) {
         $app->get('', ThermostatProfilesController::class . ':getList');
         $app->post('', ThermostatProfilesController::class . ':post');
         $app->put('/{id}', ThermostatProfilesController::class . ':put');
