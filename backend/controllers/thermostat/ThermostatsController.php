@@ -33,6 +33,7 @@ class ThermostatsController extends BaseController
         $parsedBody = $this->request()->getParsedBody();
         $thermostat = $this->getCurrentUser()->thermostats()->create([Thermostat::LABEL => $parsedBody['label']]);
         $thermostat->save();
+        $thermostat->log('Utworzono termostat');
         return $this->response($thermostat)->withStatus(201);
     }
 
@@ -123,5 +124,16 @@ class ThermostatsController extends BaseController
             }, $thermostat->devicesState ?? []),
             'slug' => $thermostat->slug,
         ]);
+    }
+
+    public function deleteAction($params)
+    {
+        $thermostat = $this->ensureExists(Thermostat::find($params['id'])->first());
+        if ($thermostat->userId != $this->getCurrentUser()->id) {
+            throw new Http403Exception();
+        }
+        $thermostat->log('Usunięto termostat');
+        $thermostat->delete();
+        return $this->response()->withStatus(204);
     }
 }

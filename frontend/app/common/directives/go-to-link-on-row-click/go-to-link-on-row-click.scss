@@ -2,4 +2,7 @@
   &, td {
     cursor: pointer;
   }
+  &.list-group-item:hover {
+    background: #EEE;
+  }
 }

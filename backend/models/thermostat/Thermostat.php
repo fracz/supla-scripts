@@ -64,6 +64,6 @@ class Thermostat extends Model
 
     public function log($data)
     {
-        $this->user()->first()->log('thermostat', $data);
+        $this->user()->first()->log('thermostat', "[$this->label] " . $data);
     }
 }

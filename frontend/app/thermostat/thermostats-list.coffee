@@ -9,3 +9,13 @@ angular.module('supla-scripts').component 'thermostatsList',
         Thermostats.post(label: @newLabel).then (thermostat) =>
           @newLabel = ''
           @thermostats.push(thermostat)
+
+      disableThermostat: (thermostat) ->
+        thermostat.patch(enabled: false).then((updated) => angular.extend(thermostat, updated))
+
+      enableThermostat: (thermostat) ->
+        thermostat.patch(enabled: true).then((updated) => angular.extend(thermostat, updated))
+
+      deleteThermostat: (thermostat) ->
+        thermostat.remove().then =>
+          @thermostats.splice(@thermostats.indexOf(thermostat), 1)

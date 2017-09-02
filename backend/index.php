@@ -46,6 +46,7 @@ $app->group('/api', function () use ($app) {
         $app->get('', ThermostatsController::class . ':getList');
         $app->post('', ThermostatsController::class . ':post');
         $app->get('/{id}', ThermostatsController::class . ':get');
+        $app->delete('/{id}', ThermostatsController::class . ':delete');
         $app->patch('/{id}', ThermostatsController::class . ':patch');
         $app->get('/preview/{slug}', ThermostatsController::class . ':getBySlug');
         $app->patch('/preview/{slug}/{id}', ThermostatsController::class . ':patch');
