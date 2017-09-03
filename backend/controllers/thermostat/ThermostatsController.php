@@ -128,7 +128,7 @@ class ThermostatsController extends BaseController
 
     public function deleteAction($params)
     {
-        $thermostat = $this->ensureExists(Thermostat::find($params['id'])->first());
+        $thermostat = $this->ensureExists(Thermostat::find($params)->first());
         if ($thermostat->userId != $this->getCurrentUser()->id) {
             throw new Http403Exception();
         }
