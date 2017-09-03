@@ -1,8 +1,11 @@
 {
   "displayErrorDetails": false,
   "db": {
-    "driver": "sqlite",
-    "database": "backend/var/suplascripts.db",
+    "driver": "mysql",
+    "database": "suplascripts",
+    "host": "suplascripts-db",
+    "username": "suplascripts",
+    "password": "",
     "charset": "utf8",
     "prefix": ""
   },

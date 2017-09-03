@@ -15,7 +15,7 @@ services:
       - ../:/var/www/website:z
       - ./apache-conf:/etc/apache2/sites-available:z
     depends_on:
-     - gitexercises-db
+     - suplascripts-db
 
   suplascripts-db:
     container_name: ${COMPOSE_PROJECT_NAME}-db
