@@ -10,3 +10,4 @@ public/*
 volumes/
 *.tar.gz
 release/
+var/
