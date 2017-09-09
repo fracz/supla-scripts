@@ -26,7 +26,11 @@ class DispatchThermostatCommand extends Command
     {
         $activeThermostats = Thermostat::where([Thermostat::ENABLED => true])->get();
         foreach ($activeThermostats as $thermostat) {
-            $this->adjust($thermostat, $output);
+            try {
+                $this->adjust($thermostat, $output);
+            } catch (\Exception $e) {
+                $output->writeln("[Thermostat $thermostat->id] ERROR: " . $e->getMessage());
+            }
         }
     }
 
