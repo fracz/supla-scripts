@@ -23,11 +23,16 @@ class UserAndUrlAwareLogger implements LoggerInterface
 
     private function buildContext(array $context): array
     {
-        $currentUser = $this->getApp()->getCurrentUser();
-        return array_merge([
-            'url' => (string)Application::getInstance()->request->getUri(),
-            'username' => $currentUser ? $currentUser->username : null,
-        ], $context);
+        $app = $this->getApp();
+        if ($app) {
+            $currentUser = $app->getCurrentUser();
+            return array_merge([
+                'url' => (string)$app->request->getUri(),
+                'username' => $currentUser ? $currentUser->username : null,
+            ], $context);
+        } else {
+            return $context;
+        }
     }
 
     public function emergency($message, array $context = [])

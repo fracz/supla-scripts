@@ -3,6 +3,7 @@
 namespace suplascripts\app\commands;
 
 use Cron\CronExpression;
+use suplascripts\app\UserAndUrlAwareLogger;
 use suplascripts\models\supla\SuplaApi;
 use suplascripts\models\thermostat\Thermostat;
 use suplascripts\models\thermostat\ThermostatProfile;
@@ -29,7 +30,7 @@ class DispatchThermostatCommand extends Command
             try {
                 $this->adjust($thermostat, $output);
             } catch (\Exception $e) {
-                $output->writeln("[Thermostat $thermostat->id] ERROR: " . $e->getMessage());
+                (new UserAndUrlAwareLogger())->error($e->getMessage(), ['thermostat' => $thermostat->id]);
             }
         }
     }
