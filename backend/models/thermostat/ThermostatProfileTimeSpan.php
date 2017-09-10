@@ -15,15 +15,18 @@ class ThermostatProfileTimeSpan
         $this->timeRange = $timeSpan['timeRange'] ?? [];
     }
 
-    public function getStartCronExpression() {
-        return $this->getCronExpression($this->timeRange['timeStart'] ?? 0);
+    public function getStartCronExpression()
+    {
+        return $this->getCronExpression($this->timeSpecToMinutesInDefaultTimezone($this->timeRange['timeStart'] ?? 0, 0));
     }
 
-    public function getEndCronExpression() {
-        return $this->getCronExpression(min($this->timeRange['timeEnd'] ?? 1439, 1439));
+    public function getEndCronExpression()
+    {
+        return $this->getCronExpression($this->timeSpecToMinutesInDefaultTimezone($this->timeRange['timeStart'] ?? 1439, 1439));
     }
 
-    private function getCronExpression($timeInMinutes) {
+    private function getCronExpression($timeInMinutes)
+    {
         return "{$this->minutesPart($timeInMinutes)} {$this->hoursPart($timeInMinutes)} * * {$this->weekdaysPart()}";
     }
 
@@ -40,5 +43,17 @@ class ThermostatProfileTimeSpan
     private function minutesPart(int $minutes): int
     {
         return $minutes % 60;
+    }
+
+    private function timeSpecToMinutesInDefaultTimezone($timeSpec, $default): int
+    {
+        if (!is_string($timeSpec)) {
+            return $default;
+        }
+        $datetime = new \DateTime($timeSpec);
+        $datetime->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+        $time = explode(':', $datetime->format('H:i'));
+        $minutes = $time[0] * 60 + $time[1];
+        return max(0, min(1439, $minutes));
     }
 }
