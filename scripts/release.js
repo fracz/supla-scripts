@@ -1,18 +1,13 @@
 var project = require("./logo");
+var version = require('../package.json').version;
 var chalk = require('chalk');
 const ora = require('ora');
 var fs = require('fs-extra');
-var path = require('path');
 var async = require('async');
 var del = require('del');
 var exec = require('child_process').exec;
 
-process.chdir('../../');
-console.log(process.cwd());
-
-
-var version = require('../package.json').version;
-var releasePackageName = 'supla-scripts-v' + version + '.tar.gz';
+var releasePackageName = 'supla-scripts-' + version + '.tar.gz';
 
 project.printAsciiLogoAndVersion();
 
@@ -28,13 +23,13 @@ function clearVendorDirectory() {
     var spinner = ora({text: 'Cleaning vendor directory.', color: 'yellow'}).start();
     del('backend/vendor/**/.git')
         .then(() => {
-        spinner.succeed('Vendor directory cleaned.');
-    clearReleaseDirectory();
-})
-.catch((err) => {
-        console.log(err);
-    spinner.fail();
-});
+            spinner.succeed('Vendor directory cleaned.');
+            clearReleaseDirectory();
+        })
+        .catch((err) => {
+            console.log(err);
+            spinner.fail();
+        });
 }
 
 function clearReleaseDirectory() {
@@ -55,7 +50,8 @@ function copyToReleaseDirectory() {
     var calls = [];
     [
         'backend/',
-        'public/',
+        'public',
+        'docker/',
     ].forEach(function (filename) {
         calls.push(function (callback) {
             fs.mkdirsSync('release/' + filename);
@@ -77,41 +73,49 @@ function copyToReleaseDirectory() {
             copySingleRequiredFiles();
             clearLocalConfigFiles();
             spinner.succeed('Application files copied.');
-            createZipArchive();
+            deleteUnwantedSources();
         }
     });
 }
 
 function createRequiredDirectories() {
     [
-        'var',
-        'var/cache',
+        'var/config',
+        'var/mysql',
         'var/logs',
-        'var/sessions',
+        'var/system'
     ].forEach(function (dirname) {
         fs.mkdirsSync('release/' + dirname);
     });
 }
 
 function copySingleRequiredFiles() {
-    fs.copySync('src/.htaccess', 'release/src/.htaccess');
-    fs.copySync('README.md', 'release/README.md');
-    fs.copySync('var/bootstrap.php.cache', 'release/var/bootstrap.php.cache');
-    fs.copySync('var/SymfonyRequirements.php', 'release/var/SymfonyRequirements.php');
+    fs.copySync('var/config/config.sample.json', 'release/var/config/config.sample.json');
+    fs.copySync('var/config/docker-config.env.sample', 'release/var/config/docker-config.env.sample');
+    fs.copySync('var/system/version', 'release/var/system/version');
+    fs.copySync('supla-scripts', 'release/supla-scripts');
 }
 
 function clearLocalConfigFiles() {
     del.sync([
         'release/**/.gitignore',
-        'release/app/config/config_dev.yml',
-        'release/app/config/config_test.yml',
-        'release/app/config/parameters.yml',
-        'release/app/config/parameters.yml.travis',
-        'release/app/config/routing_dev.yml',
-        'release/src/*/Tests',
-        'release/web/app_dev.php',
-        'release/web/assets/**/*.map',
+        'release/backend/composer.*'
     ]);
+}
+
+function deleteUnwantedSources() {
+    var spinner = ora({text: 'Deleting unneeded sources.', color: 'yellow'}).start();
+    del([
+        'release/backend/database/drop.php'
+    ])
+        .then(() => {
+            spinner.succeed('Unneeded sources deleted.');
+            createZipArchive();
+        })
+        .catch((err) => {
+            console.log(err);
+            spinner.fail();
+        })
 }
 
 function createZipArchive() {

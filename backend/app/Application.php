@@ -22,8 +22,8 @@ use suplascripts\models\User;
  */
 class Application extends App
 {
-    const VAR_PATH = __DIR__ . '/../var';
-    const CONFIG_PATH = __DIR__ . '/../../config.json';
+    const VAR_PATH = __DIR__ . '/../../var';
+    const CONFIG_PATH = self::VAR_PATH . '/config/config.json';
 
     private static $instance;
 

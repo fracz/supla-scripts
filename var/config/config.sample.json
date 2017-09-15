@@ -1,5 +1,6 @@
 {
   "displayErrorDetails": false,
+  "ssl": true,
   "db": {
     "driver": "mysql",
     "database": "suplascripts",
@@ -13,6 +14,6 @@
     "key": "CHANGE ME",
     "expirationTime": 3600,
     "expirationTimeRememberMe": 604800,
-    "iss": "https://supla.fracz.pl"
+    "iss": "https://supla.fracz.com"
   }
 }

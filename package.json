@@ -6,17 +6,17 @@
   "private": true,
   "scripts": {
     "build": "cd frontend && npm run -s build",
-    "dist": "npm install && npm run dist:backend && npm run dist:frontend && php supla-scripts init",
+    "dist": "npm install && npm run dist:backend && npm run dist:frontend",
     "dist:backend": "cd backend && composer-runner -- install --optimize-autoloader --no-dev",
     "dist:frontend": "cd frontend && npm run dist",
+    "init": "php supla-scripts init",
     "install": "node scripts/logo.js && npm run install:backend && npm run install:frontend",
-    "install:backend": "node scripts/version-dump.js && cd backend && composer-runner -- install && php supla-scripts-manager.php init",
+    "install:backend": "node scripts/version-dump.js && cd backend && composer-runner -- install",
     "install:frontend": "cd frontend && npm install",
     "lint": "npm run lint:frontend",
     "lint:frontend": "cd frontend && npm run -s lint",
     "release": "npm run -s dist && node scripts/release.js",
-    "watch": "cd frontend && npm run -s watch",
-    "db:migrate": "php supla-scripts init"
+    "watch": "cd frontend && npm run -s watch"
   },
   "devDependencies": {
     "async": "2.4.1",

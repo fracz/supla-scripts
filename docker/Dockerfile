@@ -22,7 +22,7 @@ RUN apt-get update \
     && apt-get autoremove \
     && rm -r /var/lib/apt/lists/*
 
-RUN a2enmod rewrite expires deflate ssl cgi alias env
+RUN a2enmod rewrite expires deflate ssl cgi alias env && a2ensite default-ssl
 
 ARG WWW_DATA_UID=1001
 RUN usermod --uid "$WWW_DATA_UID" www-data \
