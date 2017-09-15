@@ -24,6 +24,7 @@ services:
     restart: unless-stopped
     image: mysql
     networks: [default]
+    user: $UID
     environment:
       MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
       MYSQL_DATABASE: suplascripts

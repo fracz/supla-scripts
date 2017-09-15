@@ -92,6 +92,7 @@ function createRequiredDirectories() {
 function copySingleRequiredFiles() {
     fs.copySync('var/config/config.sample.json', 'release/var/config/config.sample.json');
     fs.copySync('var/config/docker-config.env.sample', 'release/var/config/docker-config.env.sample');
+    fs.copySync('var/ssl/generate-self-signed-certs.sh', 'release/var/ssl/generate-self-signed-certs.sh');
     fs.copySync('var/system/version', 'release/var/system/version');
     fs.copySync('supla-scripts', 'release/supla-scripts');
 }
