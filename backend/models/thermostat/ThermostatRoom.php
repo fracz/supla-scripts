@@ -48,7 +48,7 @@ class ThermostatRoom extends Model
         return array_sum($temperatures) / (count($temperatures) ?: 1);
     }
 
-    public function validate(array $attributes = null): void
+    public function validate(array $attributes = null)
     {
         if (!$attributes) {
             $attributes = $this->getAttributes();

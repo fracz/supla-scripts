@@ -35,7 +35,7 @@ class ThermostatProfile extends Model
         return $this->belongsTo(Thermostat::class, self::THERMOSTAT_ID);
     }
 
-    public function validate(array $attributes = null): void
+    public function validate(array $attributes = null)
     {
         if (!$attributes) {
             $attributes = $this->getAttributes();

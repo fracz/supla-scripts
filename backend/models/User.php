@@ -114,19 +114,19 @@ class User extends Model
         ])->save();
     }
 
-    public static function validateUsername(string $username): void
+    public static function validateUsername(string $username)
     {
         Assert::that($username)
             ->minLength(3, 'Too short username (min 3 characters).')
             ->regex('#^[a-z0-9_]+$#i', 'Username can contain only letters, digits and an underscore (_).');
     }
 
-    public static function validateUsernameUnique(string $username): void
+    public static function validateUsernameUnique(string $username)
     {
         Assertion::null(self::where(self::USERNAME, $username)->first(), 'Username is taken.', 'username');
     }
 
-    public static function validatePlainPassword(string $plainPassword): void
+    public static function validatePlainPassword(string $plainPassword)
     {
         Assert::that($plainPassword)
             ->minLength(3, 'Too short password (min 3 characters).');
