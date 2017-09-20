@@ -52,7 +52,9 @@ class Application extends App
     {
         $this->getContainer()['db'] = function ($container) {
             $capsule = new Capsule;
-            $capsule->addConnection($container['settings']['db']);
+            $dbSettings = $container['settings']['db'];
+            $dbSettings['timezone'] = '+00:00';
+            $capsule->addConnection($dbSettings);
             $capsule->getContainer()->bind(ExceptionHandler::class, EloquentExceptionHandler::class);
             $capsule->setEventDispatcher(new Dispatcher(new Container));
             $capsule->bootEloquent();

@@ -66,4 +66,20 @@ class Thermostat extends Model
     {
         $this->user()->first()->log('thermostat', "[$this->label] " . $data);
     }
+
+    public function setNextProfileChange(\DateTime $time)
+    {
+        $time = clone $time;
+        $time->setTimezone(new \DateTimeZone('UTC'));
+        $this->nextProfileChange = $time;
+    }
+
+    public function shouldChangeProfile(\DateTime $now = null): bool
+    {
+        if (!$now) {
+            $now = new \DateTime();
+        }
+        $now->setTimezone(new \DateTimeZone('UTC'));
+        return $now >= $this->nextProfileChange;
+    }
 }

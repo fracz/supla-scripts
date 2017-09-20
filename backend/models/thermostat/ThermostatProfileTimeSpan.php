@@ -2,6 +2,8 @@
 
 namespace suplascripts\models\thermostat;
 
+use Cron\CronExpression;
+
 class ThermostatProfileTimeSpan
 {
     /** @var array */
@@ -15,14 +17,18 @@ class ThermostatProfileTimeSpan
         $this->timeRange = $timeSpan['timeRange'] ?? [];
     }
 
-    public function getStartCronExpression()
-    {
-        return $this->getCronExpression($this->timeSpecToMinutesInDefaultTimezone($this->timeRange['timeStart'] ?? 0, 0));
+    public function getClosestStart() {
+        return $this->getClosestHour($this->timeRange['timeStart'], 0);
     }
 
-    public function getEndCronExpression()
-    {
-        return $this->getCronExpression($this->timeSpecToMinutesInDefaultTimezone($this->timeRange['timeStart'] ?? 1439, 1439));
+    public function getClosestEnd() {
+        return $this->getClosestHour($this->timeRange['timeEnd'], 1439);
+    }
+
+    private function getClosestHour($timeSpec, $defaultTimeSpec) {
+        $cronExpression = $this->getCronExpression($this->timeSpecToMinutesInDesiredTimezone($timeSpec, $defaultTimeSpec));
+        $now = $this->getCurrentTimeInDesiredTimezone($timeSpec);
+        return CronExpression::factory($cronExpression)->getNextRunDate($now);
     }
 
     private function getCronExpression($timeInMinutes)
@@ -45,13 +51,21 @@ class ThermostatProfileTimeSpan
         return $minutes % 60;
     }
 
-    private function timeSpecToMinutesInDefaultTimezone($timeSpec, $default): int
+    private function getCurrentTimeInDesiredTimezone($timeSpec): \DateTime {
+        $now = new \DateTime();
+        if (is_string($timeSpec)) {
+            $datetime = new \DateTime($timeSpec);
+            $now->setTimezone($datetime->getTimezone());
+        }
+        return $now;
+    }
+
+    private function timeSpecToMinutesInDesiredTimezone($timeSpec, $default): int
     {
         if (!is_string($timeSpec)) {
             return $default;
         }
         $datetime = new \DateTime($timeSpec);
-        $datetime->setTimezone(new \DateTimeZone(date_default_timezone_get()));
         $time = explode(':', $datetime->format('H:i'));
         $minutes = $time[0] * 60 + $time[1];
         return max(0, min(1439, $minutes));

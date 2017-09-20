@@ -16,7 +16,7 @@ class ThermostatProfilesController extends BaseController
         $thermostat = $this->getThermostat($params);
         return $this->getApp()->db->getConnection()->transaction(function () use ($thermostat, $parsedBody) {
             $createdProfile = $thermostat->profiles()->create($parsedBody);
-            $thermostat->nextProfileChange = new \DateTime();
+            $thermostat->setNextProfileChange(new \DateTime());
             $thermostat->log('Utworzono nowy profil o nazwie ' . $createdProfile->name);
             if ($thermostat->profiles()->count() == 1) {
                 $thermostat->log('Termostat został aktywowany.');
@@ -57,7 +57,7 @@ class ThermostatProfilesController extends BaseController
         $profile->save();
         $profile->thermostat()->first()->log('Wprowadzono zmiany w profilu ' . $profile->name);
         $thermostat = $profile->thermostat()->first();
-        $thermostat->nextProfileChange = new \DateTime();
+        $thermostat->setNextProfileChange(new \DateTime());
         $thermostat->save();
         return $this->response($profile);
     }

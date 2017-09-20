@@ -7,6 +7,7 @@ use DateTimeInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Ramsey\Uuid\Uuid;
 use suplascripts\models\encoders\ColumnEncoders;
+use Symfony\Component\Yaml\Exception\RuntimeException;
 
 /**
  * @property string $id
@@ -82,5 +83,16 @@ abstract class Model extends \Illuminate\Database\Eloquent\Model
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('c'); // C is the ATOM format (with timezone offset)
+    }
+
+    protected function asDateTime($value)
+    {
+        if ($value instanceof \DateTime) {
+            $value->setTimezone(new \DateTimeZone('UTC'));
+            return $value;
+        } else if (is_string($value)) {
+            return new \DateTime($value, new \DateTimeZone('UTC'));
+        }
+        throw new RuntimeException('Unrecognized date format: ' . $value);
     }
 }

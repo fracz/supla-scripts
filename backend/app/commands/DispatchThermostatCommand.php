@@ -2,7 +2,6 @@
 
 namespace suplascripts\app\commands;
 
-use Cron\CronExpression;
 use suplascripts\app\UserAndUrlAwareLogger;
 use suplascripts\models\supla\SuplaApi;
 use suplascripts\models\thermostat\Thermostat;
@@ -44,26 +43,24 @@ class DispatchThermostatCommand extends Command
 
     private function changeProfileIfNeeded(Thermostat $thermostat)
     {
-        $now = time();
-        if ($thermostat->nextProfileChange->getTimestamp() <= $now) {
+        if ($thermostat->shouldChangeProfile()) {
             $activeProfile = $thermostat->activeProfile()->first();
-            $closestStart = new \DateTime(date('Y-m-d', strtotime('+1day')));
-            $today = date('Y-m-d', $now);
+            $nextProfileChange = new \DateTime(date('Y-m-d', strtotime('+1month')));
             foreach ($thermostat->profiles()->get() as $profile) {
                 /** @var ThermostatProfile $profile */
                 if ($profile->activeOn && count($profile->activeOn)) {
                     foreach ($profile->activeOn as $timeSpanArray) {
                         $timeSpan = new ThermostatProfileTimeSpan($timeSpanArray);
-                        $startsToday = CronExpression::factory($timeSpan->getStartCronExpression())->getNextRunDate($today, 0, true);
-                        $endsToday = CronExpression::factory($timeSpan->getEndCronExpression())->getNextRunDate($today, 0, true);
-                        if ($startsToday->getTimestamp() <= $now && $endsToday->getTimestamp() >= $now) {
+                        $closestStart = $timeSpan->getClosestStart();
+                        $closestEnd = $timeSpan->getClosestEnd();
+                        if ($closestStart > $closestEnd) { // active!
                             $thermostat->activeProfile()->associate($profile);
-                            $thermostat->nextProfileChange = $endsToday;
+                            $thermostat->setNextProfileChange($closestEnd);
                             $thermostat->save();
                             $thermostat->log('Włączono profil ' . $profile->name);
                             return;
-                        } else if ($startsToday->getTimestamp() > $now && $startsToday < $closestStart) {
-                            $closestStart = $startsToday;
+                        } else if ($closestStart < $nextProfileChange) {
+                            $nextProfileChange = $closestStart;
                         }
                     }
                 }
@@ -72,7 +69,7 @@ class DispatchThermostatCommand extends Command
                 $thermostat->log('Wyłączono profil ' . $thermostat->activeProfile()->first()->name);
                 $thermostat->activeProfile()->dissociate();
             }
-            $thermostat->nextProfileChange = $closestStart;
+            $thermostat->setNextProfileChange($nextProfileChange);
             $thermostat->save();
         }
     }
