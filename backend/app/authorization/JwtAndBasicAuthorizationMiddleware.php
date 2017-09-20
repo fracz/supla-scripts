@@ -25,7 +25,7 @@ class JwtAndBasicAuthorizationMiddleware
         $options = [
             'path' => '/api',
             'logger' => $this->getApp()->logger,
-            'secure' => $this->getApp()->getSetting('ssl'),
+            'secure' => false, // do not force SSL!
             'passthrough' => [
                 '/api/time',
                 '/api/tokens/new',
