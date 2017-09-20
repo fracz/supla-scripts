@@ -55,7 +55,7 @@ class DispatchThermostatCommand extends Command
                         $closestEnd = $timeSpan->getClosestEnd();
                         if ($closestStart > $closestEnd) { // active!
                             $thermostat->activeProfile()->associate($profile);
-                            $thermostat->setNextProfileChange($closestEnd);
+                            $thermostat->nextProfileChange = $closestEnd;
                             $thermostat->save();
                             $thermostat->log('Włączono profil ' . $profile->name);
                             return;
@@ -69,7 +69,7 @@ class DispatchThermostatCommand extends Command
                 $thermostat->log('Wyłączono profil ' . $thermostat->activeProfile()->first()->name);
                 $thermostat->activeProfile()->dissociate();
             }
-            $thermostat->setNextProfileChange($nextProfileChange);
+            $thermostat->nextProfileChange = $nextProfileChange;
             $thermostat->save();
         }
     }
