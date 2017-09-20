@@ -29,7 +29,8 @@ class User extends Model
     protected $hidden = [self::PASSWORD, self::API_CREDENTIALS];
     protected $encrypted = [self::API_CREDENTIALS];
 
-    public static function findByUsername(string $username): ?User
+    /** @return User|null */
+    public static function findByUsername(string $username)
     {
         $user = self::where(self::USERNAME, $username)->first();
         if ($user && $user->deleted) {
