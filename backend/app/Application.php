@@ -72,6 +72,9 @@ class Application extends App
 
     public static function getInstance(): Application
     {
+        if (!self::$instance) {
+            self::$instance = new self();
+        }
         return self::$instance;
     }
 
@@ -80,9 +83,9 @@ class Application extends App
         return $this->getContainer()->get($property);
     }
 
-    public function getSetting($name)
+    public function getSetting($name, $default = null)
     {
-        return $this->settings->get($name);
+        return $this->settings->get($name, $default);
     }
 
     /**

@@ -98,7 +98,7 @@ class ThermostatsController extends BaseController
 
     private function thermostatResponse(Thermostat $thermostat)
     {
-        $api = new SuplaApi($thermostat->user()->first());
+        $api = SuplaApi::getInstance($thermostat->user()->first());
         $channelsToFetch = [];
         $channels = [];
         foreach ($thermostat->rooms()->get() as $room) {

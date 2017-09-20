@@ -1,6 +1,7 @@
 {
   "displayErrorDetails": false,
   "ssl": true,
+  "readOnly": false,
   "db": {
     "driver": "mysql",
     "database": "suplascripts",

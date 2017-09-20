@@ -40,7 +40,7 @@ class ThermostatRoom extends Model
 
     public function getCurrentTemperature(): float
     {
-        $api = new SuplaApi($this->user()->first());
+        $api = SuplaApi::getInstance($this->user()->first());
         $temperatures = array_map(function ($channelId) use ($api) {
             return $api->getChannelWithState($channelId)->temperature ?? 0;
         }, $this->thermometers);

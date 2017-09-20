@@ -2,14 +2,14 @@
 
 namespace suplascripts\controllers;
 
-use suplascripts\models\supla\SuplaApi;
+use suplascripts\models\HasSuplaApi;
 
 class ChannelsController extends BaseController
 {
+    use HasSuplaApi;
+
     public function getAction($params)
     {
-        $this->ensureAuthenticated();
-        $api = new SuplaApi($this->getCurrentUser());
-        return $this->response($api->getChannelWithState($params['id']));
+        return $this->response($this->getApi()->getChannelWithState($params['id']));
     }
 }

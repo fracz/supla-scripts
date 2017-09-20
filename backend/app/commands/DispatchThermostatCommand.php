@@ -128,7 +128,7 @@ class DispatchThermostatCommand extends Command
         }
         $actualDevicesTurnedOn = $thermostat->devicesState;
         $desiredDevicesTurnedOn = array_unique($desiredDevicesTurnedOn);
-        $api = new SuplaApi($thermostat->user()->first());
+        $api = SuplaApi::getInstance($thermostat->user()->first());
         foreach (array_diff($desiredDevicesTurnedOn, $actualDevicesTurnedOn) as $channelIdToTurnOn) {
             $thermostat->log('Włączono kanał #' . $channelIdToTurnOn);
             if (!$api->turnOn($channelIdToTurnOn)) {

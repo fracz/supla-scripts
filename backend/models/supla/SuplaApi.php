@@ -3,6 +3,7 @@
 namespace suplascripts\models\supla;
 
 use Supla\ApiClient\SuplaApiClient;
+use suplascripts\app\Application;
 use suplascripts\models\User;
 
 class SuplaApi
@@ -12,10 +13,18 @@ class SuplaApi
 
     private $devices;
 
-    public function __construct(User $user)
+    protected function __construct(User $user)
     {
         $apiCredentials = $user->getApiCredentials();
         $this->client = new SuplaApiClient($apiCredentials, false, false, false);
+    }
+
+    public static function getInstance(User $user)
+    {
+        $readOnly = Application::getInstance()->getSetting('readOnly', true);
+        return $readOnly
+            ? new self($user)
+            : new SuplaApiReadOnly($user);
     }
 
     public function getDevices(): array

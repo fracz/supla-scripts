@@ -87,7 +87,7 @@ class User extends Model
     {
         $apiCredentials['server'] = preg_replace('#^https?://#', '', $apiCredentials['server']);
         $this->apiCredentials = json_encode($apiCredentials);
-        (new SuplaApi($this))->getDevices();
+        SuplaApi::getInstance($this)->getDevices();
     }
 
     public function getApiCredentials(): array

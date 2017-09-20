@@ -2,14 +2,14 @@
 
 namespace suplascripts\controllers;
 
-use suplascripts\models\supla\SuplaApi;
+use suplascripts\models\HasSuplaApi;
 
 class DevicesController extends BaseController
 {
+    use HasSuplaApi;
+
     public function getListAction()
     {
-        $this->ensureAuthenticated();
-        $api = new SuplaApi($this->getCurrentUser());
-        return $this->response($api->getDevices());
+        return $this->response($this->getApi()->getDevices());
     }
 }
