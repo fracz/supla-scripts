@@ -26,7 +26,6 @@
    mkdir /var/www/supla-scripts
    tar -zxvf supla-scripts-2.0.0.tar.gz -C /var/www/supla-scripts
    ```
-1. Extract it, e.g. `mkdir ~/supla-scripts && tar -zxvf supla-scripts-2.0.0.tar.gz -C ~/supla-scripts` 
 1. Enter this directory and create a configuration file
    ```
    cd /var/www/supla-scripts
@@ -37,5 +36,25 @@
    1. Set the `db/password` to the password you have generated for MySQL.
    1. Change `jwt/key` to something strong, different than MySQL password 
       (generate a different value with any generator).
-1. TODO vhost
-1. TODO crontab
+1. Initialize the application
+   ```
+   php /var/www/supla-scripts/supla-scripts init
+   ```
+1. As root (or with `sudo` privileges), create a virtual host configuration
+   1. `cp var/config/supla-scripts.vhost.sample.conf /etc/apache2/sites-available/supla-scripts.conf`
+   1. Adjust the `/etc/apache2/sites-available/supla-scripts.conf` to match your needs
+       1. Change the port the scripts should run on (the `*:1234` means that it will run on port `1234`).
+       1. Uncomment and set the `ServerName` if the server has a domain name for the app.
+       1. Change `ServerAdmin` to something meaningful.
+       1. Fix paths to the SSL certificates (the default configuration uses
+          the same certificates as SUPLA-Cloud).
+   1. Enable the virtual host
+       ```
+       a2ensite supla-scripts
+       service apache2 restart
+       ```
+1. Check if the application is available on your server address and configured port.
+1. Install watchdog crontab by executing:
+   ```
+   /var/www/supla-scripts/var/config/install-crontab.sh
+   ```
