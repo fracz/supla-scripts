@@ -1,0 +1,2 @@
+# Run supla-scripts dispatcher every 5 minutes
+*/5 * * * * /usr/bin/php /var/www/supla-scripts/supla-scripts dispatch:all
