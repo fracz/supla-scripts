@@ -2,7 +2,7 @@
 
 1. Install [Docker CE](https://docs.docker.com/engine/installation/).
 1. Install [docker-compose](https://docs.docker.com/compose/install/).
-1. Download and extract the [latest supla-scripts release archive](github.com/fracz/supla-scripts/releases/latest).
+1. Download and extract the [latest supla-scripts release archive](https://github.com/fracz/supla-scripts/releases/latest).
 1. Extract it, e.g. `mkdir ~/supla-scripts && tar -zxvf supla-scripts-2.0.0.tar.gz -C ~/supla-scripts` 
 1. Enter the directory you have extracted the application to.
 1. `cp var/config/docker-config.env.sample var/config/docker-config.env`
