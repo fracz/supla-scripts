@@ -15,8 +15,9 @@ new features into your SUPLA account, today!
 
 There are two ways to install supla-scripts.
 
-* [using Docker](https://github.com/fracz/supla-scripts/blob/bf661369810985b02e690107fe532f39b5f303e2/docs/Installation-docker.md)
-* using a local MySQL database and local server (suitable for RaspberyPI where Docker has problems)
+* [using Docker](https://github.com/fracz/supla-scripts/blob/v2.0/docs/Installation-docker.md)
+* [using a local MySQL database and local server](https://github.com/fracz/supla-scripts/blob/v2.0/docs/Installation-classic.md)
+  (suitable for e.g. RaspberyPI where Docker has problems)
 
 ## Where is v1.0?
 
