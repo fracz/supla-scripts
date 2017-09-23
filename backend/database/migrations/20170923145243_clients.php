@@ -10,7 +10,7 @@ class Clients extends Migration
     {
         $this->table(Client::TABLE_NAME)
             ->addColumn(Client::LABEL, 'string')
-            ->addColumn(Client::ACTIVE, 'boolean')
+            ->addColumn(Client::ACTIVE, 'boolean', ['default' => true])
             ->addColumn(Client::LAST_CONNECTION_DATE, 'timestamp')
             ->addColumn(Client::USER_ID, 'uuid')
             ->addForeignKey(Client::USER_ID, User::TABLE_NAME, User::ID, ['delete' => 'CASCADE'])
