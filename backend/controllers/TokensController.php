@@ -24,7 +24,7 @@ class TokensController extends BaseController
         $password = $body[User::PASSWORD];
         $user = $this->findMatchingUser($usernameOrEmail, $password);
         $token = JwtToken::create()->user($user)->rememberMe($body['rememberMe'] ?? false)->issue();
-        $this->getApp()->getContainer()->currentToken = $token;
+        $this->getApp()->getContainer()['currentUser'] = $user;
         $user->trackLastLogin();
         return $this->response(['token' => $token]);
     }
