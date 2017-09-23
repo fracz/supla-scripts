@@ -2,6 +2,8 @@
 
 namespace suplascripts\models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 /**
  * @property int $id
  * @property string $label
@@ -25,6 +27,11 @@ class Client extends Model
         if (!$this->lastConnectionDate) {
             $this->updateLastConnectionDate();
         }
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, self::USER_ID);
     }
 
     public function updateLastConnectionDate()

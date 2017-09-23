@@ -10,6 +10,7 @@ use Psr\Log\LoggerInterface;
 use Slim\App;
 use suplascripts\app\authorization\JwtAndBasicAuthorizationMiddleware;
 use suplascripts\database\EloquentExceptionHandler;
+use suplascripts\models\Client;
 use suplascripts\models\observers\ObserverRegisterer;
 use suplascripts\models\User;
 
@@ -101,6 +102,14 @@ class Application extends App
             $token = $this->currentToken;
             if (isset($token->user)) {
                 $user = User::find($token->user->id);
+            } else if (isset($token->client)) {
+                /** @var Client $client */
+                $client = Client::find($token->client->id);
+                if ($client && $client->active) {
+                    $user = $client->user;
+                }
+            }
+            if ($user) {
                 $this->getContainer()['currentUser'] = $user;
                 return $this->getCurrentUser();
             }

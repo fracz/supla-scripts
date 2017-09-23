@@ -29,7 +29,7 @@ class TokensController extends BaseController
         return $this->response(['token' => $token]);
     }
 
-    public function createTokenForDeviceAction()
+    public function createTokenForClientAction()
     {
         $body = $this->request()->getParsedBody();
         $this->authenticateUser($body);
