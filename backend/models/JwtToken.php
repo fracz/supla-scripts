@@ -2,14 +2,13 @@
 
 namespace suplascripts\models;
 
+use Assert\Assertion;
 use Firebase\JWT\JWT;
 use suplascripts\app\Application;
 
 class JwtToken
 {
     private $tokenData = [];
-
-    private $_rememberMe = false;
 
     public static function create(): JwtToken
     {
@@ -18,7 +17,7 @@ class JwtToken
 
     public function rememberMe(bool $rememberMe = true): JwtToken
     {
-        $this->_rememberMe = $rememberMe;
+        $this->tokenData['rememberMe'] = $rememberMe;
         return $this;
     }
 
@@ -48,18 +47,27 @@ class JwtToken
         return $this;
     }
 
+    public function client(Client $client): JwtToken
+    {
+        $this->tokenData['client'] = ['id' => $client->id];
+        return $this;
+    }
+
     public function issue(): string
     {
         $app = Application::getInstance();
         $jwtSettings = $app->getSetting('jwt');
         $now = time();
-        $expirationTime = $jwtSettings[$this->_rememberMe ? 'expirationTimeRememberMe' : 'expirationTime'];
+        $expirationTime = $jwtSettings[($this->tokenData['rememberMe'] ?? false) ? 'expirationTimeRememberMe' : 'expirationTime'];
+        if ($this->tokenData['client']) {
+            Assertion::keyNotExists($this->tokenData, 'user');
+            $expirationTime = $jwtSettings['expirationTimeClient'];
+        }
         $token = array_merge($this->tokenData, [
             'iss' => $jwtSettings['iss'], // issuer
             'iat' => $now, // issued at
             'nbf' => $now, // not before
             'exp' => $now + $expirationTime, // expires
-            'rememberMe' => $this->_rememberMe,
         ]);
         $jwt = JWT::encode($token, $jwtSettings['key']);
         return $jwt;

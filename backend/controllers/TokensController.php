@@ -5,6 +5,7 @@ namespace suplascripts\controllers;
 use Assert\Assert;
 use Slim\Http\Response;
 use suplascripts\controllers\exceptions\ApiException;
+use suplascripts\models\Client;
 use suplascripts\models\JwtToken;
 use suplascripts\models\User;
 
@@ -25,6 +26,18 @@ class TokensController extends BaseController
         $token = JwtToken::create()->user($user)->rememberMe($body['rememberMe'] ?? false)->issue();
         $user->trackLastLogin();
         return $this->response(['token' => $token]);
+    }
+
+    public function createTokenForDeviceAction()
+    {
+        $body = $this->request()->getParsedBody();
+        $this->authenticateUser($body);
+        return $this->getApp()->db->getConnection()->transaction(function () use ($body) {
+            $client = new Client([Client::LABEL => $body['label'] ?? 'Client']);
+            $client->save();
+            $token = JwtToken::create()->client($client)->issue();
+            return $this->response(['token' => $token])->withStatus(201);
+        });
     }
 
     public function refreshTokenAction()

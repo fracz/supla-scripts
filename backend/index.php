@@ -23,6 +23,7 @@ $app->group('/api', function () use ($app) {
     $app->get('/time', SystemController::class . ':getTime');
     $app->group('/tokens', function () use ($app) {
         $app->post('/new', TokensController::class . ':createToken');
+        $app->post('/client', TokensController::class . ':createTokenForDevice');
         $app->put('', TokensController::class . ':refreshToken');
     });
     $app->group('/users', function () use ($app) {
