@@ -5,9 +5,6 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}
     restart: unless-stopped
     networks: [default]
-    ports:
-      - "${PORT_HTTP}:80"
-      - "${PORT_HTTPS}:443"
     build:
       context: .
       args:

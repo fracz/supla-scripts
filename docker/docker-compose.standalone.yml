@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  suplascripts:
+    ports:
+      - "${PORT_HTTP}:80"
+      - "${PORT_HTTPS}:443"
+
+networks:
+  default: ~

@@ -19,8 +19,8 @@ class InitializeApplicationCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln(file_get_contents(__DIR__ . '/../../../scripts/logo.txt'));
-        $output->writeln('v' . Application::version());
+//        $output->writeln(file_get_contents(__DIR__ . '/../../../scripts/logo.txt'));
+        $output->writeln('SUPLA Scripts v' . Application::version());
         $output->writeln('');
         if (!file_exists(Application::CONFIG_PATH) || !is_readable(Application::CONFIG_PATH)) {
             $output->writeln('<error>There is no config.json.</error>');

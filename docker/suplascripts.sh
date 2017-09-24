@@ -33,11 +33,11 @@ if [ "$1" = "start" ]; then
 
   if [ -z "$PORT_HTTP" ]; then
     echo -e "${YELLOW}Starting in PROXY mode${NC}"
-    docker-compose -f docker-compose.yml -f docker-compose.letsencrypt.yml up --build -d
+    docker-compose -f docker-compose.base.yml -f docker-compose.letsencrypt.yml up --build -d
 
   else
     echo -e "${YELLOW}Starting in STANDALONE mode${NC}"
-    docker-compose -f docker-compose.yml up --build -d
+    docker-compose -f docker-compose.base.yml -f docker-compose.standalone.yml up --build -d
 
   fi
 
@@ -47,7 +47,7 @@ if [ "$1" = "start" ]; then
 
 elif [ "$1" = "stop" ]; then
   echo -e "${GREEN}Stopping SUPLA Scripts containers${NC}"
-  docker-compose -f docker-compose.yml stop && echo -e "${GREEN}SUPLA Scripts containers has been stopped.${NC}"
+  docker-compose -f docker-compose.base.yml stop && echo -e "${GREEN}SUPLA Scripts containers has been stopped.${NC}"
 
 elif [ "$1" = "restart" ]; then
   "./$(basename "$0")" stop
