@@ -32,7 +32,7 @@ class JwtAndBasicAuthorizationMiddleware
                 '/api/tokens/new',
                 '/api/tokens/client',
                 '/api/thermostats/preview',
-                '/api/users' // TODO chyba za dużo
+                '/api/users/register',
             ],
         ];
 

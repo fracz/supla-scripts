@@ -79,7 +79,11 @@ class UsersController extends BaseController
 
     private function getUser($params): User
     {
-        $user = $this->ensureExists(User::find($params['id'] ?? -1));
+        if ($params['id'] == 'current') {
+            $user = $this->getCurrentUser();
+        } else {
+            $user = $this->ensureExists(User::find($params['id'] ?? -1));
+        }
         return $user;
     }
 }

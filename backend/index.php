@@ -28,7 +28,7 @@ $app->group('/api', function () use ($app) {
         $app->put('', TokensController::class . ':refreshToken');
     });
     $app->group('/users', function () use ($app) {
-        $app->post('', UsersController::class . ':post');
+        $app->post('/register', UsersController::class . ':post');
         $app->get('/{id}', UsersController::class . ':get');
         $app->patch('/{id}', UsersController::class . ':patch');
         $app->put('/{id}', UsersController::class . ':put');

@@ -6,6 +6,6 @@ angular.module('supla-scripts').component 'registerForm',
         @userData = {}
 
       register: ->
-        Users.post(@userData).then =>
+        Users.one('').all('register').post(@userData).then =>
           Token.authenticate(@userData).then ->
             $state.go('dashboard')

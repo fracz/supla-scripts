@@ -1,0 +1,24 @@
+<div class="container">
+    <h1 view-title>Użytkownik {{ $ctrl.user.username }}</h1>
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="list-group">
+                <a ui-sref="account.details" ui-sref-active="active" class="list-group-item">
+                    Szczegóły
+                </a>
+                <a class="list-group-item disabled">
+                    Zmień dane do API
+                </a>
+                <a class="list-group-item disabled">
+                    Zmień hasło
+                </a>
+                <a ui-sref="account.delete" ui-sref-active="active" class="list-group-item list-group-item-danger">
+                    Usuń konto
+                </a>
+            </div>
+        </div>
+        <div class="col-sm-10">
+            <div ui-view></div>
+        </div>
+    </div>
+</div>

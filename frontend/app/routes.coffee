@@ -57,6 +57,24 @@ angular.module('supla-scripts')
     template: '<thermostat-preview slug="slug"></thermostat-preview>'
     controller: ($scope, $stateParams) -> $scope.slug = $stateParams.slug
 
+  .state 'account',
+    url: '/konto'
+    abstract: true
+    template: '<account-page user="user"></account-page>'
+    controller: ($scope, user) -> $scope.user = user
+    resolve:
+      user: (Users) -> Users.one('current').get()
+
+  .state 'account.details',
+    url: '/konto/szczegoly'
+    template: '<account-details user="user"></account-details>'
+    controller: ($scope, user) -> $scope.user = user
+
+  .state 'account.delete',
+    url: '/konto/usun'
+    template: '<account-delete user="user"></account-delete>'
+    controller: ($scope, user) -> $scope.user = user
+
   .state 'logs',
     url: '/logs'
     template: '<logs-view></logs-view>'
