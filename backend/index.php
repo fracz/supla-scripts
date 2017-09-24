@@ -21,6 +21,7 @@ ini_set("error_log", Application::VAR_PATH . "/logs/error.log");
 $app = new Application();
 $app->group('/api', function () use ($app) {
     $app->get('/time', SystemController::class . ':getTime');
+    $app->get('/info', SystemController::class . ':getInfo');
     $app->group('/tokens', function () use ($app) {
         $app->post('/new', TokensController::class . ':createToken');
         $app->post('/client', TokensController::class . ':createTokenForClient');

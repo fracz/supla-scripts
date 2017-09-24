@@ -27,6 +27,7 @@ class JwtAndBasicAuthorizationMiddleware
             'logger' => $this->getApp()->logger,
             'secure' => false, // do not force SSL!
             'passthrough' => [
+                '/api/info',
                 '/api/time',
                 '/api/tokens/new',
                 '/api/tokens/client',
@@ -51,6 +52,13 @@ class JwtAndBasicAuthorizationMiddleware
                 $container['currentUser'] = User::findByUsername($arguments['user']);
             }
         ]));
+    }
+
+    public function authenticateWithJwt(RequestInterface $request)
+    {
+        $this->jwtAuthentication->setRules([]);
+        return ($this->jwtAuthentication)($request, new Response(), function () {
+        });
     }
 
     public function __invoke(RequestInterface $request, ResponseInterface $response, callable $next)

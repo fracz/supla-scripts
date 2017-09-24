@@ -106,6 +106,9 @@ class Application extends App
                 /** @var Client $client */
                 $client = Client::find($token->client->id);
                 if ($client && $client->active) {
+                    $client->updateLastConnectionDate();
+                    $client->save();
+                    $this->getContainer()['currentClient'] = $client;
                     $user = $client->user;
                 }
             }
