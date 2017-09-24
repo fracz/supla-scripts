@@ -6,6 +6,8 @@ var fs = require('fs-extra');
 var async = require('async');
 var del = require('del');
 var exec = require('child_process').exec;
+var gulp = require('gulp');
+var crlfToLf = require('gulp-line-ending-corrector');
 
 var releasePackageName = 'supla-scripts-' + version + '.tar.gz';
 
@@ -115,12 +117,29 @@ function deleteUnwantedSources() {
     ])
         .then(() => {
             spinner.succeed('Unneeded sources deleted.');
-            createZipArchive();
+            preprocessSources();
         })
         .catch((err) => {
             console.log(err);
             spinner.fail();
         })
+}
+
+
+function preprocessSources() {
+    var spinner = ora({text: 'Preparing application sources.', color: 'yellow'}).start();
+    gulp.src([
+        'release/backend/**/*.php',
+        'release/docker/**/*',
+        'release/docker/**/.*',
+        'release/var/**/*'
+    ], {base: 'release'})
+        .pipe(crlfToLf())
+        .pipe(gulp.dest('release'))
+        .on('end', function () {
+            spinner.succeed('Application sources ready.');
+            createZipArchive();
+        });
 }
 
 function createZipArchive() {
