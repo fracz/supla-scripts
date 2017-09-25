@@ -125,6 +125,7 @@ function deleteUnwantedSources() {
         'release/backend/vendor/**/*.md',
         'release/backend/vendor/**/LICENSE',
         'release/backend/vendor/**/*.dist',
+        'release/public/v1.0',
     ])
         .then(() => {
             spinner.succeed('Unneeded sources deleted.');
