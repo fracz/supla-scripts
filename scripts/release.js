@@ -113,7 +113,18 @@ function clearLocalConfigFiles() {
 function deleteUnwantedSources() {
     var spinner = ora({text: 'Deleting unneeded sources.', color: 'yellow'}).start();
     del([
-        'release/backend/database/drop.php'
+        'release/backend/database/drop.php',
+        'release/backend/vendor/**/test/**',
+        'release/backend/vendor/**/tests/**',
+        'release/backend/vendor/**/doc/**',
+        'release/backend/vendor/**/docs/**',
+        'release/backend/vendor/**/.idea/**',
+        'release/backend/vendor/**/img/**',
+        'release/backend/vendor/**/composer.json',
+        'release/backend/vendor/**/composer.lock',
+        'release/backend/vendor/**/*.md',
+        'release/backend/vendor/**/LICENSE',
+        'release/backend/vendor/**/*.dist',
     ])
         .then(() => {
             spinner.succeed('Unneeded sources deleted.');
