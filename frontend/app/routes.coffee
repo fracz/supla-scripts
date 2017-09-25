@@ -70,6 +70,11 @@ angular.module('supla-scripts')
     template: '<account-details user="user"></account-details>'
     controller: ($scope, user) -> $scope.user = user
 
+  .state 'account.api',
+    url: '/konto/api'
+    template: '<user-api-credentials user="user"></user-api-credentials>'
+    controller: ($scope, user) -> $scope.user = user
+
   .state 'account.delete',
     url: '/konto/usun'
     template: '<account-delete user="user"></account-delete>'

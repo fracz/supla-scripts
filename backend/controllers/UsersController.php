@@ -46,23 +46,11 @@ class UsersController extends BaseController
                 $user->setPassword($request['newPassword']);
                 $user->expirePasswordInTheNextCentury();
             }
+            if (isset($request['apiCredentials'])) {
+                $user->setApiCredentials($request['apiCredentials']);
+            }
             $user->save();
             return $this->response($user);
-        });
-    }
-
-    public function putAction($params)
-    {
-        $this->ensureAuthenticated();
-        $user = $this->getUser($params);
-        if ($user->id != $this->getCurrentUser()->id) {
-            throw new Http403Exception();
-        }
-        return $this->getApp()->db->getConnection()->transaction(function () use ($user) {
-            $request = $this->request()->getParsedBody();
-//            $user->name = $request['name'] ?? null;
-            $user->save();
-            return $this->getAction(['id' => $user->id]);
         });
     }
 

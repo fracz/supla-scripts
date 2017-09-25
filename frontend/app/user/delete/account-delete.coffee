@@ -2,7 +2,7 @@ angular.module('supla-scripts').component 'accountDelete',
   templateUrl: 'app/user/delete/account-delete.html'
   bindings:
     user: '<'
-  controller: ($scope, Users, swangular, Token, $state) ->
+  controller: ($scope, Users, swangular, Token, $state, Notifier) ->
     deleteAccount: ->
       swangular.open
         scope: $scope
@@ -19,4 +19,5 @@ angular.module('supla-scripts').component 'accountDelete',
           Users.one('current').remove().then ->
       .then ->
         Token.forgetRememberedToken()
+        Notifier.success('Twoje konto zostało usunięte.')
         $state.go('home')

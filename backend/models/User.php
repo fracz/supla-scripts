@@ -45,7 +45,6 @@ class User extends Model
         list($username, $attributes) = $user->validate($attributes);
         $user->username = trim($username);
         $user->setApiCredentials($attributes[self::API_CREDENTIALS]);
-
         $user->setPassword($attributes[self::PASSWORD]);
         $user->save();
         return $user;
