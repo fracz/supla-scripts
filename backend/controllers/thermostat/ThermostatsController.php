@@ -17,7 +17,11 @@ class ThermostatsController extends BaseController
     {
         /** @var Thermostat $thermostat */
         $thermostat = $this->ensureExists(Thermostat::find($id)->first());
-        return $this->thermostatResponse($thermostat);
+        if ($this->request()->getParam('simple', false)) {
+            return $this->response($thermostat);
+        } else {
+            return $this->thermostatResponse($thermostat);
+        }
     }
 
     public function getListAction()

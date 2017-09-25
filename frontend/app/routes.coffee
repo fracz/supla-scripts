@@ -36,7 +36,7 @@ angular.module('supla-scripts')
     template: '<thermostat-details thermostat="thermostat"></thermostat-details>'
     controller: ($scope, thermostat) -> $scope.thermostat = thermostat
     resolve:
-      thermostat: (Thermostats, $stateParams) -> Thermostats.one($stateParams.id).get()
+      thermostat: (Thermostats, $stateParams) -> Thermostats.one($stateParams.id).get(simple: yes)
 
   .state 'thermostat.rooms',
     url: '/rooms'
