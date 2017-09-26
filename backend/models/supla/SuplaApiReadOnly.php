@@ -22,13 +22,13 @@ class SuplaApiReadOnly extends SuplaApi
 
     public function turnOn(int $channelId)
     {
-        $this->logger->info('Turn on: ' . $channelId);
+        $this->logger->info('READ-ONLY: Turn on: ' . $channelId);
         return true;
     }
 
     public function turnOff(int $channelId)
     {
-        $this->logger->info('Turn off: ' . $channelId);
+        $this->logger->info('READ-ONLY: Turn off: ' . $channelId);
         return true;
     }
 }

@@ -23,8 +23,8 @@ class SuplaApi
     {
         $readOnly = Application::getInstance()->getSetting('readOnly', true);
         return $readOnly
-            ? new self($user)
-            : new SuplaApiReadOnly($user);
+            ? new SuplaApiReadOnly($user)
+            : new self($user);
     }
 
     public function getDevices(): array
