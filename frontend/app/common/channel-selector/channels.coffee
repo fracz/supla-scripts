@@ -25,3 +25,6 @@ angular.module('supla-scripts').service 'Channels', (Restangular, Devices, Cache
     get: (channelId) ->
       service.getList().then (channels) ->
         channels.filter((channel) -> channel.id is channelId)[0]
+
+    executeAction: (channelId, data) ->
+      Channels.one(channelId).patch(data)

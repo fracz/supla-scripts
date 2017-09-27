@@ -39,6 +39,7 @@ $app->group('/api', function () use ($app) {
     });
     $app->group('/channels', function () use ($app) {
         $app->get('/{id}', ChannelsController::class . ':get');
+        $app->patch('/{id}', ChannelsController::class . ':execute');
     });
     $app->group('/logs', function () use ($app) {
         $app->get('', LogsController::class . ':getLatest');
