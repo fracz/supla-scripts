@@ -9,18 +9,13 @@
                             {{ device | deviceLabel }}
                         </h4>
                         <div class="list-group">
-                            <div class="list-group-item" ng-repeat-start="channel in device.channels"
+                            <div class="list-group-item dashboard-channel clearfix" ng-repeat="channel in device.channels"
                                  ng-hide="!channel.function.id">
-                                <div class="row-content">
-                                    <div class="least-content">ID {{ channel.id }}</div>
-                                    <h4 class="list-group-item-heading">
-                                        {{ channel | channelLabel }}
-                                    </h4>
-                                    <p class="list-group-item-text">{{ channel.function.name.substr(4) }}</p>
-                                </div>
+                                <function-icon channel="channel"></function-icon>
+                                <h4 class="list-group-item-heading">
+                                    {{ channel | channelLabel }} ID{{ channel.id }}
+                                </h4>
                             </div>
-                            <div class="list-group-separator" ng-repeat-end
-                                 ng-hide="$last || !channel.function.id"></div>
                         </div>
                     </div>
                 </div>
