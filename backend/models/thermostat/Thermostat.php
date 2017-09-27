@@ -15,6 +15,7 @@ use suplascripts\models\User;
  * @property mixed $roomsState
  * @property mixed $devicesState
  * @property \DateTime $nextProfileChange
+ * @property User $user
  */
 class Thermostat extends Model
 {

@@ -15,8 +15,8 @@ angular.module('supla-scripts').component 'timeRangePicker',
 
       updateNgModel: =>
         @ngModel.$setViewValue
-          timeStart: moment().hours(0).minutes(@timeRange.timeStart).seconds(0).format()
-          timeEnd: moment().hours(0).minutes(@timeRange.timeEnd).seconds(0).format()
+          timeStart: minutesToHumanTimeFilter(@timeRange.timeStart)
+          timeEnd: minutesToHumanTimeFilter(@timeRange.timeEnd)
 
       $onInit: ->
         @timeRange =
@@ -25,7 +25,7 @@ angular.module('supla-scripts').component 'timeRangePicker',
         @ngModel.$render = =>
           if @ngModel.$viewValue
             angular.extend @timeRange,
-              timeStart: humanTimeToMinutesFilter(moment(@ngModel.$viewValue.timeStart).format('H:m'))
-              timeEnd: humanTimeToMinutesFilter(moment(@ngModel.$viewValue.timeEnd).format('H:m')) || 1440
+              timeStart: humanTimeToMinutesFilter(@ngModel.$viewValue.timeStart)
+              timeEnd: humanTimeToMinutesFilter(@ngModel.$viewValue.timeEnd or 1440)
           else
             @updateNgModel()

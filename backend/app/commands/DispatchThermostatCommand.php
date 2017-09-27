@@ -46,13 +46,14 @@ class DispatchThermostatCommand extends Command
         if ($thermostat->shouldChangeProfile()) {
             $activeProfile = $thermostat->activeProfile()->first();
             $nextProfileChange = new \DateTime(date('Y-m-d', strtotime('+1month')));
+            $now = $thermostat->user->currentDateTimeInUserTimezone();
             foreach ($thermostat->profiles()->get() as $profile) {
                 /** @var ThermostatProfile $profile */
                 if ($profile->activeOn && count($profile->activeOn)) {
                     foreach ($profile->activeOn as $timeSpanArray) {
                         $timeSpan = new ThermostatProfileTimeSpan($timeSpanArray);
-                        $closestStart = $timeSpan->getClosestStart();
-                        $closestEnd = $timeSpan->getClosestEnd();
+                        $closestStart = $timeSpan->getClosestStart($now);
+                        $closestEnd = $timeSpan->getClosestEnd($now);
                         if ($closestStart > $closestEnd) { // active!
                             $thermostat->activeProfile()->associate($profile);
                             $thermostat->nextProfileChange = $closestEnd;

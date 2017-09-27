@@ -17,23 +17,25 @@ class ThermostatProfileTimeSpan
         $this->timeRange = $timeSpan['timeRange'] ?? [];
     }
 
-    public function getClosestStart() {
-        return $this->getClosestHour($this->timeRange['timeStart'], 0);
-    }
-
-    public function getClosestEnd() {
-        return $this->getClosestHour($this->timeRange['timeEnd'], 1439);
-    }
-
-    private function getClosestHour($timeSpec, $defaultTimeSpec) {
-        $cronExpression = $this->getCronExpression($this->timeSpecToMinutesInDesiredTimezone($timeSpec, $defaultTimeSpec));
-        $now = $this->getCurrentTimeInDesiredTimezone($timeSpec);
-        return CronExpression::factory($cronExpression)->getNextRunDate($now);
-    }
-
-    private function getCronExpression($timeInMinutes)
+    public function getClosestStart(\DateTime $from)
     {
-        return "{$this->minutesPart($timeInMinutes)} {$this->hoursPart($timeInMinutes)} * * {$this->weekdaysPart()}";
+        return $this->getClosestHour($from, $this->timeRange['timeStart'], '0:0');
+    }
+
+    public function getClosestEnd(\DateTime $from)
+    {
+        return $this->getClosestHour($from, $this->timeRange['timeEnd'], '23:59');
+    }
+
+    private function getClosestHour(\DateTime $from, $timeSpec, $defaultTimeSpec)
+    {
+        $cronExpression = $this->getCronExpression($timeSpec ?: $defaultTimeSpec);
+        return CronExpression::factory($cronExpression)->getNextRunDate($from);
+    }
+
+    private function getCronExpression($timeSpec)
+    {
+        return "{$this->minutesPart($timeSpec)} {$this->hoursPart($timeSpec)} * * {$this->weekdaysPart()}";
     }
 
     private function weekdaysPart(): string
@@ -41,33 +43,13 @@ class ThermostatProfileTimeSpan
         return count($this->weekdays) ? implode(',', $this->weekdays) : '*';
     }
 
-    private function hoursPart(int $minutes): int
+    private function hoursPart(string $timeSpec): int
     {
-        return floor($minutes / 60);
+        return intval(explode(':', $timeSpec)[0]);
     }
 
-    private function minutesPart(int $minutes): int
+    private function minutesPart(string $timeSpec): int
     {
-        return $minutes % 60;
-    }
-
-    private function getCurrentTimeInDesiredTimezone($timeSpec): \DateTime {
-        $now = new \DateTime();
-        if (is_string($timeSpec)) {
-            $datetime = new \DateTime($timeSpec);
-            $now->setTimezone($datetime->getTimezone());
-        }
-        return $now;
-    }
-
-    private function timeSpecToMinutesInDesiredTimezone($timeSpec, $default): int
-    {
-        if (!is_string($timeSpec)) {
-            return $default;
-        }
-        $datetime = new \DateTime($timeSpec);
-        $time = explode(':', $datetime->format('H:i'));
-        $minutes = $time[0] * 60 + $time[1];
-        return max(0, min(1439, $minutes));
+        return intval(explode(':', $timeSpec)[1]);
     }
 }

@@ -139,4 +139,14 @@ class User extends Model
     {
         $this->timezone = $timezone->getName();
     }
+
+    public function getTimezone(): \DateTimeZone
+    {
+        return new \DateTimeZone($this->timezone);
+    }
+
+    public function currentDateTimeInUserTimezone(): \DateTime
+    {
+        return new \DateTime('now', $this->getTimezone());
+    }
 }

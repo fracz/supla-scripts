@@ -21,8 +21,8 @@
                         <span>{{ weekday | weekdayShort }}</span><span ng-if="!$last">,</span>
                     </span>
                 </span>
-                między {{ timeSpan.timeRange.timeStart | date: 'shortTime' }}
-                a {{ timeSpan.timeRange.timeEnd | date: 'shortTime' }}
+                między {{ timeSpan.timeRange.timeStart }}
+                a {{ timeSpan.timeRange.timeEnd }}
             </li>
         </ul>
         <div ng-else>Profil nie jest aktywowany automatycznie</div>

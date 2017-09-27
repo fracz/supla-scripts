@@ -2,6 +2,7 @@ angular.module('supla-scripts').component 'timezonePicker',
   template: '
     <select class="form-control"
             ng-model="$ctrl.timezone"
+            ng-change="$ctrl.updateModel()"
             ng-options="timezone.name as $ctrl.label(timezone) for timezone in $ctrl.timezones"></select>
   '
   require:
@@ -13,6 +14,9 @@ angular.module('supla-scripts').component 'timezonePicker',
 
     label: ({name, offset, currentTime}) ->
       "#{name} (UTC#{if offset >= 0 then '+' else ''}#{offset}) #{currentTime}"
+
+    updateModel: ->
+      @ngModel.$setViewValue(@timezone)
 
     getAvailableTimezones: ->
       moment.tz.names()
