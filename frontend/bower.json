@@ -20,6 +20,7 @@
     "angularjs-slider": "6.2.3",
     "bootstrap": "3.3.7",
     "bootswatch": "3.3.7",
+    "moment-timezone": "0.5.13",
     "ng-elif": "0.1.5",
     "ngFx": "1.1.0",
     "ngstorage": "0.3.11",
@@ -125,6 +126,9 @@
         "min/moment.min.js",
         "locale/pl.js"
       ]
+    },
+    "moment-timezeon": {
+      "main": "builds/moment-timezone.min.js"
     },
     "ngstorage": {
       "main": "ngStorage.min.js"

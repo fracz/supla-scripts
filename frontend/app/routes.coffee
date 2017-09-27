@@ -75,6 +75,11 @@ angular.module('supla-scripts')
     template: '<user-api-credentials user="user"></user-api-credentials>'
     controller: ($scope, user) -> $scope.user = user
 
+  .state 'account.timezone',
+    url: '/konto/strefa-czasowa'
+    template: '<user-timezone user="user"></user-timezone>'
+    controller: ($scope, user) -> $scope.user = user
+
   .state 'account.delete',
     url: '/konto/usun'
     template: '<account-delete user="user"></account-delete>'

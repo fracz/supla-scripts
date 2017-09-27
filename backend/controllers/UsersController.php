@@ -49,6 +49,9 @@ class UsersController extends BaseController
             if (isset($request['apiCredentials'])) {
                 $user->setApiCredentials($request['apiCredentials']);
             }
+            if (isset($request['timezone'])) {
+                $user->setTimezone(new \DateTimeZone($request['timezone']));
+            }
             $user->save();
             return $this->response($user);
         });

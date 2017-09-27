@@ -14,6 +14,7 @@ use suplascripts\models\thermostat\Thermostat;
  * @property string $password
  * @property string $apiCredentials
  * @property \DateTime $lastLoginDate
+ * @property string $timezone
  */
 class User extends Model
 {
@@ -22,6 +23,7 @@ class User extends Model
     const PASSWORD = 'password';
     const API_CREDENTIALS = 'apiCredentials';
     const LAST_LOGIN_DATE = 'lastLoginDate';
+    const TIMEZONE = 'timezone';
 
     protected $dates = [self::LAST_LOGIN_DATE];
 
@@ -44,6 +46,7 @@ class User extends Model
         $user = new self([]);
         list($username, $attributes) = $user->validate($attributes);
         $user->username = trim($username);
+        $user->timezone = $attributes[self::TIMEZONE] ?? date_default_timezone_get();
         $user->setApiCredentials($attributes[self::API_CREDENTIALS]);
         $user->setPassword($attributes[self::PASSWORD]);
         $user->save();
@@ -130,5 +133,10 @@ class User extends Model
     {
         Assert::that($plainPassword)
             ->minLength(3, 'Too short password (min 3 characters).');
+    }
+
+    public function setTimezone(\DateTimeZone $timezone)
+    {
+        $this->timezone = $timezone->getName();
     }
 }

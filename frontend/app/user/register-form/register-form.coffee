@@ -3,7 +3,9 @@ angular.module('supla-scripts').component 'registerForm',
   controller: (Users, Token, $state) ->
     new class
       $onInit: =>
-        @userData = {}
+        @userData =
+          timezone: moment.tz.guess()
+        console.log @userData
 
       register: ->
         Users.one('').all('register').post(@userData).then =>

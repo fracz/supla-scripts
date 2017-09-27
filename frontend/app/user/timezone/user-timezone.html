@@ -1,0 +1,20 @@
+<div class="alert alert-info">
+    <fa name="info-circle" fw class="pull-right" size="2"></fa>
+    <p>Dzięki podaniu Twojej strefy czasowej możliwa jest poprawna aktywacja wszystkich warunków zależnych od czasu
+        niezależnie od strefy czasowej w której pracuje serwer.</p>
+    <p>Po zmianie strefy czasowej zweryfikuj, czy wszystkie godziny podane w konfiguracji (np. termostatu) są takie jak
+        oczekujesz.</p>
+</div>
+
+<form ng-submit="$ctrl.updateTimezone()" promise-btn>
+    <div class="form-group">
+        <label>Twoja strefa czasowa</label>
+        <timezone-picker ng-model="$ctrl.user.timezone" required></timezone-picker>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">
+            <fa name="globe" fw></fa>
+            Zapisz Twoją strefę czasową
+        </button>
+    </div>
+</form>

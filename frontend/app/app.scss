@@ -35,3 +35,17 @@ table {
     table-layout: fixed;
   }
 }
+
+.btn{
+  .fa-fw {
+    margin-right: 3px;
+  }
+  &.is-loading {
+    .fa {
+      animation: fa-spin 2s infinite linear;
+      &:before {
+        content: "\f1ce"; // circle-o-notch
+      }
+    }
+  }
+}
