@@ -22,6 +22,8 @@
                                 <h4 class="list-group-item-heading">
                                     {{ channel | channelLabel }} ID{{ channel.id }}
                                 </h4>
+                                <div class="rgb-bar" ng-if="channel.color_brightness"
+                                     ng-style="{'background-color': '#' + channel.color.substr(2)}"></div>
                                 <div class="channel-info-labels">
                                     <span class="label" ng-if="channel.connected !== undefined"
                                           ng-class="channel.connected ? 'label-success' : 'label-danger'">
@@ -30,6 +32,10 @@
                                     <span class="label" ng-if="channel.on !== undefined"
                                           ng-class="channel.on ? 'label-success' : 'label-default'">
                                         {{ channel.on ? 'Włączony' : 'Wyłączony' }}
+                                    </span>
+                                    <span class="label label-success"
+                                          ng-if="channel.color_brightness || channel.brightness">
+                                        Włączony
                                     </span>
                                     <span class="label" ng-if="channel.hi !== undefined"
                                           ng-class="channel.hi ? 'label-success' : 'label-default'">

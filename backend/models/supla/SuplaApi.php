@@ -95,10 +95,25 @@ class SuplaApi
         return $result !== false;
     }
 
+    public function setRgb(int $channelId, string $color, int $colorBrightness = 100, int $brightness = 100)
+    {
+        $color = hexdec($color);
+        $result = $this->client->channelSetRGBW($channelId, $color, $colorBrightness, $brightness);
+        if ($result === false) {
+            $result = $this->client->channelSetRGB($channelId, $color, $colorBrightness);
+        }
+        return $result !== false;
+    }
+
     private function handleError($response)
     {
         if (!$response) {
             throw new SuplaApiException($this->client);
         }
+    }
+
+    public function getClient(): SuplaApiClient
+    {
+        return $this->client;
     }
 }

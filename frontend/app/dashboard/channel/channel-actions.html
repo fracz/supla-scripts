@@ -22,4 +22,23 @@
             promise-btn>
         Otwórz/zamknij
     </button>
+    <button ng-if="['FNC_DIMMERANDRGBLIGHTING'].indexOf($ctrl.channel.function.name) >= 0"
+            class="btn btn-default"
+            ng-click="$ctrl.onAction({action: 'setRgb,' + ($ctrl.channel.color.substr(2) || 1) + ',0,0'})"
+            ng-disabled="($ctrl.channel.color_brightness != undefined || $ctrl.channel.brightness != undefined) &&!$ctrl.channel.color_brightness && !$ctrl.channel.brightness"
+            promise-btn>
+        Wyłącz
+    </button>
+    <div class="btn-group btn-group-xs" ng-if="['FNC_DIMMERANDRGBLIGHTING'].indexOf($ctrl.channel.function.name) >= 0">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            Ustaw kolor
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu rgb-color-picker">
+            <li ng-repeat="color in ['ffffff', 'ffff00', 'ff0000', 'ff8800', 'ff00ff', '0000ff', '00ffff', '00ff00']">
+                <a class="rgb-color-pick" ng-style="{'background-color': '#' + color}"
+                   ng-click="$ctrl.onAction({action: 'setRgb,' + color + ',100,100'})"></a>
+            </li>
+        </ul>
+    </div>
 </div>

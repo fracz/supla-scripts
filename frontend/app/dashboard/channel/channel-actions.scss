@@ -1,0 +1,19 @@
+channel-actions {
+  .rgb-color-picker {
+    $size: 32px;
+    li {
+      display: inline-block;
+      width: $size;
+      height: $size;
+      margin: 3px;
+      padding: 3px;
+      a {
+        padding: 0;
+        border: 1px solid grey;
+        display: inline-block;
+        width: $size;
+        height: $size;
+      }
+    }
+  }
+}

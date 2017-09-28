@@ -4,6 +4,7 @@ namespace suplascripts\controllers;
 
 use Assert\Assertion;
 use suplascripts\models\HasSuplaApi;
+use suplascripts\models\supla\SuplaApiException;
 
 class ChannelsController extends BaseController
 {
@@ -18,9 +19,14 @@ class ChannelsController extends BaseController
     {
         $channelId = $params['id'];
         $body = $this->request()->getParsedBody();
-        $action = $body['action'];
-        Assertion::inArray($action, ['turnOn', 'turnOff', 'toggle', 'getChannelState']);
-        $result = call_user_func_array([$this->getApi(), $action], [$channelId]);
+        $params = explode(',', $body['action']);
+        $action = array_shift($params);
+        Assertion::inArray($action, ['turnOn', 'turnOff', 'toggle', 'getChannelState', 'setRgb']);
+        array_unshift($params, $channelId);
+        $result = call_user_func_array([$this->getApi(), $action], $params);
+        if ($result === false) {
+            throw new SuplaApiException($this->getApi()->getClient(), 'Could not execute the action.');
+        }
         if ($result && $action != 'getChannelState') {
             $result = $this->getApi()->getChannelState($channelId);
         }
