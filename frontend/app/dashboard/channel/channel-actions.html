@@ -1,5 +1,5 @@
 <div class="btn-group btn-group-xs">
-    <button class="btn btn-default" ng-click="$ctrl.onAction({action: 'getChannelWithState'})" promise-btn>
+    <button class="btn btn-default" ng-click="$ctrl.onAction({action: 'getChannelState'})" promise-btn>
         <fa name="question-circle"></fa>
     </button>
     <button ng-if="['FNC_POWERSWITCH', 'FNC_LIGHTSWITCH'].indexOf($ctrl.channel.function.name) >= 0"
@@ -11,5 +11,15 @@
             class="btn btn-default" ng-click="$ctrl.onAction({action: 'turnOff'})"
             ng-disabled="$ctrl.channel.on === false" promise-btn>
         Wyłącz
+    </button>
+    <button ng-if="['FNC_POWERSWITCH', 'FNC_LIGHTSWITCH'].indexOf($ctrl.channel.function.name) >= 0"
+            class="btn btn-default" ng-click="$ctrl.onAction({action: 'toggle'})"
+            promise-btn>
+        Przełącz
+    </button>
+    <button ng-if="['FNC_CONTROLLINGTHEGATE', 'FNC_CONTROLLINGTHEGATEWAYLOCK', 'FNC_CONTROLLINGTHEGARAGEDOOR'].indexOf($ctrl.channel.function.name) >= 0"
+            class="btn btn-default" ng-click="$ctrl.onAction({action: 'toggle'})"
+            promise-btn>
+        Otwórz/zamknij
     </button>
 </div>

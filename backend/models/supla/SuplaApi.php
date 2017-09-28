@@ -42,12 +42,19 @@ class SuplaApi
         foreach ($this->getDevices() as $device) {
             foreach ($device->channels as $channel) {
                 if ($channel->id == $channelId) {
-                    $state = $this->client->channel($channelId);
-                    $this->handleError($state);
+                    $state = $this->getChannelState($channelId);
                     return (object)array_merge((array)$channel, (array)$state);
                 }
             }
         }
+        throw new SuplaApiException($this->client, 'Could not get status for channel #' . $channelId);
+    }
+
+    public function getChannelState(int $channelId)
+    {
+        $state = $this->client->channel($channelId);
+        $this->handleError($state);
+        return $state;
     }
 
     public function turnOn(int $channelId)
@@ -66,6 +73,17 @@ class SuplaApi
             $result = $this->toggleUnpredictable($channelId);
         }
         return $result !== false;
+    }
+
+    public function toggle(int $channelId)
+    {
+        $state = $this->getChannelState($channelId);
+        $this->handleError($state);
+        if (isset($state->on)) {
+            return $state->on ? $this->turnOff($channelId) : $this->turnOn($channelId);
+        } else {
+            return $this->toggleUnpredictable($channelId);
+        }
     }
 
     private function toggleUnpredictable(int $channelId)

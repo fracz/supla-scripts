@@ -19,10 +19,10 @@ class ChannelsController extends BaseController
         $channelId = $params['id'];
         $body = $this->request()->getParsedBody();
         $action = $body['action'];
-        Assertion::inArray($action, ['turnOn', 'turnOff', 'getChannelWithState']);
+        Assertion::inArray($action, ['turnOn', 'turnOff', 'toggle', 'getChannelState']);
         $result = call_user_func_array([$this->getApi(), $action], [$channelId]);
-        if ($result && $action != 'getChannelWithState') {
-            $result = $this->getApi()->getChannelWithState($channelId);
+        if ($result && $action != 'getChannelState') {
+            $result = $this->getApi()->getChannelState($channelId);
         }
         return $this->response($result);
     }
