@@ -18,3 +18,12 @@
 1. Put your `server.crt` and `server.key` certificates in `var/ssl` or generate self signed certificates with `var/ssl/generate-self-signed-certs.sh`
 1. `docker/suplascripts.sh start`
 1. Verify that the supla-scripts has started on configured ports.
+
+# Updating to a new version
+
+1. Download and extract the [latest supla-scripts release archive](https://github.com/fracz/supla-scripts/releases/latest) 
+   to the same directory as before.
+   ```
+   tar -zxvf supla-scripts-2.0.0.tar.gz -C ~/supla-scripts 
+   ```
+2. `docker/suplascripts.sh restart`
