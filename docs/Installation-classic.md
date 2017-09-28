@@ -58,3 +58,12 @@
    ```
    /var/www/supla-scripts/var/config/install-crontab.sh
    ```
+
+# Updating to a new version
+
+1. Download and extract the [latest supla-scripts release archive](https://github.com/fracz/supla-scripts/releases/latest) 
+   to the same directory as before.
+   ```
+   tar -zxvf supla-scripts-2.0.0.tar.gz -C /var/www/supla-scripts 
+   ```
+2. `php /var/www/supla-scripts/supla-scripts init`
