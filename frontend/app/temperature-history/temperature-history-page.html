@@ -1,41 +1,46 @@
 <div class="container-fluid">
     <h1>Historia temperatur</h1>
-
-    <div class="row" ng-if="$ctrl.sensors">
-        <div class="col-xs-12">
-            <div class="form-group">
-                <div class="btn-group">
-                    <button class="btn btn-default"
-                            ng-repeat="timeSlot in [['-1hour', 'Ostatnia godzina'], ['-24hours', 'Ostatnie 24h'], ['-1week', 'Ostatni tydzień'], ['-1month', 'Ostatni miesiąc'], ['-5years', 'Pełna historia']]"
-                            ng-class="{active: $ctrl.period == timeSlot[0]}"
-                            ng-click="$ctrl.changePeriod(timeSlot[0])">
-                        <fa-radio checked="$ctrl.period == timeSlot[0]"></fa-radio>
-                        {{ timeSlot[1] }}
-                    </button>
+    <div ng-if="$ctrl.sensors">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <div class="btn-group">
+                        <button class="btn btn-default"
+                                ng-repeat="timeSlot in [['-1hour', 'Ostatnia godzina'], ['-24hours', 'Ostatnie 24h'], ['-1week', 'Ostatni tydzień'], ['-1month', 'Ostatni miesiąc'], ['-5years', 'Pełna historia']]"
+                                ng-class="{active: $ctrl.period == timeSlot[0]}"
+                                ng-click="$ctrl.changePeriod(timeSlot[0])">
+                            <fa-radio checked="$ctrl.period == timeSlot[0]"></fa-radio>
+                            {{ timeSlot[1] }}
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3 col-lg-2">
-            <div class="list-group sensors-list">
-                <a class="list-group-item" ng-repeat="sensor in $ctrl.sensors"
-                   ng-class="{active: sensor.status == 'downloaded', disabled: $ctrl.toggling}"
-                   ng-click="$ctrl.downloadDataForSensor(sensor)">
-                    <span ng-switch="sensor.status">
-                        <fa ng-switch-when="downloaded" name="database" fw></fa>
-                        <span ng-switch-when="downloading"><fa name="arrow-down" fw class="faa-falling faa-fast animated"></fa></span>
-                        <fa ng-switch-default name="download" fw></fa>
-                    </span>
-                    {{ sensor.caption }}
-                </a>
+        <div class="row">
+            <div class="col-md-3 col-lg-2">
+                <div class="list-group sensors-list">
+                    <a class="list-group-item" ng-repeat="sensor in $ctrl.sensors"
+                       ng-class="{active: sensor.status == 'downloaded', disabled: $ctrl.toggling}"
+                       ng-click="$ctrl.downloadDataForSensor(sensor)">
+                        <span ng-switch="sensor.status">
+                            <fa ng-switch-when="downloaded" name="database" fw></fa>
+                            <span ng-switch-when="downloading">
+                                <fa name="arrow-down" fw class="faa-falling faa-fast animated"></fa>
+                            </span>
+                            <fa ng-switch-default name="download" fw></fa>
+                        </span>
+                        {{ sensor.caption }}
+                    </a>
+                </div>
             </div>
-        </div>
-        <div class="col-md-9 col-lg-10">
-            <div style="height: 700px">
-                <canvas id="line" class="chart chart-line" chart-data="data"
-                        chart-labels="labels" chart-series="series" chart-options="options"
-                        chart-dataset-override="datasetOverride" chart-click="onClick">
-                </canvas>
+            <div class="col-md-9 col-lg-10">
+                <div style="height: 700px">
+                    <canvas id="line" class="chart chart-line" chart-data="data"
+                            chart-labels="labels" chart-series="series" chart-options="options"
+                            chart-dataset-override="datasetOverride" chart-click="onClick">
+                    </canvas>
 
+                </div>
             </div>
         </div>
     </div>
