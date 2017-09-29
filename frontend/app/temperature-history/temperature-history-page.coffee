@@ -1,6 +1,7 @@
 angular.module('supla-scripts').component 'temperatureHistoryPage',
   templateUrl: 'app/temperature-history/temperature-history-page.html'
-  controller: ($scope) ->
+  controller: ($scope, Channels) ->
+
     $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
     $scope.series = ['Series A', 'Series B'];
     $scope.data = [
@@ -28,4 +29,8 @@ angular.module('supla-scripts').component 'temperatureHistoryPage',
         ]
       }
     };
-    return
+
+
+    new class
+      $onInit: ->
+        Channels.getList(['FNC_THERMOMETER', 'FNC_HUMIDITYANDTEMPERATURE']).then((@sensors) => console.log(@sensors))

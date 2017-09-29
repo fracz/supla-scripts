@@ -1,5 +1,8 @@
 <div class="container">
     <h1>Historia temperatur</h1>
+
+    {{ $ctrl.sensors[0] | channelLabel }}
+
     <div style="height: 700px">
         <canvas id="line" class="chart chart-line" chart-data="data"
                 chart-labels="labels" chart-series="series" chart-options="options"

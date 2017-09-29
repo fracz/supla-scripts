@@ -6,7 +6,7 @@ use Assert\Assertion;
 use suplascripts\models\HasSuplaApi;
 use suplascripts\models\supla\SuplaApiException;
 
-class ChannelsController extends BaseController
+class TemperatureController extends BaseController
 {
     use HasSuplaApi;
 
@@ -31,9 +31,5 @@ class ChannelsController extends BaseController
             $result = $this->getApi()->getChannelState($channelId);
         }
         return $this->response($result);
-    }
-
-    public function getTemperatureLogsAction($params) {
-
     }
 }

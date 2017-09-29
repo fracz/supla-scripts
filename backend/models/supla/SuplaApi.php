@@ -50,6 +50,14 @@ class SuplaApi
         throw new SuplaApiException($this->client, 'Could not get status for channel #' . $channelId);
     }
 
+    public function getSensorLogs(int $channelId, $fromTime = '-1week') {
+        $timeDiff = abs(time() - strtotime($fromTime));
+        $logCount = min(4000, ceil($timeDiff / 600)); // SUPLA you can fetch 4k logs at max and one log is for 10 minutes
+        $result = $this->client->temperatureLogGetItems($channelId, 0, $logCount);
+        $this->handleError($result);
+        return $result;
+    }
+
     public function getChannelState(int $channelId)
     {
         $state = $this->client->channel($channelId);
