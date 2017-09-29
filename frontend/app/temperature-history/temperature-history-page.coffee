@@ -64,31 +64,69 @@ angular.module('supla-scripts').component 'temperatureHistoryPage',
 
     new class
       $onInit: ->
-        @period = '-1hour'
+        @changePeriod('-1hour')
         Channels.getList(['FNC_THERMOMETER', 'FNC_HUMIDITYANDTEMPERATURE']).then((@sensors) =>)
 
       downloadDataForSensor: (sensor) ->
         if not sensor.status
           sensor.status = 'downloading'
           Channels.getLogs(sensor.id, @period).then (logs) =>
+            return if not logs?.length
             sensor.status = 'downloaded'
-            $scope.labels = logs.map((log) -> moment.unix(log.date_timestamp).toDate())
+            @timestamps = @timestamps.concat(logs.map((log) -> parseInt(log.date_timestamp))).filter((t, i, s) -> s.indexOf(t) is i).sort()
             hasHumidity = logs[0].humidity != undefined
-            $scope.data.push(logs.map((log) -> parseFloat(log.temperature)))
-            $scope.datasetOverride.push
-              label: sensor.caption + (if hasHumidity then ' (temperatura)' else ''),
-              yAxisID: 'temperature',
-              borderWidth: 5
-              fill: no
+            hasTemperature = logs[0].temperature != undefined
+            if hasTemperature
+              row =
+                label: sensor.caption + (if hasHumidity then ' (temperatura)' else '')
+                yAxisID: 'temperature'
+                data: {}
+              for log in logs
+                timestamp = parseInt(log.date_timestamp)
+                row.data[timestamp] = parseFloat(log.temperature)
+              @data.push(row)
             if hasHumidity
-              $scope.data.push(logs.map((log) -> parseFloat(log.humidity)))
+              row =
+                label: sensor.caption + (if hasTemperature then ' (wilgotność)' else '')
+                yAxisID: 'humidity'
+                borderDash: [10, 5]
+                data: {}
+              for log in logs
+                timestamp = parseInt(log.date_timestamp)
+                row.data[timestamp] = parseFloat(log.humidity)
+              @data.push(row)
+
+            $scope.labels = @timestamps.map(moment.unix)
+
+            $scope.data = []
+            $scope.datasetOverride = []
+
+            for row in @data
+              $scope.data.push(row.data[timestamp] for timestamp in @timestamps)
               $scope.datasetOverride.push
-                label: sensor.caption + ' (wilgotność)',
-                yAxisID: 'humidity',
+                label: row.label
+                yAxisID: row.yAxisID
+                borderDash: row.borderDash
+                borderWidth: 4
                 fill: no
 
+#            $scope.data.push(logs.map((log) -> parseFloat(log.temperature)))
+#            $scope.datasetOverride.push
+#              label: sensor.caption + (if hasHumidity then ' (temperatura)' else ''),
+#              yAxisID: 'temperature',
+#              borderWidth: 5
+#              fill: no
+#            if hasHumidity
+#              $scope.data.push(logs.map((log) -> parseFloat(log.humidity)))
+#              $scope.datasetOverride.push
+#                label: sensor.caption + ' (wilgotność)',
+#                yAxisID: 'humidity',
+#                fill: no
+
       changePeriod: (@period) ->
-        delete sensor.status for sensor in @sensors
+        delete sensor.status for sensor in @sensors if @sensors
+        @timestamps = []
+        @data = []
         $scope.data = []
         $scope.datasetOverride = []
 
