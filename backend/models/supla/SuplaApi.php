@@ -50,14 +50,6 @@ class SuplaApi
         throw new SuplaApiException($this->client, 'Could not get status for channel #' . $channelId);
     }
 
-    public function getSensorLogs(int $channelId, $fromTime = '-1week') {
-        $timeDiff = abs(time() - strtotime($fromTime));
-        $logCount = min(4000, ceil($timeDiff / 600)); // SUPLA you can fetch 4k logs at max and one log is for 10 minutes
-        $result = $this->client->temperatureLogGetItems($channelId, 0, $logCount);
-        $this->handleError($result);
-        return $result;
-    }
-
     public function getChannelState(int $channelId)
     {
         $state = $this->client->channel($channelId);
@@ -111,6 +103,27 @@ class SuplaApi
             $result = $this->client->channelSetRGB($channelId, $color, $colorBrightness);
         }
         return $result !== false;
+    }
+
+    public function getSensorLogs(int $channelId, $fromTime = '-1day'): array
+    {
+        $timeDiff = abs(time() - strtotime($fromTime));
+        $withHumidity = false;
+        $totalLogCount = $this->client->temperatureLogItemCount($channelId);
+        if (!$totalLogCount) {
+            $withHumidity = true;
+            $totalLogCount = $this->client->temperatureAndHumidityLogItemCount($channelId);
+        }
+        $this->handleError($totalLogCount);
+        $desiredLogCount = min($totalLogCount->record_limit_per_request ?? 5000, ceil($timeDiff / 600)); // SUPLA you can fetch 4k logs at max and one log is for 10 minutes
+        $totalLogCount = intval($totalLogCount->count);
+        // logs are ordered ascending (!) so we need to get desired count from the end
+        $offset = max(0, $totalLogCount - $desiredLogCount);
+        $result = $withHumidity
+            ? $this->client->temperatureAndHumidityLogGetItems($channelId, $offset, $desiredLogCount)
+            : $this->client->temperatureLogGetItems($channelId, $offset, $desiredLogCount);
+        $this->handleError($result);
+        return $result->log;
     }
 
     private function handleError($response)

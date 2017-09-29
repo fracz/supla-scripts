@@ -33,7 +33,9 @@ class ChannelsController extends BaseController
         return $this->response($result);
     }
 
-    public function getTemperatureLogsAction($params) {
-
+    public function getSensorLogsAction($params)
+    {
+        $logs = $this->getApi()->getSensorLogs($params['id'], $this->request()->getParam('period', '-1hour'));
+        return $this->response($logs);
     }
 }

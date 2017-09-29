@@ -26,5 +26,8 @@ angular.module('supla-scripts').service 'Channels', (Restangular, Devices, Cache
       service.getList().then (channels) ->
         channels.filter((channel) -> channel.id is channelId)[0]
 
+    getLogs: (channelId, period) ->
+      Channels.one(channelId).all('logs').getList({period})
+
     executeAction: (channelId, data) ->
       Channels.one(channelId).patch(data)

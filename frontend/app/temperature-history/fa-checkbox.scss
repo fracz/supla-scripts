@@ -1,0 +1,15 @@
+fa-checkbox {
+  .checked {
+    &:before {
+      content: "\f046"; // check-square-o
+    }
+  }
+}
+
+fa-radio {
+  .checked {
+    &:before {
+      content: "\f192"; // dot-circle-o
+    }
+  }
+}
