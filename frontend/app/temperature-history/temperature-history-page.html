@@ -8,24 +8,28 @@
                     <button class="btn btn-default"
                             ng-repeat="timeSlot in [['-1hour', 'Ostatnia godzina'], ['-24hours', 'Ostatnie 24h'], ['-1week', 'Ostatni tydzień'], ['-1month', 'Ostatni miesiąc'], ['-5years', 'Pełna historia']]"
                             ng-class="{active: $ctrl.period == timeSlot[0]}"
-                            ng-click="$ctrl.period = timeSlot[0]">
+                            ng-click="$ctrl.changePeriod(timeSlot[0])">
                         <fa-radio checked="$ctrl.period == timeSlot[0]"></fa-radio>
                         {{ timeSlot[1] }}
                     </button>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="list-group">
+        <div class="col-md-3 col-lg-2">
+            <div class="list-group sensors-list">
                 <a class="list-group-item" ng-repeat="sensor in $ctrl.sensors"
-                   ng-class="{active: sensor.active, disabled: $ctrl.toggling}"
-                   ng-click="$ctrl.toggleSensor(sensor)">
-                    <fa-checkbox checked="sensor.active"></fa-checkbox>
+                   ng-class="{active: sensor.status == 'downloaded', disabled: $ctrl.toggling}"
+                   ng-click="$ctrl.downloadDataForSensor(sensor)">
+                    <span ng-switch="sensor.status">
+                        <fa ng-switch-when="downloaded" name="database" fw></fa>
+                        <span ng-switch-when="downloading"><fa name="arrow-down" fw class="faa-falling faa-fast animated"></fa></span>
+                        <fa ng-switch-default name="download" fw></fa>
+                    </span>
                     {{ sensor.caption }}
                 </a>
             </div>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-9 col-lg-10">
             <div style="height: 700px">
                 <canvas id="line" class="chart chart-line" chart-data="data"
                         chart-labels="labels" chart-series="series" chart-options="options"

@@ -7,6 +7,7 @@
     "angular-animate": "1.6.5",
     "angular-bootstrap-show-errors": "2.3.0",
     "angular-cache": "4.6.0",
+    "angular-chart.js": "1.1.1",
     "angular-clipboard": "1.6.0",
     "angular-filter": "0.5.16",
     "angular-fontawesome": "1.0.0",
@@ -20,13 +21,13 @@
     "angularjs-slider": "6.2.3",
     "bootstrap": "3.3.7",
     "bootswatch": "3.3.7",
+    "font-awesome-animation": "0.0.10",
     "moment-timezone": "0.5.13",
     "ng-elif": "0.1.5",
     "ngFx": "1.1.0",
     "ngstorage": "0.3.11",
     "restangular": "1.6.1",
-    "swangular": "^1.3.9",
-    "angular-chart.js": "^1.1.1"
+    "swangular": "1.3.9"
   },
   "resolutions": {
     "angular": "1.6.5",
@@ -54,9 +55,6 @@
     },
     "angular-chart.js": {
       "main": "dist/angular-chart.min.js"
-    },
-    "angular-counter": {
-      "main": "js/angular-counter.min.js"
     },
     "angular-fontawesome": {
       "main": "dist/angular-fontawesome.min.js"
@@ -106,6 +104,11 @@
         "fonts/glyphicons-halflings-regular.woff2"
       ]
     },
+    "chart.js": {
+      "dependencies": {
+        "moment": "*"
+      }
+    },
     "font-awesome": {
       "main": [
         "fonts/fontawesome-webfont.ttf",
@@ -115,6 +118,9 @@
         "fonts/fontawesome-webfont.woff2",
         "css/font-awesome.min.css"
       ]
+    },
+    "font-awesome-animation": {
+      "main": "dist/font-awesome-animation.min.css"
     },
     "jquery": {
       "main": "dist/jquery.min.js"
