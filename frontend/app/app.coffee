@@ -4,6 +4,7 @@ angular.module 'supla-scripts', [
   'angular-jwt'
   'angularMoment'
   'angularPromiseButtons'
+  'chart.js'
   'elif'
   'ngAnimate'
   'ngFx'

@@ -57,8 +57,12 @@ angular.module('supla-scripts')
     template: '<thermostat-preview slug="slug"></thermostat-preview>'
     controller: ($scope, $stateParams) -> $scope.slug = $stateParams.slug
 
+  .state 'temperatures',
+    url: '/temperatures'
+    template: '<temperature-history-page></temperature-history-page>'
+
   .state 'account',
-    url: '/konto'
+    url: '/account'
     abstract: true
     template: '<account-page user="user"></account-page>'
     controller: ($scope, user) -> $scope.user = user
@@ -66,22 +70,22 @@ angular.module('supla-scripts')
       user: (Users) -> Users.one('current').get()
 
   .state 'account.details',
-    url: '/konto/szczegoly'
+    url: '/details'
     template: '<account-details user="user"></account-details>'
     controller: ($scope, user) -> $scope.user = user
 
   .state 'account.api',
-    url: '/konto/api'
+    url: '/api'
     template: '<user-api-credentials user="user"></user-api-credentials>'
     controller: ($scope, user) -> $scope.user = user
 
   .state 'account.timezone',
-    url: '/konto/strefa-czasowa'
+    url: '/timezone'
     template: '<user-timezone user="user"></user-timezone>'
     controller: ($scope, user) -> $scope.user = user
 
   .state 'account.delete',
-    url: '/konto/usun'
+    url: '/delete'
     template: '<account-delete user="user"></account-delete>'
     controller: ($scope, user) -> $scope.user = user
 
