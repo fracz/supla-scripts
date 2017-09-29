@@ -22,26 +22,26 @@
                     <a class="list-group-item" ng-repeat="sensor in $ctrl.sensors"
                        ng-class="{active: sensor.status == 'downloaded', disabled: $ctrl.toggling}"
                        ng-click="$ctrl.downloadDataForSensor(sensor)">
-                        <span ng-switch="sensor.status">
-                            <fa ng-switch-when="downloaded" name="database" fw></fa>
+                        <span ng-switch="sensor.status" class="pull-right">
+                            <fa ng-switch-when="downloaded" name="area-chart" fw></fa>
                             <span ng-switch-when="downloading">
                                 <fa name="arrow-down" fw class="faa-falling faa-fast animated"></fa>
                             </span>
                             <fa ng-switch-default name="download" fw></fa>
                         </span>
-                        {{ sensor.caption }}
+                        {{ sensor | channelLabel }}
                     </a>
                 </div>
             </div>
             <div class="col-md-9 col-lg-10">
                 <div style="height: 700px" ng-if="$ctrl.timestamps.length">
-                    <canvas id="line" class="chart chart-line" chart-data="data"
-                            chart-labels="labels" chart-series="series" chart-options="options"
-                            chart-dataset-override="datasetOverride" chart-click="onClick">
+                    <canvas class="chart chart-line" chart-data="data"
+                            chart-labels="labels" chart-options="options"
+                            chart-dataset-override="datasetOverride">
                     </canvas>
                 </div>
                 <div ng-else>
-                    <div class="alert alert-info">
+                    <div class="label label-info">
                         <fa name="chevron-left" fw></fa>
                         Wybierz dane do wyświetlenia
                     </div>
