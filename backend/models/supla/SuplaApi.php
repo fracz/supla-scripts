@@ -124,9 +124,9 @@ class SuplaApi
             ? $this->client->temperatureAndHumidityLogGetItems($channelId, $offset, $desiredLogCount)
             : $this->client->temperatureLogGetItems($channelId, $offset, $desiredLogCount);
         $this->handleError($result);
-        $result = array_filter($result->log, function ($entry) use ($fromTime) {
+        $result = array_values(array_filter($result->log, function ($entry) use ($fromTime) {
             return $entry->date_timestamp >= $fromTime;
-        });
+        }));
         return $result;
     }
 
