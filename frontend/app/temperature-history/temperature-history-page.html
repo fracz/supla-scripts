@@ -20,9 +20,10 @@
             <div class="col-md-3 col-lg-2">
                 <div class="list-group sensors-list">
                     <a class="list-group-item" ng-repeat="sensor in $ctrl.sensors"
-                       ng-class="{active: sensor.status == 'downloaded', disabled: $ctrl.toggling}"
+                       ng-class="{active: ['downloaded', 'error'].indexOf(sensor.status) >= 0}"
                        ng-click="$ctrl.downloadDataForSensor(sensor)">
                         <span ng-switch="sensor.status" class="pull-right">
+                            <fa ng-switch-when="error" name="times" class="text-danger" fw></fa>
                             <fa ng-switch-when="downloaded" name="area-chart" fw></fa>
                             <span ng-switch-when="downloading">
                                 <fa name="arrow-down" fw class="faa-falling faa-fast animated"></fa>

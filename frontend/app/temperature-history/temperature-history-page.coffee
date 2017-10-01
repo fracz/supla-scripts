@@ -1,6 +1,6 @@
 angular.module('supla-scripts').component 'temperatureHistoryPage',
   templateUrl: 'app/temperature-history/temperature-history-page.html'
-  controller: ($scope, Channels, channelLabelFilter) ->
+  controller: ($scope, Channels, channelLabelFilter, swangular) ->
     $scope.data = []
     $scope.datasetOverride = []
     $scope.options = {
@@ -58,7 +58,14 @@ angular.module('supla-scripts').component 'temperatureHistoryPage',
           Channels.getLogs(sensor.id, @period)
           .finally(-> sensor.status = 'downloaded')
           .then (logs) =>
-            return if not logs?.length
+            if not logs?.length
+              sensor.status = 'error'
+              swangular.open
+#                scope: $scope
+                type: 'error'
+                title: 'Brak danych'
+                text: 'Serwer nie zwrócił żadnych danych dla wybranego termometru i okresu.'
+              return
             @timestamps = @timestamps.concat(logs.map((log) -> parseInt(log.date_timestamp))).filter((t, i, s) -> s.indexOf(t) is i).sort()
             hasHumidity = logs[0].humidity != undefined
             hasTemperature = logs[0].temperature != undefined

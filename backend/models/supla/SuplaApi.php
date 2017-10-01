@@ -107,7 +107,8 @@ class SuplaApi
 
     public function getSensorLogs(int $channelId, $fromTime = '-1day'): array
     {
-        $timeDiff = abs(time() - strtotime($fromTime));
+        $fromTime = strtotime($fromTime);
+        $timeDiff = abs(time() - $fromTime);
         $withHumidity = false;
         $totalLogCount = $this->client->temperatureLogItemCount($channelId);
         if (!$totalLogCount) {
@@ -123,7 +124,10 @@ class SuplaApi
             ? $this->client->temperatureAndHumidityLogGetItems($channelId, $offset, $desiredLogCount)
             : $this->client->temperatureLogGetItems($channelId, $offset, $desiredLogCount);
         $this->handleError($result);
-        return $result->log;
+        $result = array_filter($result->log, function ($entry) use ($fromTime) {
+            return $entry->date_timestamp >= $fromTime;
+        });
+        return $result;
     }
 
     private function handleError($response)
