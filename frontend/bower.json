@@ -27,6 +27,7 @@
     "ngFx": "1.1.0",
     "ngstorage": "0.3.11",
     "restangular": "1.6.1",
+    "smart-area": "1.5.0",
     "swangular": "1.3.9"
   },
   "resolutions": {
@@ -145,6 +146,11 @@
     },
     "restangular": {
       "main": "dist/restangular.min.js"
+    },
+    "smart-area": {
+      "dependencies": {
+        "angular": "*"
+      }
     },
     "sweetalert2": {
       "main": [

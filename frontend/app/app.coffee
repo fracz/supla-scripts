@@ -12,6 +12,7 @@ angular.module 'supla-scripts', [
   'picardy.fontawesome'
   'restangular'
   'rzModule'
+  'smartArea'
   'swangular'
   'toastr'
   'ui.router'

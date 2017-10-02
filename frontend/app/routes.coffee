@@ -65,6 +65,10 @@ angular.module('supla-scripts')
     url: '/temperatures'
     template: '<temperature-history-page></temperature-history-page>'
 
+  .state 'voice',
+    url: '/voice'
+    template: '<voice-commands-page></voice-commands-page>'
+
   .state 'account',
     url: '/account'
     abstract: true
