@@ -61,7 +61,7 @@ angular.module('supla-scripts').component 'temperatureHistoryPage',
             if not logs?.length
               sensor.status = 'error'
               swangular.open
-#                scope: $scope
+                scope: $scope
                 type: 'error'
                 title: 'Brak danych'
                 text: 'Serwer nie zwrócił żadnych danych dla wybranego termometru i okresu.'

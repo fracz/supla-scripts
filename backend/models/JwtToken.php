@@ -59,7 +59,7 @@ class JwtToken
         $jwtSettings = $app->getSetting('jwt');
         $now = time();
         $expirationTime = $jwtSettings[($this->tokenData['rememberMe'] ?? false) ? 'expirationTimeRememberMe' : 'expirationTime'];
-        if ($this->tokenData['client']) {
+        if (isset($this->tokenData['client']) && $this->tokenData['client']) {
             Assertion::keyNotExists($this->tokenData, 'user');
             $expirationTime = $jwtSettings['expirationTimeClient'];
         }
