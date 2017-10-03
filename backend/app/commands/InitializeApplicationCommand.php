@@ -27,6 +27,7 @@ class InitializeApplicationCommand extends Command
         } else {
             $this->getApplication()->setAutoExit(false);
             $this->getApplication()->run(new StringInput('encryptionKey:generate'), $output);
+            $this->getApplication()->run(new StringInput('cache:clear'), $output);
             $this->getApplication()->run(new StringInput('db:migrate'), $output);
         }
     }

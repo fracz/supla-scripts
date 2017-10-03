@@ -15,6 +15,7 @@ class SuplaScriptsManager extends Application
             new GenerateEncryptionKeyCommand(),
             new DispatchCyclicTasksCommand(),
             new DispatchThermostatCommand(),
+            new ClearCacheCommand(),
         ]);
     }
 }
