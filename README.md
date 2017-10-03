@@ -11,6 +11,7 @@ new features into your SUPLA account, today!
 
 * thermostat
 * ability to check and change channel's state via web browser
+* temperature history charts
 
 ## Installation
 
