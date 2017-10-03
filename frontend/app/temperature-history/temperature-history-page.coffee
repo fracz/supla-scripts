@@ -1,52 +1,6 @@
 angular.module('supla-scripts').component 'temperatureHistoryPage',
   templateUrl: 'app/temperature-history/temperature-history-page.html'
   controller: ($scope, Channels, channelLabelFilter, swangular) ->
-    $scope.data = []
-    $scope.datasetOverride = []
-    $scope.options = {
-      legend: {display: true, position: 'top'}
-      elements: { point: { radius: 0, hitRadius: 10, hoverRadius: 10 } }
-      scales: {
-        xAxes: [
-          {
-            type: 'time',
-            time:
-              displayFormats: {
-                'minute': 'LT',
-                'hour': 'lll',
-              }
-          }
-        ]
-        yAxes: [
-          {
-            id: 'temperature',
-            type: 'linear',
-            display: true,
-            position: 'left'
-            scaleLabel: {
-              display: true,
-              labelString: 'Temperatura °C'
-            }
-          }
-          {
-            id: 'humidity',
-            type: 'linear',
-            display: true,
-            position: 'right'
-            scaleLabel: {
-              display: true,
-              labelString: 'Wilgotność %'
-            }
-            ticks: {
-              max: 100,
-              min: 0
-            }
-          }
-        ]
-      }
-    };
-
-
     new class
       $onInit: ->
         @changePeriod('-1hour')
@@ -110,4 +64,41 @@ angular.module('supla-scripts').component 'temperatureHistoryPage',
         @data = []
         $scope.data = []
         $scope.datasetOverride = []
+
+      chartOptions:
+        legend: {display: true, position: 'top'}
+        elements: { point: { radius: 0, hitRadius: 10, hoverRadius: 10 } }
+        scales:
+          xAxes: [
+            {
+              type: 'time'
+              time:
+                displayFormats:
+                  'minute': 'LT'
+                  'hour': 'lll'
+            }
+          ]
+          yAxes: [
+            {
+              id: 'temperature'
+              type: 'linear'
+              display: true
+              position: 'left'
+              scaleLabel:
+                display: true,
+                labelString: 'Temperatura °C'
+            }
+            {
+              id: 'humidity'
+              type: 'linear'
+              display: true
+              position: 'right'
+              scaleLabel:
+                display: true
+                labelString: 'Wilgotność %'
+              ticks:
+                max: 100
+                min: 0
+            }
+          ]
 

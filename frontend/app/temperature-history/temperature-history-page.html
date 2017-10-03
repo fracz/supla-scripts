@@ -37,7 +37,7 @@
             <div class="col-md-9 col-lg-10">
                 <div style="height: 700px" ng-if="$ctrl.timestamps.length">
                     <canvas class="chart chart-line" chart-data="data"
-                            chart-labels="labels" chart-options="options"
+                            chart-labels="labels" chart-options="$ctrl.chartOptions"
                             chart-dataset-override="datasetOverride">
                     </canvas>
                 </div>
