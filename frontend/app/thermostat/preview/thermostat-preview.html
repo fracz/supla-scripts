@@ -1,5 +1,6 @@
 <loader-dots ng-if="!$ctrl.thermostat"></loader-dots>
 <div ng-else loading-cover="$ctrl.changingPromise">
+    <view-title>{{ $ctrl.thermostat.label }} - termostaty</view-title>
     <div ng-class="$ctrl.slug ? 'container-fluid' : 'container'">
         <div class="row thermostat-header">
             <div class="col-xs-12 text-center">

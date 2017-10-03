@@ -22,6 +22,10 @@ angular.module('supla-scripts')
     url: '/login?register'
     template: '<login-view></login-view>'
 
+  .state 'register',
+    url: '/register'
+    template: '<register-view></register-view>'
+
   .state 'dashboard',
     url: '/dashboard'
     template: '<dashboard></dashboard>'
