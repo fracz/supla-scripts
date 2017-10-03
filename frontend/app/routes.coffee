@@ -99,8 +99,9 @@ angular.module('supla-scripts')
   .state 'notAllowed',
     templateUrl: 'app/common/errors/403.html'
 
-.run ($rootScope, $state) ->
+.run ($rootScope, $state, CacheFactory) ->
   $rootScope.$on 'AUTH_CHANGED', (event, user) ->
+    CacheFactory.clearAll()
     $state.reload() if not user
 
 ###
