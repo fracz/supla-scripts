@@ -82,6 +82,7 @@ function copyToReleaseDirectory() {
 
 function createRequiredDirectories() {
     [
+        'var/cache',
         'var/config',
         'var/mysql',
         'var/logs',

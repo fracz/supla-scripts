@@ -1,6 +1,7 @@
 {
   "displayErrorDetails": false,
   "readOnly": false,
+  "apiCache": true,
   "db": {
     "driver": "mysql",
     "database": "suplascripts",

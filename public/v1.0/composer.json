@@ -9,6 +9,7 @@
   },
   "require": {
     "supla/api-client": "dev-master",
+    "jdorn/file-system-cache": "dev-master",
     "mtdowling/cron-expression": "1.2.0",
     "nicmart/string-template": "~0.1"
   }

@@ -2,6 +2,7 @@
 
 namespace suplascripts\app;
 
+use FileSystemCache;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Database\Capsule\Manager as Capsule;
@@ -47,6 +48,7 @@ class Application extends App
     {
         $this->configureDb();
         $this->configureLogger();
+        FileSystemCache::$cacheDir = self::VAR_PATH . '/cache';
     }
 
     private function configureDb()

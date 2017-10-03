@@ -16,7 +16,8 @@
     "slim/slim": "^3.8",
     "supla/api-client": "dev-master",
     "symfony/console": "^3.3",
-    "mtdowling/cron-expression": "^1.2"
+    "mtdowling/cron-expression": "^1.2",
+    "jdorn/file-system-cache": "@dev"
   },
   "autoload": {
     "psr-4": {

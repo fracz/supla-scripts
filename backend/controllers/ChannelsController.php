@@ -23,6 +23,7 @@ class ChannelsController extends BaseController
         $action = array_shift($params);
         Assertion::inArray($action, ['turnOn', 'turnOff', 'toggle', 'getChannelState', 'setRgb']);
         array_unshift($params, $channelId);
+        $this->getApi()->clearCache($channelId);
         $result = call_user_func_array([$this->getApi(), $action], $params);
         if ($result === false) {
             throw new SuplaApiException($this->getApi()->getClient(), 'Could not execute the action.');
