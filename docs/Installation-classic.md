@@ -53,6 +53,10 @@
        a2ensite supla-scripts
        service apache2 restart
        ```
+1. Change the owner of the `/var/www/supla-scripts` directory to `www-data`
+    ```
+    chown -R www-data:www-data /var/www/supla-scripts
+    ```
 1. Check if the application is available on your server address and configured port.
 1. Install watchdog crontab by executing:
    ```
@@ -67,3 +71,7 @@
    tar -zxvf supla-scripts-2.0.0.tar.gz -C /var/www/supla-scripts 
    ```
 2. `php /var/www/supla-scripts/supla-scripts init`
+3. Change the owner of the `/var/www/supla-scripts` directory to `www-data`
+    ```
+    chown -R www-data:www-data /var/www/supla-scripts
+    ```
