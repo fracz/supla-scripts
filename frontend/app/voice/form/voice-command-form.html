@@ -8,11 +8,12 @@
         <div class="col-md-6">
             <h5>Warianty komendy</h5>
             <div class="list-group">
-                <div class="list-group-item" ng-repeat="trigger in $ctrl.voiceCommand.triggers track by $index">
+                <div class="list-group-item" ng-repeat="trigger in $ctrl.voiceCommand.triggers">
                     <span class="input-group">
-                        <input type="text" class="form-control" ng-model="trigger">
+                        <input type="text" class="form-control" ng-model="trigger.text">
                         <span class="input-group-btn">
-                            <button type="button" class="btn btn-danger">
+                            <button type="button" class="btn btn-danger"
+                                    ng-click="$ctrl.voiceCommand.triggers.splice($ctrl.voiceCommand.triggers.indexOf(trigger), 1)">
                                 <fa name="trash"></fa>
                             </button>
                         </span>
@@ -21,7 +22,7 @@
                 <div class="list-group-item">
                     <div class="btn-group btn-group-justified">
                         <a class="btn btn-default"
-                           ng-click="$ctrl.voiceCommand.triggers.push('')"
+                           ng-click="$ctrl.voiceCommand.triggers.push({text: ''})"
                            ng-disabled="$ctrl.waitingForVoice">
                             <fa name="keyboard-o" fw></fa>
                             Wpisz nowy wariant
@@ -36,7 +37,7 @@
                 </div>
                 <div class="list-group-item fx-fade-right" ng-if="$ctrl.waitingForVoice">
                     <voice-command-adder-speech on-cancelled="$ctrl.waitingForVoice = false"
-                                                on-added="$ctrl.waitingForVoice = false; $ctrl.voiceCommand.triggers.push(command)"></voice-command-adder-speech>
+                                                on-added="$ctrl.waitingForVoice = false; $ctrl.voiceCommand.triggers.push({text: command})"></voice-command-adder-speech>
                 </div>
             </div>
         </div>
