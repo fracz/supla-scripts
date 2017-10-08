@@ -16,6 +16,10 @@ a, .pointer {
 
 .navbar {
   border-radius: 0;
+  .navbar-toggle {
+    color: white;
+    border-color: #CCC;
+  }
 }
 
 table {
