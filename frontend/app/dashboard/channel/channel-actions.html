@@ -17,10 +17,15 @@
             promise-btn>
         Przełącz
     </button>
-    <button ng-if="['FNC_CONTROLLINGTHEGATE', 'FNC_CONTROLLINGTHEGATEWAYLOCK', 'FNC_CONTROLLINGTHEGARAGEDOOR'].indexOf($ctrl.channel.function.name) >= 0"
+    <button ng-if="['FNC_CONTROLLINGTHEGATE', 'FNC_CONTROLLINGTHEGARAGEDOOR'].indexOf($ctrl.channel.function.name) >= 0"
             class="btn btn-default" ng-click="$ctrl.onAction({action: 'toggle'})"
             promise-btn>
         Otwórz/zamknij
+    </button>
+    <button ng-if="['FNC_CONTROLLINGTHEGATEWAYLOCK', 'FNC_CONTROLLINGTHEDOORLOCK'].indexOf($ctrl.channel.function.name) >= 0"
+            class="btn btn-default" ng-click="$ctrl.onAction({action: 'toggle'})"
+            promise-btn>
+        Otwórz
     </button>
     <button ng-if="['FNC_DIMMERANDRGBLIGHTING'].indexOf($ctrl.channel.function.name) >= 0"
             class="btn btn-default"
