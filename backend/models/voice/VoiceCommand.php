@@ -32,4 +32,9 @@ class VoiceCommand extends Model
     {
         return $this->belongsTo(User::class, self::USER_ID);
     }
+
+    public function log($data)
+    {
+        $this->user()->first()->log('voice', $data, $this->id);
+    }
 }

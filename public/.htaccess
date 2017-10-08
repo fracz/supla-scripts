@@ -10,7 +10,7 @@ RewriteRule \.html$ - [L]
 RewriteRule ^api api.php [QSA,L]
 
 # v1.0 URLs
-RewriteRule ^(((action)|(notifications)|(rgb)|(scene)|(state)|(temperature)|(temperature-stats)|(toggle)|(voice))/.+) v1.0/$1 [L]
+RewriteRule ^(((action)|(notifications)|(rgb)|(scene)|(state)|(temperature)|(temperature-stats)|(toggle))/.+) v1.0/$1 [L]
 
 # Rewrite everything else to index.html to allow html5 state links
 RewriteRule ^ index.html [L]

@@ -1,0 +1,51 @@
+<h4>{{ $ctrl.voiceCommand.id ? 'Edytuj' : 'Dodaj' }} komendę głosową</h4>
+<form name="voiceCommandForm"
+      novalidate
+      promise-btn
+      ng-submit="$broadcast('show-errors-check-validity') && voiceCommandForm.$valid && $ctrl.onSubmit({voiceCommand: $ctrl.voiceCommand})">
+
+    <div class="row">
+        <div class="col-md-6">
+            <h5>Warianty komendy</h5>
+            <div class="list-group">
+                <div class="list-group-item">
+                    <input type="text" class="form-control">
+                </div>
+                <div class="list-group-item">
+                    <div class="btn-group btn-group-justified">
+                        <a class="btn btn-default">
+                            <fa name="keyboard-o" fw></fa>
+                            Wpisz nowy wariant
+                        </a>
+                        <a class="btn btn-default">
+                            <fa name="microphone" fw></fa>
+                            Powiedz nowy wariant
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h5>Akcje</h5>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Odpowiedź</label>
+        <voice-feedback-field ng-model="$ctrl.voiceCommand.feedback"></voice-feedback-field>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 text-right">
+            <button type="button" class="btn btn-default" ng-click="$ctrl.onCancel()">
+                <fa name="times" fw></fa>
+                Anuluj
+            </button>
+            <button type="submit" class="btn btn-primary">
+                <fa name="{{ $ctrl.room.id ? 'save' : 'plus' }}" fw></fa>
+                {{ $ctrl.room.id ? 'Zapisz' : 'Dodaj' }} komendę głosową
+            </button>
+        </div>
+    </div>
+</form>
+

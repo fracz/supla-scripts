@@ -1,15 +1,17 @@
 <div class="container">
     <h1>Sterowanie głosem</h1>
 
-    <textarea
-            name="sampleTextarea"
-            id="sampleTextarea"
-            class="form-control code"
-            ng-model="$ctrl.text"
-            ng-trim="false"
-            spellcheck="false"
-            smart-area="$ctrl.config">
-    </textarea>
+    <div class="text-right" ng-if="!$ctrl.adding">
+        <button class="btn btn-primary" ng-click="$ctrl.adding = true">
+            <fa name="bullhorn" fw></fa>
+            Dodaj nową komendę głosową
+        </button>
+    </div>
+
+    <div class="well fx-fade-right" ng-else>
+        <voice-command-form on-submit="$ctrl.addNewVoiceCommand(savedCommand)"
+                            on-cancel="$ctrl.adding = false"></voice-command-form>
+    </div>
 
 </div>
 
