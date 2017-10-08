@@ -7,6 +7,7 @@ use suplascripts\app\commands\DispatchThermostatCommand;
 use suplascripts\controllers\BaseController;
 use suplascripts\controllers\exceptions\Http403Exception;
 use suplascripts\models\supla\SuplaApi;
+use suplascripts\models\supla\SuplaApiException;
 use suplascripts\models\thermostat\Thermostat;
 use suplascripts\models\thermostat\ThermostatProfile;
 use suplascripts\models\thermostat\ThermostatRoomConfig;
@@ -111,10 +112,13 @@ class ThermostatsController extends BaseController
             $channelsToFetch = array_merge($channelsToFetch, $room->coolers ?? []);
         }
         foreach (array_unique($channelsToFetch) as $channelId) {
-            $channels[$channelId] = $api->getChannelWithState($channelId);
+            try {
+                $channels[$channelId] = $api->getChannelWithState($channelId);
+            } catch (SuplaApiException $e) {
+                $channels[$channelId] = [];
+            }
         }
-        return $this->response([
-            'id' => $thermostat->id,
+        return $this->response(['id' => $thermostat->id,
             'label' => $thermostat->label,
             'enabled' => boolval($thermostat->enabled),
             'profiles' => $thermostat->profiles()->get(),
@@ -130,7 +134,8 @@ class ThermostatsController extends BaseController
         ]);
     }
 
-    public function deleteAction($params)
+    public
+    function deleteAction($params)
     {
         $thermostat = $this->ensureExists(Thermostat::find($params)->first());
         if ($thermostat->userId != $this->getCurrentUser()->id) {
