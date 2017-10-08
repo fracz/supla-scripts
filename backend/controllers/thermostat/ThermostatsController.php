@@ -134,8 +134,7 @@ class ThermostatsController extends BaseController
         ]);
     }
 
-    public
-    function deleteAction($params)
+    public function deleteAction($params)
     {
         $thermostat = $this->ensureExists(Thermostat::find($params)->first());
         if ($thermostat->userId != $this->getCurrentUser()->id) {
