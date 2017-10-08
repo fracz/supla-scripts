@@ -77,6 +77,6 @@ class UserAndUrlAwareLogger implements LoggerInterface
 
     public function log($level, $message, array $context = [])
     {
-        $this->logger->addRecord($level, $message, $this->buildContext($context));
+        $this->logger->log(strtoupper($level), $message, $this->buildContext($context));
     }
 }

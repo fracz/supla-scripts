@@ -109,11 +109,12 @@ class User extends Model
         return $this->hasMany(LogEntry::class, LogEntry::USER_ID);
     }
 
-    public function log(string $module, $data)
+    public function log(string $module, $data, $entityId = null)
     {
         $this->logs()->create([
             LogEntry::MODULE => $module,
             LogEntry::DATA => $data,
+            LogEntry::ENTITY_ID => $entityId,
         ])->save();
     }
 

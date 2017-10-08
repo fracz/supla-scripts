@@ -65,7 +65,7 @@ class Thermostat extends Model
 
     public function log($data)
     {
-        $this->user()->first()->log('thermostat', "[$this->label] " . $data);
+        $this->user()->first()->log('thermostat', $data, $this->id);
     }
 
     public function shouldChangeProfile(\DateTime $now = null): bool

@@ -8,6 +8,7 @@
                 <tr>
                     <th>Kiedy?</th>
                     <th>Moduł</th>
+                    <th>Podmiot</th>
                     <th>Treść</th>
                 </tr>
                 </thead>
@@ -15,6 +16,14 @@
                 <tr ng-repeat="entry in $ctrl.logs">
                     <td>{{ entry.createdAt | date: 'short' }}</td>
                     <td>{{ entry.module }}</td>
+                    <td>
+                        <span ng-switch="entry.module">
+                            <a ng-switch-when="thermostat"
+                               ui-sref="thermostat.preview({id: entry.entityId})">
+                                Termostat
+                            </a>
+                        </span>
+                    </td>
                     <td>{{ entry.data }}</td>
                 </tr>
                 </tbody>
