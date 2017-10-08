@@ -22,22 +22,6 @@
 }
 
 .dashboard-channel {
-  function-icon {
-    display: block;
-    float: right;
-  }
-  .channel-info-labels {
-    .label {
-      margin-right: 3px;
-      margin-bottom: 5px;
-      display: inline-block;
-    }
-  }
-  .rgb-bar {
-    border-left: 1px solid lightgrey;
-    height: 5px;
-    width: calc(100% - 60px);
-  }
   &.is-on {
     background: gold;
   }

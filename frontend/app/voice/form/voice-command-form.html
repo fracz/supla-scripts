@@ -6,9 +6,9 @@
 
     <div class="row">
         <div class="col-md-6">
-            <h5>Warianty komendy</h5>
+            <h4>Warianty komendy</h4>
             <div class="list-group">
-                <div class="list-group-item" ng-repeat="trigger in $ctrl.voiceCommand.triggers">
+                <div class="list-group-item fx-fade-right" ng-repeat="trigger in $ctrl.voiceCommand.triggers">
                     <span class="input-group">
                         <input type="text" class="form-control" ng-model="trigger.text">
                         <span class="input-group-btn">
@@ -42,7 +42,8 @@
             </div>
         </div>
         <div class="col-md-6">
-            <h5>Akcje</h5>
+            <h4>Akcje</h4>
+            <scene-selector ng-model="$ctrl.voiceCommand.scene"></scene-selector>
         </div>
     </div>
 
