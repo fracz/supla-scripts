@@ -1,6 +1,6 @@
 <?php
 
-namespace suplascripts\controllers\thermostat;
+namespace suplascripts\controllers\voice;
 
 use suplascripts\controllers\BaseController;
 
@@ -14,5 +14,12 @@ class VoiceCommandsController extends BaseController
         $voiceCommand->save();
         $voiceCommand->log('Utworzono komendę głosową');
         return $this->response($voiceCommand)->withStatus(201);
+    }
+
+    public function getLastVoiceCommandAction()
+    {
+        $this->ensureAuthenticated();
+        $user = $this->getCurrentUser();
+        return $this->response(['command' => $user->lastVoiceCommand]);
     }
 }

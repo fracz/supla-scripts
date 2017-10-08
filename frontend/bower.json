@@ -15,6 +15,7 @@
     "angular-jwt": "0.1.9",
     "angular-moment": "1.0.1",
     "angular-promise-buttons": "0.1.21",
+    "angular-svg-round-progressbar": "0.4.8",
     "angular-toastr": "2.1.1",
     "angular-ui-switch": "0.1.1",
     "angular-ui-router": "0.4.2",

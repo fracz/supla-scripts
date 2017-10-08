@@ -10,9 +10,9 @@ use suplascripts\controllers\SystemController;
 use suplascripts\controllers\thermostat\ThermostatProfilesController;
 use suplascripts\controllers\thermostat\ThermostatRoomsController;
 use suplascripts\controllers\thermostat\ThermostatsController;
-use suplascripts\controllers\thermostat\VoiceCommandsController;
 use suplascripts\controllers\TokensController;
 use suplascripts\controllers\UsersController;
+use suplascripts\controllers\voice\VoiceCommandsController;
 
 require __DIR__ . '/vendor/autoload.php';
 ini_set('display_errors', 'Off');
@@ -71,6 +71,7 @@ $app->group('/api', function () use ($app) {
 
     $app->group('/voice-commands', function () use ($app) {
         $app->post('', VoiceCommandsController::class . ':post');
+        $app->get('/last', VoiceCommandsController::class . ':getLastVoiceCommand');
     });
 });
 $app->run();

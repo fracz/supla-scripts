@@ -20,5 +20,9 @@ class VoiceCommands extends Migration
         $this->table(VoiceCommand::TABLE_NAME)
             ->changeColumn(VoiceCommand::ID, 'uuid')
             ->update();
+
+        $this->table(User::TABLE_NAME)
+            ->addColumn(User::LAST_VOICE_COMMAND, 'text', ['null' => true])
+            ->update();
     }
 }

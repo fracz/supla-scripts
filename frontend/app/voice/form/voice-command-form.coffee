@@ -3,6 +3,9 @@ angular.module('supla-scripts').component 'voiceCommandForm',
   bindings:
     onSubmit: '&'
     onCancel: '&'
-  controller: ->
+  controller: (VoiceCommands) ->
     new class
-      voiceCommand: {}
+      voiceCommand:
+        triggers: []
+
+

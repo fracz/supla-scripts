@@ -8,20 +8,35 @@
         <div class="col-md-6">
             <h5>Warianty komendy</h5>
             <div class="list-group">
-                <div class="list-group-item">
-                    <input type="text" class="form-control">
+                <div class="list-group-item" ng-repeat="trigger in $ctrl.voiceCommand.triggers track by $index">
+                    <span class="input-group">
+                        <input type="text" class="form-control" ng-model="trigger">
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-danger">
+                                <fa name="trash"></fa>
+                            </button>
+                        </span>
+                    </span>
                 </div>
                 <div class="list-group-item">
                     <div class="btn-group btn-group-justified">
-                        <a class="btn btn-default">
+                        <a class="btn btn-default"
+                           ng-click="$ctrl.voiceCommand.triggers.push('')"
+                           ng-disabled="$ctrl.waitingForVoice">
                             <fa name="keyboard-o" fw></fa>
                             Wpisz nowy wariant
                         </a>
-                        <a class="btn btn-default">
+                        <a class="btn btn-default"
+                           ng-click="$ctrl.waitingForVoice = true"
+                           ng-disabled="$ctrl.waitingForVoice">
                             <fa name="microphone" fw></fa>
                             Powiedz nowy wariant
                         </a>
                     </div>
+                </div>
+                <div class="list-group-item fx-fade-right" ng-if="$ctrl.waitingForVoice">
+                    <voice-command-adder-speech on-cancelled="$ctrl.waitingForVoice = false"
+                                                on-added="$ctrl.waitingForVoice = false; $ctrl.voiceCommand.triggers.push(command)"></voice-command-adder-speech>
                 </div>
             </div>
         </div>
@@ -37,11 +52,12 @@
 
     <div class="row">
         <div class="col-xs-12 text-right">
-            <button type="button" class="btn btn-default" ng-click="$ctrl.onCancel()">
+            <button type="button" class="btn btn-default" ng-click="$ctrl.onCancel()"
+                    ng-disabled="$ctrl.waitingForVoice">
                 <fa name="times" fw></fa>
                 Anuluj
             </button>
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" class="btn btn-primary" ng-disabled="$ctrl.waitingForVoice">
                 <fa name="{{ $ctrl.room.id ? 'save' : 'plus' }}" fw></fa>
                 {{ $ctrl.room.id ? 'Zapisz' : 'Dodaj' }} komendę głosową
             </button>

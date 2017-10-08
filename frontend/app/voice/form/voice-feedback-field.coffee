@@ -1,4 +1,4 @@
-angular.module('suplascripts').component 'voiceFeedbackField',
+angular.module('supla-scripts').component 'voiceFeedbackField',
   templateUrl: 'app/voice/form/voice-feedback-field.html'
   require:
     ngModel: 'ngModel'

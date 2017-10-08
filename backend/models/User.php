@@ -24,12 +24,13 @@ class User extends Model
     const PASSWORD = 'password';
     const API_CREDENTIALS = 'apiCredentials';
     const LAST_LOGIN_DATE = 'lastLoginDate';
+    const LAST_VOICE_COMMAND = 'lastVoiceCommand';
     const TIMEZONE = 'timezone';
 
     protected $dates = [self::LAST_LOGIN_DATE];
 
     protected $fillable = [];
-    protected $hidden = [self::PASSWORD, self::API_CREDENTIALS];
+    protected $hidden = [self::PASSWORD, self::API_CREDENTIALS, self::LAST_VOICE_COMMAND];
     protected $encrypted = [self::API_CREDENTIALS];
 
     /** @return User|null */
