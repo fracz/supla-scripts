@@ -1,24 +1,25 @@
 <div class="btn-group btn-group-xs">
-    <button class="btn btn-default btn-check-state" ng-click="$ctrl.onAction({action: 'getChannelState'})" promise-btn>
+    <button class="btn btn-default btn-check-state" ng-click="$ctrl.onAction({action: 'getChannelState'})" type="button"
+            promise-btn>
         <fa name="question-circle"></fa>
     </button>
-    <button ng-if="['FNC_POWERSWITCH', 'FNC_LIGHTSWITCH'].indexOf($ctrl.channel.function.name) >= 0"
+    <button ng-if="['FNC_POWERSWITCH', 'FNC_LIGHTSWITCH'].indexOf($ctrl.channel.function.name) >= 0" type="button"
             class="btn btn-default" ng-click="$ctrl.onAction({action: 'turnOn'})" ng-disabled="$ctrl.channel.on"
             promise-btn>
         Włącz
     </button>
     <button ng-if="['FNC_POWERSWITCH', 'FNC_LIGHTSWITCH'].indexOf($ctrl.channel.function.name) >= 0"
-            class="btn btn-default" ng-click="$ctrl.onAction({action: 'turnOff'})"
+            class="btn btn-default" ng-click="$ctrl.onAction({action: 'turnOff'})" type="button"
             ng-disabled="$ctrl.channel.on === false" promise-btn>
         Wyłącz
     </button>
     <button ng-if="['FNC_POWERSWITCH', 'FNC_LIGHTSWITCH', 'FNC_CONTROLLINGTHEGATE', 'FNC_CONTROLLINGTHEGARAGEDOOR', 'FNC_CONTROLLINGTHEGATEWAYLOCK', 'FNC_CONTROLLINGTHEDOORLOCK'].indexOf($ctrl.channel.function.name) >= 0"
-            class="btn btn-default" ng-click="$ctrl.onAction({action: 'toggle'})"
+            class="btn btn-default" ng-click="$ctrl.onAction({action: 'toggle'})" type="button"
             promise-btn>
         {{ 'toggle' | actionLabel:$ctrl.channel | ucfirst }}
     </button>
     <button ng-if="['FNC_DIMMERANDRGBLIGHTING'].indexOf($ctrl.channel.function.name) >= 0"
-            class="btn btn-default"
+            class="btn btn-default" type="button"
             ng-click="$ctrl.onAction({action: 'setRgb,' + ($ctrl.channel.color.substr(2) || 1) + ',0,0'})"
             ng-disabled="($ctrl.channel.color_brightness != undefined || $ctrl.channel.brightness != undefined) &&!$ctrl.channel.color_brightness && !$ctrl.channel.brightness"
             promise-btn>

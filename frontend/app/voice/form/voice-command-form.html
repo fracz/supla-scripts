@@ -2,7 +2,7 @@
 <form name="voiceCommandForm"
       novalidate
       promise-btn
-      ng-submit="$broadcast('show-errors-check-validity') && voiceCommandForm.$valid && $ctrl.onSubmit({voiceCommand: $ctrl.voiceCommand})">
+      ng-submit="$broadcast('show-errors-check-validity') && voiceCommandForm.$valid && $ctrl.submit()">
 
     <div class="row">
         <div class="col-md-6">
@@ -60,8 +60,8 @@
                 Anuluj
             </button>
             <button type="submit" class="btn btn-primary" ng-disabled="$ctrl.waitingForVoice">
-                <fa name="{{ $ctrl.room.id ? 'save' : 'plus' }}" fw></fa>
-                {{ $ctrl.room.id ? 'Zapisz' : 'Dodaj' }} komendę głosową
+                <fa name="{{ $ctrl.voiceCommand.id ? 'save' : 'plus' }}" fw></fa>
+                {{ $ctrl.voiceCommand.id ? 'Zapisz' : 'Dodaj' }} komendę głosową
             </button>
         </div>
     </div>

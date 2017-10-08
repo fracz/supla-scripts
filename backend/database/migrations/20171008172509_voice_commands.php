@@ -10,7 +10,7 @@ class VoiceCommands extends Migration
     {
         $this->table(VoiceCommand::TABLE_NAME)
             ->addColumn(VoiceCommand::TRIGGERS, 'text')
-            ->addColumn(VoiceCommand::ACTIONS, 'text')
+            ->addColumn(VoiceCommand::SCENE, 'text')
             ->addColumn(VoiceCommand::FEEDBACK, 'text')
             ->addColumn(VoiceCommand::LAST_USED, 'timestamp', ['null' => true])
             ->addColumn(VoiceCommand::USER_ID, 'uuid')

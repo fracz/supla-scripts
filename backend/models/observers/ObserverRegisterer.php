@@ -7,6 +7,7 @@ use suplascripts\models\thermostat\Thermostat;
 use suplascripts\models\thermostat\ThermostatProfile;
 use suplascripts\models\thermostat\ThermostatRoom;
 use suplascripts\models\User;
+use suplascripts\models\voice\VoiceCommand;
 
 class ObserverRegisterer
 {
@@ -19,5 +20,7 @@ class ObserverRegisterer
         ThermostatProfile::observe(UserIdSetter::class);
         ThermostatProfile::observe(ModelValidator::class);
         Client::observe(UserIdSetter::class);
+        VoiceCommand::observe(UserIdSetter::class);
+        VoiceCommand::observe(ModelValidator::class);
     }
 }

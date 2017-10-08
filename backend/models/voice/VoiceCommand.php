@@ -2,6 +2,7 @@
 
 namespace suplascripts\models\voice;
 
+use Assert\Assertion;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use suplascripts\models\Model;
 use suplascripts\models\User;
@@ -17,15 +18,15 @@ use suplascripts\models\User;
  */
 class VoiceCommand extends Model
 {
-    const TABLE_NAME = 'voice';
+    const TABLE_NAME = 'voice_commands';
     const TRIGGERS = 'triggers';
-    const ACTIONS = 'actions';
+    const SCENE = 'scene';
     const FEEDBACK = 'feedback';
     const LAST_USED = 'lastUsed';
     const USER_ID = 'userId';
 
     protected $dates = [self::LAST_USED];
-    protected $fillable = [self::TRIGGERS, self::ACTIONS, self::FEEDBACK];
+    protected $fillable = [self::TRIGGERS, self::SCENE, self::FEEDBACK];
     protected $jsonEncoded = [self::TRIGGERS];
 
     public function user(): BelongsTo
@@ -36,5 +37,15 @@ class VoiceCommand extends Model
     public function log($data)
     {
         $this->user()->first()->log('voice', $data, $this->id);
+    }
+
+    public function validate(array $attributes = null)
+    {
+        if (!$attributes) {
+            $attributes = $this->getAttributes();
+        }
+        Assertion::notEmptyKey($attributes, self::TRIGGERS, 'Voice command must have at least one trigger.');
+        Assertion::isArray($attributes[self::TRIGGERS]);
+        Assertion::greaterThan(count(array_filter($attributes[self::TRIGGERS])), 0, 'Voice command must have at least one trigger.');
     }
 }
