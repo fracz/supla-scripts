@@ -11,11 +11,11 @@ angular.module('supla-scripts').component 'sceneSelector',
       $onInit: ->
         @ngModel.$render = =>
           sceneStrings = (@ngModel.$viewValue or '').split('|').filter((e) -> !!e)
-          promises = sceneStrings.map((sceneString) -> Channels.get(sceneString.split(',')[0]))
+          promises = sceneStrings.map((sceneString) -> Channels.get(sceneString.split(';')[0]))
           $q.all(promises).then (channels) =>
             @scene = sceneStrings.map (sceneString, index) =>
               channel: channels[index]
-              action: sceneString.split(',')[1]
+              action: sceneString.split(';')[1]
         $scope.$watch '$ctrl.scene.length', =>
           @usedChannelIds = @scene.map((o) -> o.channel.id)
           @onChange()
@@ -31,5 +31,5 @@ angular.module('supla-scripts').component 'sceneSelector',
 
       onChange: ->
         operationsWithActions = @scene.filter((operation) -> !!operation.action)
-        sceneString = operationsWithActions.map((operation) -> "#{operation.channel.id},#{operation.action}").join('|')
+        sceneString = operationsWithActions.map((operation) -> "#{operation.channel.id};#{operation.action}").join('|')
         @ngModel.$setViewValue(sceneString)

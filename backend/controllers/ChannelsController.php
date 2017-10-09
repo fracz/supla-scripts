@@ -4,6 +4,7 @@ namespace suplascripts\controllers;
 
 use Assert\Assertion;
 use suplascripts\models\HasSuplaApi;
+use suplascripts\models\scene\SceneExecutor;
 use suplascripts\models\supla\SuplaApiException;
 
 class ChannelsController extends BaseController
@@ -17,18 +18,16 @@ class ChannelsController extends BaseController
 
     public function executeAction($params)
     {
+        $sceneExecutor = new SceneExecutor();
         $channelId = $params['id'];
         $body = $this->request()->getParsedBody();
-        $params = explode(',', $body['action']);
-        $action = array_shift($params);
-        Assertion::inArray($action, ['turnOn', 'turnOff', 'toggle', 'getChannelState', 'setRgb']);
-        array_unshift($params, $channelId);
-        $this->getApi()->clearCache($channelId);
-        $result = call_user_func_array([$this->getApi(), $action], $params);
+        Assertion::notEmptyKey($body, 'action');
+        $operation = $channelId . SceneExecutor::CHANNEL_DELIMITER . $body['action'];
+        $result = $sceneExecutor->executeCommandFromString($operation);
         if ($result === false) {
             throw new SuplaApiException($this->getApi()->getClient(), 'Could not execute the action.');
         }
-        if ($result && $action != 'getChannelState') {
+        if ($result && is_bool($result)) {
             $result = $this->getApi()->getChannelState($channelId);
         }
         return $this->response($result);

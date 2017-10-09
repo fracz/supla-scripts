@@ -5,6 +5,7 @@ namespace suplascripts\controllers\voice;
 use Assert\Assertion;
 use suplascripts\controllers\BaseController;
 use suplascripts\controllers\exceptions\Http403Exception;
+use suplascripts\models\scene\SceneExecutor;
 use suplascripts\models\voice\VoiceCommand;
 
 class VoiceCommandsController extends BaseController
@@ -71,15 +72,18 @@ class VoiceCommandsController extends BaseController
         $user->save();
         $matchedActions = 0;
         $feedbacks = [];
+        $sceneExecutor = new SceneExecutor();
         foreach ($user->voiceCommands()->getResults() as $voiceCommand) {
             foreach ($voiceCommand->triggers as $trigger) {
                 if (strpos($trigger, $command) !== false) {
                     ++$matchedActions;
+                    $sceneExecutor->executeCommandsFromString($voiceCommand->scene);
                     $voiceCommand->log('Wykonano komendę głosową.');
                     if ($voiceCommand->feedback) {
                         $voiceCommand->log('Feedback: ' . $voiceCommand->feedback);
                         $feedbacks[] = $voiceCommand->feedback;
                     }
+                    break;
                 }
             }
         }
