@@ -5,10 +5,10 @@ angular.module('supla-scripts').component 'voiceFeedbackField',
   controller: (Channels, channelLabelFilter) ->
 
     CHANNEL_FEEDBACKS =
-      FNC_LIGHTSWITCH: [{display: 'zaświeczone/zgaszone', field: 'on'}]
-      FNC_POWERSWITCH: [{display: 'włączone/wyłączone', field: 'on'}]
-      FNC_THERMOMETER: [{display: 'temperatura', field: 'temperature'}]
-      FNC_HUMIDITYANDTEMPERATURE: [{display: 'wilgotność', field: 'humidity'}]
+      FNC_LIGHTSWITCH: [{display: 'zaświeczone/zgaszone', suffix: 'on|bool:zaświeczone,zgaszone'}]
+      FNC_POWERSWITCH: [{display: 'włączone/wyłączone', suffix: 'on|bool:włączone,wyłączone'}]
+      FNC_THERMOMETER: [{display: 'temperatura', suffix: 'temperature|number:1'}]
+      FNC_HUMIDITYANDTEMPERATURE: [{display: 'wilgotność', suffix: 'humidity|number:0'}]
 
     new class
       $onInit: ->
@@ -28,7 +28,7 @@ angular.module('supla-scripts').component 'voiceFeedbackField',
                     feedback
                 callback availableFeedbacks.filter (feedback) ->
                   !match[0] or feedback.display.toLocaleLowerCase().indexOf(match[1].toLowerCase()) >= 0
-              onSelect: (item) -> "{#{item.channel.id}|#{item.field}}}"
+              onSelect: (item) -> "{#{item.channel.id}|#{item.suffix}}}"
               mode: 'replace'
             }
           ]

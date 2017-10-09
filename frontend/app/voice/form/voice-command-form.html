@@ -50,6 +50,9 @@
     <div class="form-group">
         <label>Odpowiedź</label>
         <voice-feedback-field ng-model="$ctrl.voiceCommand.feedback"></voice-feedback-field>
+        <div class="well">
+            <voice-feedback-interpolation feedback="$ctrl.voiceCommand.feedback"></voice-feedback-interpolation>
+        </div>
     </div>
 
     <div class="row">

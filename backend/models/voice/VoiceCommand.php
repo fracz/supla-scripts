@@ -8,13 +8,7 @@ use suplascripts\models\Model;
 use suplascripts\models\User;
 
 /**
- * @property string $label
- * @property bool $enabled
- * @property string $slug
- * @property mixed $roomsState
- * @property mixed $devicesState
- * @property \DateTime $nextProfileChange
- * @property User $user
+ * @property array $triggers
  */
 class VoiceCommand extends Model
 {

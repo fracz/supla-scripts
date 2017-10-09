@@ -6,6 +6,7 @@ use Assert\Assertion;
 use suplascripts\controllers\BaseController;
 use suplascripts\controllers\exceptions\Http403Exception;
 use suplascripts\models\scene\SceneExecutor;
+use suplascripts\models\voice\FeedbackInterpolator;
 use suplascripts\models\voice\VoiceCommand;
 
 class VoiceCommandsController extends BaseController
@@ -32,6 +33,13 @@ class VoiceCommandsController extends BaseController
         $this->ensureAuthenticated();
         $user = $this->getCurrentUser();
         return $this->response(['command' => $user->lastVoiceCommand]);
+    }
+
+    public function interpolateFeedbackAction() {
+        $this->ensureAuthenticated();
+        $request = $this->request()->getParsedBody();
+        Assertion::notEmptyKey($request, 'feedback');
+        return (new FeedbackInterpolator())->interpolate($request['feedback']);
     }
 
     public function putAction($id)
@@ -73,15 +81,17 @@ class VoiceCommandsController extends BaseController
         $matchedActions = 0;
         $feedbacks = [];
         $sceneExecutor = new SceneExecutor();
+        $feedbackInterpolator = new FeedbackInterpolator();
         foreach ($user->voiceCommands()->getResults() as $voiceCommand) {
             foreach ($voiceCommand->triggers as $trigger) {
-                if (strpos($trigger, $command) !== false) {
+                if (strpos($command, $trigger) !== false) {
                     ++$matchedActions;
                     $sceneExecutor->executeCommandsFromString($voiceCommand->scene);
                     $voiceCommand->log('Wykonano komendę głosową.');
                     if ($voiceCommand->feedback) {
-                        $voiceCommand->log('Feedback: ' . $voiceCommand->feedback);
-                        $feedbacks[] = $voiceCommand->feedback;
+                        $feedback = $feedbackInterpolator->interpolate($voiceCommand->feedback);
+                        $voiceCommand->log('Feedback: ' . $feedback);
+                        $feedbacks[] = $feedback;
                     }
                     break;
                 }

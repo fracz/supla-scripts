@@ -76,6 +76,7 @@ $app->group('/api', function () use ($app) {
         $app->put('/{id}', VoiceCommandsController::class . ':put');
         $app->delete('/{id}', VoiceCommandsController::class . ':delete');
         $app->get('/last', VoiceCommandsController::class . ':getLastVoiceCommand');
+        $app->patch('/feedback', VoiceCommandsController::class . ':interpolateFeedback');
     });
 });
 $app->run();
