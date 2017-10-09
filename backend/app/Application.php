@@ -57,6 +57,8 @@ class Application extends App
             $capsule = new Capsule;
             $dbSettings = $container['settings']['db'];
             $dbSettings['timezone'] = '+00:00';
+            $dbSettings['charset'] = 'utf8';
+            $dbSettings['collation'] = 'utf8_unicode_ci';
             $capsule->addConnection($dbSettings);
             $capsule->getContainer()->bind(ExceptionHandler::class, EloquentExceptionHandler::class);
             $capsule->setEventDispatcher(new Dispatcher(new Container));

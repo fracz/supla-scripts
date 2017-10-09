@@ -10,7 +10,7 @@
     <div class="form-group fx-fade-left" ng-if="$ctrl.scene.length">
         <div class="list-group">
             <div class="list-group-item fx-fade-left" ng-repeat="operation in $ctrl.scene">
-                <a ng-click="$ctrl.scene.splice($ctrl.scene.indexOf(operation), 1)" class="floating-delete-btn">
+                <a ng-click="$ctrl.scene.splice($ctrl.scene.indexOf(operation), 1)" class="floating-delete-btn" ng-if="!$ctrl.disabled">
                     <fa name="times-circle-o"></fa>
                 </a>
                 <h4 class="text-center">{{ (operation.action | actionLabel:operation.channel).toUpperCase() }}</h4>

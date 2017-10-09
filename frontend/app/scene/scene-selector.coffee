@@ -16,7 +16,9 @@ angular.module('supla-scripts').component 'sceneSelector',
             @scene = sceneStrings.map (sceneString, index) =>
               channel: channels[index]
               action: sceneString.split(',')[1]
-        $scope.$watch('$ctrl.scene.length', => @usedChannelIds = @scene.map((o) -> o.channel.id))
+        $scope.$watch '$ctrl.scene.length', =>
+          @usedChannelIds = @scene.map((o) -> o.channel.id)
+          @onChange()
 
       addNewChannelToScene: (newChannelId) ->
         if (newChannelId)

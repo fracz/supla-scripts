@@ -39,6 +39,14 @@ class VoiceCommand extends Model
         $this->user()->first()->log('voice', $data, $this->id);
     }
 
+    public function save(array $options = [])
+    {
+        $this->triggers = array_map(function ($trigger) {
+            return mb_strtolower($trigger, 'UTF-8');
+        }, $this->triggers);
+        return parent::save($options);
+    }
+
     public function validate(array $attributes = null)
     {
         if (!$attributes) {

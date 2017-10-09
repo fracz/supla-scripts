@@ -2,6 +2,7 @@
 
 namespace suplascripts\controllers\voice;
 
+use Assert\Assertion;
 use suplascripts\controllers\BaseController;
 use suplascripts\controllers\exceptions\Http403Exception;
 use suplascripts\models\voice\VoiceCommand;
@@ -57,5 +58,34 @@ class VoiceCommandsController extends BaseController
         $voiceCommand->log('Usunięto komendę głosową.');
         $voiceCommand->delete();
         return $this->response()->withStatus(204);
+    }
+
+    public function executeVoiceCommandAction()
+    {
+        $this->ensureAuthenticated();
+        $request = $this->request()->getParsedBody();
+        Assertion::notEmptyKey($request, 'command');
+        $command = mb_strtolower($request['command'], 'UTF-8');
+        $user = $this->getCurrentUser();
+        $user->lastVoiceCommand = $command;
+        $user->save();
+        $matchedActions = 0;
+        $feedbacks = [];
+        foreach ($user->voiceCommands()->getResults() as $voiceCommand) {
+            foreach ($voiceCommand->triggers as $trigger) {
+                if (strpos($trigger, $command) !== false) {
+                    ++$matchedActions;
+                    $voiceCommand->log('Wykonano komendę głosową.');
+                    if ($voiceCommand->feedback) {
+                        $voiceCommand->log('Feedback: ' . $voiceCommand->feedback);
+                        $feedbacks[] = $voiceCommand->feedback;
+                    }
+                }
+            }
+        }
+        return $this->response([
+            'matchedActions' => $matchedActions,
+            'feedback' => implode(PHP_EOL, $feedbacks),
+        ]);
     }
 }
