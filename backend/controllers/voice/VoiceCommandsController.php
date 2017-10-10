@@ -35,7 +35,8 @@ class VoiceCommandsController extends BaseController
         return $this->response(['command' => $user->lastVoiceCommand]);
     }
 
-    public function interpolateFeedbackAction() {
+    public function interpolateFeedbackAction()
+    {
         $this->ensureAuthenticated();
         $request = $this->request()->getParsedBody();
         Assertion::notEmptyKey($request, 'feedback');
@@ -82,12 +83,16 @@ class VoiceCommandsController extends BaseController
         $feedbacks = [];
         $sceneExecutor = new SceneExecutor();
         $feedbackInterpolator = new FeedbackInterpolator();
+        $user->log('voice', 'Odebrano komendę głosową: ' . $command);
         foreach ($user->voiceCommands()->getResults() as $voiceCommand) {
+            /** @var VoiceCommand $voiceCommand */
             foreach ($voiceCommand->triggers as $trigger) {
                 if (strpos($command, $trigger) !== false) {
                     ++$matchedActions;
-                    $sceneExecutor->executeCommandsFromString($voiceCommand->scene);
-                    $voiceCommand->log('Wykonano komendę głosową.');
+                    $voiceCommand->log('Wykonano komendę głosową dla: ' . $command);
+                    if ($voiceCommand->scene) {
+                        $sceneExecutor->executeCommandsFromString($voiceCommand->scene);
+                    }
                     if ($voiceCommand->feedback) {
                         $feedback = $feedbackInterpolator->interpolate($voiceCommand->feedback);
                         $voiceCommand->log('Feedback: ' . $feedback);
