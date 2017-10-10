@@ -8,7 +8,11 @@ angular.module('supla-scripts').component 'voiceFeedbackField',
       FNC_LIGHTSWITCH: [{display: 'zaświeczone/zgaszone', suffix: 'on|bool:zaświeczone,zgaszone'}]
       FNC_POWERSWITCH: [{display: 'włączone/wyłączone', suffix: 'on|bool:włączone,wyłączone'}]
       FNC_THERMOMETER: [{display: 'temperatura', suffix: 'temperature|number:1'}]
-      FNC_HUMIDITYANDTEMPERATURE: [{display: 'wilgotność', suffix: 'humidity|number:0'}]
+      FNC_HUMIDITYANDTEMPERATURE: [{display: 'temperatura', suffix: 'temperature|number:1'}, {display: 'wilgotność', suffix: 'humidity|number:0'}]
+      FNC_OPENINGSENSOR_GARAGEDOOR: [{display: 'otwarta/zamknięta', suffix: 'hi|bool:zamknięta,otwarta'}]
+      FNC_OPENINGSENSOR_DOOR: [{display: 'otwarte/zamknięte', suffix: 'hi|bool:zamknięte,otwarte'}]
+      FNC_OPENINGSENSOR_GATE: [{display: 'otwarta/zamknięta', suffix: 'hi|bool:zamknięta,otwarta'}]
+      FNC_OPENINGSENSOR_GATEWAY: [{display: 'otwarta/zamknięta', suffix: 'hi|bool:zamknięta,otwarta'}]
 
     new class
       $onInit: ->

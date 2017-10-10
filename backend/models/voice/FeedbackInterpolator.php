@@ -10,7 +10,7 @@ class FeedbackInterpolator
 
     public function interpolate(string $feedback)
     {
-        return preg_replace_callback('#{{(\d+)\|(on|temperature|humidity)\|(bool|number):?(.+?)?}}#', function ($match) {
+        return preg_replace_callback('#{{(\d+)\|(on|temperature|humidity|hi)\|(bool|number):?(.+?)?}}#', function ($match) {
             $replacement = $this->replaceChannelState($match[1], $match[2], $match[3], explode(',', $match[4]));
             return $replacement ?: $match[0];
 //            $variable = $match[1];
@@ -31,6 +31,9 @@ class FeedbackInterpolator
     {
         $state = $this->getApi()->getChannelState($channelId);
         $desiredValue = $state->{$field};
+        if (!$state->connected) {
+            return ' URZĄDZENIE ROZŁĄCZONE ';
+        }
         switch ($varType) {
             case 'bool':
                 return $desiredValue ? ($config[0] ?? 'ON') : ($config[1] ?? 'OFF');
