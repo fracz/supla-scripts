@@ -26,10 +26,6 @@ angular.module('supla-scripts').component 'sceneSelector',
           Channels.get(newChannelId).then (channel) =>
             @scene.push({channel})
 
-      chooseAction: (operation, action) ->
-        operation.action = action
-        @onChange()
-
       onChange: ->
         if not @disabled
           operationsWithActions = @scene.filter((operation) -> !!operation.action)

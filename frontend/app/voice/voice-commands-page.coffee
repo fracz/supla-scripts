@@ -9,10 +9,7 @@ angular.module('supla-scripts').component 'voiceCommandsPage',
         @voiceCommands.push(savedCommand)
         @adding = false
 
-    saveVoiceCommand: (voiceCommand, newData) ->
-      angular.extend(voiceCommand, newData)
-      voiceCommand.put().then ->
-        voiceCommand.editing = false
+
 
     deleteVoiceCommand: (voiceCommand) ->
       swangular.open

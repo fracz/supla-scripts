@@ -8,10 +8,12 @@
         </channel-selector>
     </div>
     <div class="form-group fx-fade-left" ng-if="$ctrl.scene.length">
-        <table class="table">
+        <table class="table table-striped">
             <tr ng-repeat="operation in $ctrl.scene">
                 <td>
-                    <channel-action-button-selector channel="operation.channel" disabled="$ctrl.disabled"></channel-action-button-selector>
+                    <channel-action-button-selector channel="operation.channel" disabled="$ctrl.disabled"
+                                                    ng-model="operation.action"
+                                                    ng-change="$ctrl.onChange()"></channel-action-button-selector>
                 </td>
                 <td>
                     <a ng-click="$ctrl.scene.splice($ctrl.scene.indexOf(operation), 1)" class="floating-delete-btn"
@@ -23,14 +25,14 @@
             </tr>
         </table>
         <!--<div class="list-group">-->
-            <!--<div class="list-group-item fx-fade-left" ng-repeat="operation in $ctrl.scene">-->
-                <!--<a ng-click="$ctrl.scene.splice($ctrl.scene.indexOf(operation), 1)" class="floating-delete-btn"-->
-                   <!--ng-if="!$ctrl.disabled">-->
-                    <!--<fa name="times-circle-o"></fa>-->
-                <!--</a>-->
-                <!--<h4 class="text-center">{{ (operation.action | actionLabel:operation.channel).toUpperCase() }}</h4>-->
-                <!--<channel-brief channel="operation.channel"></channel-brief>-->
-            <!--</div>-->
+        <!--<div class="list-group-item fx-fade-left" ng-repeat="operation in $ctrl.scene">-->
+        <!--<a ng-click="$ctrl.scene.splice($ctrl.scene.indexOf(operation), 1)" class="floating-delete-btn"-->
+        <!--ng-if="!$ctrl.disabled">-->
+        <!--<fa name="times-circle-o"></fa>-->
+        <!--</a>-->
+        <!--<h4 class="text-center">{{ (operation.action | actionLabel:operation.channel).toUpperCase() }}</h4>-->
+        <!--<channel-brief channel="operation.channel"></channel-brief>-->
+        <!--</div>-->
         <!--</div>-->
     </div>
 </div>

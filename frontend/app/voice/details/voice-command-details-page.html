@@ -12,7 +12,7 @@
 </div>
 
 <voice-command-form ng-if="$ctrl.editing" voice-command="$ctrl.voiceCommand"
-                    on-submit="$ctrl.saveVoiceCommand(voiceCommand, savedCommand)"
+                    on-submit="$ctrl.saveVoiceCommand(savedCommand)"
                     on-cancel="$ctrl.editing = false"></voice-command-form>
 
 <div ng-else>
