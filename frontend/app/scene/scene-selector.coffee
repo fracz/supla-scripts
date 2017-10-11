@@ -4,11 +4,12 @@ angular.module('supla-scripts').component 'sceneSelector',
     disabled: '<'
   require:
     ngModel: 'ngModel'
-  controller: (Channels, $scope, $q) ->
+  controller: (Channels, $scope, $q, CHANNEL_AVAILABLE_ACTIONS) ->
     new class
       scene: []
 
       $onInit: ->
+        @sceneableFunctions = Object.keys(CHANNEL_AVAILABLE_ACTIONS)
         @ngModel.$render = =>
           sceneStrings = (@ngModel.$viewValue or '').split('|').filter((e) -> !!e)
           promises = sceneStrings.map((sceneString) -> Channels.get(sceneString.split(';')[0]))

@@ -3,3 +3,4 @@ angular.module('supla-scripts').component 'channelActions',
   bindings:
     channel: '<'
     onAction: '&'
+  controller: (@CHANNEL_AVAILABLE_ACTIONS) ->

@@ -3,27 +3,12 @@
             promise-btn>
         <fa name="question-circle"></fa>
     </button>
-    <button ng-if="['FNC_POWERSWITCH', 'FNC_LIGHTSWITCH'].indexOf($ctrl.channel.function.name) >= 0" type="button"
-            class="btn btn-default" ng-click="$ctrl.onAction({action: 'turnOn'})" ng-disabled="$ctrl.channel.on"
+    <button ng-repeat="operation in $ctrl.CHANNEL_AVAILABLE_ACTIONS[$ctrl.channel.function.name]"
+            ng-if="!operation.noButton"
+            type="button" class="btn btn-default"
+            ng-click="$ctrl.onAction({action: operation.action})" ng-disabled="operation.isActive($ctrl.channel)"
             promise-btn>
-        Włącz
-    </button>
-    <button ng-if="['FNC_POWERSWITCH', 'FNC_LIGHTSWITCH'].indexOf($ctrl.channel.function.name) >= 0"
-            class="btn btn-default" ng-click="$ctrl.onAction({action: 'turnOff'})" type="button"
-            ng-disabled="$ctrl.channel.on === false" promise-btn>
-        Wyłącz
-    </button>
-    <button ng-if="['FNC_POWERSWITCH', 'FNC_LIGHTSWITCH', 'FNC_CONTROLLINGTHEGATE', 'FNC_CONTROLLINGTHEGARAGEDOOR', 'FNC_CONTROLLINGTHEGATEWAYLOCK', 'FNC_CONTROLLINGTHEDOORLOCK'].indexOf($ctrl.channel.function.name) >= 0"
-            class="btn btn-default" ng-click="$ctrl.onAction({action: 'toggle'})" type="button"
-            promise-btn>
-        {{ 'toggle' | actionLabel:$ctrl.channel | ucfirst }}
-    </button>
-    <button ng-if="['FNC_DIMMERANDRGBLIGHTING'].indexOf($ctrl.channel.function.name) >= 0"
-            class="btn btn-default" type="button"
-            ng-click="$ctrl.onAction({action: 'setRgb,' + ($ctrl.channel.color.substr(2) || 1) + ',0,0'})"
-            ng-disabled="($ctrl.channel.color_brightness != undefined || $ctrl.channel.brightness != undefined) &&!$ctrl.channel.color_brightness && !$ctrl.channel.brightness"
-            promise-btn>
-        Wyłącz
+        {{ operation.label | ucfirst }}
     </button>
     <div class="btn-group btn-group-xs" ng-if="['FNC_DIMMERANDRGBLIGHTING'].indexOf($ctrl.channel.function.name) >= 0">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">

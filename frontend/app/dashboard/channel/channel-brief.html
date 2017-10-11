@@ -1,32 +1,35 @@
-<function-icon channel="$ctrl.channel"></function-icon>
-<h4 class="list-group-item-heading">
-    {{ $ctrl.channel | channelLabel }} ID{{ $ctrl.channel.id }}
-</h4>
-<div class="rgb-bar" ng-if="$ctrl.channel.color_brightness"
-     ng-style="{'background-color': '#' + $ctrl.channel.color.substr(2)}"></div>
-<div class="channel-info-labels">
-    <span class="label" ng-if="$ctrl.channel.connected !== undefined"
-          ng-class="$ctrl.channel.connected ? 'label-success' : 'label-danger'">
-        {{ $ctrl.channel.connected ? 'Połączony' : 'Rozłączony' }}
-    </span>
-    <span class="label" ng-if="$ctrl.channel.on !== undefined"
-          ng-class="$ctrl.channel.on ? 'label-success' : 'label-default'">
-        {{ $ctrl.channel.on ? 'Włączony' : 'Wyłączony' }}
-    </span>
-    <span class="label label-success"
-          ng-if="$ctrl.channel.color_brightness || $ctrl.channel.brightness">
-        Włączony
-    </span>
-    <span class="label" ng-if="$ctrl.channel.hi !== undefined"
-          ng-class="$ctrl.channel.hi ? 'label-success' : 'label-default'">
-        {{ $ctrl.channel.hi ? 'Zamknięty' : 'Otwarty' }}
-    </span>
-    <span class="label label-info" ng-if="$ctrl.channel.temperature">
-        {{ $ctrl.channel.temperature | number:2 }}&deg;C
-    </span>
-    <span class="label label-info" ng-if="$ctrl.channel.humidity">
-        {{ $ctrl.channel.humidity | number:2 }}%
-    </span>
+<div class="clearfix">
+    <function-icon channel="$ctrl.channel"></function-icon>
+    <h4 class="list-group-item-heading">
+        {{ $ctrl.channel | channelLabel }} ID{{ $ctrl.channel.id }}
+    </h4>
+    <div class="rgb-bar" ng-if="$ctrl.channel.color_brightness"
+         ng-style="{'background-color': '#' + $ctrl.channel.color.substr(2)}"></div>
+    <div class="channel-info-labels">
+        <span class="label" ng-if="$ctrl.channel.connected !== undefined"
+              ng-class="$ctrl.channel.connected ? 'label-success' : 'label-danger'">
+            {{ $ctrl.channel.connected ? 'Połączony' : 'Rozłączony' }}
+        </span>
+        <span class="label" ng-if="$ctrl.channel.on !== undefined"
+              ng-class="$ctrl.channel.on ? 'label-success' : 'label-default'">
+            {{ $ctrl.channel.on ? 'Włączony' : 'Wyłączony' }}
+        </span>
+        <span class="label label-success"
+              ng-if="$ctrl.channel.color_brightness || $ctrl.channel.brightness">
+            Włączony
+        </span>
+        <span class="label" ng-if="$ctrl.channel.hi !== undefined"
+              ng-class="$ctrl.channel.hi ? 'label-success' : 'label-default'">
+            {{ $ctrl.channel.hi ? 'Zamknięty' : 'Otwarty' }}
+        </span>
+        <span class="label label-info" ng-if="$ctrl.channel.temperature">
+            {{ $ctrl.channel.temperature | number:2 }}&deg;C
+        </span>
+        <span class="label label-info" ng-if="$ctrl.channel.humidity">
+            {{ $ctrl.channel.humidity | number:2 }}%
+        </span>
+    </div>
+    <channel-actions channel="$ctrl.channel"
+                     ng-if="$ctrl.onAction"
+                     on-action="$ctrl.onAction({action: action})"></channel-actions>
 </div>
-<channel-actions channel="$ctrl.channel"
-                 on-action="$ctrl.onAction({action: action})"></channel-actions>
