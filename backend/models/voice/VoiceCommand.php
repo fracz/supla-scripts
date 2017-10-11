@@ -36,9 +36,9 @@ class VoiceCommand extends Model
 
     public function save(array $options = [])
     {
-        $this->triggers = array_map(function ($trigger) {
-            return mb_strtolower($trigger, 'UTF-8');
-        }, $this->triggers);
+        $this->triggers = array_values(array_unique(array_map(function ($trigger) {
+            return trim(mb_strtolower($trigger, 'UTF-8'));
+        }, $this->triggers)));
         return parent::save($options);
     }
 
