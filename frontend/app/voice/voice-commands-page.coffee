@@ -11,18 +11,4 @@ angular.module('supla-scripts').component 'voiceCommandsPage',
 
 
 
-    deleteVoiceCommand: (voiceCommand) ->
-      swangular.open
-        scope: $scope
-        type: 'question'
-        title: 'Na pewno?'
-        text: 'Czy chcesz usunąć tą komendę głosową?!'
-        showCancelButton: yes
-        showConfirmButton: yes
-        cancelButtonText: 'Anuluj'
-        confirmButtonText: 'Tak, usuń'
-        confirmButtonColor: '#d62c1a'
-        showLoaderOnConfirm: true
-        preConfirm: => voiceCommand.remove()
-      .then =>
-        @voiceCommands.splice(@voiceCommands.indexOf(voiceCommand), 1)
+

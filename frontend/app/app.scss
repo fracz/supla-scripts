@@ -10,6 +10,10 @@ html {
   overflow-y: scroll;
 }
 
+body {
+  padding-bottom: 20px;
+}
+
 a, .pointer {
   cursor: pointer;
 }
@@ -37,6 +41,9 @@ table {
   }
   &.table-fixed {
     table-layout: fixed;
+  }
+  &.table-width-auto {
+    width: auto;
   }
 }
 
