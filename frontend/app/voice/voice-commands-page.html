@@ -1,7 +1,7 @@
 <div class="container">
     <h1 view-title>Sterowanie głosem</h1>
 
-    <div class="row">
+    <div class="row" ng-if="$ctrl.voiceCommands">
         <div ng-if="$ctrl.voiceCommands.length !== 0" class="col-sm-3">
             <div class="list-group">
                 <a class="list-group-item" ng-repeat="voiceCommand in $ctrl.voiceCommands"
@@ -9,32 +9,16 @@
                     {{ voiceCommand.triggers[0] }}
                 </a>
             </div>
-            <!--<div class="well" ng-repeat="voiceCommand in $ctrl.voiceCommands">-->
-            <!--<voice-command-form ng-if="voiceCommand.editing" voice-command="voiceCommand"-->
-            <!--on-submit="$ctrl.saveVoiceCommand(voiceCommand, savedCommand)"-->
-            <!--on-cancel="voiceCommand.editing = false"></voice-command-form>-->
-            <!--<voice-command-display ng-else voice-command="voiceCommand" on-edit="voiceCommand.editing = true"-->
-            <!--on-delete="$ctrl.deleteVoiceCommand(voiceCommand)"></voice-command-display>-->
-            <!--</div>-->
         </div>
 
-        <div class="col-sm-9">
+        <div class="col-sm-9 col-12-if-alone">
+            <div ng-if="'voice' | isState">
+                <new-voice-command-form on-submit="$ctrl.addNewVoiceCommand(savedCommand)"></new-voice-command-form>
+            </div>
             <div ui-view></div>
         </div>
     </div>
 
-    <!--<div ng-if="$ctrl.voiceCommands">-->
-    <!--<div class="text-right" ng-if="!$ctrl.adding">-->
-    <!--<button class="btn btn-primary" ng-click="$ctrl.adding = true">-->
-    <!--<fa name="bullhorn" fw></fa>-->
-    <!--Dodaj nową komendę głosową-->
-    <!--</button>-->
-    <!--</div>-->
-    <!--<div class="well fx-fade-right" ng-else>-->
-    <!--<voice-command-form on-submit="$ctrl.addNewVoiceCommand(savedCommand)"-->
-    <!--on-cancel="$ctrl.adding = false"></voice-command-form>-->
-    <!--</div>-->
-    <!--</div>-->
     <loader-dots ng-else></loader-dots>
 </div>
 

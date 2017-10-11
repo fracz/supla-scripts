@@ -11,11 +11,11 @@
     <tbody>
     <tr ng-repeat="entry in $ctrl.logs">
         <td>
-            {{ entry.createdAt | amCalendar }}
+            <span title="{{ entry.createdAt }}">{{ entry.createdAt | amCalendar }}</span>
         </td>
         <td ng-if="!$ctrl.entityId">{{ entry.module }}</td>
         <td ng-if="!$ctrl.entityId">
-            <span ng-switch="entry.module">
+            <span ng-if="entry.entityId" ng-switch="entry.module">
                 <a ng-switch-when="thermostat"
                    ui-sref="thermostat.preview({id: entry.entityId})">
                     Termostat
@@ -25,6 +25,7 @@
                     Komenda głosowa
                 </a>
             </span>
+            <span ng-else>n.d.</span>
         </td>
         <td>{{ entry.data }}</td>
     </tr>

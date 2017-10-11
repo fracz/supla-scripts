@@ -50,5 +50,6 @@ class VoiceCommand extends Model
         Assertion::notEmptyKey($attributes, self::TRIGGERS, 'Voice command must have at least one trigger.');
         Assertion::isArray($attributes[self::TRIGGERS]);
         Assertion::greaterThan(count(array_filter($attributes[self::TRIGGERS])), 0, 'Voice command must have at least one trigger.');
+        Assertion::true(($attributes[self::FEEDBACK] ?? false) || ($attributes[self::SCENE] ?? false), 'Command must have either feedback or actions.');
     }
 }

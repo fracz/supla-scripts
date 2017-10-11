@@ -17,7 +17,10 @@
 
 <div ng-else>
     <h2 class="no-margin-top">{{ $ctrl.voiceCommand.triggers[0] }}</h2>
-    <p class="text-muted">ostatnie wykonanie: {{ $ctrl.voiceCommand.lastUsed | amCalendar }}</p>
+    <p class="text-muted">
+        <span ng-if="$ctrl.voiceCommand.lastUsed">ostatnie wykonanie: {{ $ctrl.voiceCommand.lastUsed | amCalendar }}</span>
+        <span ng-else>komenda nie była jeszcze wykonana</span>
+    </p>
 
     <div ng-if="$ctrl.voiceCommand.triggers.length > 1">
         <h3>Inne warianty komendy</h3>
@@ -35,5 +38,5 @@
     </div>
 
     <h3>Logi</h3>
-    <logs-table entity-id="$ctrl.voiceCommand.id" limit="30"></logs-table>
+    <logs-table entity-id="$ctrl.voiceCommand.id" limit="30" on-new-logs="$ctrl.reloadCommand()"></logs-table>
 </div>

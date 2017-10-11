@@ -13,7 +13,9 @@ angular.module('supla-scripts').component 'sceneSelector',
         @ngModel.$render = =>
           sceneStrings = (@ngModel.$viewValue or '').split('|').filter((e) -> !!e)
           promises = sceneStrings.map((sceneString) -> Channels.get(sceneString.split(';')[0]))
+          @loadingChannels = yes
           $q.all(promises).then (channels) =>
+            @loadingChannels = no
             @scene = sceneStrings.map (sceneString, index) =>
               channel: channels[index]
               action: sceneString.split(';')[1]

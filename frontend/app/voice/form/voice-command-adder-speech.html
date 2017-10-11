@@ -1,10 +1,10 @@
 <table class="table table-no-border no-margin">
     <tr>
         <td>
-            <time-left-circle time="45" on-finished="$ctrl.onCancelled()"></time-left-circle>
+            <time-left-circle time="$ctrl.secondsLimit" on-finished="$ctrl.checkForNewCommand(true)"></time-left-circle>
         </td>
         <td>
-            Za pomocą Twojego telefonu dodaj kolejny wariant komendy głosowej.
+            Czekam na nową komendę głosową...
         </td>
         <td>
             <button class="btn btn-xs btn-default"

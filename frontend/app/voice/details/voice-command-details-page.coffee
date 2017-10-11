@@ -9,6 +9,10 @@ angular.module('supla-scripts').component 'voiceCommandDetailsPage',
         @voiceCommand.put().then =>
           $state.go($state.current.name, {}, reload: yes)
 
+      reloadCommand: ->
+        @voiceCommand.get().then (command) =>
+          angular.extend(@voiceCommand, command)
+
       deleteVoiceCommand: ->
         swangular.open
           scope: $scope

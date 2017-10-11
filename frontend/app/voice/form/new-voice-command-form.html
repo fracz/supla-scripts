@@ -1,0 +1,42 @@
+<div class="well text-center" ng-if="!$ctrl.newCommand">
+    <h2 class="no-margin-top">Dodaj nową komendę głosową</h2>
+    <ol style="display: inline-block; text-align: left;">
+        <li>Skonfiguruj wykrywanie komendy <em>OK, Google</em> w aplikacji Google Now na urządzeniu mobilnym z systemem
+            Android<sup>*</sup>.
+        </li>
+        <li>Pobierz aplikację <a href="https://play.google.com/store/apps/details?id=com.llamalab.automate">Automate</a>.
+        </li>
+        <li>Zainstaluj skrypty <a href="https://llamalab.com/automate/community/flows/16424">SUPLA Scripts
+            Configurator</a>
+            oraz <a href="https://llamalab.com/automate/community/flows/12342">SUPLA Voice</a> i przyznaj im wszystkie
+            wymagane uprawnienia.
+        </li>
+        <li>Skonfiguruj dostęp do skryptów za pomocą SUPLA Scripts Configurator.</li>
+        <li>Uruchom SUPLA Voice.</li>
+        <li>Kliknij przycisk <em>Dodaj nową komendę głosową</em> poniżej i powiedz <em>OK, Google! To będzie moja
+            komenda głosowa.</em></li>
+    </ol>
+
+    <p>Pełną instrukcję konfiguracji znajdziesz tutaj:</p>
+
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/w6QN3EHSjVs?rel=0" frameborder="0"
+            allowfullscreen></iframe>
+
+    <p class="small muted">*) aktualnie komendy głosowe udało się skonfigurować wyłącznie z systemem Android</p>
+
+    <button class="btn btn-primary btn-lg" ng-click="$ctrl.adding = true" ng-if="!$ctrl.adding">
+        <fa name="bullhorn" fw></fa>
+        Dodaj nową komendę głosową
+    </button>
+
+    <div class="row fx-fade-up" ng-if="$ctrl.adding">
+        <div class="col-lg-8 col-lg-offset-2">
+            <voice-command-adder-speech seconds-limit="120" on-cancelled="$ctrl.adding = false"
+                                        on-added="$ctrl.commandAdded(command); $ctrl.adding = false"></voice-command-adder-speech>
+        </div>
+    </div>
+</div>
+
+<voice-command-form ng-else class="fx-fade-up"
+                    voice-command="$ctrl.newCommand" on-submit="$ctrl.onSubmit({savedCommand: savedCommand})"
+                    on-cancel="$ctrl.newCommand = undefined"></voice-command-form>

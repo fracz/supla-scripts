@@ -8,7 +8,7 @@ angular.module('supla-scripts').component 'voiceCommandForm',
     new class
       $onInit: ->
         if @voiceCommand
-          @voiceCommand = angular.copy(@voiceCommand.plain())
+          @voiceCommand = angular.copy(@voiceCommand.plain?() or @voiceCommand)
         else
           @voiceCommand = {}
         @voiceCommand.triggers ?= []
