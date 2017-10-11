@@ -30,6 +30,7 @@ angular.module('supla-scripts').component 'sceneSelector',
         @onChange()
 
       onChange: ->
-        operationsWithActions = @scene.filter((operation) -> !!operation.action)
-        sceneString = operationsWithActions.map((operation) -> "#{operation.channel.id};#{operation.action}").join('|')
-        @ngModel.$setViewValue(sceneString)
+        if not @disabled
+          operationsWithActions = @scene.filter((operation) -> !!operation.action)
+          sceneString = operationsWithActions.map((operation) -> "#{operation.channel.id};#{operation.action}").join('|')
+          @ngModel.$setViewValue(sceneString)

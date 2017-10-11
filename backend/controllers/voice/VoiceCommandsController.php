@@ -28,6 +28,16 @@ class VoiceCommandsController extends BaseController
         return $this->response($voiceCommands);
     }
 
+    public function getAction($params)
+    {
+        $this->ensureAuthenticated();
+        $voiceCommand = $this->ensureExists(VoiceCommand::find($params['id']));
+        if ($voiceCommand->userId != $this->getCurrentUser()->id) {
+            throw new Http403Exception();
+        }
+        return $this->response($voiceCommand);
+    }
+
     public function getLastVoiceCommandAction()
     {
         $this->ensureAuthenticated();

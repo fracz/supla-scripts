@@ -73,9 +73,10 @@ $app->group('/api', function () use ($app) {
         $app->get('', VoiceCommandsController::class . ':getList');
         $app->post('', VoiceCommandsController::class . ':post');
         $app->patch('', VoiceCommandsController::class . ':executeVoiceCommand');
+        $app->get('/last', VoiceCommandsController::class . ':getLastVoiceCommand');
+        $app->get('/{id}', VoiceCommandsController::class . ':get');
         $app->put('/{id}', VoiceCommandsController::class . ':put');
         $app->delete('/{id}', VoiceCommandsController::class . ':delete');
-        $app->get('/last', VoiceCommandsController::class . ':getLastVoiceCommand');
         $app->patch('/feedback', VoiceCommandsController::class . ':interpolateFeedback');
     });
 });

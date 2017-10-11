@@ -69,6 +69,13 @@ angular.module('supla-scripts')
     url: '/voice'
     template: '<voice-commands-page></voice-commands-page>'
 
+  .state 'voice.details',
+    url: '/voice/:id'
+    template: '<voice-command-details-page voice-command="voiceCommand"></voice-command-details-page>'
+    controller: ($scope, voiceCommand) -> $scope.voiceCommand = voiceCommand
+    resolve:
+      voiceCommand: (VoiceCommands, $stateParams) -> VoiceCommands.one($stateParams.id).get()
+
   .state 'account',
     url: '/account'
     abstract: true

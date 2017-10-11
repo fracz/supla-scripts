@@ -71,7 +71,7 @@
       "main": "dist/angular-promise-buttons.min.js"
     },
     "angular-ui-router": {
-      "main": "release/angular-ui-router.min.js"
+      "main": "release/angular-ui-router.js"
     },
     "angular-ui-switch": {
       "main": [

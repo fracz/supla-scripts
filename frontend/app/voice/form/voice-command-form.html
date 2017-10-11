@@ -1,26 +1,31 @@
-<h4>{{ $ctrl.voiceCommand.id ? 'Edytuj' : 'Dodaj' }} komendę głosową</h4>
+<h2 class="no-margin-top">{{ $ctrl.voiceCommand.id ? 'Edytuj' : 'Dodaj' }} komendę głosową</h2>
 <form name="voiceCommandForm"
       novalidate
       promise-btn
       ng-submit="$broadcast('show-errors-check-validity') && voiceCommandForm.$valid && $ctrl.submit()">
 
-    <div class="row">
-        <div class="col-md-6">
-            <h4>Warianty komendy</h4>
-            <div class="list-group">
-                <div class="list-group-item fx-fade-right" ng-repeat="trigger in $ctrl.voiceCommand.triggers">
-                    <span class="input-group">
-                        <input type="text" class="form-control" ng-model="trigger.text">
-                        <span class="input-group-btn">
-                            <button type="button" class="btn btn-danger"
-                                    ng-click="$ctrl.voiceCommand.triggers.splice($ctrl.voiceCommand.triggers.indexOf(trigger), 1)">
-                                <fa name="trash"></fa>
-                            </button>
+    <h4>Warianty komendy</h4>
+
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="list-group">
+                    <div class="list-group-item fx-fade-right" ng-repeat="trigger in $ctrl.voiceCommand.triggers">
+                        <span class="input-group">
+                            <input type="text" class="form-control" ng-model="trigger.text">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-danger"
+                                        ng-click="$ctrl.voiceCommand.triggers.splice($ctrl.voiceCommand.triggers.indexOf(trigger), 1)">
+                                    <fa name="trash"></fa>
+                                </button>
+                            </span>
                         </span>
-                    </span>
+                    </div>
                 </div>
-                <div class="list-group-item">
-                    <div class="btn-group btn-group-justified">
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="btn-group-vertical btn-block">
                         <a class="btn btn-default"
                            ng-click="$ctrl.voiceCommand.triggers.push({text: ''})"
                            ng-disabled="$ctrl.waitingForVoice">
@@ -35,24 +40,26 @@
                         </a>
                     </div>
                 </div>
-                <div class="list-group-item fx-fade-right" ng-if="$ctrl.waitingForVoice">
+                <div class="fx-fade-right" ng-if="$ctrl.waitingForVoice">
                     <voice-command-adder-speech on-cancelled="$ctrl.waitingForVoice = false"
                                                 on-added="$ctrl.waitingForVoice = false; $ctrl.voiceCommand.triggers.push({text: command})"></voice-command-adder-speech>
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <h4>Akcje</h4>
-            <scene-selector ng-model="$ctrl.voiceCommand.scene"></scene-selector>
-        </div>
+    </div>
+
+    <div class="form-group">
+        <h4>Akcje</h4>
+        <scene-selector ng-model="$ctrl.voiceCommand.scene"></scene-selector>
     </div>
 
     <div class="form-group">
         <label>Odpowiedź</label>
         <voice-feedback-field ng-model="$ctrl.voiceCommand.feedback"></voice-feedback-field>
-        <div class="well">
-            <voice-feedback-interpolation feedback="$ctrl.voiceCommand.feedback"></voice-feedback-interpolation>
-        </div>
+    </div>
+
+    <div class="well fx-fade-up" ng-if="$ctrl.voiceCommand.feedback">
+        <voice-feedback-interpolation feedback="$ctrl.voiceCommand.feedback"></voice-feedback-interpolation>
     </div>
 
     <div class="row">
