@@ -9,6 +9,7 @@ use suplascripts\models\User;
 
 /**
  * @property array $triggers
+ * @property \DateTime $lastUsed
  */
 class VoiceCommand extends Model
 {

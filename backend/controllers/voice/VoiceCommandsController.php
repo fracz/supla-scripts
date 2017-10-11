@@ -88,7 +88,13 @@ class VoiceCommandsController extends BaseController
             /** @var VoiceCommand $voiceCommand */
             foreach ($voiceCommand->triggers as $trigger) {
                 if (strpos($command, $trigger) !== false) {
+                    if ($voiceCommand->lastUsed && $voiceCommand->lastUsed->getTimestamp() >= time() - 2) {
+                        $voiceCommand->log('Zignorowano zbyt szybkie wykonanie komendy głosowej: ' . $command);
+                        break;
+                    }
                     ++$matchedActions;
+                    $voiceCommand->lastUsed = new \DateTime();
+                    $voiceCommand->save();
                     $voiceCommand->log('Wykonano komendę głosową dla: ' . $command);
                     if ($voiceCommand->scene) {
                         $sceneExecutor->executeCommandsFromString($voiceCommand->scene);
