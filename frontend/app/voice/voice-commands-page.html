@@ -13,7 +13,8 @@
 
         <div class="col-sm-9 col-12-if-alone">
             <div ng-if="'voice' | isState">
-                <new-voice-command-form on-submit="$ctrl.addNewVoiceCommand(savedCommand)"></new-voice-command-form>
+                <new-voice-command-form on-submit="$ctrl.addNewVoiceCommand(savedCommand)"
+                                        show-tutorial="$ctrl.voiceCommands.length === 0"></new-voice-command-form>
             </div>
             <div ui-view></div>
         </div>
