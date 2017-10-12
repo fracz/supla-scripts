@@ -10,6 +10,7 @@ new features into your SUPLA account, today!
 ## Features
 
 * thermostat
+* voice commands
 * ability to check and change channel's state via web browser
 * temperature history charts
 
