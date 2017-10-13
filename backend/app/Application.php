@@ -83,7 +83,7 @@ class Application extends App
         $this->getContainer()['metrics'] = function () {
             $metricsSettings = $this->getSetting('metrics', []);
             $enabled = $metricsSettings['enabled'] ?? false;
-            $address = 'udp://' . $metricsSettings['host'] ?? 'suplascripts-metrics';
+            $address = 'udp://' . ($metricsSettings['host'] ?? 'suplascripts-metrics');
             $port = $metricsSettings['statsd_port'] ?? 8125;
             return new MetricsCollector($enabled, ['default' => ['address' => $address, 'port' => $port]]);
         };
