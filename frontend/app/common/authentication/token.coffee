@@ -1,4 +1,4 @@
-angular.module('supla-scripts').service 'Token', (Restangular, $localStorage, $timeout, jwtHelper, $rootScope) ->
+angular.module('supla-scripts').service 'Token', (Restangular, $localStorage, $timeout, jwtHelper, $rootScope, $interval) ->
   Token = Restangular.service('tokens')
 
   LOCAL_STORAGE_KEY = 'jwtToken'
