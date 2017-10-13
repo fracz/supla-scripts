@@ -17,7 +17,7 @@ class UserAndUrlAwareLogger implements LoggerInterface
     public function __construct()
     {
         $this->logger = new Logger('app_logger');
-        $file_handler = new StreamHandler(Application::VAR_PATH . "/logs/app.log");
+        $file_handler = new StreamHandler(Application::VAR_PATH . "/logs/app.log", Logger::NOTICE);
         $this->logger->pushHandler($file_handler);
     }
 
