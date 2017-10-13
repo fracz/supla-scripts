@@ -17,5 +17,8 @@
     "expirationTimeRememberMe": 604800,
     "expirationTimeClient": 157680000,
     "iss": "https://supla.fracz.com"
+  },
+  "metrics": {
+    "enabled": false
   }
 }

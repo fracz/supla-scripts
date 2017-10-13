@@ -48,6 +48,7 @@ class Application extends App
     {
         $this->configureDb();
         $this->configureLogger();
+        $this->configureMetrics();
         FileSystemCache::$cacheDir = self::VAR_PATH . '/cache';
     }
 
@@ -74,6 +75,17 @@ class Application extends App
     {
         $this->getContainer()['logger'] = function () {
             return new UserAndUrlAwareLogger();
+        };
+    }
+
+    private function configureMetrics()
+    {
+        $this->getContainer()['metrics'] = function () {
+            $metricsSettings = $this->getSetting('metrics', []);
+            $enabled = $metricsSettings['enabled'] ?? false;
+            $address = 'udp://' . $metricsSettings['host'] ?? 'suplascripts-metrics';
+            $port = $metricsSettings['statsd_port'] ?? 8125;
+            return new MetricsCollector($enabled, ['default' => ['address' => $address, 'port' => $port]]);
         };
     }
 

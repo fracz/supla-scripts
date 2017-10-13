@@ -19,6 +19,8 @@ ini_set('display_errors', 'Off');
 ini_set("log_errors", 1);
 ini_set("error_log", Application::VAR_PATH . "/logs/error.log");
 
+$startTime = microtime(true);
+
 $app = new Application();
 $app->group('/api', function () use ($app) {
     $app->get('/time', SystemController::class . ':getTime');
@@ -81,3 +83,9 @@ $app->group('/api', function () use ($app) {
     });
 });
 $app->run();
+
+$elapsedTime = round((microtime(true) - $startTime) * 1000);
+
+$app->metrics->timing('time', $elapsedTime);
+$app->metrics->increment('api_hit');
+$app->metrics->send();

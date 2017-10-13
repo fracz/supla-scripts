@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "98f7d2b44e04bd6fa9e4dfec711e0f6e",
+    "content-hash": "3d70e62ca1633e6790a7c3c859293c12",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -602,6 +602,46 @@
                 "file system"
             ],
             "time": "2013-07-05T13:28:27+00:00"
+        },
+        {
+            "name": "m6web/statsd",
+            "version": "v1.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/M6Web/Statsd.git",
+                "reference": "dbc7e320e94640bd9787f1498a9eb6ba6909845d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/M6Web/Statsd/zipball/dbc7e320e94640bd9787f1498a9eb6ba6909845d",
+                "reference": "dbc7e320e94640bd9787f1498a9eb6ba6909845d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "atoum/atoum": "~2.0",
+                "m6web/coke": "~1.2",
+                "m6web/symfony2-coding-standard": "~1.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "M6Web\\Component\\Statsd\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Component easing the statsd usage",
+            "keywords": [
+                "m6web",
+                "php",
+                "statsd"
+            ],
+            "time": "2017-02-03T08:22:10+00:00"
         },
         {
             "name": "monolog/monolog",

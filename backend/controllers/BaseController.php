@@ -57,12 +57,18 @@ abstract class BaseController
     {
         if (count($args) == 3) { // request, response, args
             $action = $methodName . 'Action';
+            $startTime = microtime(true);
+            $endpoint = 'endpoint.' . array_slice(explode('\\', get_class($this)), -1)[0] . ".$methodName.";
             try {
                 $this->beforeAction();
                 $response = call_user_func_array([&$this, $action], [$args[2]]);
+                $this->getApp()->metrics->increment($endpoint . 'success');
             } catch (Throwable $e) {
                 $response = $this->exceptionToResponse($e);
+                $this->getApp()->metrics->increment($endpoint . 'failure');
             }
+            $elapsedTime = round((microtime(true) - $startTime) * 1000);
+            $this->getApp()->metrics->timing($endpoint . 'time', $elapsedTime);
             return $response;
         }
         throw new \BadMethodCallException("There is no method $methodName.");
@@ -72,9 +78,11 @@ abstract class BaseController
     {
         if ($e instanceof ApiException) {
             $this->getApp()->logger->warning('Action execution failed.', ['message' => $e->getMessage()]);
+            $this->getApp()->metrics->increment('error.api');
             return $this->response(['message' => $e->getMessage(), 'data' => $e->getData()])->withStatus($e->getCode());
         } else if ($e instanceof InvalidArgumentException) {
             $this->getApp()->logger->info('Validation failed.', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            $this->getApp()->metrics->increment('error.validation');
             return $this->response([
                 'message' => $e->getMessage(),
                 'reason' => $e->getPropertyPath(),
@@ -82,6 +90,7 @@ abstract class BaseController
         } else {
             error_log($e);
             $this->getApp()->logger->error($e->getMessage(), ['trace' => $e->getTraceAsString()]);
+            $this->getApp()->metrics->increment('error.exception');
             return $this->response([
                 'status' => 500,
                 'message' => $e->getMessage(),
