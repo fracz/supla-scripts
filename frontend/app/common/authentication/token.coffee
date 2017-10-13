@@ -17,8 +17,8 @@ angular.module('supla-scripts').service 'Token', (Restangular, $localStorage, $t
 
   Token.renewToken = ->
     Token.one().withHttpConfig(skipErrorHandler: yes).put()
-    .then(({token}) -> Token.rememberToken(token))
-    .catch(Token.forgetRememberedToken)
+      .then(({token}) -> Token.rememberToken(token))
+      .catch(Token.forgetRememberedToken)
 
   Token.rememberToken = (token) ->
     try
@@ -28,7 +28,13 @@ angular.module('supla-scripts').service 'Token', (Restangular, $localStorage, $t
       dispatchAuthEvent()
 
   Token.getRememberedToken = -> $localStorage[LOCAL_STORAGE_KEY]
-  Token.getRememberedTokenPayload = -> jwtHelper.decodeToken(Token.getRememberedToken()) if Token.getRememberedToken()
+  Token.getRememberedTokenPayload = ->
+    token = Token.getRememberedToken()
+    if token
+      if jwtHelper.isTokenExpired(token)
+        Token.forgetRememberedToken()
+      else
+        jwtHelper.decodeToken(Token.getRememberedToken()) if Token.getRememberedToken()
 
   Token.hasUser = -> Token.getRememberedTokenPayload()?.user
 
@@ -39,7 +45,9 @@ angular.module('supla-scripts').service 'Token', (Restangular, $localStorage, $t
     !!Token.getRememberedTokenPayload()?.expiredPassword
 
   Token.authenticate = (userData) ->
-    Token.one('').all('new').withHttpConfig(skipErrorHandler: yes).post(userData).then(({token}) -> Token.rememberToken(token))
+    Token.one('').all('new').withHttpConfig(skipErrorHandler: yes)
+      .post(userData)
+      .then(({token}) -> Token.rememberToken(token))
 
   Token.forgetRememberedToken = ->
     if $localStorage[LOCAL_STORAGE_KEY]
@@ -52,5 +60,8 @@ angular.module('supla-scripts').service 'Token', (Restangular, $localStorage, $t
     else
       dispatchAuthEvent()
       Token.renewToken()
+
+  # token expiration watchdog
+  $interval(Token.getRememberedTokenPayload, 30000)
 
   Token
