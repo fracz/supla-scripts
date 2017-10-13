@@ -84,6 +84,11 @@ function createRequiredDirectories() {
     [
         'var/cache',
         'var/config',
+        'var/metrics/data/whisper',
+        'var/metrics/data/elasticsearch',
+        'var/metrics/data/grafana',
+        'var/metrics/log/graphite/webapp',
+        'var/metrics/log/elasticsearch',
         'var/mysql',
         'var/logs',
         'var/system'
