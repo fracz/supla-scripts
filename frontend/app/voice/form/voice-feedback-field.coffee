@@ -2,7 +2,7 @@ angular.module('supla-scripts').component 'voiceFeedbackField',
   templateUrl: 'app/voice/form/voice-feedback-field.html'
   require:
     ngModel: 'ngModel'
-  controller: (Channels, channelLabelFilter) ->
+  controller: (Channels, channelLabelFilter, $timeout) ->
 
     CHANNEL_FEEDBACKS =
       FNC_LIGHTSWITCH: [{display: 'zaświeczone/zgaszone', suffix: 'on|bool:zaświecone,zgaszone'}]
@@ -32,7 +32,9 @@ angular.module('supla-scripts').component 'voiceFeedbackField',
                     feedback
                 callback availableFeedbacks.filter (feedback) ->
                   !match[0] or feedback.display.toLocaleLowerCase().indexOf(match[1].toLowerCase()) >= 0
-              onSelect: (item) -> "{#{item.channel.id}|#{item.suffix}}}"
+              onSelect: (item) =>
+                $timeout(@onChange)
+                "{#{item.channel.id}|#{item.suffix}}}"
               mode: 'replace'
             }
           ]
@@ -40,5 +42,5 @@ angular.module('supla-scripts').component 'voiceFeedbackField',
       flatten: (arrayOfArrays) ->
         [].concat.apply([], arrayOfArrays)
 
-      onChange: ->
+      onChange: =>
         @ngModel.$setViewValue(@text)
