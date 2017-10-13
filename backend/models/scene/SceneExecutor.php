@@ -19,7 +19,7 @@ class SceneExecutor
         list($channelId, $action) = explode(self::CHANNEL_DELIMITER, $command);
         $args = explode(self::ARGUMENT_DELIMITER, $action);
         $action = array_shift($args);
-        Assertion::inArray($action, ['turnOn', 'turnOff', 'toggle', 'getChannelState', 'setRgb']);
+        Assertion::inArray($action, ['turnOn', 'turnOff', 'toggle', 'getChannelState', 'setRgb', 'shut', 'reveal']);
         array_unshift($args, $channelId);
         $this->getApi()->clearCache($channelId);
         return call_user_func_array([$this->getApi(), $action], $args);

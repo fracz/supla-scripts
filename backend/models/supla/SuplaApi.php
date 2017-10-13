@@ -40,6 +40,10 @@ abstract class SuplaApi
 
     public abstract function getClient(): SuplaApiClient;
 
+    public abstract function shut(int $channelId, int $percent = 100);
+
+    public abstract function reveal(int $channelId, int $percent = 100);
+
     public function clearCache($channelId = null)
     {
     }

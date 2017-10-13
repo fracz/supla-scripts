@@ -71,6 +71,18 @@ class SuplaApiCached extends SuplaApi
         return $this->api->getSensorLogs($channelId, $fromTime);
     }
 
+    public function shut(int $channelId, int $percent = 100)
+    {
+        $this->clearCache($channelId);
+        return $this->api->shut($channelId, $percent);
+    }
+
+    public function reveal(int $channelId, int $percent = 100)
+    {
+        $this->clearCache($channelId);
+        return $this->api->reveal($channelId, $percent);
+    }
+
     public function getClient(): SuplaApiClient
     {
         return $this->api->getClient();
@@ -88,7 +100,8 @@ class SuplaApiCached extends SuplaApi
         return $value;
     }
 
-    public function clearCache($channelId = null) {
+    public function clearCache($channelId = null)
+    {
         $group = $this->user->id . ($channelId ? '/' . $channelId : '');
         \FileSystemCache::invalidateGroup($group);
     }

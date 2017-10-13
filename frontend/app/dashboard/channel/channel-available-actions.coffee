@@ -22,6 +22,10 @@ angular.module('supla-scripts').constant 'CHANNEL_AVAILABLE_ACTIONS', do ->
       {label: 'różowy', action: 'setRgb,00ffff,0,0', noButton: yes, isActive: -> no}
       {label: 'zielony', action: 'setRgb,00ff00,0,0', noButton: yes, isActive: -> no}
     ]
+    FNC_CONTROLLINGTHEROLLERSHUTTER: [
+      {label: 'odsłoń', action: 'reveal', isActive: -> no}
+      {label: 'zasłoń', action: 'shut', isActive: -> no}
+    ]
 
   actions.FNC_LIGHTSWITCH = actions.FNC_POWERSWITCH
   actions.FNC_CONTROLLINGTHEGARAGEDOOR = actions.FNC_CONTROLLINGTHEGATE

@@ -121,6 +121,16 @@ class SuplaApiReal extends SuplaApi
         return $result;
     }
 
+    public function shut(int $channelId, int $percent = 100)
+    {
+        return $this->client->channelShut($channelId, $percent);
+    }
+
+    public function reveal(int $channelId, int $percent = 100)
+    {
+        return $this->client->channelReveal($channelId, $percent);
+    }
+
     private function handleError($response)
     {
         if (!$response) {
