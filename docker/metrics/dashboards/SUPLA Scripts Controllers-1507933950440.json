@@ -170,7 +170,7 @@
           "targets": [
             {
               "refId": "A",
-              "target": "stats.counters.suplascripts.endpoint.$Controller.*.*.count"
+              "target": "aliasSub(stats.counters.suplascripts.endpoint.$Controller.*.*.count, '.+endpoint.(.+).count', '\\1')"
             }
           ],
           "thresholds": [],
@@ -436,5 +436,5 @@
   },
   "timezone": "",
   "title": "SUPLA Scripts Controllers",
-  "version": 8
+  "version": 9
 }
