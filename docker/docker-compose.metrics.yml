@@ -1,16 +1,13 @@
 version: '3'
 
-# Use this config file if you want to collect application metrics with Grpahite and Grafana.
+# Use this config file if you want to collect application metrics with StatsD.
+# A container with StatsD should be connected to the same network.
+# Works perfectly for example with https://github.com/kamon-io/docker-grafana-graphite
 
 services:
-  suplascripts-metrics:
-    container_name: ${COMPOSE_PROJECT_NAME}-metrics
-    restart: unless-stopped
-    build: ./metrics
-    networks: [default]
-    volumes:
-      - ${VOLUME_DATA}/metrics/data/whisper:/opt/graphite/storage/whisper:z
-      - ${VOLUME_DATA}/metrics/data/elasticsearch:/var/lib/elasticsearch:z
-      - ${VOLUME_DATA}/metrics/data/grafana:/opt/grafana/data:z
-      - ${VOLUME_DATA}/metrics/log/graphite:/opt/graphite/storage/log:z
-      - ${VOLUME_DATA}/metrics/log/elasticsearch:/var/log/elasticsearch:z
+  suplascripts-db:
+    networks: [metricsnetwork]
+
+networks:
+  metricsnetwork:
+    external: true
