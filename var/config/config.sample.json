@@ -20,6 +20,8 @@
   },
   "metrics": {
     "enabled": false,
-    "instanceName": "root"
+    "instanceName": "root",
+    "host": "metrics",
+    "statsd_port": 8125
   }
 }
