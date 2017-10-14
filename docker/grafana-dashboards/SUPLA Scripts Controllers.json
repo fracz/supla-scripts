@@ -83,7 +83,8 @@
           "targets": [
             {
               "refId": "A",
-              "target": "aliasByNode(stats.timers.suplascripts.endpoint.$Controller.*.time.upper_90, 5)"
+              "target": "aliasByNode(stats.timers.suplascripts.$Instance.endpoint.$Controller.*.time.upper_90, 5)",
+              "textEditor": false
             }
           ],
           "thresholds": [],
@@ -170,7 +171,8 @@
           "targets": [
             {
               "refId": "A",
-              "target": "aliasSub(stats.counters.suplascripts.endpoint.$Controller.*.*.count, '.+endpoint.(.+).count', '\\1')"
+              "target": "aliasSub(stats.counters.suplascripts.$Instance.endpoint.$Controller.*.*.count, '.+endpoint.(.+).count', '\\1')",
+              "textEditor": true
             }
           ],
           "thresholds": [],
@@ -278,8 +280,8 @@
           "targets": [
             {
               "refId": "A",
-              "target": "averageSeries(stats.timers.suplascripts.endpoint.$Controller.*.time.upper_90)",
-              "textEditor": false
+              "target": "averageSeries(stats.timers.suplascripts.$Instance.endpoint.$Controller.*.time.upper_90)",
+              "textEditor": true
             }
           ],
           "thresholds": "",
@@ -352,8 +354,8 @@
           "targets": [
             {
               "refId": "A",
-              "target": "scaleToSeconds(sumSeries(stats.counters.suplascripts.endpoint.$Controller.*.*.count), 60)",
-              "textEditor": false
+              "target": "scaleToSeconds(sumSeries(stats.counters.suplascripts.$Instance.endpoint.$Controller.*.*.count), 60)",
+              "textEditor": true
             }
           ],
           "thresholds": "",
@@ -391,9 +393,29 @@
         "includeAll": false,
         "label": null,
         "multi": false,
+        "name": "Instance",
+        "options": [],
+        "query": "stats.counters.suplascripts.*",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_LOCAL_GRAPHITE}",
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
         "name": "Controller",
         "options": [],
-        "query": "stats.counters.suplascripts.endpoint.*",
+        "query": "stats.counters.suplascripts.$Instance.endpoint.*",
         "refresh": 1,
         "regex": "",
         "sort": 0,
@@ -436,5 +458,5 @@
   },
   "timezone": "",
   "title": "SUPLA Scripts Controllers",
-  "version": 9
+  "version": 12
 }

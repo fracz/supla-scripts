@@ -85,15 +85,18 @@
           "targets": [
             {
               "refId": "A",
-              "target": "alias(stats.counters.suplascripts.api_hit.count, 'Requesty')"
+              "target": "alias(stats.counters.suplascripts.$Instance.api_hit.count, 'Requesty')",
+              "textEditor": false
             },
             {
               "refId": "B",
-              "target": "alias(stats.counters.suplascripts.endpoint.SystemController.getTime.*.count, 'Wejścia na stronę')"
+              "target": "alias(stats.counters.suplascripts.$Instance.endpoint.SystemController.getTime.*.count, 'Wejścia na stronę')",
+              "textEditor": false
             },
             {
               "refId": "C",
-              "target": "alias(sumSeries(stats.counters.suplascripts.error.*.count), 'Błędy')"
+              "target": "alias(sumSeries(stats.counters.suplascripts.$Instance.error.*.count), 'Błędy')",
+              "textEditor": false
             }
           ],
           "thresholds": [],
@@ -201,7 +204,8 @@
           "targets": [
             {
               "refId": "A",
-              "target": "stats.timers.suplascripts.time.upper_90"
+              "target": "stats.timers.suplascripts.$Instance.time.upper_90",
+              "textEditor": true
             }
           ],
           "thresholds": "",
@@ -275,7 +279,8 @@
           "targets": [
             {
               "refId": "A",
-              "target": "scaleToSeconds(stats.counters.suplascripts.api_hit.count, 60)"
+              "target": "scaleToSeconds(stats.counters.suplascripts.$Instance.api_hit.count, 60)",
+              "textEditor": true
             }
           ],
           "thresholds": "",
@@ -328,8 +333,8 @@
           "targets": [
             {
               "refId": "A",
-              "target": "aliasSub(stats.counters.suplascripts.endpoint.*.*.failure.count, '.+endpoint.(.+).failure.count', '\\1')",
-              "textEditor": false
+              "target": "aliasSub(stats.counters.suplascripts.$Instance.endpoint.*.*.failure.count, '.+endpoint.(.+).failure.count', '\\1')",
+              "textEditor": true
             }
           ],
           "thresholds": [],
@@ -413,19 +418,23 @@
           "targets": [
             {
               "refId": "A",
-              "target": "alias(stats.timers.suplascripts.endpoint.VoiceCommandsController.executeVoiceCommand.time.upper_90, 'Wykonanie komendy głosowej')"
+              "target": "alias(stats.timers.suplascripts.$Instance.endpoint.VoiceCommandsController.executeVoiceCommand.time.upper_90, 'Wykonanie komendy głosowej')",
+              "textEditor": true
             },
             {
               "refId": "B",
-              "target": "alias(stats.timers.suplascripts.endpoint.ChannelsController.execute.time.upper_90, 'Użycie kokpitu')"
+              "target": "alias(stats.timers.suplascripts.$Instance.endpoint.ChannelsController.execute.time.upper_90, 'Użycie kokpitu')",
+              "textEditor": true
             },
             {
               "refId": "C",
-              "target": "alias(stats.timers.suplascripts.endpoint.ThermostatsController.getBySlug.time.upper_90, 'Podgląd termostatu')"
+              "target": "alias(stats.timers.suplascripts.$Instance.endpoint.ThermostatsController.getBySlug.time.upper_90, 'Podgląd termostatu')",
+              "textEditor": true
             },
             {
               "refId": "D",
-              "target": "alias(stats.timers.suplascripts.endpoint.ChannelsController.getSensorLogs.time.upper_90, 'Pobranie historii temperatur')"
+              "target": "alias(stats.timers.suplascripts.$Instance.endpoint.ChannelsController.getSensorLogs.time.upper_90, 'Pobranie historii temperatur')",
+              "textEditor": true
             }
           ],
           "thresholds": [],
@@ -498,19 +507,23 @@
             {
               "hide": false,
               "refId": "A",
-              "target": "alias(stats.counters.suplascripts.endpoint.VoiceCommandsController.executeVoiceCommand.*.count, 'Wykonanie komendy głosowej')"
+              "target": "alias(stats.counters.suplascripts.$Instance.endpoint.VoiceCommandsController.executeVoiceCommand.*.count, 'Wykonanie komendy głosowej')",
+              "textEditor": false
             },
             {
               "refId": "B",
-              "target": "alias(stats.counters.suplascripts.endpoint.ChannelsController.execute.*.count, 'Wykorzystanie kokpitu')"
+              "target": "alias(stats.counters.suplascripts.$Instance.endpoint.ChannelsController.execute.*.count, 'Wykorzystanie kokpitu')",
+              "textEditor": false
             },
             {
               "refId": "C",
-              "target": "alias(stats.counters.suplascripts.endpoint.ThermostatsController.getBySlug.*.count, 'Podgląd termostatu')"
+              "target": "alias(stats.counters.suplascripts.$Instance.endpoint.ThermostatsController.getBySlug.*.count, 'Podgląd termostatu')",
+              "textEditor": false
             },
             {
               "refId": "D",
-              "target": "alias(stats.counters.suplascripts.endpoint.ChannelsController.getSensorLogs.*.count, 'Wykres temperatur')"
+              "target": "alias(stats.counters.suplascripts.$Instance.endpoint.ChannelsController.getSensorLogs.*.count, 'Wykres temperatur')",
+              "textEditor": false
             }
           ],
           "thresholds": [],
@@ -562,10 +575,31 @@
   "style": "dark",
   "tags": [],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_LOCAL_GRAPHITE}",
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "Instance",
+        "options": [],
+        "query": "stats.counters.suplascripts.*",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-3h",
     "to": "now"
   },
   "timepicker": {
@@ -594,5 +628,5 @@
   },
   "timezone": "",
   "title": "SUPLA Scripts",
-  "version": 26
+  "version": 33
 }
