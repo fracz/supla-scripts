@@ -19,6 +19,7 @@
     "iss": "https://supla.fracz.com"
   },
   "metrics": {
-    "enabled": false
+    "enabled": false,
+    "instanceName": "root"
   }
 }

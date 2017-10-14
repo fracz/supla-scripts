@@ -84,8 +84,9 @@ class Application extends App
             $metricsSettings = $this->getSetting('metrics', []);
             $enabled = $metricsSettings['enabled'] ?? false;
             $address = 'udp://' . ($metricsSettings['host'] ?? 'suplascripts-metrics');
+            $instanceName = $metricsSettings['instanceName'] ?? 'root';
             $port = $metricsSettings['statsd_port'] ?? 8125;
-            return new MetricsCollector($enabled, ['default' => ['address' => $address, 'port' => $port]]);
+            return new MetricsCollector($enabled, $instanceName, ['default' => ['address' => $address, 'port' => $port]]);
         };
     }
 
