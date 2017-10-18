@@ -1,6 +1,6 @@
 # supla-scripts
  
- [![Latest release](https://img.shields.io/github/release/fracz/supla-scripts.svg)](https://github.com/fracz/supla-scripts/releases/latest)
+ [![Latest release](https://img.shields.io/github/release/fracz/supla-scripts.svg)](https://github.com/fracz/supla-scripts/releases/latest) [![Donations Badge](https://yourdonation.rocks/images/badge.svg)](https://pledgie.com/campaigns/34983)
 
 [SUPLA](https://supla.org) on steroids!
 
