@@ -27,7 +27,7 @@ class FeedbackInterpolator
             case 'bool':
                 return $desiredValue ? ($config[0] ?? 'ON') : ($config[1] ?? 'OFF');
             case 'number':
-                return number_format($desiredValue, $config[0] ?? 1);
+                return number_format($desiredValue, intval($config[0] ?? 1));
         }
     }
 }
