@@ -90,6 +90,9 @@ class DispatchThermostatCommand extends Command
                     continue;
                 }
                 $currentTemperature = $room->getCurrentTemperature();
+                if ($currentTemperature == 0.0) {
+                    continue; // the thermometer may not work so do not take any action! wait for any other temperature.
+                }
                 $currentTemperatureFormatted = number_format($currentTemperature, 1) . '°C';
                 if ($decidor->shouldCool($currentTemperature) && !$decidor->isCooling()) {
                     $thermostat->log("Rozpoczęto ochładzanie pomieszczenia $room->name, temperatura: $currentTemperatureFormatted");
