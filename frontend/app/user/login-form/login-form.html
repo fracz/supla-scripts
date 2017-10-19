@@ -1,6 +1,7 @@
 <form name="loginForm"
       novalidate
       promise-btn
+      promise-btn-options="{minDuration: 1000}"
       ng-submit="$broadcast('show-errors-check-validity') && loginForm.$valid && $ctrl.login()">
 
     <div class="alert alert-danger fx-fade-down"
