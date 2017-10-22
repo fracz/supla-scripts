@@ -100,6 +100,7 @@ function copySingleRequiredFiles() {
     fs.copySync('var/config/docker-config.env.sample', 'release/var/config/docker-config.env.sample');
     fs.copySync('var/ssl/generate-self-signed-certs.sh', 'release/var/ssl/generate-self-signed-certs.sh');
     fs.copySync('var/system/version', 'release/var/system/version');
+    fs.copySync('scripts/logo.txt', 'release/backend/logo.txt');
     fs.copySync('supla-scripts', 'release/supla-scripts');
     fs.copySync('README.md', 'release/README.md');
 }

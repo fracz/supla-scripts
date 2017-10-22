@@ -19,7 +19,10 @@ class InitializeApplicationCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-//        $output->writeln(file_get_contents(__DIR__ . '/../../../scripts/logo.txt'));
+        $logo = file_exists(__DIR__ . '/../../../scripts/logo.txt')
+            ? file_get_contents(__DIR__ . '/../../../scripts/logo.txt')
+            : file_get_contents(__DIR__ . '/../../logo.txt');
+        $output->writeln($logo);
         $output->writeln('SUPLA Scripts v' . Application::version());
         $output->writeln('');
         if (!file_exists(Application::CONFIG_PATH) || !is_readable(Application::CONFIG_PATH)) {
