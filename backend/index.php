@@ -35,7 +35,6 @@ $app->group('/api', function () use ($app) {
         $app->get('/{id}', UsersController::class . ':get');
         $app->patch('/{id}', UsersController::class . ':patch');
         $app->put('/{id}', UsersController::class . ':put');
-        $app->delete('/{id}', UsersController::class . ':delete');
     });
     $app->group('/devices', function () use ($app) {
         $app->get('', DevicesController::class . ':getList');

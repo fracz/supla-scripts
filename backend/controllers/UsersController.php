@@ -39,12 +39,16 @@ class UsersController extends BaseController
         }
         return $this->getApp()->db->getConnection()->transaction(function () use ($user) {
             $request = $this->request()->getParsedBody();
+            if (isset($request['delete'])) {
+                Assertion::true($this->getCurrentUser()->isPasswordValid($request['delete']), 'Current password is not valid');
+                $user->delete();
+                return $this->response()->withStatus(204);
+            }
             if (isset($request['newPassword'])) {
                 Assertion::notEmptyKey($request, 'currentPassword');
                 Assertion::notEq($request['newPassword'], $request['currentPassword']);
                 Assertion::true($user->isPasswordValid($request['currentPassword']), 'Current password is not valid', 'currentPassword');
                 $user->setPassword($request['newPassword']);
-                $user->expirePasswordInTheNextCentury();
             }
             if (isset($request['apiCredentials'])) {
                 $user->setApiCredentials($request['apiCredentials']);
@@ -55,17 +59,6 @@ class UsersController extends BaseController
             $user->save();
             return $this->response($user);
         });
-    }
-
-    public function deleteAction($params)
-    {
-        $this->ensureAuthenticated();
-        $user = $this->getUser($params);
-        if ($user->id != $this->getCurrentUser()->id) {
-            throw new Http403Exception();
-        }
-        $user->delete();
-        return $this->response()->withStatus(204);
     }
 
     private function getUser($params): User

@@ -2,21 +2,21 @@ angular.module('supla-scripts').component 'accountDelete',
   templateUrl: 'app/user/delete/account-delete.html'
   bindings:
     user: '<'
-  controller: ($scope, Users, swangular, Token, $state, Notifier) ->
+  controller: (Users, swangular, Token, $state, Notifier, $q) ->
     deleteAccount: ->
-      swangular.open
-        scope: $scope
+      $q.when swal
         type: 'question'
         title: 'Definitywnie?'
-        text: 'Nie żartuję, Twoje konto zostanie usunięte!'
+        text: 'Podaj swoje hasło w celu potwierdzenia operacji.'
         showCancelButton: yes
         showConfirmButton: yes
         cancelButtonText: 'Anuluj'
         confirmButtonText: 'Tak, usuń moje konto!'
         confirmButtonColor: '#d62c1a'
         showLoaderOnConfirm: true
-        preConfirm: ->
-          Users.one('current').remove().then ->
+        input: 'password'
+        preConfirm: (password) =>
+          @user.withHttpConfig(skipErrorHandler: yes).patch(delete: password).catch(=> $q.reject('Podane hasło jest niepoprawne'))
       .then ->
         Token.forgetRememberedToken()
         Notifier.success('Twoje konto zostało usunięte.')
