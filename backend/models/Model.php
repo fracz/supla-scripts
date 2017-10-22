@@ -14,7 +14,7 @@ use Symfony\Component\Yaml\Exception\RuntimeException;
  * @property Carbon $createdAt
  * @property Carbon $modifiedAt
  * @method static Model|Builder find(mixed $condition)
- * @method static Builder where(array $condition)
+ * @method static Builder where(array|string $condition)
  * @method static Builder whereIn(string $column, array $condition)
  * @method static Builder whereBetween(string $column, array $between)
  * @method static Builder select(array $columns)

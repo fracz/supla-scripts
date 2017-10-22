@@ -2,6 +2,7 @@
   "displayErrorDetails": false,
   "readOnly": false,
   "apiCache": true,
+  "clearLogsOlderThan": "1week",
   "db": {
     "driver": "mysql",
     "database": "suplascripts",

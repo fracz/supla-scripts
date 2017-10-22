@@ -23,5 +23,8 @@ class DispatchCyclicTasksCommand extends Command
         if ($minute % 5 == 0) {
             $this->getApplication()->run(new StringInput('dispatch:thermostat'), $output);
         }
+        if ($minute == 0) {
+            $this->getApplication()->run(new StringInput('clear:db-logs'), $output);
+        }
     }
 }
