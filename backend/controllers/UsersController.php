@@ -47,13 +47,16 @@ class UsersController extends BaseController
             if (isset($request['newPassword'])) {
                 Assertion::notEmptyKey($request, 'currentPassword');
                 Assertion::notEq($request['newPassword'], $request['currentPassword']);
-                Assertion::true($user->isPasswordValid($request['currentPassword']), 'Current password is not valid', 'currentPassword');
+                Assertion::true($user->isPasswordValid($request['currentPassword']), 'Current password is not valid');
+                $user->log('user', 'Zmieniono hasło do konta');
                 $user->setPassword($request['newPassword']);
             }
             if (isset($request['apiCredentials'])) {
+                $user->log('user', 'Zmieniono dane do SUPLA API');
                 $user->setApiCredentials($request['apiCredentials']);
             }
             if (isset($request['timezone'])) {
+                $user->log('user', 'Zmieniono strefę czasową');
                 $user->setTimezone(new \DateTimeZone($request['timezone']));
             }
             $user->save();

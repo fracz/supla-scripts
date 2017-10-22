@@ -99,6 +99,11 @@ angular.module('supla-scripts')
     template: '<user-timezone user="user"></user-timezone>'
     controller: ($scope, user) -> $scope.user = user
 
+  .state 'account.changePassword',
+    url: '/password'
+    template: '<user-password-change-form user="user"></user-password-change-form>'
+    controller: ($scope, user) -> $scope.user = user
+
   .state 'account.delete',
     url: '/delete'
     template: '<account-delete user="user"></account-delete>'
