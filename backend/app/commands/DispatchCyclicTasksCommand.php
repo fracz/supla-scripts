@@ -19,6 +19,9 @@ class DispatchCyclicTasksCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->getApplication()->setAutoExit(false);
-        $this->getApplication()->run(new StringInput('dispatch:thermostat'), $output);
+        $minute = intval(date('i'));
+        if ($minute % 5 == 0) {
+            $this->getApplication()->run(new StringInput('dispatch:thermostat'), $output);
+        }
     }
 }
