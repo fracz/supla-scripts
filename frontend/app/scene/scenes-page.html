@@ -1,0 +1,25 @@
+<div class="container">
+    <h1 view-title>Sceny</h1>
+
+    <div class="row" ng-if="$ctrl.scenes">
+        <div ng-if="$ctrl.scenes.length !== 0" class="col-sm-3">
+            <div class="list-group">
+                <a class="list-group-item" ng-repeat="scene in $ctrl.scenes"
+                   ui-sref="scenes.details({id: scene.id})" ui-sref-active="active">
+                    <div>{{ scene.label }}</div>
+                    <scene-caption class="text-muted small" scene="scene"></scene-caption>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-sm-9 col-12-if-alone">
+            <div ng-if="'scenes' | isState">
+                <scene-form on-submit="$ctrl.addNewScene(savedScene)"></scene-form>
+            </div>
+            <div ui-view></div>
+        </div>
+    </div>
+
+    <loader-dots ng-else></loader-dots>
+</div>
+

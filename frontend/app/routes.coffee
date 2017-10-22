@@ -76,6 +76,17 @@ angular.module('supla-scripts')
     resolve:
       voiceCommand: (VoiceCommands, $stateParams) -> VoiceCommands.one($stateParams.id).get()
 
+  .state 'scenes',
+    url: '/scenes'
+    template: '<scenes-page></scenes-page>'
+
+  .state 'scenes.details',
+    url: '/:id'
+    template: '<scene-details-page scene="scene"></scene-details-page>'
+    controller: ($scope, scene) -> $scope.scene = scene
+    resolve:
+      scene: (Scenes, $stateParams) -> Scenes.one($stateParams.id).get()
+
   .state 'account',
     url: '/account'
     abstract: true

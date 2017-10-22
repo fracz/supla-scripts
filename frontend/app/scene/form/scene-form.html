@@ -1,0 +1,53 @@
+<h2 class="no-margin-top">{{ $ctrl.scene.id ? 'Edytuj' : 'Dodaj' }} scenę</h2>
+<form name="sceneForm"
+      novalidate
+      promise-btn
+      ng-submit="$broadcast('show-errors-check-validity') && sceneForm.$valid && $ctrl.submit()">
+
+    <div class="form-group" show-errors>
+        <label>Nazwa</label>
+        <input type="text" class="form-control" name="label" required ng-model="$ctrl.scene.label">
+    </div>
+
+    <div class="form-group">
+        <h4>Akcje</h4>
+        <scene-selector ng-model="$ctrl.scene.actions"></scene-selector>
+    </div>
+
+    <div class="form-group">
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" ng-model="$ctrl.scene.generateSlug">
+                Scena dostępna pod publicznym adresem URL
+            </label>
+        </div>
+    </div>
+
+    <div ng-if="$ctrl.scene.generateSlug" class="fx-fade-up">
+        <div class="form-group">
+            <label>Odpowiedź</label>
+            <voice-feedback-field ng-model="$ctrl.scene.feedback"></voice-feedback-field>
+            <p class="help-block">Podczas tworzenia odpowiedzi użyj znaku <code>{</code> by uzyskać podpowiedzi
+                możliwych do
+                użycia zmiennych.</p>
+        </div>
+
+        <div class="well fx-fade-up" ng-if="$ctrl.scene.feedback">
+            <voice-feedback-interpolation feedback="$ctrl.scene.feedback"></voice-feedback-interpolation>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 text-right">
+            <button type="button" class="btn btn-default" ng-click="$ctrl.onCancel()">
+                <fa name="times" fw></fa>
+                Anuluj
+            </button>
+            <button type="submit" class="btn btn-primary">
+                <fa name="{{ $ctrl.scene.id ? 'save' : 'plus' }}" fw></fa>
+                {{ $ctrl.scene.id ? 'Zapisz' : 'Dodaj' }} scenę
+            </button>
+        </div>
+    </div>
+</form>
+

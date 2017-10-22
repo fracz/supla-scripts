@@ -6,7 +6,8 @@
             <div class="list-group">
                 <a class="list-group-item" ng-repeat="voiceCommand in $ctrl.voiceCommands"
                    ui-sref="voice.details({id: voiceCommand.id})" ui-sref-active="active">
-                    {{ voiceCommand.triggers[0] }}
+                    <div>{{ voiceCommand.triggers[0] }}</div>
+                    <scene-caption scene="voiceCommand.scene" class="text-muted small"></scene-caption>
                 </a>
             </div>
         </div>

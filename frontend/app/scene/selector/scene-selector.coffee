@@ -1,5 +1,5 @@
 angular.module('supla-scripts').component 'sceneSelector',
-  templateUrl: 'app/scene/scene-selector.html'
+  templateUrl: 'app/scene/selector/scene-selector.html'
   bindings:
     disabled: '<'
   require:

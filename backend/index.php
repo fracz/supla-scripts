@@ -6,6 +6,7 @@ use suplascripts\app\Application;
 use suplascripts\controllers\ChannelsController;
 use suplascripts\controllers\DevicesController;
 use suplascripts\controllers\LogsController;
+use suplascripts\controllers\ScenesController;
 use suplascripts\controllers\SystemController;
 use suplascripts\controllers\thermostat\ThermostatProfilesController;
 use suplascripts\controllers\thermostat\ThermostatRoomsController;
@@ -79,6 +80,15 @@ $app->group('/api', function () use ($app) {
         $app->put('/{id}', VoiceCommandsController::class . ':put');
         $app->delete('/{id}', VoiceCommandsController::class . ':delete');
         $app->patch('/feedback', VoiceCommandsController::class . ':interpolateFeedback');
+    });
+    $app->group('/scenes', function () use ($app) {
+        $app->get('', ScenesController::class . ':getList');
+        $app->post('', ScenesController::class . ':post');
+        $app->get('/execute/{slug}', ScenesController::class . ':executeSceneBySlug');
+        $app->get('/{id}', ScenesController::class . ':get');
+        $app->put('/{id}', ScenesController::class . ':put');
+        $app->delete('/{id}', ScenesController::class . ':delete');
+        $app->patch('/{id}', ScenesController::class . ':executeScene');
     });
 });
 $app->run();

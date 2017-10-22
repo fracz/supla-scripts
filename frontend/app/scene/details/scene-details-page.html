@@ -1,0 +1,52 @@
+<view-title>
+    <scene-caption scene="$ctrl.scene"></scene-caption>
+    - sceny
+</view-title>
+
+<div class="btn-group btn-group-sm pull-right" ng-hide="$ctrl.editing">
+    <button class="btn btn-default" ng-click="$ctrl.editing = true">
+        <fa name="edit" fw></fa>
+        Edytuj
+    </button>
+    <button class="btn btn-danger" ng-click="$ctrl.deleteScene()" promise-btn>
+        <fa name="trash" fw></fa>
+        Usuń
+    </button>
+</div>
+
+<scene-form ng-if="$ctrl.editing" scene="$ctrl.scene"
+            on-submit="$ctrl.saveScene(savedScene)"
+            on-cancel="$ctrl.editing = false"></scene-form>
+
+<div ng-else>
+    <h2 class="no-margin-top">
+        <scene-caption scene="$ctrl.scene"></scene-caption>
+    </h2>
+    <p class="text-muted">
+        <span ng-if="$ctrl.scene.lastUsed">ostatnie wykonanie: {{ $ctrl.scene.lastUsed | amCalendar }}</span>
+        <span ng-else>scena nie była jeszcze wykonana</span>
+    </p>
+
+    <button class="btn btn-info btn-lg btn-block">
+        <fa name="cogs" fw></fa>
+        Wykonaj scenę
+    </button>
+
+    <div ng-if="$ctrl.scene.actions">
+        <h3>Akcje</h3>
+        <scene-selector ng-model="$ctrl.scene.actions" disabled="true"></scene-selector>
+    </div>
+
+    <div ng-if="$ctrl.scene.slug">
+        <h3>Publiczny adres URL</h3>
+        <pre>{{ $ctrl.scene.slug | scenePublicUrl }}</pre>
+
+        <div ng-if="$ctrl.scene.feedback">
+            <h3>Aktualna odpowiedź</h3>
+            <voice-feedback-interpolation feedback="$ctrl.voiceCommand.feedback"></voice-feedback-interpolation>
+        </div>
+    </div>
+
+    <h3>Logi</h3>
+    <logs-table entity-id="$ctrl.scene.id" limit="30" on-new-logs="$ctrl.reloadScene()"></logs-table>
+</div>

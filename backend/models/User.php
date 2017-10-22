@@ -5,6 +5,7 @@ namespace suplascripts\models;
 use Assert\Assert;
 use Assert\Assertion;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use suplascripts\models\scene\Scene;
 use suplascripts\models\supla\SuplaApi;
 use suplascripts\models\thermostat\Thermostat;
 use suplascripts\models\voice\VoiceCommand;
@@ -59,6 +60,10 @@ class User extends Model {
 
     public function voiceCommands(): HasMany {
         return $this->hasMany(VoiceCommand::class, VoiceCommand::USER_ID);
+    }
+
+    public function scenes(): HasMany {
+        return $this->hasMany(Scene::class, Scene::USER_ID);
     }
 
     public function setPassword($plainPassword) {

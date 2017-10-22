@@ -3,6 +3,7 @@
 namespace suplascripts\models\observers;
 
 use suplascripts\models\Client;
+use suplascripts\models\scene\Scene;
 use suplascripts\models\thermostat\Thermostat;
 use suplascripts\models\thermostat\ThermostatProfile;
 use suplascripts\models\thermostat\ThermostatRoom;
@@ -21,5 +22,7 @@ class ObserverRegisterer {
         Client::observe(UserIdSetter::class);
         VoiceCommand::observe(UserIdSetter::class);
         VoiceCommand::observe(ModelValidator::class);
+        Scene::observe(UserIdSetter::class);
+        Scene::observe(ModelValidator::class);
     }
 }
