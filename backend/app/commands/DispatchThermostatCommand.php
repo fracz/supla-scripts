@@ -26,6 +26,9 @@ class DispatchThermostatCommand extends Command
     {
         $activeThermostats = Thermostat::where([Thermostat::ENABLED => true])->get();
         foreach ($activeThermostats as $thermostat) {
+            if (!$thermostat->user) {
+                continue; // there were thermostats without user - quick fix for now
+            }
             try {
                 $this->adjust($thermostat, $output);
             } catch (\Exception $e) {
