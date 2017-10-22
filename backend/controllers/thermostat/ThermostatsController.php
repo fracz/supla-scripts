@@ -14,10 +14,11 @@ use suplascripts\models\thermostat\ThermostatRoomConfig;
 
 class ThermostatsController extends BaseController
 {
-    public function getAction($id)
+    public function getAction($params)
     {
+        $this->ensureAuthenticated();
         /** @var Thermostat $thermostat */
-        $thermostat = $this->ensureExists(Thermostat::find($id)->first());
+        $thermostat = $this->ensureExists($this->getCurrentUser()->thermostats()->getQuery()->find($params)->first());
         if ($this->request()->getParam('simple', false)) {
             return $this->response($thermostat);
         } else {
