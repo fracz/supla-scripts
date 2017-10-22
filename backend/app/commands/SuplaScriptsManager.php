@@ -17,6 +17,7 @@ class SuplaScriptsManager extends Application
             new DispatchThermostatCommand(),
             new ClearCacheCommand(),
             new ClearDbLogsCommand(),
+            new DisplayLogoCommand(),
         ]);
     }
 }

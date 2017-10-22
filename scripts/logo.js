@@ -3,7 +3,7 @@ var chalk = require('chalk');
 var fs = require('fs');
 var path = require('path');
 
-var ASCII_LOGO_WIDTH = 37;
+var ASCII_LOGO_WIDTH = 29;
 var LOGO = fs.readFileSync(path.join(__dirname, 'logo.txt')).toString().replace(/\s*$/, '');
 
 var printAsciiLogoAndVersion = function () {
