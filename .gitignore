@@ -6,7 +6,7 @@ public/*
 !public/img/
 !public/v1.0/
 /.*
-/config.json
+/var/config/config.json
 volumes/
 *.gz
 release/
