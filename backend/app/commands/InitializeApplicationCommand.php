@@ -27,8 +27,8 @@ class InitializeApplicationCommand extends Command
             $this->getApplication()->run(new StringInput('encryptionKey:generate'), $output);
             $this->getApplication()->run(new StringInput('clear:cache'), $output);
             $this->getApplication()->run(new StringInput('db:backup'), $output);
-            $this->getApplication()->run(new StringInput('db:migrate'), $output);
             $this->getApplication()->run(new StringInput('metrics:release'), $output);
+            $this->getApplication()->run(new StringInput('db:migrate'), $output);
         }
     }
 }
