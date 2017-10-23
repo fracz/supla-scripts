@@ -37,7 +37,7 @@ class BackupDbCommand extends Command
         $backupName = 'supla-scripts-' . date('YmdHis') . '-v' . Application::version() . '.sql.gz';
         $backupPath = self::BACKUP_DIR . '/' . $backupName;
         $process = new Process(sprintf(
-            'mysqldump --user="%s" --password="%s" --host="%s" --lock-all-tables "%s" | gzip > "%s"',
+            'mysqldump --user="%s" --password="%s" --host="%s" --single-transaction "%s" | gzip > "%s"',
             $dbSettings['username'],
             $dbSettings['password'],
             $dbSettings['host'],
