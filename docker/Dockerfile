@@ -13,6 +13,7 @@ RUN apt-get update \
       git \
       unzip \
       nodejs \
+      mysql-client \
     && update-ca-certificates \
     && docker-php-ext-install \
       pdo_mysql \

@@ -10,14 +10,15 @@ class SuplaScriptsManager extends Application
     {
         parent::__construct('supla-scripts', \suplascripts\app\Application::version());
         $this->addCommands([
-            new InitializeApplicationCommand(),
-            new MigrateDbCommand(),
-            new GenerateEncryptionKeyCommand(),
-            new DispatchCyclicTasksCommand(),
-            new DispatchThermostatCommand(),
+            new BackupDbCommand(),
             new ClearCacheCommand(),
             new ClearDbLogsCommand(),
+            new DispatchCyclicTasksCommand(),
+            new DispatchThermostatCommand(),
             new DisplayLogoCommand(),
+            new GenerateEncryptionKeyCommand(),
+            new InitializeApplicationCommand(),
+            new MigrateDbCommand(),
         ]);
     }
 }

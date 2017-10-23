@@ -82,11 +82,12 @@ function copyToReleaseDirectory() {
 
 function createRequiredDirectories() {
     [
+        'var/backups',
         'var/cache',
         'var/config',
         'var/mysql',
         'var/logs',
-        'var/system'
+        'var/system',
     ].forEach(function (dirname) {
         fs.mkdirsSync('release/' + dirname);
     });
