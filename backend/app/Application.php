@@ -20,6 +20,7 @@ use suplascripts\models\User;
  * @property-read \Slim\Http\Response $response
  * @property-read Capsule $db
  * @property-read LoggerInterface $logger
+ * @property-read MetricsCollector $metrics
  * @property-read \Slim\Collection $settings
  */
 class Application extends App

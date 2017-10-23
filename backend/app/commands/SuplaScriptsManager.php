@@ -18,6 +18,7 @@ class SuplaScriptsManager extends Application
             new DisplayLogoCommand(),
             new GenerateEncryptionKeyCommand(),
             new InitializeApplicationCommand(),
+            new MetricsReleaseCommand(),
             new MigrateDbCommand(),
         ]);
     }
