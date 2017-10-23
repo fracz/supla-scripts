@@ -8,6 +8,6 @@ public/*
 /.*
 /config.json
 volumes/
-*.tar.gz
+*.gz
 release/
 var/
