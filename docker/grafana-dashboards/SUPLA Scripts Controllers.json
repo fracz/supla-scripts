@@ -36,7 +36,19 @@
     }
   ],
   "annotations": {
-    "list": []
+    "list": [
+      {
+        "datasource": "${DS_LOCAL_GRAPHITE}",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgb(99, 255, 96)",
+        "limit": 100,
+        "name": "Release",
+        "showIn": 0,
+        "target": "stats.counters.suplascripts.$Instance.release.count",
+        "type": "alert"
+      }
+    ]
   },
   "editable": true,
   "gnetId": null,
@@ -458,5 +470,5 @@
   },
   "timezone": "",
   "title": "SUPLA Scripts Controllers",
-  "version": 12
+  "version": 15
 }

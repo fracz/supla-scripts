@@ -36,7 +36,19 @@
     }
   ],
   "annotations": {
-    "list": []
+    "list": [
+      {
+        "datasource": "${DS_LOCAL_GRAPHITE}",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgb(96, 255, 112)",
+        "limit": 100,
+        "name": "Release",
+        "showIn": 0,
+        "target": "stats.counters.suplascripts.$Instance.release.count",
+        "type": "alert"
+      }
+    ]
   },
   "editable": true,
   "gnetId": null,
@@ -131,7 +143,7 @@
               "logBase": 1,
               "max": null,
               "min": null,
-              "show": true
+              "show": false
             }
           ]
         }
@@ -145,16 +157,16 @@
     },
     {
       "collapse": false,
-      "height": 227,
+      "height": 153,
       "panels": [
         {
           "cacheTimeout": null,
-          "colorBackground": false,
+          "colorBackground": true,
           "colorValue": false,
           "colors": [
-            "rgba(245, 54, 54, 0.9)",
+            "rgb(37, 124, 33)",
             "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
+            "rgba(245, 54, 54, 0.9)"
           ],
           "datasource": "${DS_LOCAL_GRAPHITE}",
           "format": "ms",
@@ -196,9 +208,9 @@
           "span": 3,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": false,
+            "full": true,
             "lineColor": "rgb(31, 120, 193)",
-            "show": true
+            "show": false
           },
           "tableColumn": "",
           "targets": [
@@ -208,8 +220,8 @@
               "textEditor": true
             }
           ],
-          "thresholds": "",
-          "title": "Średni czas odpowiedzi",
+          "thresholds": "400,1000,2000",
+          "title": "90% odpowiedzi poniżej",
           "type": "singlestat",
           "valueFontSize": "80%",
           "valueMaps": [
@@ -231,12 +243,12 @@
             "rgba(50, 172, 45, 0.97)"
           ],
           "datasource": "${DS_LOCAL_GRAPHITE}",
-          "decimals": null,
+          "decimals": 0,
           "format": "none",
           "gauge": {
             "maxValue": 100,
             "minValue": 0,
-            "show": false,
+            "show": true,
             "thresholdLabels": false,
             "thresholdMarkers": true
           },
@@ -284,7 +296,7 @@
             }
           ],
           "thresholds": "",
-          "title": "Liczba requestów",
+          "title": "Częstotliwość requestów",
           "type": "singlestat",
           "valueFontSize": "80%",
           "valueMaps": [
@@ -383,7 +395,7 @@
     },
     {
       "collapse": false,
-      "height": 250,
+      "height": 203,
       "panels": [
         {
           "aliasColors": {},
@@ -507,22 +519,22 @@
             {
               "hide": false,
               "refId": "A",
-              "target": "alias(stats.counters.suplascripts.$Instance.endpoint.VoiceCommandsController.executeVoiceCommand.*.count, 'Wykonanie komendy głosowej')",
+              "target": "alias(stats.counters.suplascripts.$Instance.endpoint.VoiceCommandsController.executeVoiceCommand.success.count, 'Wykonanie komendy głosowej')",
               "textEditor": false
             },
             {
               "refId": "B",
-              "target": "alias(stats.counters.suplascripts.$Instance.endpoint.ChannelsController.execute.*.count, 'Wykorzystanie kokpitu')",
+              "target": "alias(stats.counters.suplascripts.$Instance.endpoint.ChannelsController.execute.success.count, 'Wykorzystanie kokpitu')",
               "textEditor": false
             },
             {
               "refId": "C",
-              "target": "alias(stats.counters.suplascripts.$Instance.endpoint.ThermostatsController.getBySlug.*.count, 'Podgląd termostatu')",
+              "target": "alias(stats.counters.suplascripts.$Instance.endpoint.ThermostatsController.getBySlug.success.count, 'Podgląd termostatu')",
               "textEditor": false
             },
             {
               "refId": "D",
-              "target": "alias(stats.counters.suplascripts.$Instance.endpoint.ChannelsController.getSensorLogs.*.count, 'Wykres temperatur')",
+              "target": "alias(stats.counters.suplascripts.$Instance.endpoint.ChannelsController.getSensorLogs.success.count, 'Wykres temperatur')",
               "textEditor": false
             }
           ],
@@ -569,6 +581,311 @@
       "showTitle": false,
       "title": "Dashboard Row",
       "titleSize": "h6"
+    },
+    {
+      "collapse": false,
+      "height": 137,
+      "panels": [
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "datasource": "${DS_LOCAL_GRAPHITE}",
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "id": 7,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "span": 3,
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": true
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "refId": "A",
+              "target": "consolidateBy(stats.counters.suplascripts.$Instance.endpoint.VoiceCommandsController.executeVoiceCommand.success.count, 'sum')",
+              "textEditor": false
+            }
+          ],
+          "thresholds": "",
+          "title": "Komendy głosowe",
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "total"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "datasource": "${DS_LOCAL_GRAPHITE}",
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "id": 8,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "span": 3,
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": true
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "refId": "A",
+              "target": "consolidateBy(stats.counters.suplascripts.$Instance.endpoint.ChannelsController.execute.success.count, 'sum')"
+            }
+          ],
+          "thresholds": "",
+          "title": "Wykorzystania kokpitu",
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "total"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "datasource": "${DS_LOCAL_GRAPHITE}",
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "id": 9,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "span": 3,
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": true
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "refId": "A",
+              "target": "consolidateBy(stats.counters.suplascripts.$Instance.endpoint.ThermostatsController.getBySlug.success.count, 'sum')"
+            }
+          ],
+          "thresholds": "",
+          "title": "Podgląd termostatu",
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "total"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "datasource": "${DS_LOCAL_GRAPHITE}",
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "id": 10,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "span": 3,
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": true
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "refId": "A",
+              "target": "consolidateBy(stats.counters.suplascripts.$Instance.endpoint.ChannelsController.getSensorLogs.success.count, 'sum')"
+            }
+          ],
+          "thresholds": "",
+          "title": "Pobrania historii temperatur",
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "total"
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Dashboard Row",
+      "titleSize": "h6"
     }
   ],
   "schemaVersion": 14,
@@ -599,7 +916,7 @@
     ]
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {
@@ -628,5 +945,5 @@
   },
   "timezone": "",
   "title": "SUPLA Scripts",
-  "version": 33
+  "version": 59
 }
