@@ -9,6 +9,7 @@ use suplascripts\controllers\exceptions\ApiException;
 use suplascripts\controllers\exceptions\Http403Exception;
 use suplascripts\controllers\exceptions\Http404Exception;
 use suplascripts\models\HasApp;
+use suplascripts\models\supla\SuplaApiException;
 use suplascripts\models\User;
 use Throwable;
 
@@ -76,11 +77,15 @@ abstract class BaseController
 
     private function exceptionToResponse(Throwable $e)
     {
-        if ($e instanceof ApiException) {
+        if ($e instanceof SuplaApiException) {
+            $this->getApp()->logger->toSuplaLog()->warning($e->getMessage());
+            $this->getApp()->metrics->increment('error.supla');
+            return $this->response(['message' => $e->getMessage(), 'data' => $e->getData()])->withStatus($e->getCode());
+        } elseif ($e instanceof ApiException) {
             $this->getApp()->logger->warning('Action execution failed.', ['message' => $e->getMessage()]);
             $this->getApp()->metrics->increment('error.api');
             return $this->response(['message' => $e->getMessage(), 'data' => $e->getData()])->withStatus($e->getCode());
-        } else if ($e instanceof InvalidArgumentException) {
+        } elseif ($e instanceof InvalidArgumentException) {
             $this->getApp()->logger->info('Validation failed.', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             $this->getApp()->metrics->increment('error.validation');
             return $this->response([

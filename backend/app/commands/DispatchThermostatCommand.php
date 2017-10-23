@@ -32,7 +32,7 @@ class DispatchThermostatCommand extends Command
             try {
                 $this->adjust($thermostat, $output);
             } catch (\Exception $e) {
-                (new UserAndUrlAwareLogger('thermostat'))->error($e->getMessage(), ['thermostat' => $thermostat->id]);
+                (new UserAndUrlAwareLogger())->toThermostatLog()->error($e->getMessage(), ['thermostat' => $thermostat->id]);
             }
         }
     }

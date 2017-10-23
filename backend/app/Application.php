@@ -7,7 +7,6 @@ use Illuminate\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Events\Dispatcher;
-use Psr\Log\LoggerInterface;
 use Slim\App;
 use suplascripts\app\authorization\JwtAndBasicAuthorizationMiddleware;
 use suplascripts\database\EloquentExceptionHandler;
@@ -19,7 +18,7 @@ use suplascripts\models\User;
  * @property-read \Slim\Http\Request $request
  * @property-read \Slim\Http\Response $response
  * @property-read Capsule $db
- * @property-read LoggerInterface $logger
+ * @property-read UserAndUrlAwareLogger $logger
  * @property-read MetricsCollector $metrics
  * @property-read \Slim\Collection $settings
  */

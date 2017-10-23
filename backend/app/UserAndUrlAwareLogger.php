@@ -2,6 +2,7 @@
 
 namespace suplascripts\app;
 
+use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
@@ -14,25 +15,56 @@ class UserAndUrlAwareLogger implements LoggerInterface
     /** @var Logger */
     private $logger;
 
-    public function __construct($logName = 'app')
+    /** @var HandlerInterface[] */
+    private $defaultHandlers;
+
+    private $nextLogFilename;
+
+    public function __construct()
     {
         $this->logger = new Logger('app_logger');
-        $file_handler = new StreamHandler(Application::VAR_PATH . "/logs/$logName.log", Logger::NOTICE);
-        $this->logger->pushHandler($file_handler);
+        $this->defaultHandlers = [$this->logFileHandler('app')];
+    }
+
+    private function logFileHandler(string $filename): HandlerInterface
+    {
+        new StreamHandler(Application::VAR_PATH . "/logs/$filename.log", Logger::NOTICE);
     }
 
     private function buildContext(array $context): array
     {
+        if ($this->nextLogFilename) {
+            $this->logger->setHandlers([$this->logFileHandler($this->nextLogFilename)]);
+            $this->nextLogFilename = null;
+        } else {
+            $this->logger->setHandlers($this->defaultHandlers);
+        }
         $app = $this->getApp();
         if ($app) {
             $currentUser = $app->getCurrentUser();
             return array_merge([
                 'url' => (string)$app->request->getUri(),
-                'username' => $currentUser ? $currentUser->username : null,
+                'username' => $currentUser ? $currentUser->username : 'not authenticated',
             ], $context);
         } else {
             return $context;
         }
+    }
+
+    private function toCustomFile(string $filename): LoggerInterface
+    {
+        $this->nextLogFilename = $filename;
+        return $this;
+    }
+
+    public function toSuplaLog(): LoggerInterface
+    {
+        return $this->toCustomFile('supla');
+    }
+
+    public function toThermostatLog(): LoggerInterface
+    {
+        return $this->toCustomFile('thermostat');
     }
 
     public function emergency($message, array $context = [])
