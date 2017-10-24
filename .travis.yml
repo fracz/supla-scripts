@@ -1,0 +1,7 @@
+language: php
+php:
+  - '7.0'
+before_script:
+  - cd backend && composer install --no-interaction
+script:
+  - cd backend && composer run-script phpcs
