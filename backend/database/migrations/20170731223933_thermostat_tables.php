@@ -6,17 +6,15 @@ use suplascripts\models\thermostat\ThermostatProfile;
 use suplascripts\models\thermostat\ThermostatRoom;
 use suplascripts\models\User;
 
-class ThermostatTables extends Migration
-{
-    public function change()
-    {
+class ThermostatTables extends Migration {
+
+    public function change() {
         $this->createThermostatsTable();
         $this->createThermostatRoomsTable();
         $this->createThermostatProfilesTable();
     }
 
-    private function createThermostatsTable()
-    {
+    private function createThermostatsTable() {
         $this->table(Thermostat::TABLE_NAME)
             ->addColumn(Thermostat::ENABLED, 'boolean', ['default' => false])
             ->addColumn(Thermostat::SLUG, 'string')
@@ -33,8 +31,7 @@ class ThermostatTables extends Migration
             ->update();
     }
 
-    private function createThermostatRoomsTable()
-    {
+    private function createThermostatRoomsTable() {
         $this->table(ThermostatRoom::TABLE_NAME)
             ->addColumn(ThermostatRoom::NAME, 'string', ['length' => 100])
             ->addColumn(ThermostatRoom::THERMOMETERS, 'text')
@@ -51,8 +48,7 @@ class ThermostatTables extends Migration
             ->update();
     }
 
-    private function createThermostatProfilesTable()
-    {
+    private function createThermostatProfilesTable() {
         $this->table(ThermostatProfile::TABLE_NAME)
             ->addColumn(ThermostatProfile::NAME, 'string', ['length' => 100])
             ->addColumn(ThermostatProfile::USER_ID, 'uuid')

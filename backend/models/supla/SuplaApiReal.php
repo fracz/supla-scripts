@@ -5,21 +5,19 @@ namespace suplascripts\models\supla;
 use Supla\ApiClient\SuplaApiClient;
 use suplascripts\models\User;
 
-class SuplaApiReal extends SuplaApi
-{
+class SuplaApiReal extends SuplaApi {
+
     /** @var SuplaApiClient */
     private $client;
 
     private $devices;
 
-    protected function __construct(User $user)
-    {
+    protected function __construct(User $user) {
         $apiCredentials = $user->getApiCredentials();
         $this->client = new SuplaApiClient($apiCredentials, false, false, false);
     }
 
-    public function getDevices(): array
-    {
+    public function getDevices(): array {
         if (!$this->devices) {
             $response = $this->client->ioDevices();
             $this->handleError($response);
@@ -28,8 +26,7 @@ class SuplaApiReal extends SuplaApi
         return $this->devices;
     }
 
-    public function getChannelWithState(int $channelId)
-    {
+    public function getChannelWithState(int $channelId) {
         foreach ($this->getDevices() as $device) {
             foreach ($device->channels as $channel) {
                 if ($channel->id == $channelId) {
@@ -41,15 +38,13 @@ class SuplaApiReal extends SuplaApi
         throw new SuplaApiException($this->client, 'Could not get status for channel #' . $channelId);
     }
 
-    public function getChannelState(int $channelId)
-    {
+    public function getChannelState(int $channelId) {
         $state = $this->client->channel($channelId);
         $this->handleError($state);
         return $state;
     }
 
-    public function turnOn(int $channelId)
-    {
+    public function turnOn(int $channelId) {
         $result = $this->client->channelTurnOn($channelId);
         if ($result === false) {
             $result = $this->toggleUnpredictable($channelId);
@@ -57,8 +52,7 @@ class SuplaApiReal extends SuplaApi
         return $result !== false;
     }
 
-    public function turnOff(int $channelId)
-    {
+    public function turnOff(int $channelId) {
         $result = $this->client->channelTurnOff($channelId);
         if ($result === false) {
             $result = $this->toggleUnpredictable($channelId);
@@ -66,8 +60,7 @@ class SuplaApiReal extends SuplaApi
         return $result !== false;
     }
 
-    public function toggle(int $channelId)
-    {
+    public function toggle(int $channelId) {
         $state = $this->getChannelState($channelId);
         $this->handleError($state);
         if (isset($state->on)) {
@@ -77,8 +70,7 @@ class SuplaApiReal extends SuplaApi
         }
     }
 
-    private function toggleUnpredictable(int $channelId)
-    {
+    private function toggleUnpredictable(int $channelId) {
         $result = $this->client->channelOpenClose($channelId);
         if ($result === false) {
             $result = $this->client->channelOpen($channelId);
@@ -86,8 +78,7 @@ class SuplaApiReal extends SuplaApi
         return $result !== false;
     }
 
-    public function setRgb(int $channelId, string $color, int $colorBrightness = 100, int $brightness = 100)
-    {
+    public function setRgb(int $channelId, string $color, int $colorBrightness = 100, int $brightness = 100) {
         $color = hexdec($color);
         $result = $this->client->channelSetRGBW($channelId, $color, $colorBrightness, $brightness);
         if ($result === false) {
@@ -96,8 +87,7 @@ class SuplaApiReal extends SuplaApi
         return $result !== false;
     }
 
-    public function getSensorLogs(int $channelId, $fromTime = '-1day'): array
-    {
+    public function getSensorLogs(int $channelId, $fromTime = '-1day'): array {
         $fromTime = strtotime($fromTime);
         $timeDiff = abs(time() - $fromTime);
         $withHumidity = false;
@@ -107,7 +97,8 @@ class SuplaApiReal extends SuplaApi
             $totalLogCount = $this->client->temperatureAndHumidityLogItemCount($channelId);
         }
         $this->handleError($totalLogCount);
-        $desiredLogCount = min($totalLogCount->record_limit_per_request ?? 5000, ceil($timeDiff / 600)); // SUPLA you can fetch 4k logs at max and one log is for 10 minutes
+        // SUPLA you can fetch 4k logs at max and one log is for 10 minutes
+        $desiredLogCount = min($totalLogCount->record_limit_per_request ?? 5000, ceil($timeDiff / 600));
         $totalLogCount = intval($totalLogCount->count);
         // logs are ordered ascending (!) so we need to get desired count from the end
         $offset = max(0, $totalLogCount - $desiredLogCount);
@@ -121,25 +112,21 @@ class SuplaApiReal extends SuplaApi
         return $result;
     }
 
-    public function shut(int $channelId, int $percent = 100)
-    {
+    public function shut(int $channelId, int $percent = 100) {
         return $this->client->channelShut($channelId, $percent);
     }
 
-    public function reveal(int $channelId, int $percent = 100)
-    {
+    public function reveal(int $channelId, int $percent = 100) {
         return $this->client->channelReveal($channelId, $percent);
     }
 
-    private function handleError($response)
-    {
+    private function handleError($response) {
         if (!$response) {
             throw new SuplaApiException($this->client);
         }
     }
 
-    public function getClient(): SuplaApiClient
-    {
+    public function getClient(): SuplaApiClient {
         return $this->client;
     }
 }

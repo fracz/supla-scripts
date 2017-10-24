@@ -13,49 +13,42 @@ use suplascripts\models\supla\SuplaApiException;
 use suplascripts\models\User;
 use Throwable;
 
-abstract class BaseController
-{
+abstract class BaseController {
+
     use HasApp;
 
-    protected function response($content = null): Response
-    {
+    protected function response($content = null): Response {
         return $this->getApp()->response->withJson($content);
     }
 
-    protected function request(): Request
-    {
+    protected function request(): Request {
         return $this->getApp()->request;
     }
 
     /**
      * @return User
      */
-    protected function getCurrentUser()
-    {
+    protected function getCurrentUser() {
         return $this->getApp()->getCurrentUser();
     }
 
-    protected function ensureAuthenticated()
-    {
+    protected function ensureAuthenticated() {
         if (!$this->getCurrentUser()) {
             throw new Http403Exception();
         }
     }
 
-    protected function ensureExists($object, $errorMessage = 'Element not found')
-    {
+    protected function ensureExists($object, $errorMessage = 'Element not found') {
         if (!$object) {
             throw new Http404Exception($errorMessage);
         }
         return $object;
     }
 
-    protected function beforeAction()
-    {
+    protected function beforeAction() {
     }
 
-    public function __call($methodName, $args)
-    {
+    public function __call($methodName, $args) {
         if (count($args) == 3) { // request, response, args
             $action = $methodName . 'Action';
             $startTime = microtime(true);
@@ -75,8 +68,7 @@ abstract class BaseController
         throw new \BadMethodCallException("There is no method $methodName.");
     }
 
-    private function exceptionToResponse(Throwable $e)
-    {
+    private function exceptionToResponse(Throwable $e) {
         if ($e instanceof SuplaApiException) {
             $this->getApp()->logger->toSuplaLog()->warning($e->getMessage());
             $this->getApp()->metrics->increment('error.supla');

@@ -25,5 +25,12 @@
     "psr-4": {
       "suplascripts\\": "./"
     }
+  },
+  "scripts": {
+    "phpcs": "phpcs --ignore=*/vendor/*,*/database/migrations/* --standard=../scripts/phpcs-rules.xml .",
+    "phpcbf": "phpcbf --ignore=*/vendor/*,*/database/migrations/* --standard=../scripts/phpcs-rules.xml ."
+  },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "^3.1"
   }
 }

@@ -9,10 +9,9 @@ use suplascripts\models\scene\SceneExecutor;
 use suplascripts\models\voice\FeedbackInterpolator;
 use suplascripts\models\voice\VoiceCommand;
 
-class VoiceCommandsController extends BaseController
-{
-    public function postAction()
-    {
+class VoiceCommandsController extends BaseController {
+
+    public function postAction() {
         $this->ensureAuthenticated();
         $parsedBody = $this->request()->getParsedBody();
         $voiceCommand = $this->getCurrentUser()->voiceCommands()->create($parsedBody);
@@ -21,15 +20,13 @@ class VoiceCommandsController extends BaseController
         return $this->response($voiceCommand)->withStatus(201);
     }
 
-    public function getListAction()
-    {
+    public function getListAction() {
         $this->ensureAuthenticated();
         $voiceCommands = $this->getCurrentUser()->voiceCommands()->getResults();
         return $this->response($voiceCommands);
     }
 
-    public function getAction($params)
-    {
+    public function getAction($params) {
         $this->ensureAuthenticated();
         $voiceCommand = $this->ensureExists(VoiceCommand::find($params['id']));
         if ($voiceCommand->userId != $this->getCurrentUser()->id) {
@@ -38,23 +35,20 @@ class VoiceCommandsController extends BaseController
         return $this->response($voiceCommand);
     }
 
-    public function getLastVoiceCommandAction()
-    {
+    public function getLastVoiceCommandAction() {
         $this->ensureAuthenticated();
         $user = $this->getCurrentUser();
         return $this->response(['command' => $user->lastVoiceCommand]);
     }
 
-    public function interpolateFeedbackAction()
-    {
+    public function interpolateFeedbackAction() {
         $this->ensureAuthenticated();
         $request = $this->request()->getParsedBody();
         Assertion::notEmptyKey($request, 'feedback');
         return (new FeedbackInterpolator())->interpolate($request['feedback']);
     }
 
-    public function putAction($id)
-    {
+    public function putAction($id) {
         $this->ensureAuthenticated();
         /** @var VoiceCommand $voiceCommand */
         $voiceCommand = $this->ensureExists(VoiceCommand::find($id)->first());
@@ -68,8 +62,7 @@ class VoiceCommandsController extends BaseController
         return $this->response($voiceCommand);
     }
 
-    public function deleteAction($id)
-    {
+    public function deleteAction($id) {
         $this->ensureAuthenticated();
         $voiceCommand = $this->ensureExists(VoiceCommand::find($id)->first());
         if ($voiceCommand->userId != $this->getCurrentUser()->id) {
@@ -80,8 +73,7 @@ class VoiceCommandsController extends BaseController
         return $this->response()->withStatus(204);
     }
 
-    public function executeVoiceCommandAction()
-    {
+    public function executeVoiceCommandAction() {
         $this->ensureAuthenticated();
         $request = $this->request()->getParsedBody();
         Assertion::notEmptyKey($request, 'command');

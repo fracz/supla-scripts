@@ -2,7 +2,6 @@
 
 namespace suplascripts\app\authorization;
 
-
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
@@ -11,8 +10,8 @@ use Slim\Middleware\JwtAuthentication;
 use suplascripts\models\HasApp;
 use suplascripts\models\User;
 
-class JwtAndBasicAuthorizationMiddleware
-{
+class JwtAndBasicAuthorizationMiddleware {
+
     use HasApp;
 
     /** @var HttpBasicAuthentication */
@@ -20,8 +19,7 @@ class JwtAndBasicAuthorizationMiddleware
     /** @var JwtAuthentication */
     private $jwtAuthentication;
 
-    public function __construct()
-    {
+    public function __construct() {
         $options = [
             'path' => '/api',
             'logger' => $this->getApp()->logger,
@@ -54,15 +52,13 @@ class JwtAndBasicAuthorizationMiddleware
         ]));
     }
 
-    public function authenticateWithJwt(RequestInterface $request)
-    {
+    public function authenticateWithJwt(RequestInterface $request) {
         $this->jwtAuthentication->setRules([]);
         return ($this->jwtAuthentication)($request, new Response(), function () {
         });
     }
 
-    public function __invoke(RequestInterface $request, ResponseInterface $response, callable $next)
-    {
+    public function __invoke(RequestInterface $request, ResponseInterface $response, callable $next) {
         /** @var Response $response */
         $response = ($this->jwtAuthentication)($request, $response, $next);
         if ($response->getStatusCode() === 401) {

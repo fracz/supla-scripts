@@ -7,17 +7,15 @@ use suplascripts\models\HasSuplaApi;
 use suplascripts\models\scene\SceneExecutor;
 use suplascripts\models\supla\SuplaApiException;
 
-class ChannelsController extends BaseController
-{
+class ChannelsController extends BaseController {
+
     use HasSuplaApi;
 
-    public function getAction($params)
-    {
+    public function getAction($params) {
         return $this->response($this->getApi()->getChannelWithState($params['id']));
     }
 
-    public function executeAction($params)
-    {
+    public function executeAction($params) {
         $sceneExecutor = new SceneExecutor();
         $channelId = $params['id'];
         $body = $this->request()->getParsedBody();
@@ -33,8 +31,7 @@ class ChannelsController extends BaseController
         return $this->response($result);
     }
 
-    public function getSensorLogsAction($params)
-    {
+    public function getSensorLogsAction($params) {
         $logs = $this->getApi()->getSensorLogs($params['id'], $this->request()->getParam('period', '-1hour'));
         return $this->response($logs);
     }

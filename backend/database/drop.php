@@ -6,4 +6,3 @@ if (!$settings['displayErrorDetails']) {
 }
 new \suplascripts\app\Application();
 Illuminate\Database\Capsule\Manager::connection()->statement('DROP SCHEMA public CASCADE');
-

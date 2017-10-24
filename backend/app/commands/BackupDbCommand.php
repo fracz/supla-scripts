@@ -9,19 +9,17 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Process\Process;
 
-class BackupDbCommand extends Command
-{
+class BackupDbCommand extends Command {
+
     const BACKUP_DIR = Application::VAR_PATH . '/backups';
 
-    protected function configure()
-    {
+    protected function configure() {
         $this
             ->setName('db:backup')
             ->setDescription('Saves database backup to the backups directory.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
+    protected function execute(InputInterface $input, OutputInterface $output) {
         $dbSettings = Application::getInstance()->getSetting('db');
         if ($dbSettings['driver'] != 'mysql') {
             $output->writeln('<warning>Only MySQL database backups are supported.</warning>');
@@ -29,11 +27,9 @@ class BackupDbCommand extends Command
         } else {
             $this->backupMysqlDatabase($dbSettings, $input, $output);
         }
-
     }
 
-    private function backupMysqlDatabase(array $dbSettings, InputInterface $input, OutputInterface $output)
-    {
+    private function backupMysqlDatabase(array $dbSettings, InputInterface $input, OutputInterface $output) {
         $backupName = 'supla-scripts-' . date('YmdHis') . '-v' . Application::version() . '.sql.gz';
         $backupPath = self::BACKUP_DIR . '/' . $backupName;
         $process = new Process(sprintf(
@@ -55,8 +51,7 @@ class BackupDbCommand extends Command
     }
 
 
-    private function askIfContinue(InputInterface $input, OutputInterface $output)
-    {
+    private function askIfContinue(InputInterface $input, OutputInterface $output) {
         $helper = $this->getHelper('question');
         $want = $helper->ask($input, $output, new ConfirmationQuestion('Do you want to continue without backup? [y/N] ', false));
         if (!$want) {

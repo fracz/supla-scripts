@@ -7,10 +7,9 @@ use suplascripts\controllers\exceptions\Http403Exception;
 use suplascripts\models\thermostat\Thermostat;
 use suplascripts\models\thermostat\ThermostatProfile;
 
-class ThermostatProfilesController extends BaseController
-{
-    public function postAction($params)
-    {
+class ThermostatProfilesController extends BaseController {
+
+    public function postAction($params) {
         $this->ensureAuthenticated();
         $parsedBody = $this->request()->getParsedBody();
         $thermostat = $this->getThermostat($params);
@@ -28,8 +27,7 @@ class ThermostatProfilesController extends BaseController
         });
     }
 
-    private function getThermostat($params): Thermostat
-    {
+    private function getThermostat($params): Thermostat {
         $this->ensureAuthenticated();
         return $this->ensureExists(Thermostat::where([
             Thermostat::USER_ID => $this->getCurrentUser()->id,
@@ -37,15 +35,13 @@ class ThermostatProfilesController extends BaseController
         ])->first());
     }
 
-    public function getListAction($params)
-    {
+    public function getListAction($params) {
         $thermostat = $this->getThermostat($params);
         $profiles = $thermostat->profiles()->get();
         return $this->response($profiles);
     }
 
-    public function putAction($id)
-    {
+    public function putAction($id) {
         $this->ensureAuthenticated();
         /** @var ThermostatProfile $profile */
         $profile = $this->ensureExists(ThermostatProfile::find($id)->first());
@@ -62,8 +58,7 @@ class ThermostatProfilesController extends BaseController
         return $this->response($profile);
     }
 
-    public function deleteAction($id)
-    {
+    public function deleteAction($id) {
         $this->ensureAuthenticated();
         $profile = $this->ensureExists(ThermostatProfile::find($id)->first());
         if ($profile->userId != $this->getCurrentUser()->id) {

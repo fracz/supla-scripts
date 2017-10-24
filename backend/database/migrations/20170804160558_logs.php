@@ -4,10 +4,9 @@ use suplascripts\database\migrations\Migration;
 use suplascripts\models\LogEntry;
 use suplascripts\models\User;
 
-class Logs extends Migration
-{
-    public function change()
-    {
+class Logs extends Migration {
+
+    public function change() {
         $this->table(LogEntry::TABLE_NAME)
             ->addColumn(LogEntry::MODULE, 'string')
             ->addColumn(LogEntry::DATA, 'text')

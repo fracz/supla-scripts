@@ -3,15 +3,13 @@
 use suplascripts\database\migrations\Migration;
 use suplascripts\models\User;
 
-class InitialStructure extends Migration
-{
-    public function change()
-    {
+class InitialStructure extends Migration {
+
+    public function change() {
         $this->createUsersTable();
     }
 
-    private function createUsersTable()
-    {
+    private function createUsersTable() {
         $this->table(User::TABLE_NAME)
             ->addColumn(User::USERNAME, 'string', ['length' => 100])
             ->addColumn(User::PASSWORD, 'string')

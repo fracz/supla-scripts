@@ -13,8 +13,8 @@ use suplascripts\models\User;
  * @property array $activeOn
  * @property string $userId
  */
-class ThermostatProfile extends Model
-{
+class ThermostatProfile extends Model {
+
     const TABLE_NAME = 'thermostat_profiles';
     const NAME = 'name';
     const ROOMS_CONFIG = 'roomsConfig';
@@ -25,18 +25,15 @@ class ThermostatProfile extends Model
     protected $fillable = [self::NAME, self::ROOMS_CONFIG, self::ACTIVE_ON];
     protected $jsonEncoded = [self::ROOMS_CONFIG, self::ACTIVE_ON];
 
-    public function user(): BelongsTo
-    {
+    public function user(): BelongsTo {
         return $this->belongsTo(User::class, self::USER_ID);
     }
 
-    public function thermostat(): BelongsTo
-    {
+    public function thermostat(): BelongsTo {
         return $this->belongsTo(Thermostat::class, self::THERMOSTAT_ID);
     }
 
-    public function validate(array $attributes = null)
-    {
+    public function validate(array $attributes = null) {
         if (!$attributes) {
             $attributes = $this->getAttributes();
         }
@@ -46,7 +43,7 @@ class ThermostatProfile extends Model
         Assertion::isArray($attributes[self::ROOMS_CONFIG]);
         Assertion::isArray($attributes[self::ACTIVE_ON]);
 
-        foreach($attributes[self::ROOMS_CONFIG] as $roomConfig) {
+        foreach ($attributes[self::ROOMS_CONFIG] as $roomConfig) {
             if (isset($roomConfig['heatTo']) || isset($roomConfig['heatFrom'])) {
                 Assertion::notEmptyKey($roomConfig, 'heatTo', 'Heat to value must be provided if heat from is set.');
                 Assertion::notEmptyKey($roomConfig, 'heatFrom', 'Heat from value must be provided if heat to is set.');

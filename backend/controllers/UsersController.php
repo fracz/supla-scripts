@@ -6,10 +6,9 @@ use Assert\Assertion;
 use suplascripts\controllers\exceptions\Http403Exception;
 use suplascripts\models\User;
 
-class UsersController extends BaseController
-{
-    public function postAction()
-    {
+class UsersController extends BaseController {
+
+    public function postAction() {
         $parsedBody = $this->request()->getParsedBody();
         $parsedBody = array_intersect_key($parsedBody, [User::USERNAME => '', User::PASSWORD => '', User::API_CREDENTIALS => '']);
         return $this->getApp()->db->getConnection()->transaction(function () use ($parsedBody) {
@@ -19,8 +18,7 @@ class UsersController extends BaseController
         });
     }
 
-    public function getAction($params)
-    {
+    public function getAction($params) {
         $this->ensureAuthenticated();
         $user = $this->getUser($params);
         if ($user->id != $this->getCurrentUser()->id) {
@@ -30,8 +28,7 @@ class UsersController extends BaseController
         return $this->response($userData);
     }
 
-    public function patchAction($params)
-    {
+    public function patchAction($params) {
         $this->ensureAuthenticated();
         $user = $this->getUser($params);
         if ($user->id != $this->getCurrentUser()->id) {
@@ -64,8 +61,7 @@ class UsersController extends BaseController
         });
     }
 
-    private function getUser($params): User
-    {
+    private function getUser($params): User {
         if ($params['id'] == 'current') {
             $user = $this->getCurrentUser();
         } else {

@@ -3,10 +3,9 @@
 use suplascripts\database\migrations\Migration;
 use suplascripts\models\thermostat\ThermostatProfile;
 
-class ProfileConditionsToTime extends Migration
-{
-    public function change()
-    {
+class ProfileConditionsToTime extends Migration {
+
+    public function change() {
         $profiles = ThermostatProfile::all();
         foreach ($profiles as $profile) {
             /** @var ThermostatProfile $profile */
@@ -31,8 +30,7 @@ class ProfileConditionsToTime extends Migration
         }
     }
 
-    private function dateTimeToTime($dateTimeString)
-    {
+    private function dateTimeToTime($dateTimeString) {
         $datetime = new \DateTime($dateTimeString);
         return $datetime->format('H:i');
     }

@@ -4,10 +4,9 @@ use suplascripts\database\migrations\Migration;
 use suplascripts\models\User;
 use suplascripts\models\voice\VoiceCommand;
 
-class VoiceCommands extends Migration
-{
-    public function change()
-    {
+class VoiceCommands extends Migration {
+
+    public function change() {
         $this->table(VoiceCommand::TABLE_NAME)
             ->addColumn(VoiceCommand::TRIGGERS, 'text')
             ->addColumn(VoiceCommand::SCENE, 'text')

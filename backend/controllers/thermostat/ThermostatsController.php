@@ -12,10 +12,9 @@ use suplascripts\models\thermostat\Thermostat;
 use suplascripts\models\thermostat\ThermostatProfile;
 use suplascripts\models\thermostat\ThermostatRoomConfig;
 
-class ThermostatsController extends BaseController
-{
-    public function getAction($params)
-    {
+class ThermostatsController extends BaseController {
+
+    public function getAction($params) {
         $this->ensureAuthenticated();
         /** @var Thermostat $thermostat */
         $thermostat = $this->ensureExists($this->getCurrentUser()->thermostats()->getQuery()->find($params)->first());
@@ -26,15 +25,13 @@ class ThermostatsController extends BaseController
         }
     }
 
-    public function getListAction()
-    {
+    public function getListAction() {
         $this->ensureAuthenticated();
         $thermostats = Thermostat::where([Thermostat::USER_ID => $this->getCurrentUser()->id])->get();
         return $this->response($thermostats);
     }
 
-    public function postAction()
-    {
+    public function postAction() {
         $this->ensureAuthenticated();
         $parsedBody = $this->request()->getParsedBody();
         $thermostat = $this->getCurrentUser()->thermostats()->create([Thermostat::LABEL => $parsedBody['label']]);
@@ -43,15 +40,13 @@ class ThermostatsController extends BaseController
         return $this->response($thermostat)->withStatus(201);
     }
 
-    public function getBySlugAction($params)
-    {
+    public function getBySlugAction($params) {
         /** @var Thermostat $thermostat */
         $thermostat = $this->ensureExists(Thermostat::where([Thermostat::SLUG => $params['slug']])->first());
         return $this->thermostatResponse($thermostat);
     }
 
-    public function patchAction($params)
-    {
+    public function patchAction($params) {
         /** @var Thermostat $thermostat */
         $thermostat = $this->ensureExists(Thermostat::find($params['id']));
         if ((!$this->getCurrentUser() && $thermostat->slug != $params['slug'])
@@ -96,14 +91,12 @@ class ThermostatsController extends BaseController
         return $this->thermostatResponse($thermostat);
     }
 
-    private function adjustThermostat(Thermostat $thermostat)
-    {
+    private function adjustThermostat(Thermostat $thermostat) {
         $command = new DispatchThermostatCommand();
         $command->adjust($thermostat);
     }
 
-    private function thermostatResponse(Thermostat $thermostat)
-    {
+    private function thermostatResponse(Thermostat $thermostat) {
         $api = SuplaApi::getInstance($thermostat->user()->first());
         $channelsToFetch = [];
         $channels = [];
@@ -135,8 +128,7 @@ class ThermostatsController extends BaseController
         ]);
     }
 
-    public function deleteAction($params)
-    {
+    public function deleteAction($params) {
         $thermostat = $this->ensureExists(Thermostat::find($params)->first());
         if ($thermostat->userId != $this->getCurrentUser()->id) {
             throw new Http403Exception();

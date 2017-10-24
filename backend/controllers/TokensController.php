@@ -9,16 +9,14 @@ use suplascripts\models\Client;
 use suplascripts\models\JwtToken;
 use suplascripts\models\User;
 
-class TokensController extends BaseController
-{
-    public function createTokenAction()
-    {
+class TokensController extends BaseController {
+
+    public function createTokenAction() {
         $body = $this->request()->getParsedBody();
         return $this->authenticateUser($body);
     }
 
-    private function authenticateUser(array $body): Response
-    {
+    private function authenticateUser(array $body): Response {
         Assert::that($body)->notEmptyKey(User::USERNAME)->notEmptyKey(User::PASSWORD);
         $usernameOrEmail = $body[User::USERNAME];
         $password = $body[User::PASSWORD];
@@ -29,8 +27,7 @@ class TokensController extends BaseController
         return $this->response(['token' => $token]);
     }
 
-    public function createTokenForClientAction()
-    {
+    public function createTokenForClientAction() {
         $body = $this->request()->getParsedBody();
         $this->authenticateUser($body);
         return $this->getApp()->db->getConnection()->transaction(function () use ($body) {
@@ -41,8 +38,7 @@ class TokensController extends BaseController
         });
     }
 
-    public function refreshTokenAction()
-    {
+    public function refreshTokenAction() {
         $currentToken = $this->getApp()->currentToken;
         $user = $this->getCurrentUser();
         $newToken = JwtToken::create()
@@ -55,8 +51,7 @@ class TokensController extends BaseController
         return $this->response(['token' => $newToken]);
     }
 
-    private function findMatchingUser($username, $plainPassword)
-    {
+    private function findMatchingUser($username, $plainPassword) {
         $user = User::findByUsername($username);
         if ($user != null && $user->isPasswordValid($plainPassword)) {
             return $user;

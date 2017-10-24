@@ -5,15 +5,13 @@ namespace suplascripts\controllers;
 use suplascripts\app\Application;
 use suplascripts\app\authorization\JwtAndBasicAuthorizationMiddleware;
 
-class SystemController extends BaseController
-{
-    public function getTimeAction()
-    {
+class SystemController extends BaseController {
+
+    public function getTimeAction() {
         return $this->response((new \DateTime())->format(\DateTime::ATOM));
     }
 
-    public function getInfoAction()
-    {
+    public function getInfoAction() {
         $auth = new JwtAndBasicAuthorizationMiddleware();
         $authError = $auth->authenticateWithJwt($this->request());
         $authenticated = !$authError;

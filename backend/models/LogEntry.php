@@ -6,8 +6,8 @@ namespace suplascripts\models;
  * @property string $module
  * @property string $data
  */
-class LogEntry extends Model
-{
+class LogEntry extends Model {
+
     const TABLE_NAME = 'logs';
     const MODULE = 'module';
     const ENTITY_ID = 'entityId';

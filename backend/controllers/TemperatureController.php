@@ -6,17 +6,15 @@ use Assert\Assertion;
 use suplascripts\models\HasSuplaApi;
 use suplascripts\models\supla\SuplaApiException;
 
-class TemperatureController extends BaseController
-{
+class TemperatureController extends BaseController {
+
     use HasSuplaApi;
 
-    public function getAction($params)
-    {
+    public function getAction($params) {
         return $this->response($this->getApi()->getChannelWithState($params['id']));
     }
 
-    public function executeAction($params)
-    {
+    public function executeAction($params) {
         $channelId = $params['id'];
         $body = $this->request()->getParsedBody();
         $params = explode(',', $body['action']);

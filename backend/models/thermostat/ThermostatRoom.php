@@ -15,8 +15,8 @@ use suplascripts\models\User;
  * @property int[] $coolers
  * @property string $userId
  */
-class ThermostatRoom extends Model
-{
+class ThermostatRoom extends Model {
+
     const TABLE_NAME = 'thermostat_rooms';
     const NAME = 'name';
     const THERMOMETERS = 'thermometers';
@@ -28,18 +28,15 @@ class ThermostatRoom extends Model
     protected $fillable = [self::NAME, self::THERMOMETERS, self::HEATERS, self::COOLERS];
     protected $jsonEncoded = [self::THERMOMETERS, self::HEATERS, self::COOLERS];
 
-    public function user(): BelongsTo
-    {
+    public function user(): BelongsTo {
         return $this->belongsTo(User::class, self::USER_ID);
     }
 
-    public function thermostat(): BelongsTo
-    {
+    public function thermostat(): BelongsTo {
         return $this->belongsTo(Thermostat::class, self::THERMOSTAT_ID);
     }
 
-    public function getCurrentTemperature(): float
-    {
+    public function getCurrentTemperature(): float {
         $api = SuplaApi::getInstance($this->user()->first());
         $temperatures = array_map(function ($channelId) use ($api) {
             return $api->getChannelWithState($channelId)->temperature ?? 0;
@@ -48,8 +45,7 @@ class ThermostatRoom extends Model
         return array_sum($temperatures) / (count($temperatures) ?: 1);
     }
 
-    public function validate(array $attributes = null)
-    {
+    public function validate(array $attributes = null) {
         if (!$attributes) {
             $attributes = $this->getAttributes();
         }

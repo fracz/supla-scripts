@@ -22,15 +22,14 @@ use suplascripts\models\User;
  * @property-read MetricsCollector $metrics
  * @property-read \Slim\Collection $settings
  */
-class Application extends App
-{
+class Application extends App {
+
     const VAR_PATH = __DIR__ . '/../../var';
     const CONFIG_PATH = self::VAR_PATH . '/config/config.json';
 
     private static $instance;
 
-    public function __construct(array $config = null)
-    {
+    public function __construct(array $config = null) {
         if (self::$instance) {
             throw new \BadMethodCallException('Application can be instantiated only once. Use getInstance() instead.');
         }
@@ -44,16 +43,14 @@ class Application extends App
         ObserverRegisterer::registerModelObservers();
     }
 
-    private function configureServices()
-    {
+    private function configureServices() {
         $this->configureDb();
         $this->configureLogger();
         $this->configureMetrics();
         FileSystemCache::$cacheDir = self::VAR_PATH . '/cache';
     }
 
-    private function configureDb()
-    {
+    private function configureDb() {
         $this->getContainer()['db'] = function ($container) {
             $capsule = new Capsule;
             $dbSettings = $container['settings']['db'];
@@ -71,15 +68,13 @@ class Application extends App
         $this->getContainer()->get('db');
     }
 
-    private function configureLogger()
-    {
+    private function configureLogger() {
         $this->getContainer()['logger'] = function () {
             return new UserAndUrlAwareLogger();
         };
     }
 
-    private function configureMetrics()
-    {
+    private function configureMetrics() {
         $this->getContainer()['metrics'] = function () {
             $metricsSettings = $this->getSetting('metrics', []);
             $enabled = $metricsSettings['enabled'] ?? false;
@@ -90,36 +85,32 @@ class Application extends App
         };
     }
 
-    public static function getInstance(): Application
-    {
+    public static function getInstance(): Application {
         if (!self::$instance) {
             self::$instance = new self();
         }
         return self::$instance;
     }
 
-    public function __get($property)
-    {
+    public function __get($property) {
         return $this->getContainer()->get($property);
     }
 
-    public function getSetting($name, $default = null)
-    {
+    public function getSetting($name, $default = null) {
         return $this->settings->get($name, $default);
     }
 
     /**
      * @return User|null
      */
-    public function getCurrentUser()
-    {
+    public function getCurrentUser() {
         if ($this->getContainer()->has('currentUser')) {
             return $this->currentUser;
-        } else if ($this->getContainer()->has('currentToken')) {
+        } elseif ($this->getContainer()->has('currentToken')) {
             $token = $this->currentToken;
             if (isset($token->user)) {
                 $user = User::find($token->user->id);
-            } else if (isset($token->client)) {
+            } elseif (isset($token->client)) {
                 /** @var Client $client */
                 $client = Client::find($token->client->id);
                 if ($client && $client->active) {
@@ -137,8 +128,7 @@ class Application extends App
         return null;
     }
 
-    public static function version(): string
-    {
+    public static function version(): string {
         $version = @file_get_contents(self::VAR_PATH . '/system/version');
         return $version ?: 'UNKNOWN';
     }

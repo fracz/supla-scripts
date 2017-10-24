@@ -21,8 +21,8 @@ use Symfony\Component\Yaml\Exception\RuntimeException;
  * @method static Builder groupBy(string $column)
  * @method static string raw(string $column)
  */
-abstract class Model extends \Illuminate\Database\Eloquent\Model
-{
+abstract class Model extends \Illuminate\Database\Eloquent\Model {
+
     use ColumnEncoders;
 
     const ID = 'id';
@@ -37,15 +37,13 @@ abstract class Model extends \Illuminate\Database\Eloquent\Model
     /**
      * Model constructor.
      */
-    public function __construct(array $attributes = [])
-    {
+    public function __construct(array $attributes = []) {
         $this->initializeEncoders();
         parent::__construct($attributes);
     }
 
 
-    public function newInstance($attributes = [], $exists = false)
-    {
+    public function newInstance($attributes = [], $exists = false) {
         $newInstance = parent::newInstance($attributes, $exists);
         if (!$exists) {
             $this->assignId($newInstance);
@@ -53,16 +51,14 @@ abstract class Model extends \Illuminate\Database\Eloquent\Model
         return $newInstance;
     }
 
-    public function save(array $options = [])
-    {
+    public function save(array $options = []) {
         if (!$this->exists) {
             $this->assignId();
         }
         return parent::save($options);
     }
 
-    protected function assignId($instance = null)
-    {
+    protected function assignId($instance = null) {
         if (!$instance) {
             $instance = $this;
         }
@@ -71,27 +67,23 @@ abstract class Model extends \Illuminate\Database\Eloquent\Model
         }
     }
 
-    public function getEncrypted(): array
-    {
+    public function getEncrypted(): array {
         return $this->encrypted;
     }
 
-    public function getJsonEncoded()
-    {
+    public function getJsonEncoded() {
         return $this->jsonEncoded;
     }
 
-    protected function serializeDate(DateTimeInterface $date)
-    {
+    protected function serializeDate(DateTimeInterface $date) {
         return $date->format('c'); // C is the ATOM format (with timezone offset)
     }
 
-    protected function asDateTime($value)
-    {
+    protected function asDateTime($value) {
         if ($value instanceof \DateTime) {
             $value->setTimezone(new \DateTimeZone('UTC'));
             return $value;
-        } else if (is_string($value)) {
+        } elseif (is_string($value)) {
             return new \DateTime($value, new \DateTimeZone('UTC'));
         }
         throw new RuntimeException('Unrecognized date format: ' . $value);

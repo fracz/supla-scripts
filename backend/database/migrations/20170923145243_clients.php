@@ -4,10 +4,9 @@ use suplascripts\database\migrations\Migration;
 use suplascripts\models\Client;
 use suplascripts\models\User;
 
-class Clients extends Migration
-{
-    public function change()
-    {
+class Clients extends Migration {
+
+    public function change() {
         $this->table(Client::TABLE_NAME)
             ->addColumn(Client::LABEL, 'string')
             ->addColumn(Client::ACTIVE, 'boolean', ['default' =>  true])

@@ -9,10 +9,9 @@ use suplascripts\models\thermostat\ThermostatRoom;
 use suplascripts\models\User;
 use suplascripts\models\voice\VoiceCommand;
 
-class ObserverRegisterer
-{
-    public static function registerModelObservers()
-    {
+class ObserverRegisterer {
+
+    public static function registerModelObservers() {
         User::observe(ModelValidator::class);
         Thermostat::observe(UserIdSetter::class);
         ThermostatRoom::observe(ModelValidator::class);

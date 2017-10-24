@@ -27,13 +27,12 @@ require __DIR__ . '/../../vendor/autoload.php';
  * Remember to call "create()" or "update()" and NOT "save()" when working
  * with the Table class.
  */
-abstract class Migration extends AbstractMigration
-{
+abstract class Migration extends AbstractMigration {
+
     /** @var Application */
     protected static $application;
 
-    public function init()
-    {
+    public function init() {
         if (!self::$application) {
             self::$application = Application::getInstance();
         }

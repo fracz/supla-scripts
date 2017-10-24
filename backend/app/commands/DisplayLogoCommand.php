@@ -7,17 +7,15 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class DisplayLogoCommand extends Command
-{
-    protected function configure()
-    {
+class DisplayLogoCommand extends Command {
+
+    protected function configure() {
         $this
             ->setName('logo')
             ->setDescription('Displays SUPLA Scripts logo.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
+    protected function execute(InputInterface $input, OutputInterface $output) {
         $logo = file_exists(__DIR__ . '/../../../scripts/logo.txt')
             ? file_get_contents(__DIR__ . '/../../../scripts/logo.txt')
             : file_get_contents(__DIR__ . '/../../logo.txt');

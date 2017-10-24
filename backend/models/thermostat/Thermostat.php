@@ -17,8 +17,8 @@ use suplascripts\models\User;
  * @property \DateTime $nextProfileChange
  * @property User $user
  */
-class Thermostat extends Model
-{
+class Thermostat extends Model {
+
     const TABLE_NAME = 'thermostats';
     const LABEL = 'label';
     const ENABLED = 'enabled';
@@ -33,28 +33,23 @@ class Thermostat extends Model
     protected $fillable = [self::LABEL, self::ENABLED];
     protected $jsonEncoded = [self::ROOMS_STATE, self::DEVICES_STATE];
 
-    public function user(): BelongsTo
-    {
+    public function user(): BelongsTo {
         return $this->belongsTo(User::class, self::USER_ID);
     }
 
-    public function rooms(): HasMany
-    {
+    public function rooms(): HasMany {
         return $this->hasMany(ThermostatRoom::class, ThermostatRoom::THERMOSTAT_ID);
     }
 
-    public function profiles(): HasMany
-    {
+    public function profiles(): HasMany {
         return $this->hasMany(ThermostatProfile::class, ThermostatProfile::THERMOSTAT_ID);
     }
 
-    public function activeProfile(): BelongsTo
-    {
+    public function activeProfile(): BelongsTo {
         return $this->belongsTo(ThermostatProfile::class, self::ACTIVE_PROFILE_ID);
     }
 
-    public function save(array $options = [])
-    {
+    public function save(array $options = []) {
         if (!$this->exists) {
             $this->roomsState = [];
             $this->devicesState = [];
@@ -63,13 +58,11 @@ class Thermostat extends Model
         return parent::save($options);
     }
 
-    public function log($data)
-    {
+    public function log($data) {
         $this->user()->first()->log('thermostat', $data, $this->id);
     }
 
-    public function shouldChangeProfile(\DateTime $now = null): bool
-    {
+    public function shouldChangeProfile(\DateTime $now = null): bool {
         if (!$now) {
             $now = new \DateTime();
         }
