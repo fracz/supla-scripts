@@ -3,6 +3,7 @@
 namespace suplascripts\models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use suplascripts\models\scene\Scene;
 
 /**
  * @property int $id
@@ -31,6 +32,10 @@ class Client extends Model {
 
     public function user(): BelongsTo {
         return $this->belongsTo(User::class, self::USER_ID);
+    }
+
+    public function scene(): BelongsTo {
+        return $this->belongsTo(Scene::class, self::SCENE_ID);
     }
 
     public function updateLastConnectionDate() {

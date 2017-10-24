@@ -95,6 +95,7 @@ class ScenesController extends BaseController {
         $this->ensureExists($scene);
         return $this->getApp()->db->getConnection()->transaction(function () use ($scene) {
             $client = new Client([Client::LABEL => 'Scena ' . $scene->label]);
+            $client->scene()->associate($scene);
             $client->save();
             $token = JwtToken::create()->client($client)->issue();
             return $this->response(['token' => $token])->withStatus(201);
