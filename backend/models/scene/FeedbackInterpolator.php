@@ -1,11 +1,10 @@
 <?php
 
-namespace suplascripts\models\voice;
+namespace suplascripts\models\scene;
 
 use suplascripts\models\HasSuplaApi;
 
 class FeedbackInterpolator {
-
     use HasSuplaApi;
 
     public function interpolate(string $feedback) {

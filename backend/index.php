@@ -13,7 +13,7 @@ use suplascripts\controllers\thermostat\ThermostatRoomsController;
 use suplascripts\controllers\thermostat\ThermostatsController;
 use suplascripts\controllers\TokensController;
 use suplascripts\controllers\UsersController;
-use suplascripts\controllers\voice\VoiceCommandsController;
+use suplascripts\controllers\VoiceCommandsController;
 
 require __DIR__ . '/vendor/autoload.php';
 ini_set('display_errors', 'Off');
@@ -72,14 +72,14 @@ $app->group('/api', function () use ($app) {
     });
 
     $app->group('/voice-commands', function () use ($app) {
-        $app->get('', VoiceCommandsController::class . ':getList');
-        $app->post('', VoiceCommandsController::class . ':post');
+//        $app->get('', VoiceCommandsController::class . ':getList');
+//        $app->post('', VoiceCommandsController::class . ':post');
         $app->patch('', VoiceCommandsController::class . ':executeVoiceCommand');
         $app->get('/last', VoiceCommandsController::class . ':getLastVoiceCommand');
-        $app->get('/{id}', VoiceCommandsController::class . ':get');
-        $app->put('/{id}', VoiceCommandsController::class . ':put');
-        $app->delete('/{id}', VoiceCommandsController::class . ':delete');
-        $app->patch('/feedback', VoiceCommandsController::class . ':interpolateFeedback');
+//        $app->get('/{id}', VoiceCommandsController::class . ':get');
+//        $app->put('/{id}', VoiceCommandsController::class . ':put');
+//        $app->delete('/{id}', VoiceCommandsController::class . ':delete');
+//        $app->patch('/feedback', VoiceCommandsController::class . ':interpolateFeedback');
     });
     $app->group('/scenes', function () use ($app) {
         $app->get('', ScenesController::class . ':getList');
@@ -89,6 +89,7 @@ $app->group('/api', function () use ($app) {
         $app->put('/{id}', ScenesController::class . ':put');
         $app->delete('/{id}', ScenesController::class . ':delete');
         $app->patch('/{id}', ScenesController::class . ':executeScene');
+        $app->patch('/feedback', ScenesController::class . ':interpolateFeedback');
     });
 });
 $app->run();

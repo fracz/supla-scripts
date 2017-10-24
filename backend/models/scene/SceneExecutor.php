@@ -24,7 +24,7 @@ class SceneExecutor {
         return call_user_func_array([$this->getApi(), $action], $args);
     }
 
-    public function executeCommandsFromString($commands) {
+    private function executeCommandsFromString($commands) {
         $commands = explode(self::OPERATION_DELIMITER, $commands);
         $results = [];
         foreach ($commands as $command) {
@@ -35,5 +35,21 @@ class SceneExecutor {
             }
         }
         return $results;
+    }
+
+    public function executeWithFeedback(Scene $scene): string {
+        $scene->lastUsed = new \DateTime();
+        $scene->save();
+        if ($scene->actions) {
+            $this->executeCommandsFromString($scene->actions);
+            $scene->log('Wykonanie');
+        }
+        if ($scene->feedback) {
+            $feedback = (new FeedbackInterpolator())->interpolate($scene->feedback);
+            $scene->log('Odpowiedź: ' . $feedback);
+            return $feedback;
+        } else {
+            return '';
+        }
     }
 }

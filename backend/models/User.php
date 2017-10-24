@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use suplascripts\models\scene\Scene;
 use suplascripts\models\supla\SuplaApi;
 use suplascripts\models\thermostat\Thermostat;
-use suplascripts\models\voice\VoiceCommand;
 
 /**
  * @property int $id
@@ -17,6 +16,7 @@ use suplascripts\models\voice\VoiceCommand;
  * @property string $apiCredentials
  * @property \DateTime $lastLoginDate
  * @property string $timezone
+ * @property Scene[] $scenes
  */
 class User extends Model {
 
@@ -56,10 +56,6 @@ class User extends Model {
 
     public function thermostats(): HasMany {
         return $this->hasMany(Thermostat::class, Thermostat::USER_ID);
-    }
-
-    public function voiceCommands(): HasMany {
-        return $this->hasMany(VoiceCommand::class, VoiceCommand::USER_ID);
     }
 
     public function scenes(): HasMany {

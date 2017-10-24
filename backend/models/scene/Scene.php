@@ -11,14 +11,13 @@ use suplascripts\models\User;
 /**
  * @property string $slug
  * @property string $label
- * @property string $scene
+ * @property string $actions
  * @property string $feedback
- * @property string $voiceTriggers
+ * @property string[] $voiceTriggers
  * @property \DateTime $lastUsed
  * @property User $user
  */
-class Scene extends Model
-{
+class Scene extends Model {
     const TABLE_NAME = 'scenes';
     const SLUG = 'slug';
     const LABEL = 'label';
@@ -32,30 +31,32 @@ class Scene extends Model
     protected $fillable = [self::LABEL, self::ACTIONS, self::FEEDBACK, self::VOICE_TRIGGERS];
     protected $jsonEncoded = [self::VOICE_TRIGGERS];
 
-    public function user(): BelongsTo
-    {
+    public function user(): BelongsTo {
         return $this->belongsTo(User::class, self::USER_ID);
     }
 
-    public function log($data)
-    {
+    public function log($data) {
         $this->user->log('scene', $data, $this->id);
     }
 
-    public function generateSlug()
-    {
+    public function generateSlug() {
         if (!$this->slug) {
             $this->slug = Uuid::getFactory()->uuid4();
         }
     }
 
-    public function clearSlug()
-    {
+    public function clearSlug() {
         $this->slug = null;
     }
 
-    public function validate(array $attributes = null)
-    {
+    public function save(array $options = []) {
+        $this->voiceTriggers = array_values(array_unique(array_map(function ($trigger) {
+            return trim(mb_strtolower($trigger, 'UTF-8'));
+        }, $this->voiceTriggers)));
+        return parent::save($options);
+    }
+
+    public function validate(array $attributes = null) {
         if (!$attributes) {
             $attributes = $this->getAttributes();
         }
