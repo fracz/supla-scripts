@@ -30,7 +30,7 @@ class BackupDbCommand extends Command {
     }
 
     private function backupMysqlDatabase(array $dbSettings, InputInterface $input, OutputInterface $output) {
-        $backupName = 'supla-scripts-' . date('YmdHis') . '-v' . Application::version() . '.sql.gz';
+        $backupName = 'supla-scripts-before-' . Application::version() . '-' . date('YmdHis') . '.sql.gz';
         $backupPath = self::BACKUP_DIR . '/' . $backupName;
         $process = new Process(sprintf(
             'mysqldump --user="%s" --password="%s" --host="%s" --single-transaction "%s" | gzip > "%s"',
@@ -49,7 +49,6 @@ class BackupDbCommand extends Command {
             $this->askIfContinue($input, $output);
         }
     }
-
 
     private function askIfContinue(InputInterface $input, OutputInterface $output) {
         $helper = $this->getHelper('question');

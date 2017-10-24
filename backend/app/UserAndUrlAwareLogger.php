@@ -26,7 +26,7 @@ class UserAndUrlAwareLogger implements LoggerInterface {
     }
 
     private function logFileHandler(string $filename): HandlerInterface {
-        new StreamHandler(Application::VAR_PATH . "/logs/$filename.log", Logger::NOTICE);
+        return new StreamHandler(Application::VAR_PATH . "/logs/$filename.log", Logger::NOTICE);
     }
 
     private function buildContext(array $context): array {
