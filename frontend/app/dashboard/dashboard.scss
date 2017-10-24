@@ -32,3 +32,20 @@
     background: lightsalmon;
   }
 }
+
+.scene-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  button {
+    flex: 1;
+    //flex-basis: 5%;
+    margin: 10px;
+    .fa {
+      display: none;
+    }
+    &.is-loading .fa {
+      display: inline-block;
+    }
+  }
+}

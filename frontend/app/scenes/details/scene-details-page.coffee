@@ -1,5 +1,5 @@
 angular.module('supla-scripts').component 'sceneDetailsPage',
-  templateUrl: 'app/scene/details/scene-details-page.html'
+  templateUrl: 'app/scenes/details/scene-details-page.html'
   bindings:
     scene: '<'
   controller: (swangular, $scope, $state, Notifier) ->

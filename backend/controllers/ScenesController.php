@@ -64,15 +64,16 @@ class ScenesController extends BaseController {
     }
 
     public function executeSceneAction($params) {
-        Assertion::notEmptyKey($params, 'slug');
         $scene = $this->getCurrentUser()->scenes()->getQuery()->where($params)->first();
         $this->ensureExists($scene);
         return $this->doExecuteScene($scene);
     }
 
     public function executeSceneBySlugAction($params) {
+        Assertion::notEmptyKey($params, 'slug');
         $scene = Scene::where($params)->first();
         $this->ensureExists($scene);
+        $this->getApp()->getContainer()['currentUser'] = $scene->user;
         return $this->doExecuteScene($scene);
     }
 
@@ -81,7 +82,7 @@ class ScenesController extends BaseController {
         if ($feedback) {
             return $this->getApp()->response->write($feedback);
         } else {
-            return $this->response();
+            return $this->response()->withStatus(204);
         }
     }
 }

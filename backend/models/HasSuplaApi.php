@@ -6,7 +6,6 @@ use suplascripts\controllers\exceptions\Http403Exception;
 use suplascripts\models\supla\SuplaApi;
 
 trait HasSuplaApi {
-
     use HasApp;
 
     protected function getApi(): SuplaApi {

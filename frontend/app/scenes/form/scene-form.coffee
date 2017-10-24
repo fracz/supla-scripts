@@ -1,5 +1,5 @@
 angular.module('supla-scripts').component 'sceneForm',
-  templateUrl: 'app/scene/form/scene-form.html'
+  templateUrl: 'app/scenes/form/scene-form.html'
   bindings:
     scene: '<'
     onSubmit: '&'

@@ -88,8 +88,8 @@ $app->group('/api', function () use ($app) {
         $app->get('/{id}', ScenesController::class . ':get');
         $app->put('/{id}', ScenesController::class . ':put');
         $app->delete('/{id}', ScenesController::class . ':delete');
-        $app->patch('/{id}', ScenesController::class . ':executeScene');
         $app->patch('/feedback', ScenesController::class . ':interpolateFeedback');
+        $app->patch('/{id}', ScenesController::class . ':executeScene');
     });
 });
 $app->run();

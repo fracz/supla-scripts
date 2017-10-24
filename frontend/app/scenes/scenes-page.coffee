@@ -1,5 +1,5 @@
 angular.module('supla-scripts').component 'scenesPage',
-  templateUrl: 'app/scene/scenes-page.html'
+  templateUrl: 'app/scenes/scenes-page.html'
   controller: (Scenes, $state) ->
     $onInit: ->
       Scenes.getList().then((@scenes) =>)

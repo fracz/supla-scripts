@@ -6,6 +6,10 @@
             <div class="list-group">
                 <a class="list-group-item" ng-repeat="scene in $ctrl.scenes"
                    ui-sref="scenes.details({id: scene.id})" ui-sref-active="active">
+                    <div class="pull-right">
+                        <fa name="globe" ng-if="scene.slug" fw></fa>
+                        <fa name="bullhorn" ng-if="scene.voiceTriggers.length > 0" fw></fa>
+                    </div>
                     <div>{{ scene.label }}</div>
                     <scene-caption class="text-muted small" scene="scene"></scene-caption>
                 </a>

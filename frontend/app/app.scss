@@ -55,9 +55,12 @@ table {
   margin-top: 0 !important;
 }
 
-.btn{
+.btn {
   .fa-fw {
     margin-right: 3px;
+  }
+  &.btn-break {
+    white-space: normal;
   }
   &.is-loading {
     .fa {

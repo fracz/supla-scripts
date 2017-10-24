@@ -2,12 +2,13 @@
     <div class="row">
         <div class="col-md-6">
             <div class="list-group">
-                <div class="list-group-item fx-fade-right" ng-repeat="trigger in $ctrl.voiceCommand.triggers">
+                <div class="list-group-item fx-fade-right" ng-repeat="trigger in $ctrl.triggers">
                     <span class="input-group">
-                        <input type="text" class="form-control" ng-model="trigger.text">
+                        <input type="text" class="form-control" ng-model="trigger.text" ng-change="$ctrl.onChange()"
+                               ng-model-options="{updateOn: 'blur'}">
                         <span class="input-group-btn">
                             <button type="button" class="btn btn-danger"
-                                    ng-click="$ctrl.voiceCommand.triggers.splice($ctrl.voiceCommand.triggers.indexOf(trigger), 1)">
+                                    ng-click="$ctrl.triggers.splice($ctrl.triggers.indexOf(trigger), 1)">
                                 <fa name="trash"></fa>
                             </button>
                         </span>
@@ -19,7 +20,7 @@
             <div class="form-group">
                 <div class="btn-group-vertical btn-block">
                     <a class="btn btn-default"
-                       ng-click="$ctrl.voiceCommand.triggers.push({text: ''})"
+                       ng-click="$ctrl.triggers.push({text: ''})"
                        ng-disabled="$ctrl.waitingForVoice">
                         <fa name="keyboard-o" fw></fa>
                         Wpisz nowy wariant
@@ -34,7 +35,7 @@
             </div>
             <div class="fx-fade-right" ng-if="$ctrl.waitingForVoice">
                 <voice-command-adder-speech on-cancelled="$ctrl.waitingForVoice = false"
-                                            on-added="$ctrl.waitingForVoice = false; $ctrl.voiceCommand.triggers.push({text: command})"></voice-command-adder-speech>
+                                            on-added="$ctrl.waitingForVoice = false; $ctrl.triggers.push({text: command}); $ctrl.onChange()"></voice-command-adder-speech>
             </div>
         </div>
     </div>

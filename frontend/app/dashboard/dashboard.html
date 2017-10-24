@@ -3,16 +3,15 @@
         <div class="col-xs-12">
             <view-title>Kokpit</view-title>
             <div ng-if="$ctrl.devices || $ctrl.scenes">
-                <div class="row" ng-if="$ctrl.scenes">
-                    <div ng-repeat="scene in $ctrl.scenes" ng-if="scene.actions" class="col-lg-3 col-md-4 col-sm-6">
-                        <div class="form-group">
-                            <button class="btn btn-info btn-block">
-                                <fa name="cogs" fw></fa>
-                                {{ scene.label }}
-                                <div class="small text-muted"><scene-caption scene="scene"></scene-caption></div>
-                            </button>
+                <div class="form-group scene-buttons" ng-if="$ctrl.scenes">
+                    <button ng-repeat="scene in $ctrl.scenes"
+                            class="btn btn-info btn-break" ng-click="scene.executeWithFeedback()" promise-btn>
+                        <fa fw></fa>
+                        {{ scene.label | uppercase }}
+                        <div class="small text-muted">
+                            <scene-caption scene="scene"></scene-caption>
                         </div>
-                    </div>
+                    </button>
                 </div>
                 <div class="flexible-grid" ng-if="$ctrl.devices">
                     <div ng-repeat="device in $ctrl.devices">
@@ -24,11 +23,11 @@
                             <div class="list-group">
                                 <div class="list-group-item dashboard-channel clearfix"
                                      ng-class="{
-                                    'is-on': channel.on,
-                                    'is-off': channel.on === false,
-                                    'is-closed': channel.hi,
-                                    'is-opened': channel.hi === false,
-                                 }"
+                                        'is-on': channel.on,
+                                        'is-off': channel.on === false,
+                                        'is-closed': channel.hi,
+                                        'is-opened': channel.hi === false,
+                                     }"
                                      ng-repeat="channel in device.channels"
                                      ng-hide="!channel.function.id">
                                     <channel-brief channel="channel"

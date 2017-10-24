@@ -26,7 +26,7 @@ class JwtAndBasicAuthorizationMiddleware {
             'secure' => false, // do not force SSL!
             'passthrough' => [
                 '/api/info',
-                '/api/scenes/execute/',
+                '/api/scenes/execute',
                 '/api/time',
                 '/api/tokens/new',
                 '/api/tokens/client',
