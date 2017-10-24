@@ -1,8 +1,8 @@
-angular.module('supla-scripts').component 'voiceFeedbackInterpolation',
-  templateUrl: 'app/voice/form/voice-feedback-interpolation.html'
+angular.module('supla-scripts').component 'feedbackInterpolation',
+  templateUrl: 'app/scenes/feedback/feedback-interpolation.html'
   bindings:
     feedback: '<'
-  controller: (VoiceCommands) ->
+  controller: (Scenes) ->
     new class
       fetching: no
       pending: no
@@ -13,7 +13,7 @@ angular.module('supla-scripts').component 'voiceFeedbackInterpolation',
             @interpolatedFeedback ?= @feedback
             @pending = no
             @fetching = yes
-            VoiceCommands.one('feedback').patch(feedback: @feedback)
+            Scenes.one('feedback').patch(feedback: @feedback)
               .then((@interpolatedFeedback) =>)
               .finally =>
                 @fetching = no

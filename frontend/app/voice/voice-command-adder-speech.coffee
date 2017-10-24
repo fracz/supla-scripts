@@ -1,5 +1,5 @@
 angular.module('supla-scripts').component 'voiceCommandAdderSpeech',
-  templateUrl: 'app/voice/form/voice-command-adder-speech.html'
+  templateUrl: 'app/voice/voice-command-adder-speech.html'
   bindings:
     secondsLimit: '<'
     onAdded: '&'

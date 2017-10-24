@@ -65,17 +65,6 @@ angular.module('supla-scripts')
     url: '/temperatures'
     template: '<temperature-history-page></temperature-history-page>'
 
-  .state 'voice',
-    url: '/voice'
-    template: '<voice-commands-page></voice-commands-page>'
-
-  .state 'voice.details',
-    url: '/:id'
-    template: '<voice-command-details-page voice-command="voiceCommand"></voice-command-details-page>'
-    controller: ($scope, voiceCommand) -> $scope.voiceCommand = voiceCommand
-    resolve:
-      voiceCommand: (VoiceCommands, $stateParams) -> VoiceCommands.one($stateParams.id).get()
-
   .state 'scenes',
     url: '/scenes'
     template: '<scenes-page></scenes-page>'

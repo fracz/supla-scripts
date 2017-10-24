@@ -43,8 +43,13 @@
 
         <div ng-if="$ctrl.scene.feedback">
             <h3>Aktualna odpowiedź</h3>
-            <voice-feedback-interpolation feedback="$ctrl.voiceCommand.feedback"></voice-feedback-interpolation>
+            <feedback-interpolation feedback="$ctrl.voiceCommand.feedback"></feedback-interpolation>
         </div>
+    </div>
+
+    <div ng-if="$ctrl.scene.voiceTriggers.length">
+        <h3>Komendy głosowe</h3>
+        <h5 ng-repeat="trigger in $ctrl.scene.voiceTriggers">{{ trigger }}</h5>
     </div>
 
     <h3>Logi</h3>

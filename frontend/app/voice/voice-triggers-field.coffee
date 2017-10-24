@@ -1,9 +1,11 @@
-angular.module('supla-scripts').component 'voiceCommandForm',
-  templateUrl: 'app/voice/form/voice-command-form.html'
-  bindings:
-    voiceCommand: '<'
-    onSubmit: '&'
-    onCancel: '&'
+angular.module('supla-scripts').component 'voiceTriggersField',
+  templateUrl: 'app/voice/voice-triggers-field.html'
+#  bindings:
+#    voiceCommand: '<'
+#    onSubmit: '&'
+#    onCancel: '&'
+  require:
+    ngModel: 'ngModel'
   controller: ->
     new class
       $onInit: ->

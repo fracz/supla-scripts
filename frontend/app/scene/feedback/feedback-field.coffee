@@ -1,5 +1,5 @@
-angular.module('supla-scripts').component 'voiceFeedbackField',
-  templateUrl: 'app/voice/form/voice-feedback-field.html'
+angular.module('supla-scripts').component 'feedbackField',
+  templateUrl: 'app/scenes/feedback/feedback-field.html'
   require:
     ngModel: 'ngModel'
   controller: (Channels, channelLabelFilter, $timeout) ->

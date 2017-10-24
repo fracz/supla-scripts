@@ -20,8 +20,6 @@ class ObserverRegisterer {
         ThermostatProfile::observe(UserIdSetter::class);
         ThermostatProfile::observe(ModelValidator::class);
         Client::observe(UserIdSetter::class);
-        VoiceCommand::observe(UserIdSetter::class);
-        VoiceCommand::observe(ModelValidator::class);
         Scene::observe(UserIdSetter::class);
         Scene::observe(ModelValidator::class);
     }

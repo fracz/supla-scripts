@@ -23,17 +23,19 @@
         </div>
     </div>
 
-    <div ng-if="$ctrl.scene.generateSlug" class="fx-fade-up">
+    <voice-triggers-field ng-model="$ctrl.scene.voiceTriggers"></voice-triggers-field>
+
+    <div ng-if="$ctrl.scene.generateSlug || $ctrl.scene.voiceTriggers.length" class="fx-fade-up">
         <div class="form-group">
             <label>Odpowiedź</label>
-            <voice-feedback-field ng-model="$ctrl.scene.feedback"></voice-feedback-field>
+            <feedback-field ng-model="$ctrl.scene.feedback"></feedback-field>
             <p class="help-block">Podczas tworzenia odpowiedzi użyj znaku <code>{</code> by uzyskać podpowiedzi
                 możliwych do
                 użycia zmiennych.</p>
         </div>
 
         <div class="well fx-fade-up" ng-if="$ctrl.scene.feedback">
-            <voice-feedback-interpolation feedback="$ctrl.scene.feedback"></voice-feedback-interpolation>
+            <feedback-interpolation feedback="$ctrl.scene.feedback"></feedback-interpolation>
         </div>
     </div>
 
