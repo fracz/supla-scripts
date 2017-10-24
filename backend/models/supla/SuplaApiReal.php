@@ -79,7 +79,11 @@ class SuplaApiReal extends SuplaApi {
     }
 
     public function setRgb(int $channelId, string $color, int $colorBrightness = 100, int $brightness = 100) {
-        $color = hexdec($color);
+        if ($color == 'random') {
+            $color = rand(1, 0xFFFFFF);
+        } else {
+            $color = hexdec($color);
+        }
         $result = $this->client->channelSetRGBW($channelId, $color, $colorBrightness, $brightness);
         if ($result === false) {
             $result = $this->client->channelSetRGB($channelId, $color, $colorBrightness);

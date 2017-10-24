@@ -21,6 +21,7 @@ angular.module('supla-scripts').constant 'CHANNEL_AVAILABLE_ACTIONS', do ->
       {label: 'niebieski', action: 'setRgb,0000ff,0,0', noButton: yes, isActive: -> no}
       {label: 'różowy', action: 'setRgb,00ffff,0,0', noButton: yes, isActive: -> no}
       {label: 'zielony', action: 'setRgb,00ff00,0,0', noButton: yes, isActive: -> no}
+      {label: 'losowy', action: 'setRgb,random,0,0', isActive: -> no}
     ]
     FNC_CONTROLLINGTHEROLLERSHUTTER: [
       {label: 'odsłoń', action: 'reveal', isActive: -> no}
