@@ -37,14 +37,28 @@
         <scene-selector ng-model="$ctrl.scene.actions" disabled="true"></scene-selector>
     </div>
 
-    <div ng-if="$ctrl.scene.slug">
-        <h3>Publiczny adres URL</h3>
-        <pre>{{ $ctrl.scene.slug | scenePublicUrl }}</pre>
+    <h3>Adresy URL</h3>
 
-        <div ng-if="$ctrl.scene.feedback">
-            <h3>Aktualna odpowiedź</h3>
-            <feedback-interpolation feedback="$ctrl.voiceCommand.feedback"></feedback-interpolation>
-        </div>
+    <h4>Adres wymagający autoryzacji</h4>
+    <pre>{{ $ctrl.scene.id | sceneUrl }}</pre>
+
+    <copy-button text="$ctrl.scene.id | sceneUrl" label="Kopiuj adres"></copy-button>&nbsp;
+    <button class="btn btn-default" type="button" ng-click="$ctrl.generateSceneToken()" ng-disabled="$ctrl.scene.token" promise-btn>
+        <fa name="key" fw></fa>
+        Wygeneruj cURL z kluczem dostępu
+    </button>&nbsp;
+    <copy-button ng-if="$ctrl.scene.token" text="$ctrl.scene | sceneCurlWithToken" label="Kopiuj cURL z kluczem dostępu"></copy-button>
+
+    <div ng-if="$ctrl.scene.slug">
+        <h4>Adres publiczny</h4>
+        <pre>{{ $ctrl.scene.slug | sceneUrl:true }}</pre>
+        <copy-button text="$ctrl.scene.slug | sceneUrl:true" label="Kopiuj adres"></copy-button>&nbsp;
+        <copy-button text="'curl ' + ($ctrl.scene.slug | sceneUrl:true)" label="Kopiuj cURL"></copy-button>
+    </div>
+
+    <div ng-if="$ctrl.scene.feedback">
+        <h3>Aktualna odpowiedź</h3>
+        <feedback-interpolation feedback="$ctrl.scene.feedback"></feedback-interpolation>
     </div>
 
     <div ng-if="$ctrl.scene.voiceTriggers.length">

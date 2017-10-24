@@ -13,6 +13,10 @@ angular.module('supla-scripts').component 'sceneDetailsPage',
         @scene.get().then (scene) =>
           angular.extend(@scene, scene)
 
+      generateSceneToken: ->
+        @scene.all('tokens').post().then ({token}) =>
+          @scene.token = token
+
       deleteScene: ->
         swangular.open
           scope: $scope

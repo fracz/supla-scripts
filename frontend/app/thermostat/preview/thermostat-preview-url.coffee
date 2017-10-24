@@ -1,3 +1,3 @@
-angular.module('supla-scripts').filter 'thermostatPreviewUrl', ($location) ->
+angular.module('supla-scripts').filter 'thermostatPreviewUrl', (appUrlFilter) ->
   (slug) ->
-    $location.absUrl().replace($location.url(), '') + '/thermostat-preview/' + slug
+    appUrlFilter('/thermostat-preview/' + slug)

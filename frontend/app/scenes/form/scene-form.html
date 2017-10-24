@@ -14,15 +14,6 @@
         <scene-selector ng-model="$ctrl.scene.actions"></scene-selector>
     </div>
 
-    <div class="form-group">
-        <div class="checkbox">
-            <label>
-                <input type="checkbox" ng-model="$ctrl.scene.generateSlug">
-                Scena dostępna pod publicznym adresem URL
-            </label>
-        </div>
-    </div>
-
     <h4>
         Komendy głosowe
         <fa name="question-circle" fw class="pull-right pointer" ng-if="!$ctrl.voiceTutorialShown" ng-click="$ctrl.voiceTutorialShown = true"></fa>
@@ -32,17 +23,24 @@
 
     <voice-triggers-field ng-model="$ctrl.scene.voiceTriggers"></voice-triggers-field>
 
-    <div ng-if="$ctrl.scene.generateSlug || $ctrl.scene.voiceTriggers.length" class="fx-fade-up">
-        <div class="form-group">
-            <label>Odpowiedź</label>
-            <feedback-field ng-model="$ctrl.scene.feedback"></feedback-field>
-            <p class="help-block">Podczas tworzenia odpowiedzi użyj znaku <code>{</code> by uzyskać podpowiedzi
-                możliwych do
-                użycia zmiennych.</p>
-        </div>
+    <div class="form-group">
+        <label>Odpowiedź</label>
+        <feedback-field ng-model="$ctrl.scene.feedback"></feedback-field>
+        <p class="help-block">Podczas tworzenia odpowiedzi użyj znaku <code>{</code> by uzyskać podpowiedzi
+            możliwych do
+            użycia zmiennych.</p>
+    </div>
 
-        <div class="well fx-fade-up" ng-if="$ctrl.scene.feedback">
-            <feedback-interpolation feedback="$ctrl.scene.feedback"></feedback-interpolation>
+    <div class="well fx-fade-up" ng-if="$ctrl.scene.feedback">
+        <feedback-interpolation feedback="$ctrl.scene.feedback"></feedback-interpolation>
+    </div>
+
+    <div class="form-group">
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" ng-model="$ctrl.scene.generateSlug">
+                Scena dostępna pod publicznym adresem URL
+            </label>
         </div>
     </div>
 

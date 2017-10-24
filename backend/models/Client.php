@@ -16,6 +16,7 @@ class Client extends Model {
     const LABEL = 'label';
     const ACTIVE = 'active';
     const LAST_CONNECTION_DATE = 'lastConnectionDate';
+    const SCENE_ID = 'sceneId';
     const USER_ID = 'userId';
 
     protected $dates = [self::LAST_CONNECTION_DATE];

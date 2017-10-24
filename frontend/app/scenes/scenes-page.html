@@ -9,6 +9,7 @@
                     <div class="pull-right">
                         <fa name="globe" ng-if="scene.slug" fw tooltips tooltip-template="Publiczny URL"></fa>
                         <fa name="bullhorn" ng-if="scene.voiceTriggers.length > 0" fw tooltips tooltip-template="Komendy głosowe"></fa>
+                        <fa name="volume-up" ng-if="scene.feedback" fw tooltips tooltip-template="Zawiera odpowiedź"></fa>
                     </div>
                     <div>{{ scene.label }}</div>
                     <scene-caption class="text-muted small" scene="scene"></scene-caption>
@@ -18,7 +19,13 @@
 
         <div class="col-sm-9 col-12-if-alone">
             <div ng-if="'scenes' | isState">
-                <scene-form on-submit="$ctrl.addNewScene(savedScene)"></scene-form>
+                <div class="well text-center" ng-if="!$ctrl.addingScene">
+                    <button type="button" class="btn btn-lg btn-primary" ng-click="$ctrl.addingScene = true">
+                        <fa name="plus" fw></fa>
+                        Dodaj scenę
+                    </button>
+                </div>
+                <scene-form ng-else on-submit="$ctrl.addNewScene(savedScene)" on-cancel="$ctrl.addingScene = false"></scene-form>
             </div>
             <div ui-view></div>
         </div>

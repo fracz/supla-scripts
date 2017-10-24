@@ -84,12 +84,14 @@ $app->group('/api', function () use ($app) {
     $app->group('/scenes', function () use ($app) {
         $app->get('', ScenesController::class . ':getList');
         $app->post('', ScenesController::class . ':post');
-        $app->get('/execute/{slug}', ScenesController::class . ':executeSceneBySlug');
+        $app->get('/public/{slug}', ScenesController::class . ':executeSceneBySlug');
+        $app->get('/execute/{id}', ScenesController::class . ':executeScene');
         $app->get('/{id}', ScenesController::class . ':get');
         $app->put('/{id}', ScenesController::class . ':put');
         $app->delete('/{id}', ScenesController::class . ':delete');
         $app->patch('/feedback', ScenesController::class . ':interpolateFeedback');
         $app->patch('/{id}', ScenesController::class . ':executeScene');
+        $app->post('/{id}/tokens', ScenesController::class . ':createClientForScene');
     });
 });
 $app->run();

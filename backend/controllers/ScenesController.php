@@ -4,6 +4,8 @@ namespace suplascripts\controllers;
 
 use Assert\Assertion;
 use Slim\Http\Response;
+use suplascripts\models\Client;
+use suplascripts\models\JwtToken;
 use suplascripts\models\scene\FeedbackInterpolator;
 use suplascripts\models\scene\Scene;
 use suplascripts\models\scene\SceneExecutor;
@@ -24,7 +26,7 @@ class ScenesController extends BaseController {
 
     public function getListAction() {
         $this->ensureAuthenticated();
-        $scenes = $this->getCurrentUser()->scenes()->getResults();
+        $scenes = $this->getCurrentUser()->scenes()->getQuery()->orderBy(Scene::LABEL)->get();
         return $this->response($scenes);
     }
 
@@ -64,6 +66,7 @@ class ScenesController extends BaseController {
     }
 
     public function executeSceneAction($params) {
+        $this->ensureAuthenticated();
         $scene = $this->getCurrentUser()->scenes()->getQuery()->where($params)->first();
         $this->ensureExists($scene);
         return $this->doExecuteScene($scene);
@@ -84,5 +87,17 @@ class ScenesController extends BaseController {
         } else {
             return $this->response()->withStatus(204);
         }
+    }
+
+    public function createClientForSceneAction($params) {
+        $this->ensureAuthenticated();
+        $scene = $this->getCurrentUser()->scenes()->getQuery()->where($params)->first();
+        $this->ensureExists($scene);
+        return $this->getApp()->db->getConnection()->transaction(function () use ($scene) {
+            $client = new Client([Client::LABEL => 'Scena ' . $scene->label]);
+            $client->save();
+            $token = JwtToken::create()->client($client)->issue();
+            return $this->response(['token' => $token])->withStatus(201);
+        });
     }
 }
