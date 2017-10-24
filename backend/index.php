@@ -4,6 +4,7 @@ namespace suplascripts;
 
 use suplascripts\app\Application;
 use suplascripts\controllers\ChannelsController;
+use suplascripts\controllers\ClientsController;
 use suplascripts\controllers\DevicesController;
 use suplascripts\controllers\LogsController;
 use suplascripts\controllers\ScenesController;
@@ -72,15 +73,10 @@ $app->group('/api', function () use ($app) {
     });
 
     $app->group('/voice-commands', function () use ($app) {
-//        $app->get('', VoiceCommandsController::class . ':getList');
-//        $app->post('', VoiceCommandsController::class . ':post');
         $app->patch('', VoiceCommandsController::class . ':executeVoiceCommand');
         $app->get('/last', VoiceCommandsController::class . ':getLastVoiceCommand');
-//        $app->get('/{id}', VoiceCommandsController::class . ':get');
-//        $app->put('/{id}', VoiceCommandsController::class . ':put');
-//        $app->delete('/{id}', VoiceCommandsController::class . ':delete');
-//        $app->patch('/feedback', VoiceCommandsController::class . ':interpolateFeedback');
     });
+
     $app->group('/scenes', function () use ($app) {
         $app->get('', ScenesController::class . ':getList');
         $app->post('', ScenesController::class . ':post');
@@ -92,6 +88,12 @@ $app->group('/api', function () use ($app) {
         $app->patch('/feedback', ScenesController::class . ':interpolateFeedback');
         $app->patch('/{id}', ScenesController::class . ':executeScene');
         $app->post('/{id}/tokens', ScenesController::class . ':createClientForScene');
+    });
+
+    $app->group('/clients', function () use ($app) {
+        $app->get('', ClientsController::class . ':getList');
+        $app->put('/{id}', ClientsController::class . ':put');
+        $app->delete('/{id}', ClientsController::class . ':delete');
     });
 });
 $app->run();

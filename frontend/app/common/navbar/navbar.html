@@ -19,16 +19,28 @@
              id="navbar-collapse">
             <ul class="nav navbar-nav">
                 <li ui-sref-active="active">
-                    <a ui-sref="scenes">Sceny</a>
+                    <a ui-sref="scenes">
+                        <fa name="cogs" fw></fa>
+                        Sceny
+                    </a>
                 </li>
                 <li ui-sref-active="{active: 'thermostat'}">
-                    <a ui-sref="thermostats">Termostat</a>
+                    <a ui-sref="thermostats">
+                        <fa name="thermometer" fw></fa>
+                        Termostat
+                    </a>
                 </li>
                 <li ui-sref-active="active">
-                    <a ui-sref="temperatures">Historia temperatur</a>
+                    <a ui-sref="temperatures">
+                        <fa name="area-chart" fw></fa>
+                        Historia temperatur
+                    </a>
                 </li>
                 <li ui-sref-active="active">
-                    <a ui-sref="logs">Logi</a>
+                    <a ui-sref="logs">
+                        <fa name="history" fw></fa>
+                        Logi
+                    </a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -43,8 +55,24 @@
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a ui-sref="account.details">Moje konto</a></li>
-                        <li><a ng-click="$ctrl.forgetUser()">Wyloguj</a></li>
+                        <li>
+                            <a ui-sref="account.details">
+                                <fa name="user" fw></fa>
+                                Moje konto
+                            </a>
+                        </li>
+                        <li>
+                            <a ui-sref="clients">
+                                <fa name="key" fw></fa>
+                                Klucze dostępu
+                            </a>
+                        </li>
+                        <li>
+                            <a ng-click="$ctrl.forgetUser()">
+                                <fa name="sign-out" fw></fa>
+                                Wyloguj
+                            </a>
+                        </li>
                     </ul>
                 </li>
             </ul>

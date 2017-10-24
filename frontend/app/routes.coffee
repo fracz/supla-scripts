@@ -113,6 +113,10 @@ angular.module('supla-scripts')
     url: '/logs'
     template: '<logs-view></logs-view>'
 
+  .state 'clients',
+    url: '/clients'
+    template: '<clients-list></clients-list>'
+
   .state 'notFound',
     templateUrl: 'app/common/errors/404.html'
 

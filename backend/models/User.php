@@ -17,6 +17,7 @@ use suplascripts\models\thermostat\Thermostat;
  * @property \DateTime $lastLoginDate
  * @property string $timezone
  * @property Scene[] $scenes
+ * @property Client[] $clients
  */
 class User extends Model {
 
@@ -60,6 +61,10 @@ class User extends Model {
 
     public function scenes(): HasMany {
         return $this->hasMany(Scene::class, Scene::USER_ID);
+    }
+
+    public function clients(): HasMany {
+        return $this->hasMany(Client::class, Client::USER_ID);
     }
 
     public function setPassword($plainPassword) {

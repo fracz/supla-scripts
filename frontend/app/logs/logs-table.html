@@ -11,7 +11,7 @@
     <tbody>
     <tr ng-repeat="entry in $ctrl.logs">
         <td>
-            <span tooltips tooltip-template="{{ entry.createdAt | amDateFormat: 'LL LTS' }}" tooltip-side="left">{{ entry.createdAt | amCalendar }}</span>
+            <date-with-tooltip date="entry.createdAt"></date-with-tooltip>
         </td>
         <td ng-if="!$ctrl.entityId">{{ entry.module }}</td>
         <td ng-if="!$ctrl.entityId">

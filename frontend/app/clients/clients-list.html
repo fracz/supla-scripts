@@ -1,0 +1,59 @@
+<div class="container">
+    <h1 view-title>Klucze dostępu</h1>
+
+    <div class="alert alert-info">
+        <p>Ta lista zawiera unikalne tokeny dzięki którym możliwy jest dostęp do Twojego konta skryptów bez znajomości hasła. Funkcjonalność ta jest
+            wykorzystywana przez skrypty Automate oraz przy adresach do scen wymagających autoryzacji.</p>
+        <p>Usuń z tej listy wszystkie klucze których nie potrzebujesz (nie były dawno używane, nie wiesz skąd się wzięły itp.)</p>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th></th>
+            <th>Nazwa</th>
+            <th>Wygenerowano</th>
+            <th>Ostatnio używany</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="client in $ctrl.clients" ng-class="{alpha60: !client.active}">
+            <td class="text-center">
+                <fa name="mobile" ng-if="!client.sceneId" fw tooltips tooltip-template="Automate" tooltip-side="left"></fa>
+                <fa name="cogs" ng-if="client.sceneId" fw tooltips tooltip-template="Scena" tooltip-side="left"></fa>
+            </td>
+            <td>
+                {{ client.label }}
+            </td>
+            <td>
+                <date-with-tooltip date="client.createdAt"></date-with-tooltip>
+            </td>
+            <td>
+                <date-with-tooltip date="client.lastConnectionDate"></date-with-tooltip>
+            </td>
+            <td class="text-right">
+                <div class="btn-group btn-group-xs">
+                    <button type="button" class="btn btn-default" ng-click="$ctrl.editLabel(client)">
+                        <fa name="edit" fw></fa>
+                        Zmień nazwę
+                    </button>
+                    <button type="button" class="btn btn-default" ng-click="$ctrl.deactivate(client)" promise-btn ng-if="client.active">
+                        <fa name="times" fw></fa>
+                        Dezaktywuj
+                    </button>
+                    <button type="button" class="btn btn-default" ng-click="$ctrl.activate(client)" promise-btn ng-if="!client.active">
+                        <fa name="times" fw></fa>
+                        Aktywuj
+                    </button>
+                    <button type="button" class="btn btn-danger" ng-click="$ctrl.deleteClient(client)">
+                        <fa name="trash" fw></fa>
+                        Usuń
+                    </button>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
