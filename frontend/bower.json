@@ -17,6 +17,7 @@
     "angular-promise-buttons": "0.1.21",
     "angular-svg-round-progressbar": "0.4.8",
     "angular-toastr": "2.1.1",
+    "angular-tooltips": "1.2.2",
     "angular-ui-switch": "0.1.1",
     "angular-ui-router": "0.4.2",
     "angularjs-slider": "6.2.3",
@@ -69,6 +70,11 @@
     },
     "angular-promise-buttons": {
       "main": "dist/angular-promise-buttons.min.js"
+    },
+    "angular-tooltips": {
+      "dependencies": {
+        "angular": "*"
+      }
     },
     "angular-ui-router": {
       "main": "release/angular-ui-router.js"

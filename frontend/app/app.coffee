@@ -1,4 +1,5 @@
 angular.module 'supla-scripts', [
+  '720kb.tooltips'
   'angular-cache'
   'angular.filter'
   'angular-jwt'

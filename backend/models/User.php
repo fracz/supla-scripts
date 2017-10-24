@@ -68,7 +68,7 @@ class User extends Model {
     }
 
     public function isPasswordValid($plainPassword): bool {
-        return true;// password_verify($plainPassword, $this->password);
+        return password_verify($plainPassword, $this->password);
     }
 
     public function validate(array $attributes = null): array {
