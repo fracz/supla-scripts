@@ -23,7 +23,13 @@
         </div>
     </div>
 
-    <h4>Komendy głosowe</h4>
+    <h4>
+        Komendy głosowe
+        <fa name="question-circle" fw class="pull-right pointer" ng-if="!$ctrl.voiceTutorialShown" ng-click="$ctrl.voiceTutorialShown = true"></fa>
+    </h4>
+
+    <voice-commands-tutorial ng-if="$ctrl.voiceTutorialShown" class="fx-fade-up"></voice-commands-tutorial>
+
     <voice-triggers-field ng-model="$ctrl.scene.voiceTriggers"></voice-triggers-field>
 
     <div ng-if="$ctrl.scene.generateSlug || $ctrl.scene.voiceTriggers.length" class="fx-fade-up">

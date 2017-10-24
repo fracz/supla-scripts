@@ -11,7 +11,7 @@
     <tbody>
     <tr ng-repeat="entry in $ctrl.logs">
         <td>
-            <span title="{{ entry.createdAt }}">{{ entry.createdAt | amCalendar }}</span>
+            <span tooltips tooltip-template="{{ entry.createdAt | amDateFormat: 'LL LTS' }}" tooltip-side="left">{{ entry.createdAt | amCalendar }}</span>
         </td>
         <td ng-if="!$ctrl.entityId">{{ entry.module }}</td>
         <td ng-if="!$ctrl.entityId">
@@ -21,8 +21,12 @@
                     Termostat
                 </a>
                 <a ng-switch-when="voice"
-                   ui-sref="voice.details({id: entry.entityId})">
+                   ui-sref="scenes.details({id: entry.entityId})">
                     Komenda głosowa
+                </a>
+                <a ng-switch-when="scene"
+                   ui-sref="scenes.details({id: entry.entityId})">
+                    Scena
                 </a>
             </span>
             <span ng-else>n.d.</span>
