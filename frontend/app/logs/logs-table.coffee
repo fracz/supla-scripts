@@ -12,6 +12,6 @@ angular.module('supla-scripts').component 'logsTable',
 
       fetch: =>
         Logs.getList({entityId: @entityId, limit: @limit or 100}).then (@logs) =>
-          if @logs[0].id != @newestLogId
+          if @logs.length and @logs[0].id != @newestLogId
             @onNewLogs() if @newestLogId
             @newestLogId = @logs[0].id

@@ -39,8 +39,8 @@
   justify-content: center;
   button {
     flex: 1;
-    //flex-basis: 5%;
     margin: 10px;
+    min-width: 200px;
     .fa {
       display: none;
     }

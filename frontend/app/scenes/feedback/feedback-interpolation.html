@@ -1,6 +1,6 @@
 <div ng-class="{'feedback-fetching': $ctrl.fetching}">
     <span class="pull-right fx-fade-right" ng-if="$ctrl.fetching">
-        <fa name="spinner" spin></fa>
+        <loader-dots-small></loader-dots-small>
     </span>
     {{ $ctrl.interpolatedFeedback }}
 </div>

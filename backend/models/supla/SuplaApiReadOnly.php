@@ -15,7 +15,7 @@ class SuplaApiReadOnly extends SuplaApiReal {
     public function __construct(User $user) {
         parent::__construct($user);
         $this->logger = new Logger('app_logger');
-        $file_handler = new StreamHandler(Application::VAR_PATH . "/logs/app.log");
+        $file_handler = new StreamHandler(Application::VAR_PATH . "/logs/api-read-only.log");
         $this->logger->pushHandler($file_handler);
     }
 

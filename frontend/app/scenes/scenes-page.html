@@ -7,9 +7,10 @@
                 <a class="list-group-item" ng-repeat="scene in $ctrl.scenes"
                    ui-sref="scenes.details({id: scene.id})" ui-sref-active="active">
                     <div class="pull-right">
-                        <fa name="globe" ng-if="scene.slug" fw tooltips tooltip-template="Publiczny URL"></fa>
-                        <fa name="bullhorn" ng-if="scene.voiceTriggers.length > 0" fw tooltips tooltip-template="Komendy głosowe"></fa>
+                        <fa name="cog" ng-if="scene.actions" fw tooltips tooltip-template="Wykonuje akcje"></fa>
                         <fa name="volume-up" ng-if="scene.feedback" fw tooltips tooltip-template="Zawiera odpowiedź"></fa>
+                        <fa name="bullhorn" ng-if="scene.voiceTriggers.length > 0" fw tooltips tooltip-template="Dostępna przez komendy głosowe"></fa>
+                        <fa name="globe" ng-if="scene.slug" fw tooltips tooltip-template="Dostępna przez publiczny URL"></fa>
                     </div>
                     <div>{{ scene.label }}</div>
                     <scene-caption class="text-muted small" scene="scene"></scene-caption>
