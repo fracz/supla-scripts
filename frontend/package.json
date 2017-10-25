@@ -1,6 +1,6 @@
 {
   "name": "supla-scripts",
-  "version": "2.3.8",
+  "version": "2.4.0-alpha.1",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
