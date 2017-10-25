@@ -13,6 +13,8 @@ new features into your SUPLA account, today!
 
 * thermostat
 * voice commands
+* scenes
+* widgets (witch scenes' direct urls)
 * ability to check and change channel's state via web browser
 * temperature history charts
 
