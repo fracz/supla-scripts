@@ -38,22 +38,39 @@
     </div>
 
     <h3>Adresy URL</h3>
+    <span class="pull-right pointer">
+        <fa name="question-circle" fw ng-if="!$ctrl.urlTutorialShown" ng-click="$ctrl.urlTutorialShown = true"
+            tooltips tooltip-template="Po co mi adresy URL?"></fa>
+    </span>
 
     <h4>Adres wymagający autoryzacji</h4>
     <pre>{{ $ctrl.scene.id | sceneUrl }}</pre>
 
-    <copy-button text="$ctrl.scene.id | sceneUrl" label="Kopiuj adres"></copy-button>&nbsp;
-    <button class="btn btn-default" type="button" ng-click="$ctrl.generateSceneToken()" ng-disabled="$ctrl.scene.token" promise-btn>
-        <fa name="key" fw></fa>
-        Wygeneruj cURL z kluczem dostępu
-    </button>&nbsp;
-    <copy-button ng-if="$ctrl.scene.token" text="$ctrl.scene | sceneCurlWithToken" label="Kopiuj cURL z kluczem dostępu"></copy-button>
+    <div class="btn-group">
+        <copy-button text="$ctrl.scene.id | sceneUrl" label="Kopiuj adres" class="btn-group margin-bottom"></copy-button>
+        <button class="btn btn-default margin-bottom" type="button" ng-click="$ctrl.generateSceneToken()" ng-if="!$ctrl.scene.token" promise-btn>
+            <fa name="key" fw></fa>
+            Wygeneruj cURL z kluczem dostępu
+        </button>
+        <copy-button ng-if="$ctrl.scene.token" text="$ctrl.scene | sceneCurlWithToken" label="Kopiuj cURL z kluczem dostępu"
+                     class="btn-group margin-bottom"></copy-button>
+        <a ng-href="{{ $ctrl.scene.id | sceneUrl }}" class="btn btn-default margin-bottom" title="{{ $ctrl.scene.label }}" target="_blank">
+            <fa name="external-link" fw></fa>
+            Otwórz link
+        </a>
+    </div>
 
     <div ng-if="$ctrl.scene.slug">
         <h4>Adres publiczny</h4>
         <pre>{{ $ctrl.scene.slug | sceneUrl:true }}</pre>
-        <copy-button text="$ctrl.scene.slug | sceneUrl:true" label="Kopiuj adres"></copy-button>&nbsp;
-        <copy-button text="'curl ' + ($ctrl.scene.slug | sceneUrl:true)" label="Kopiuj cURL"></copy-button>
+        <div class="btn-group">
+            <copy-button text="$ctrl.scene.slug | sceneUrl:true" label="Kopiuj adres" class="btn-group margin-bottom"></copy-button>
+            <copy-button text="'curl ' + ($ctrl.scene.slug | sceneUrl:true)" label="Kopiuj cURL" class="btn-group margin-bottom"></copy-button>
+            <a ng-href="{{ $ctrl.scene.slug | sceneUrl:true }}" class="btn btn-default margin-bottom" target="_blank">
+                <fa name="external-link" fw></fa>
+                Otwórz link
+            </a>
+        </div>
     </div>
 
     <div ng-if="$ctrl.scene.feedback">

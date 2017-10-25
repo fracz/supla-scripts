@@ -72,6 +72,10 @@ class ScenesController extends BaseController {
         return $this->doExecuteScene($scene);
     }
 
+    public function executeSceneByClientAction($params) {
+        return $this->executeSceneAction($params);
+    }
+
     public function executeSceneBySlugAction($params) {
         Assertion::notEmptyKey($params, 'slug');
         $scene = Scene::where($params)->first();

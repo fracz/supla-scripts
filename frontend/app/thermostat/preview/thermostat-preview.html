@@ -6,7 +6,7 @@
             <div class="col-xs-12 text-center">
                 <div class="form-group">
                     <label>Aktywny profil:</label>
-                    <select class="form-control" ng-model="$ctrl.thermostat.activeProfile.id"
+                    <select class="form-control margin-bottom" ng-model="$ctrl.thermostat.activeProfile.id"
                             ng-disabled="$ctrl.changingPromise"
                             ng-change="$ctrl.updateActiveProfile()"
                             ng-options="profile.id as profile.name for profile in $ctrl.thermostat.profiles">
