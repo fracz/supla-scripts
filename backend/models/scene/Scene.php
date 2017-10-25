@@ -62,6 +62,9 @@ class Scene extends Model {
         }
         Assertion::keyExists($attributes, self::LABEL, 'Scene must have a label.');
         Assertion::notBlank($attributes[self::LABEL], 'Scene must have a label.');
-        Assertion::true(($attributes[self::FEEDBACK] ?? false) || ($attributes[self::ACTIONS] ?? false), 'Scene must have either feedback or actions.');
+        Assertion::true(
+            ($attributes[self::FEEDBACK] ?? false) || ($attributes[self::ACTIONS] ?? false),
+            'Scene must have either feedback or actions.'
+        );
     }
 }
