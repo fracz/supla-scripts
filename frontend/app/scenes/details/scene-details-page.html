@@ -38,10 +38,26 @@
     </div>
 
     <h3>Adresy URL</h3>
-    <span class="pull-right pointer">
-        <fa name="question-circle" fw ng-if="!$ctrl.urlTutorialShown" ng-click="$ctrl.urlTutorialShown = true"
+    <span class="pull-right pointer" ng-if="!$ctrl.urlTutorialShown">
+        <fa name="question-circle" fw ng-click="$ctrl.urlTutorialShown = true"
             tooltips tooltip-template="Po co mi adresy URL?"></fa>
     </span>
+
+    <div class="well text-center fx-fade-down" ng-if="$ctrl.urlTutorialShown">
+        <h3 class="no-margin-top">Po co mi adresy URL?</h3>
+
+        <p>Otwarcie adresu URL sceny spowoduje jej uruchomienie oraz zwrócenie treści odpowiedzi w formie tekstu.</p>
+
+        <ol style="display: inline-block; text-align: left;">
+            <li>Możesz je zapisać w zakładkach przeglądarki.</li>
+            <li>Możesz je komuś wysłać na maila lub SMS.</li>
+            <li>Możesz stworzyć na ich podstawie widgety na smartfonie.</li>
+        </ol>
+
+        <p>Zobacz jak skonfigurować widgety na urządzeniu z Androidem.</p>
+
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/m9JipPYhm6I?rel=0" frameborder="0" allowfullscreen></iframe>
+    </div>
 
     <h4>Adres wymagający autoryzacji</h4>
     <pre>{{ $ctrl.scene.id | sceneUrl }}</pre>
