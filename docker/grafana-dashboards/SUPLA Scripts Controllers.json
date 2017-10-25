@@ -95,7 +95,7 @@
           "targets": [
             {
               "refId": "A",
-              "target": "aliasByNode(stats.timers.suplascripts.$Instance.endpoint.$Controller.*.time.upper_90, 5)",
+              "target": "aliasByNode(stats.timers.suplascripts.$Instance.endpoint.$Controller.*.time.upper_90, 6)",
               "textEditor": false
             }
           ],
@@ -183,7 +183,7 @@
           "targets": [
             {
               "refId": "A",
-              "target": "aliasSub(stats.counters.suplascripts.$Instance.endpoint.$Controller.*.*.count, '.+endpoint.(.+).count', '\\1')",
+              "target": "aliasSub(stats.counters.suplascripts.$Instance.endpoint.$Controller.*.*.count, '.+endpoint.$Controller.(.+).count', '\\1')",
               "textEditor": true
             }
           ],
@@ -470,5 +470,5 @@
   },
   "timezone": "",
   "title": "SUPLA Scripts Controllers",
-  "version": 15
+  "version": 16
 }

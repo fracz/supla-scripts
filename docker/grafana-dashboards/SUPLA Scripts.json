@@ -440,12 +440,17 @@
             },
             {
               "refId": "C",
-              "target": "alias(stats.timers.suplascripts.$Instance.endpoint.ThermostatsController.getBySlug.time.upper_90, 'Podgląd termostatu')",
+              "target": "alias(averageSeries(stats.timers.suplascripts.$Instance.endpoint.ThermostatsController.{get,getBySlug}.time.upper_90), 'Podgląd termostatu')",
               "textEditor": true
             },
             {
               "refId": "D",
               "target": "alias(stats.timers.suplascripts.$Instance.endpoint.ChannelsController.getSensorLogs.time.upper_90, 'Pobranie historii temperatur')",
+              "textEditor": true
+            },
+            {
+              "refId": "E",
+              "target": "alias(averageSeries(stats.timers.suplascripts.$Instance.endpoint.ScenesController.{executeSceneBySlug,executeScene}.time.upper_90), 'Wykonanie sceny')",
               "textEditor": true
             }
           ],
@@ -519,23 +524,28 @@
             {
               "hide": false,
               "refId": "A",
-              "target": "alias(stats.counters.suplascripts.$Instance.endpoint.VoiceCommandsController.executeVoiceCommand.success.count, 'Wykonanie komendy głosowej')",
+              "target": "alias(sumSeries(stats.counters.suplascripts.$Instance.endpoint.VoiceCommandsController.executeVoiceCommand.*.count), 'Wykonanie komendy głosowej')",
               "textEditor": false
             },
             {
               "refId": "B",
-              "target": "alias(stats.counters.suplascripts.$Instance.endpoint.ChannelsController.execute.success.count, 'Wykorzystanie kokpitu')",
+              "target": "alias(sumSeries(stats.counters.suplascripts.$Instance.endpoint.ChannelsController.execute.*.count), 'Wykorzystanie kokpitu')",
               "textEditor": false
             },
             {
               "refId": "C",
-              "target": "alias(stats.counters.suplascripts.$Instance.endpoint.ThermostatsController.getBySlug.success.count, 'Podgląd termostatu')",
-              "textEditor": false
+              "target": "alias(sumSeries(stats.counters.suplascripts.$Instance.endpoint.ThermostatsController.{get,getBySlug}.*.count), 'Podgląd termostatu')",
+              "textEditor": true
             },
             {
               "refId": "D",
-              "target": "alias(stats.counters.suplascripts.$Instance.endpoint.ChannelsController.getSensorLogs.success.count, 'Wykres temperatur')",
+              "target": "alias(sumSeries(stats.counters.suplascripts.$Instance.endpoint.ChannelsController.getSensorLogs.*.count), 'Wykres temperatur')",
               "textEditor": false
+            },
+            {
+              "refId": "E",
+              "target": "alias(sumSeries(stats.counters.suplascripts.$Instance.endpoint.ScenesController.{executeSceneBySlug,executeScene}.*.count), 'Wykonanie sceny')",
+              "textEditor": true
             }
           ],
           "thresholds": [],
@@ -643,7 +653,7 @@
           "targets": [
             {
               "refId": "A",
-              "target": "consolidateBy(stats.counters.suplascripts.$Instance.endpoint.VoiceCommandsController.executeVoiceCommand.success.count, 'sum')",
+              "target": "consolidateBy(sumSeries(stats.counters.suplascripts.$Instance.endpoint.VoiceCommandsController.executeVoiceCommand.*.count), 'sum')",
               "textEditor": false
             }
           ],
@@ -717,7 +727,7 @@
           "targets": [
             {
               "refId": "A",
-              "target": "consolidateBy(stats.counters.suplascripts.$Instance.endpoint.ChannelsController.execute.success.count, 'sum')"
+              "target": "consolidateBy(sumSeries(stats.counters.suplascripts.$Instance.endpoint.ChannelsController.execute.*.count), 'sum')"
             }
           ],
           "thresholds": "",
@@ -790,7 +800,8 @@
           "targets": [
             {
               "refId": "A",
-              "target": "consolidateBy(stats.counters.suplascripts.$Instance.endpoint.ThermostatsController.getBySlug.success.count, 'sum')"
+              "target": "consolidateBy(sumSeries(stats.counters.suplascripts.$Instance.endpoint.ThermostatsController.{get,getBySlug}.*.count), 'sum')",
+              "textEditor": true
             }
           ],
           "thresholds": "",
@@ -863,11 +874,85 @@
           "targets": [
             {
               "refId": "A",
-              "target": "consolidateBy(stats.counters.suplascripts.$Instance.endpoint.ChannelsController.getSensorLogs.success.count, 'sum')"
+              "target": "consolidateBy(sumSeries(stats.counters.suplascripts.$Instance.endpoint.ChannelsController.getSensorLogs.*.count), 'sum')"
             }
           ],
           "thresholds": "",
           "title": "Pobrania historii temperatur",
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "total"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "datasource": "${DS_LOCAL_GRAPHITE}",
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "id": 11,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "span": 12,
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": true
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "refId": "A",
+              "target": "consolidateBy(sumSeries(stats.counters.suplascripts.$Instance.endpoint.ScenesController.{executeSceneBySlug,executeScene}.*.count), 'sum')",
+              "textEditor": true
+            }
+          ],
+          "thresholds": "",
+          "title": "Wykonanie scen",
           "type": "singlestat",
           "valueFontSize": "80%",
           "valueMaps": [
@@ -945,5 +1030,5 @@
   },
   "timezone": "",
   "title": "SUPLA Scripts",
-  "version": 59
+  "version": 71
 }
