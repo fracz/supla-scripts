@@ -12,7 +12,7 @@
     "m6web/statsd": "^1.3",
     "monolog/monolog": "^1.23",
     "mtdowling/cron-expression": "^1.2",
-    "ramsey/uuid": "^3.6",
+    "ramsey/uuid": "^3.7",
     "robmorgan/phinx": "^0.8",
     "tuupola/slim-basic-auth": "^2.2",
     "tuupola/slim-jwt-auth": "^2.3",
