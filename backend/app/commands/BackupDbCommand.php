@@ -41,10 +41,12 @@ class BackupDbCommand extends Command {
             $backupPath
         ));
         $process->run();
-        if ($process->isSuccessful()) {
+        $errorOutput = trim($process->getErrorOutput());
+        if ($process->isSuccessful() && !$errorOutput) {
             $output->writeln('<info>Database backup has been saved to ' . $backupName . '.</info>');
         } else {
-            $output->writeln($process->getErrorOutput());
+            @unlink($backupPath);
+            $output->writeln($errorOutput);
             $output->writeln('<error>Could not make the database backup.</error>');
             $this->askIfContinue($input, $output);
         }

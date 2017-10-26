@@ -18,6 +18,7 @@ class InitializeApplicationCommand extends Command {
 
     protected function execute(InputInterface $input, OutputInterface $output) {
         $this->getApplication()->setAutoExit(false);
+        $this->getApplication()->setCatchExceptions(false);
         $this->getApplication()->run(new StringInput('logo'), $output);
         if (!file_exists(Application::CONFIG_PATH) || !is_readable(Application::CONFIG_PATH)) {
             $output->writeln('<error>There is no config.json.</error>');
