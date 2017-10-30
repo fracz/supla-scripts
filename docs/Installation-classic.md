@@ -24,7 +24,7 @@
    to `/var/www/supla-scripts`.
    ```
    mkdir /var/www/supla-scripts
-   tar -zxvf supla-scripts-2.0.0.tar.gz -C /var/www/supla-scripts
+   tar -zxf supla-scripts-2.0.0.tar.gz -C /var/www/supla-scripts
    ```
 1. Enter this directory and create a configuration file
    ```
@@ -68,7 +68,7 @@
 1. Download and extract the [latest supla-scripts release archive](https://github.com/fracz/supla-scripts/releases/latest) 
    to the same directory as before.
    ```
-   tar -zxvf supla-scripts-2.0.0.tar.gz -C /var/www/supla-scripts 
+   tar -zxf supla-scripts-2.0.0.tar.gz -C /var/www/supla-scripts 
    ```
 2. `php /var/www/supla-scripts/supla-scripts init`
 3. Change the owner of the `/var/www/supla-scripts` directory to `www-data`
