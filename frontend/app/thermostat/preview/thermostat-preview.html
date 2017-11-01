@@ -29,9 +29,6 @@
                          ng-class="$ctrl.thermostat.rooms.length > 4 ? '' : 'col-lg-3 col-md-4 col-sm-6'">
                         <div class="well thermostat-room-preview">
                             <h3 class="text-center">
-                            <span class="badge pull-right">
-
-                            </span>
                                 {{ room.name }}
                             </h3>
                             <div class="temperature">
@@ -72,6 +69,18 @@
                                     room="room"
                                     room-state="$ctrl.thermostat.roomsState[room.id]"
                                     on-action-change="$ctrl.setRoomAction(room, action, time)"></thermostat-manual-room-action-change>
+                        </div>
+                    </div>
+                    <div ng-repeat="room in $ctrl.thermostat.rooms"
+                         ng-if="$ctrl.thermostat.channels[room.thermometers[0]].humidity"
+                         ng-class="$ctrl.thermostat.rooms.length > 4 ? '' : 'col-lg-3 col-md-4 col-sm-6'">
+                        <div class="well thermostat-room-preview thermostat-room-preview-humidity">
+                            <h3 class="text-center">
+                                {{ room.name }}
+                            </h3>
+                            <div class="temperature">
+                                {{ $ctrl.thermostat.channels[room.thermometers[0]].humidity | number:1 }}%
+                            </div>
                         </div>
                     </div>
                 </div>
