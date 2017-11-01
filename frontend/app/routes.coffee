@@ -56,6 +56,11 @@ angular.module('supla-scripts')
     url: '/preview'
     template: '<thermostat-preview></thermostat-preview>'
 
+  .state 'thermostat.logs',
+    url: '/logs'
+    template: '<div class="container"><logs-table entity-id="thermostat.id" limit="30"></logs-table></div>'
+    controller: ($scope, thermostat) -> $scope.thermostat = thermostat
+
   .state 'thermostatPreview',
     url: '/thermostat-preview/:slug'
     template: '<thermostat-preview slug="slug"></thermostat-preview>'
