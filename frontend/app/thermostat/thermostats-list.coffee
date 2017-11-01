@@ -3,11 +3,13 @@ angular.module('supla-scripts').component 'thermostatsList',
   controller: (Thermostats) ->
     new class
       $onInit: ->
+        @newTarget = 'temperature'
         Thermostats.getList().then((@thermostats) =>)
 
       createNew: ->
-        Thermostats.post(label: @newLabel).then (thermostat) =>
+        Thermostats.post({label: @newLabel, target: @newTarget}).then (thermostat) =>
           @newLabel = ''
+          @newTarget = 'temperature'
           @thermostats.push(thermostat)
 
       disableThermostat: (thermostat) ->

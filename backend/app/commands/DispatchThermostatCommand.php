@@ -87,7 +87,7 @@ class DispatchThermostatCommand extends Command {
                 if ($decidor->hasForcedAction()) {
                     continue;
                 }
-                $currentTemperature = $room->getCurrentTemperature();
+                $currentTemperature = $room->getCurrentTargetValue();
                 if ($currentTemperature == 0.0) {
                     continue; // the thermometer may not work so do not take any action! wait for any other temperature.
                 }

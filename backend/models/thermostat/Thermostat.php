@@ -2,6 +2,7 @@
 
 namespace suplascripts\models\thermostat;
 
+use Assert\Assertion;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Ramsey\Uuid\Uuid;
@@ -12,6 +13,7 @@ use suplascripts\models\User;
  * @property string $label
  * @property bool $enabled
  * @property string $slug
+ * @property string $target
  * @property mixed $roomsState
  * @property mixed $devicesState
  * @property \DateTime $nextProfileChange
@@ -28,6 +30,7 @@ class Thermostat extends Model {
     const NEXT_PROFILE_CHANGE = 'nextProfileChange';
     const ACTIVE_PROFILE_ID = 'activeProfileId';
     const USER_ID = 'userId';
+    const TARGET = 'target';
 
     protected $dates = [self::NEXT_PROFILE_CHANGE];
     protected $fillable = [self::LABEL, self::ENABLED];
@@ -67,5 +70,14 @@ class Thermostat extends Model {
             $now = new \DateTime();
         }
         return $now >= $this->nextProfileChange;
+    }
+
+    public function validate(array $attributes = null) {
+        if (!$attributes) {
+            $attributes = $this->getAttributes();
+        }
+        Assertion::notEmptyKey($attributes, self::LABEL);
+        Assertion::notEmptyKey($attributes, self::TARGET);
+        Assertion::inArray($attributes[self::TARGET], ['temperature', 'humidity']);
     }
 }

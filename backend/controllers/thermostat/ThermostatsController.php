@@ -34,7 +34,9 @@ class ThermostatsController extends BaseController {
     public function postAction() {
         $this->ensureAuthenticated();
         $parsedBody = $this->request()->getParsedBody();
+        /** @var Thermostat $thermostat */
         $thermostat = $this->getCurrentUser()->thermostats()->create([Thermostat::LABEL => $parsedBody['label']]);
+        $thermostat->target = $parsedBody['target'];
         $thermostat->save();
         $thermostat->log('Utworzono termostat');
         return $this->response($thermostat)->withStatus(201);

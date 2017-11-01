@@ -14,6 +14,7 @@ use suplascripts\models\User;
  * @property int[] $heaters
  * @property int[] $coolers
  * @property string $userId
+ * @property Thermostat $thermostat
  */
 class ThermostatRoom extends Model {
 
@@ -36,10 +37,11 @@ class ThermostatRoom extends Model {
         return $this->belongsTo(Thermostat::class, self::THERMOSTAT_ID);
     }
 
-    public function getCurrentTemperature(): float {
+    public function getCurrentTargetValue(): float {
         $api = SuplaApi::getInstance($this->user()->first());
-        $temperatures = array_map(function ($channelId) use ($api) {
-            return $api->getChannelWithState($channelId)->temperature ?? 0;
+        $field = $this->thermostat->target;
+        $temperatures = array_map(function ($channelId) use ($field, $api) {
+            return $api->getChannelWithState($channelId)->{$field} ?? 0;
         }, $this->thermometers);
         $temperatures = array_filter($temperatures);
         return array_sum($temperatures) / (count($temperatures) ?: 1);

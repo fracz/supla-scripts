@@ -41,12 +41,17 @@
                 </div>
                 <form ng-submit="newThermostatForm.$valid && $ctrl.createNew()" name="newThermostatForm" promise-btn>
                     <div class="row">
-                        <div class="col-md-6 col-md-offset-6">
+                        <div class="col-md-8 col-md-offset-4">
                             <div class="form-group">
                                 <span class="input-group">
                                     <input type="text" class="form-control" placeholder="Nazwa nowego termostatu"
                                            required
                                            ng-model="$ctrl.newLabel">
+                                    <span class="input-group-addon">
+                                        Sterowanie &nbsp;
+                                        <label><input type="radio" ng-model="$ctrl.newTarget" value="temperature"> temperaturą</label> &nbsp;
+                                        <label><input type="radio" ng-model="$ctrl.newTarget" value="humidity"> wilgotnością</label>
+                                    </span>
                                     <span class="input-group-btn">
                                         <button type="submit" class="btn btn-primary">
                                             <fa name="plus-circle" fw></fa>
