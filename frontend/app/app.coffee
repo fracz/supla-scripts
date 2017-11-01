@@ -9,6 +9,7 @@ angular.module 'supla-scripts', [
   'angular-svg-round-progressbar'
   'chart.js'
   'elif'
+  'monospaced.elastic'
   'ngAnimate'
   'ngFx'
   'ngStorage'
@@ -23,6 +24,7 @@ angular.module 'supla-scripts', [
   'uiSwitch'
 ]
 .config(($compileProvider, ANGULAR_DEBUG_DATA_ENABLED) -> $compileProvider.debugInfoEnabled(ANGULAR_DEBUG_DATA_ENABLED))
+.config((msdElasticConfig) -> msdElasticConfig.append = '\n')
 .run (Restangular) -> # synchronize browser time with server's
   requestStartTime = Date.now()
   Restangular.one('time').withHttpConfig(skipErrorHandler: yes).get().then (serverTime) ->

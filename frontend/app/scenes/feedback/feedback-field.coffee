@@ -2,7 +2,7 @@ angular.module('supla-scripts').component 'feedbackField',
   templateUrl: 'app/scenes/feedback/feedback-field.html'
   require:
     ngModel: 'ngModel'
-  controller: (Channels, channelLabelFilter, $timeout) ->
+  controller: (Channels, channelLabelFilter, $timeout, $element) ->
 
     CHANNEL_FEEDBACKS =
       FNC_LIGHTSWITCH: [{display: 'zaświeczone/zgaszone', suffix: 'on|bool:zaświecone,zgaszone'}]
@@ -38,6 +38,7 @@ angular.module('supla-scripts').component 'feedbackField',
               mode: 'replace'
             }
           ]
+        $timeout(-> $element.find('textarea').keyup())
 
       flatten: (arrayOfArrays) ->
         [].concat.apply([], arrayOfArrays)
