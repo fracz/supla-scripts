@@ -1,6 +1,7 @@
 angular.module('supla-scripts').component 'thermostatRoomForm',
   templateUrl: 'app/thermostat/rooms/thermostat-room-form.html'
   bindings:
+    thermostat: '<'
     room: '<'
     onSubmit: '&'
     onCancel: '&'
@@ -13,7 +14,9 @@ angular.module('supla-scripts').component 'thermostatRoomForm',
           thermometers: []
           heaters: []
           coolers: []
-      
+      @allowedSensorFunctions = ['FNC_HUMIDITYANDTEMPERATURE']
+      @allowedSensorFunctions.push('FNC_THERMOMETER') if @thermostat.target is 'temperature'
+
     onChannelAdd: (channelId, group) ->
       @room[group].push(channelId)
 

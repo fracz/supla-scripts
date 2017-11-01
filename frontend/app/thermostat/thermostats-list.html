@@ -15,7 +15,10 @@
                          class="list-group-item"
                          go-to-link-on-row-click>
                         <h4>
-                            <a ui-sref="thermostat.preview(thermostat)">{{ thermostat.label }}</a>
+                            <a ui-sref="thermostat.preview(thermostat)">
+                                <fa name="{{ thermostat|byThermostatTarget:'thermometer':'tint' }}" fw></fa>
+                                {{ thermostat.label }}
+                            </a>
                             <div class="btn-group pull-right btn-group-xs">
                                 <button class="btn btn-danger"
                                         ng-if="!thermostat.enabled"
@@ -49,8 +52,14 @@
                                            ng-model="$ctrl.newLabel">
                                     <span class="input-group-addon">
                                         Sterowanie &nbsp;
-                                        <label><input type="radio" ng-model="$ctrl.newTarget" value="temperature"> temperaturą</label> &nbsp;
-                                        <label><input type="radio" ng-model="$ctrl.newTarget" value="humidity"> wilgotnością</label>
+                                        <label tooltips tooltip-template="temperaturą">
+                                            <input type="radio" ng-model="$ctrl.newTarget" value="temperature">
+                                            <fa name="thermometer" fw></fa>
+                                        </label> &nbsp;
+                                        <label tooltips tooltip-template="wilgotnością">
+                                            <input type="radio" ng-model="$ctrl.newTarget" value="humidity">
+                                            <fa name="tint" fw></fa>
+                                        </label>
                                     </span>
                                     <span class="input-group-btn">
                                         <button type="submit" class="btn btn-primary">

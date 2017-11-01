@@ -11,7 +11,7 @@
 <h4>{{ $ctrl.room.name }}</h4>
 <div class="row">
     <div class="col-md-4">
-        <h6>Termometry ({{$ctrl.room.thermometers.length}})</h6>
+        <h6>Czujniki ({{$ctrl.room.thermometers.length}})</h6>
         <div class="list-group">
             <div class="list-group-item" ng-repeat="channelId in $ctrl.room.thermometers">
                 <channel-state channel-id="channelId"></channel-state>
@@ -19,7 +19,7 @@
         </div>
     </div>
     <div class="col-md-4">
-        <h6>Urządzenia grzejące ({{$ctrl.room.heaters.length || 0}})</h6>
+        <h6>Urządzenia {{ $ctrl.thermostat|byThermostatTarget:'grzejące':'nawilżające' }} ({{$ctrl.room.heaters.length || 0}})</h6>
         <div class="list-group">
             <div class="list-group-item" ng-repeat="channelId in $ctrl.room.heaters">
                 <channel-state channel-id="channelId"></channel-state>
@@ -27,7 +27,7 @@
         </div>
     </div>
     <div class="col-md-4">
-        <h6>Urządzenia chłodzące ({{$ctrl.room.coolers.length || 0}})</h6>
+        <h6>Urządzenia {{ $ctrl.thermostat|byThermostatTarget:'chłodzące':'osuszające' }} ({{$ctrl.room.coolers.length || 0}})</h6>
         <div class="list-group">
             <div class="list-group-item" ng-repeat="channelId in $ctrl.room.coolers">
                 <channel-state channel-id="channelId"></channel-state>

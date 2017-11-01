@@ -17,17 +17,17 @@
             </div>
         </div>
         <div class="col-md-3">
-            <h6>Termometry ({{ $ctrl.room.thermometers.length || 0}})</h6>
+            <h6>Czujniki ({{ $ctrl.room.thermometers.length || 0}})</h6>
             <div class="form-group">
-                <label class="control-label">Wybierz termometr</label>
+                <label class="control-label">Wybierz czujnik</label>
                 <channel-selector ng-model="newThermometer"
                                   ng-change="$ctrl.onChannelAdd(newThermometer, 'thermometers'); newThermometer = undefined"
-                                  functions="['FNC_THERMOMETER', 'FNC_HUMIDITYANDTEMPERATURE']"
+                                  functions="$ctrl.allowedSensorFunctions"
                                   hide-ids="$ctrl.room.thermometers"></channel-selector>
             </div>
             <div class="list-group" ng-if="$ctrl.room.thermometers.length">
                 <div class="list-group-item" ng-repeat="channelId in $ctrl.room.thermometers">
-                    <a ng-click="$ctrl.removeChannel(channelId, 'thermometers')" class="channel-delete-btn">
+                    <a ng-click="$ctrl.removeChannel(channelId, 'thermometers')" class="floating-delete-btn">
                         <fa name="times-circle-o"></fa>
                     </a>
                     <channel-state channel-id="channelId"></channel-state>
@@ -35,7 +35,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <h6>Urządzenia grzejące ({{ $ctrl.room.heaters.length || 0 }})</h6>
+            <h6>Urządzenia {{ $ctrl.thermostat|byThermostatTarget:'grzejące':'nawilżające' }} ({{ $ctrl.room.heaters.length || 0 }})</h6>
             <div class="form-group">
                 <label class="control-label">Wybierz urządzenie</label>
                 <channel-selector ng-model="newHeater"
@@ -53,7 +53,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <h6>Urządzenia chłodzące ({{ $ctrl.room.coolers.length || 0}})</h6>
+            <h6>Urządzenia {{ $ctrl.thermostat|byThermostatTarget:'chłodzące':'osuszające' }} ({{ $ctrl.room.coolers.length || 0}})</h6>
             <div class="form-group" show-errors>
                 <label class="control-label">Wybierz urządzenie</label>
                 <input type="hidden" ng-model="$ctrl.room.coolers" name="coolers" class="form-control"
@@ -65,7 +65,7 @@
             </div>
             <div class="list-group" ng-if="$ctrl.room.coolers.length">
                 <div class="list-group-item" ng-repeat="channelId in $ctrl.room.coolers">
-                    <a ng-click="$ctrl.removeChannel(channelId, 'coolers')" class="channel-delete-btn">
+                    <a ng-click="$ctrl.removeChannel(channelId, 'coolers')" class="floating-delete-btn">
                         <fa name="times-circle-o"></fa>
                     </a>
                     <channel-state channel-id="channelId"></channel-state>
