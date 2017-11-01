@@ -6,7 +6,7 @@
                 <div class="form-group">
                     <div class="btn-group">
                         <button class="btn btn-default"
-                                ng-repeat="timeSlot in [['-1hour', 'Ostatnia godzina'], ['-24hours', 'Ostatnie 24h'], ['-1week', 'Ostatni tydzień'], ['-1month', 'Ostatni miesiąc'], ['-5years', 'Pełna historia']]"
+                                ng-repeat="timeSlot in [['-1hour', 'Ostatnia godzina'], ['-6hours', 'Ostatnie 6h'], ['-24hours', 'Ostatnie 24h'], ['-2days', 'Ostatnie 2 dni'], ['-1week', 'Ostatni tydzień'], ['-1month', 'Ostatni miesiąc'], ['-5years', 'Pełna historia']]"
                                 ng-class="{active: $ctrl.period == timeSlot[0]}"
                                 ng-click="$ctrl.changePeriod(timeSlot[0])">
                             <fa-radio checked="$ctrl.period == timeSlot[0]"></fa-radio>
