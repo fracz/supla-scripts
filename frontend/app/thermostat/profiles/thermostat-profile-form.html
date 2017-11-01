@@ -11,72 +11,73 @@
             </div>
         </div>
         <div class="col-md-8">
-            <table class="table thermostat-profile-table">
-                <thead>
-                <tr>
-                    <th>Pomieszczenie</th>
-                    <th>Grzej od</th>
-                    <th>Grzej do</th>
-                    <th>Schładzaj od</th>
-                    <th>Schładzaj do</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="room in $ctrl.rooms">
-                    <td>
-                        <h4>{{ room.name }}</h4>
+            <div class="list-group">
+                <div class="list-group-item" ng-repeat="room in $ctrl.rooms">
+                    <h3>{{ room.name }}</h3>
+                    <h4>
+                        Teraz:
                         <span ng-repeat="channelId in room.thermometers">
-                            <channel-state-temperature channel-id="channelId"></channel-state-temperature><span
-                                ng-if="!$last">,</span>
+                            <channel-state-temperature channel-id="channelId"
+                                                       ng-if="$ctrl.thermostat.target == 'temperature'"></channel-state-temperature>
+                            <channel-state-humidity channel-id="channelId" ng-else></channel-state-humidity>
                         </span>
-                    </td>
-                    <td>
-                        <span ng-if="room.heaters.length">
-                            <span class="input-group">
-                            <input type="number" class="form-control"
-                                   ng-model="$ctrl.profile.roomsConfig[room.id].heatFrom"
-                                   step="0.1">
-                                <span class="input-group-addon">&deg;C</span>
-                            </span>
-                        </span>
-                        <em ng-else>brak urządzeń grzewczych</em>
-                    </td>
-                    <td>
-                        <span ng-if="room.heaters.length">
-                            <span class="input-group">
-                            <input type="number" class="form-control"
-                                   ng-model="$ctrl.profile.roomsConfig[room.id].heatTo"
-                                   step="0.1">
-                                <span class="input-group-addon">&deg;C</span>
-                            </span>
-                        </span>
-                        <em ng-else>-</em>
-                    </td>
-                    <td>
-                        <span ng-if="room.coolers.length">
-                            <span class="input-group">
-                            <input type="number" class="form-control"
-                                   ng-model="$ctrl.profile.roomsConfig[room.id].coolFrom"
-                                   step="0.1">
-                                <span class="input-group-addon">&deg;C</span>
-                            </span>
-                        </span>
-                        <em ng-else>brak urządzeń chłodzących</em>
-                    </td>
-                    <td>
-                        <span ng-if="room.coolers.length">
-                            <span class="input-group">
-                            <input type="number" class="form-control"
-                                   ng-model="$ctrl.profile.roomsConfig[room.id].coolTo"
-                                   step="0.1">
-                                <span class="input-group-addon">&deg;C</span>
-                            </span>
-                        </span>
-                        <em ng-else>-</em>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+                    </h4>
+                    <div ng-if="room.heaters.length">
+                        <h5>{{ $ctrl.thermostat | byThermostatTarget:'Ogrzewanie':'Nawilżanie' }}</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Od</label>
+                                    <span class="input-group">
+                                        <input type="number" class="form-control"
+                                               ng-model="$ctrl.profile.roomsConfig[room.id].heatFrom"
+                                               step="0.1">
+                                        <span class="input-group-addon">{{ $ctrl.thermostat|byThermostatTarget:'&deg;C':'%' }}</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Do</label>
+                                    <span class="input-group">
+                                        <input type="number" class="form-control"
+                                               ng-model="$ctrl.profile.roomsConfig[room.id].heatTo"
+                                               step="0.1">
+                                        <span class="input-group-addon">{{ $ctrl.thermostat|byThermostatTarget:'&deg;C':'%' }}</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="room.coolers.length">
+                        <h5>{{ $ctrl.thermostat | byThermostatTarget:'Schładzanie':'Osuszanie' }}</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Od</label>
+                                    <span class="input-group">
+                                        <input type="number" class="form-control"
+                                               ng-model="$ctrl.profile.roomsConfig[room.id].coolFrom"
+                                               step="0.1">
+                                        <span class="input-group-addon">{{ $ctrl.thermostat|byThermostatTarget:'&deg;C':'%' }}</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Do</label>
+                                    <span class="input-group">
+                                        <input type="number" class="form-control"
+                                               ng-model="$ctrl.profile.roomsConfig[room.id].coolTo"
+                                               step="0.1">
+                                        <span class="input-group-addon">{{ $ctrl.thermostat|byThermostatTarget:'&deg;C':'%' }}</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="row">

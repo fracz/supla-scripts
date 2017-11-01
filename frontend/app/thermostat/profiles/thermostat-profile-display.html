@@ -32,8 +32,8 @@
             <thead>
             <tr>
                 <th>Pomieszczenie</th>
-                <th>Ogrzewanie</th>
-                <th>Chłodzenie</th>
+                <th>{{ $ctrl.thermostat | byThermostatTarget:'Ogrzewanie':'Nawilżanie' }}</th>
+                <th>{{ $ctrl.thermostat | byThermostatTarget:'Schładzanie':'Osuszanie' }}</th>
             </tr>
             </thead>
             <tbody>
@@ -41,23 +41,23 @@
                 <td>
                     {{ room.name }}
                     (<span ng-repeat="channelId in room.thermometers">
-                        <channel-state-temperature channel-id="channelId"></channel-state-temperature><span
-                        ng-if="!$last">,</span>
-                    </span>)
+                    <channel-state-temperature channel-id="channelId" ng-if="$ctrl.thermostat.target == 'temperature'"></channel-state-temperature>
+                    <channel-state-humidity channel-id="channelId" ng-else></channel-state-humidity>
+                </span>)
                 </td>
                 <td>
                     <span ng-if="$ctrl.profile.roomsConfig[room.id].heatFrom">
-                        {{ $ctrl.profile.roomsConfig[room.id].heatFrom | number:1 }}&deg;C
+                        {{ $ctrl.profile.roomsConfig[room.id].heatFrom | number:1 }}{{ $ctrl.thermostat|byThermostatTarget:'&deg;C':'%' }}
                         <fa name="caret-right" fw class="text-danger"></fa>
-                        {{ $ctrl.profile.roomsConfig[room.id].heatTo | number:1 }}&deg;C
+                        {{ $ctrl.profile.roomsConfig[room.id].heatTo | number:1 }}{{ $ctrl.thermostat|byThermostatTarget:'&deg;C':'%' }}
                     </span>
                     <span ng-else>-</span>
                 </td>
                 <td>
                     <span ng-if="$ctrl.profile.roomsConfig[room.id].coolFrom">
-                        {{ $ctrl.profile.roomsConfig[room.id].coolFrom | number:1 }}&deg;C
+                        {{ $ctrl.profile.roomsConfig[room.id].coolFrom | number:1 }}{{ $ctrl.thermostat|byThermostatTarget:'&deg;C':'%' }}
                         <fa name="caret-right" fw class="text-info"></fa>
-                        {{ $ctrl.profile.roomsConfig[room.id].coolTo | number:1 }}&deg;C
+                        {{ $ctrl.profile.roomsConfig[room.id].coolTo | number:1 }}{{ $ctrl.thermostat|byThermostatTarget:'&deg;C':'%' }}
                     </span>
                     <span ng-else>-</span>
                 </td>

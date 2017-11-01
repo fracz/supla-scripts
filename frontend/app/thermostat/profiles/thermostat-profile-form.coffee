@@ -1,6 +1,7 @@
 angular.module('supla-scripts').component 'thermostatProfileForm',
   templateUrl: 'app/thermostat/profiles/thermostat-profile-form.html'
   bindings:
+    thermostat: '<'
     profile: '<'
     rooms: '<'
     onSubmit: '&'

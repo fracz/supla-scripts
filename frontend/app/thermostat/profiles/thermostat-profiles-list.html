@@ -15,9 +15,9 @@
     <div ng-else>
         <div class="well" ng-repeat="profile in $ctrl.profiles">
             <thermostat-profile-form rooms="$ctrl.rooms" ng-if="profile.editing" profile="profile"
-                                     on-submit="$ctrl.saveProfile(profile, savedProfile)"
+                                     on-submit="$ctrl.saveProfile(profile, savedProfile)" thermostat="$ctrl.thermostat"
                                      on-cancel="profile.editing = false"></thermostat-profile-form>
-            <thermostat-profile-display rooms="$ctrl.rooms" ng-else profile="profile" on-edit="profile.editing = true"
+            <thermostat-profile-display rooms="$ctrl.rooms" ng-else profile="profile" on-edit="profile.editing = true" thermostat="$ctrl.thermostat"
                                         on-delete="$ctrl.deleteProfile(profile)"></thermostat-profile-display>
         </div>
 
@@ -29,7 +29,7 @@
         </div>
 
         <div class="well fx-fade-right" ng-else>
-            <thermostat-profile-form rooms="$ctrl.rooms" on-submit="$ctrl.addNewProfile(savedProfile)"
+            <thermostat-profile-form rooms="$ctrl.rooms" on-submit="$ctrl.addNewProfile(savedProfile)" thermostat="$ctrl.thermostat"
                                      on-cancel="$ctrl.adding = false"></thermostat-profile-form>
         </div>
     </div>
