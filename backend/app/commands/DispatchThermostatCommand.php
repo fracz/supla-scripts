@@ -91,16 +91,18 @@ class DispatchThermostatCommand extends Command {
                 if ($currentTemperature == 0.0) {
                     continue; // the thermometer may not work so do not take any action! wait for any other temperature.
                 }
-                $currentTemperatureFormatted = number_format($currentTemperature, 1) . '°C';
+                $currentTemperatureFormatted = number_format($currentTemperature, 1) . ($thermostat->target == 'temperature' ? '°C' : '%');
+                $heatingLabel = $thermostat->target == 'temperature' ? 'ogrzewanie' : 'nawilżanie';
+                $coolingLabel = $thermostat->target == 'temperature' ? 'ochładzanie' : 'osuszanie';
                 if ($decidor->shouldCool($currentTemperature) && !$decidor->isCooling()) {
-                    $thermostat->log("Rozpoczęto ochładzanie pomieszczenia $room->name, temperatura: $currentTemperatureFormatted");
+                    $thermostat->log("Rozpoczęto $coolingLabel pomieszczenia $room->name, wartość: $currentTemperatureFormatted");
                     $decidor->cool();
                 } elseif ($decidor->shouldHeat($currentTemperature) && !$decidor->isHeating()) {
-                    $thermostat->log("Rozpoczęto ogrzewanie pomieszczenia $room->name, temperatura: $currentTemperatureFormatted");
+                    $thermostat->log("Rozpoczęto $heatingLabel pomieszczenia $room->name, wartość: $currentTemperatureFormatted");
                     $decidor->heat();
                 } elseif (!$decidor->shouldCool($currentTemperature) && !$decidor->shouldHeat($currentTemperature)
                     && ($decidor->isHeating() || $decidor->isCooling())) {
-                    $thermostat->log("Zakończono ochładzanie lub ogrzewanie pomieszczenia $room->name, temperatura: $currentTemperatureFormatted");
+                    $thermostat->log("Zakończono $coolingLabel lub $heatingLabel pomieszczenia $room->name, wartość: $currentTemperatureFormatted");
                     $decidor->turnOff();
                 }
                 $decidor->updateState($thermostat, $room->id);

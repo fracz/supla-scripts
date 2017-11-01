@@ -10,6 +10,7 @@ use suplascripts\models\supla\SuplaApi;
 use suplascripts\models\supla\SuplaApiException;
 use suplascripts\models\thermostat\Thermostat;
 use suplascripts\models\thermostat\ThermostatProfile;
+use suplascripts\models\thermostat\ThermostatRoom;
 use suplascripts\models\thermostat\ThermostatRoomConfig;
 
 class ThermostatsController extends BaseController {
@@ -72,17 +73,22 @@ class ThermostatsController extends BaseController {
         }
         if (isset($parsedBody['roomAction'])) {
             $roomId = $parsedBody['roomAction']['roomId'] ?? '';
+            /** @var ThermostatRoom $roomEntity */
+            $roomEntity = $this->ensureExists($thermostat->rooms()->getQuery()->find(['id' => $roomId])->first());
             $room = new ThermostatRoomConfig([], $thermostat->roomsState[$roomId] ?? []);
             if (isset($parsedBody['roomAction']['clear'])) {
-                $thermostat->log('Manualnie powrócono do automatycznego sterowania pomieszczeniem ' . $roomId);
+                $thermostat->log('Manualnie powrócono do automatycznego sterowania pomieszczeniem ' . $roomEntity->name);
                 $room->clearForcedAction();
             } else {
                 $time = $parsedBody['roomAction']['time'] ?? 30;
                 Assertion::greaterThan($time, 0);
                 $room->forceAction($parsedBody['roomAction']['action'], $time);
                 $actionLabel = $room->isCooling() ? 'chłodzenia' : ($room->isHeating() ? 'ogrzewania' : 'brak');
+                if ($thermostat->target != 'temperature') {
+                    $actionLabel = $actionLabel == 'ogrzewania' ? 'nawilżania' : 'osuszania';
+                }
                 $timeLog = $time > 100 ? '' : " na $time minut";
-                $thermostat->log("Manualnie ustalono akcję $actionLabel$timeLog dla pomieszczenia $roomId");
+                $thermostat->log("Manualnie ustalono akcję $actionLabel$timeLog dla pomieszczenia $roomEntity->name");
             }
             $room->updateState($thermostat, $parsedBody['roomAction']['roomId']);
         }
@@ -123,6 +129,7 @@ class ThermostatsController extends BaseController {
             'nextProfileChange' => $thermostat->nextProfileChange->format(\DateTime::ATOM),
             'channels' => $channels,
             'roomsState' => $thermostat->roomsState,
+            'target' => $thermostat->target,
             'turnedOnDevices' => array_map(function ($channelId) use ($api) {
                 return $api->getChannelWithState($channelId);
             }, $thermostat->devicesState ?? []),

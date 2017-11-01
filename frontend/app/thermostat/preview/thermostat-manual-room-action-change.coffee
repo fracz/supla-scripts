@@ -1,6 +1,7 @@
 angular.module('supla-scripts').component 'thermostatManualRoomActionChange',
   templateUrl: 'app/thermostat/preview/thermostat-manual-room-action-change.html'
   bindings:
+    thermostat: '<'
     room: '<'
     roomState: '<'
     onActionChange: '&'
