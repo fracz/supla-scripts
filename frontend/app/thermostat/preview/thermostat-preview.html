@@ -32,7 +32,11 @@
                                 {{ room.name }}
                             </h3>
                             <div class="temperature">
-                                {{ $ctrl.thermostat.channels[room.thermometers[0]][$ctrl.thermostat.target] | number:1 }}{{::$ctrl.thermostat|thermostatUnit}}
+                                <span ng-if="$ctrl.thermostat.channels[room.thermometers[0]][$ctrl.thermostat.target] !== undefined">
+                                    {{ $ctrl.thermostat.channels[room.thermometers[0]][$ctrl.thermostat.target] | number:1
+                                    }}{{::$ctrl.thermostat|thermostatUnit}}
+                                </span>
+                                <span ng-else>?</span>
                                 <span ng-if="$ctrl.thermostat.roomsState[room.id].action" class="arrow-container">
                                     <fa name="caret-{{ $ctrl.thermostat.roomsState[room.id].action == 'heating' ? 'up' : 'down' }}"
                                         class="arrow"
