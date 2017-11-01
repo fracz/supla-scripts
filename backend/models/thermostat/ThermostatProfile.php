@@ -47,12 +47,20 @@ class ThermostatProfile extends Model {
             if (isset($roomConfig['heatTo']) || isset($roomConfig['heatFrom'])) {
                 Assertion::notEmptyKey($roomConfig, 'heatTo', 'Heat to value must be provided if heat from is set.');
                 Assertion::notEmptyKey($roomConfig, 'heatFrom', 'Heat from value must be provided if heat to is set.');
-                Assertion::greaterThan($roomConfig['heatTo'], $roomConfig['heatFrom'], "Heat from $roomConfig[heatFrom] must be less than heat to $roomConfig[heatTo].");
+                Assertion::greaterThan(
+                    $roomConfig['heatTo'],
+                    $roomConfig['heatFrom'],
+                    "Heat from $roomConfig[heatFrom] must be less than heat to $roomConfig[heatTo]."
+                );
             }
             if (isset($roomConfig['coolTo']) || isset($roomConfig['coolFrom'])) {
                 Assertion::notEmptyKey($roomConfig, 'coolTo', 'Cool to value must be provided if cool from is set.');
                 Assertion::notEmptyKey($roomConfig, 'coolFrom', 'Cool from value must be provided if cool to is set.');
-                Assertion::greaterThan($roomConfig['coolFrom'], $roomConfig['coolTo'], "Cool to $roomConfig[coolTo] must be less than heat from $roomConfig[coolFrom].");
+                Assertion::greaterThan(
+                    $roomConfig['coolFrom'],
+                    $roomConfig['coolTo'],
+                    "Cool to $roomConfig[coolTo] must be less than heat from $roomConfig[coolFrom]."
+                );
             }
         }
     }
