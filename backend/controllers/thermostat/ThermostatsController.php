@@ -28,7 +28,7 @@ class ThermostatsController extends BaseController {
 
     public function getListAction() {
         $this->ensureAuthenticated();
-        $thermostats = Thermostat::where([Thermostat::USER_ID => $this->getCurrentUser()->id])->get();
+        $thermostats = Thermostat::where([Thermostat::USER_ID => $this->getCurrentUser()->id])->orderBy(Thermostat::LABEL)->get();
         return $this->response($thermostats);
     }
 

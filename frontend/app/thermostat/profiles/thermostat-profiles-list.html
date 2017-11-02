@@ -2,12 +2,10 @@
 <div class="container">
     <div class="alert alert-info" ng-if="$ctrl.profiles.length === 0">
         <fa name="info-circle" fw class="pull-right" size="2"></fa>
-        <p>Zdefiniuj teraz profile temperatur, tj. określ maksymalną i minimalną temperaturę w każdym pomieszczeniu.</p>
+        <p>Zdefiniuj teraz profile, tj. określ maksymalną i minimalną wartość odczytu z czujnika w każdym pomieszczeniu.</p>
         <p>Określ także kiedy ma być aktywny każdy ze zdefiniowanych profili. Zadbaj o to by profile nie nakładały się
-            na
-            siebie - jeśli tak się stanie, termostat wybierze jeden z profilów. Jeśli na dany okres nie będzie
-            zdefiniowany żaden
-            profil - termostat przerwie wtedy pracę (wyłączając wszystkie urządzenia).</p>
+            na siebie - jeśli tak się stanie, termostat wybierze jeden z profilów. Jeśli na dany okres nie będzie
+            zdefiniowany żaden profil - termostat przerwie wtedy pracę (wyłączając wszystkie urządzenia).</p>
     </div>
 
     <loader-dots ng-if="!$ctrl.profiles"></loader-dots>

@@ -2,6 +2,7 @@
 
 namespace suplascripts\controllers\thermostat;
 
+use suplascripts\app\commands\DispatchThermostatCommand;
 use suplascripts\controllers\BaseController;
 use suplascripts\controllers\exceptions\Http403Exception;
 use suplascripts\models\thermostat\Thermostat;
@@ -20,6 +21,8 @@ class ThermostatProfilesController extends BaseController {
             if ($thermostat->profiles()->count() == 1) {
                 $thermostat->log('Termostat został aktywowany.');
                 $thermostat->enabled = true;
+                $thermostat->save();
+                (new DispatchThermostatCommand())->adjust($thermostat);
             }
             $thermostat->save();
             return $this->response($createdProfile)

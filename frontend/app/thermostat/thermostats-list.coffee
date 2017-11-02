@@ -1,6 +1,6 @@
 angular.module('supla-scripts').component 'thermostatsList',
   templateUrl: 'app/thermostat/thermostats-list.html'
-  controller: (Thermostats) ->
+  controller: (Thermostats, $state) ->
     new class
       $onInit: ->
         @newTarget = 'temperature'
@@ -11,6 +11,7 @@ angular.module('supla-scripts').component 'thermostatsList',
           @newLabel = ''
           @newTarget = 'temperature'
           @thermostats.push(thermostat)
+          $state.go('thermostat.rooms', {id: thermostat.id})
 
       disableThermostat: (thermostat) ->
         thermostat.patch(enabled: false).then((updated) => angular.extend(thermostat, updated))
