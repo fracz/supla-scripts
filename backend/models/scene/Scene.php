@@ -50,6 +50,9 @@ class Scene extends Model {
     }
 
     public function save(array $options = []) {
+        if (!$this->voiceTriggers) {
+            $this->voiceTriggers = [];
+        }
         $this->voiceTriggers = array_values(array_unique(array_map(function ($trigger) {
             return trim(mb_strtolower($trigger, 'UTF-8'));
         }, $this->voiceTriggers)));
