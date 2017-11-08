@@ -2,6 +2,7 @@
 
 namespace suplascripts\app\commands;
 
+use suplascripts\app\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\StringInput;
@@ -17,11 +18,12 @@ class DispatchCyclicTasksCommand extends Command {
 
     protected function execute(InputInterface $input, OutputInterface $output) {
         $this->getApplication()->setAutoExit(false);
-        $minute = intval(date('i'));
-        if ($minute % 5 == 0) {
+        $minute = intval(date('H')) * 60 + intval(date('i'));
+        $intervals = Application::getInstance()->getSetting('intervals', []);
+        if ($minute % ($intervals['thermostat'] ?? 5) == 0) {
             $this->getApplication()->run(new StringInput('dispatch:thermostat'), $output);
         }
-        if ($minute == 0) {
+        if ($minute % ($intervals['clearLogs'] ?? 60) == 0) {
             $this->getApplication()->run(new StringInput('clear:db-logs'), $output);
         }
     }

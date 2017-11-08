@@ -3,6 +3,10 @@
   "readOnly": false,
   "apiCache": true,
   "clearLogsOlderThan": "1week",
+  "intervals": {
+    "thermostat": 5,
+    "clearLogs": 60
+  },
   "db": {
     "driver": "mysql",
     "database": "suplascripts",
