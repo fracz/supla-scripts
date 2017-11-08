@@ -27,20 +27,22 @@ class VoiceCommandsController extends BaseController {
         $sceneExecutor = new SceneExecutor();
         $user->log('voice', 'Odebrano komendę głosową: ' . $command);
         foreach ($user->scenes as $scene) {
-            /** @var Scene $scene */
-            foreach ($scene->voiceTriggers as $trigger) {
-                if (strpos($command, $trigger) !== false) {
-                    if ($scene->lastUsed && $scene->lastUsed->getTimestamp() >= time() - 4) {
-                        $scene->log('Zignorowano zbyt szybkie wykonanie komendy głosowej: ' . $command);
+            if ($scene->voiceTriggers) {
+                /** @var Scene $scene */
+                foreach ($scene->voiceTriggers as $trigger) {
+                    if (strpos($command, $trigger) !== false) {
+                        if ($scene->lastUsed && $scene->lastUsed->getTimestamp() >= time() - 4) {
+                            $scene->log('Zignorowano zbyt szybkie wykonanie komendy głosowej: ' . $command);
+                            break;
+                        }
+                        ++$matchedActions;
+                        $scene->log('Uruchomiono scenę na podstawie komendy: ' . $command);
+                        $feedback = $sceneExecutor->executeWithFeedback($scene);
+                        if ($feedback) {
+                            $feedbacks[] = $feedback;
+                        }
                         break;
                     }
-                    ++$matchedActions;
-                    $scene->log('Uruchomiono scenę na podstawie komendy: ' . $command);
-                    $feedback = $sceneExecutor->executeWithFeedback($scene);
-                    if ($feedback) {
-                        $feedbacks[] = $feedback;
-                    }
-                    break;
                 }
             }
         }
