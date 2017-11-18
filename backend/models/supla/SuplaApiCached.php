@@ -53,7 +53,7 @@ class SuplaApiCached extends SuplaApi {
 
     public function setRgb(int $channelId, string $color, int $colorBrightness = 100, int $brightness = 100) {
         $this->clearCache($channelId);
-        return $this->api->setRgb($channelId, $color, $colorBrightness = 100, $brightness = 100);
+        return $this->api->setRgb($channelId, $color, $colorBrightness, $brightness);
     }
 
     public function getSensorLogs(int $channelId, $fromTime = '-1day'): array {

@@ -26,6 +26,7 @@ class ChannelsController extends BaseController {
             throw new SuplaApiException($this->getApi()->getClient(), 'Could not execute the action.');
         }
         if ($result && is_bool($result)) {
+            usleep(50000);
             $result = $this->getApi()->getChannelState($channelId);
         }
         return $this->response($result);
