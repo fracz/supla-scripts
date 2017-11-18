@@ -19,14 +19,17 @@ class UserAndUrlAwareLogger implements LoggerInterface {
     private $defaultHandlers;
 
     private $nextLogFilename;
+    /** @var int */
+    private $level;
 
-    public function __construct() {
+    public function __construct($level = Logger::NOTICE) {
         $this->logger = new Logger('app_logger');
         $this->defaultHandlers = [$this->logFileHandler('app')];
+        $this->level = $level;
     }
 
     private function logFileHandler(string $filename): HandlerInterface {
-        return new StreamHandler(Application::VAR_PATH . "/logs/$filename.log", Logger::NOTICE);
+        return new StreamHandler(Application::VAR_PATH . "/logs/$filename.log", $this->level);
     }
 
     private function buildContext(array $context): array {

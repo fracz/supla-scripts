@@ -2,11 +2,13 @@
 
 namespace suplascripts\app\authorization;
 
+use Monolog\Logger;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
 use Slim\Middleware\HttpBasicAuthentication;
 use Slim\Middleware\JwtAuthentication;
+use suplascripts\app\UserAndUrlAwareLogger;
 use suplascripts\models\HasApp;
 use suplascripts\models\User;
 
@@ -22,7 +24,7 @@ class JwtAndBasicAuthorizationMiddleware {
     public function __construct() {
         $options = [
             'path' => '/api',
-            'logger' => $this->getApp()->logger,
+            'logger' => new UserAndUrlAwareLogger(Logger::ERROR),
             'secure' => false, // do not force SSL!
             'passthrough' => [
                 '/api/info',
