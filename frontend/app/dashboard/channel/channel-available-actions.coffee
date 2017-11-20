@@ -17,9 +17,9 @@ angular.module('supla-scripts').constant 'CHANNEL_AVAILABLE_ACTIONS', do ->
       {label: 'żółty', action: 'setRgb,ffff00,100,100', noButton: yes, isActive: -> no}
       {label: 'czerwony', action: 'setRgb,ff0000,100,100', noButton: yes, isActive: -> no}
       {label: 'pomarańczowy', action: 'setRgb,ff8800,100,100', noButton: yes, isActive: -> no}
-      {label: 'jasny niebieski', action: 'setRgb,ff00ff,100,100', noButton: yes, isActive: -> no}
+      {label: 'jasny niebieski', action: 'setRgb,00ffff,100,100', noButton: yes, isActive: -> no}
       {label: 'niebieski', action: 'setRgb,0000ff,100,100', noButton: yes, isActive: -> no}
-      {label: 'różowy', action: 'setRgb,00ffff,100,100', noButton: yes, isActive: -> no}
+      {label: 'różowy', action: 'setRgb,ff00ff,100,100', noButton: yes, isActive: -> no}
       {label: 'zielony', action: 'setRgb,00ff00,100,100', noButton: yes, isActive: -> no}
       {label: 'losowy', action: 'setRgb,random,100,100', isActive: -> no}
     ]
