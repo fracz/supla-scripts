@@ -29,14 +29,12 @@ class Application extends App {
 
     private static $instance;
 
-    public function __construct(array $config = null) {
+    public function __construct() {
         if (self::$instance) {
             throw new \BadMethodCallException('Application can be instantiated only once. Use getInstance() instead.');
         }
         self::$instance = $this;
-        if (!$config) {
-            $config = require __DIR__ . '/../settings.php';
-        }
+        $config = require __DIR__ . '/../settings.php';
         parent::__construct(['settings' => $config]);
         $this->configureServices();
         $this->add(new JwtAndBasicAuthorizationMiddleware());
