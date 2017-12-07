@@ -109,7 +109,8 @@ function copySingleRequiredFiles() {
 function clearLocalConfigFiles() {
     del.sync([
         'release/**/.gitignore',
-        'release/backend/composer.*'
+        'release/backend/composer.*',
+        'release/docker/.env',
     ]);
 }
 
