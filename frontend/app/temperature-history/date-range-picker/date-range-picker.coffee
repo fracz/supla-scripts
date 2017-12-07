@@ -19,8 +19,8 @@ angular.module('supla-scripts').component 'dateRangePicker',
           timePicker: yes
           timePicker24Hour: yes
           maxDate: moment()
-          minDate: moment('2017-01-01T00:00:00')
-          opens: 'left'
+          minDate: moment('2016-01-01T00:00:00')
+          opens: 'right'
           startDate: @dateRange.startDate
           endDate: @dateRange.endDate
           locale:
