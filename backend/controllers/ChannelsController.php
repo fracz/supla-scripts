@@ -33,7 +33,11 @@ class ChannelsController extends BaseController {
     }
 
     public function getSensorLogsAction($params) {
-        $logs = $this->getApi()->getSensorLogs($params['id'], $this->request()->getParam('period', '-1hour'));
+        $logs = $this->getApi()->getSensorLogs(
+            $params['id'],
+            $this->request()->getParam('startDate', '-1hour'),
+            $this->request()->getParam('endDate', 'now')
+        );
         return $this->response($logs);
     }
 }

@@ -23,6 +23,7 @@
     "angular-ui-router": "0.4.2",
     "angularjs-slider": "6.2.3",
     "bootstrap": "3.3.7",
+    "bootstrap-daterangepicker": "2.1.25",
     "bootswatch": "3.3.7",
     "font-awesome-animation": "0.0.10",
     "moment-timezone": "0.5.13",

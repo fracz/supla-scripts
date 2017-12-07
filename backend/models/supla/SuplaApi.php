@@ -35,7 +35,7 @@ abstract class SuplaApi {
 
     abstract public function setRgb(int $channelId, string $color, int $colorBrightness = 100, int $brightness = 100);
 
-    abstract public function getSensorLogs(int $channelId, $fromTime = '-1day'): array;
+    abstract public function getSensorLogs(int $channelId, $fromTime = '-1day', $toTime = 'now'): array;
 
     abstract public function getClient(): SuplaApiClient;
 

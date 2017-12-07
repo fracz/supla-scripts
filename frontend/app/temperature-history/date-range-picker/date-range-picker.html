@@ -1,0 +1,8 @@
+<button class="btn btn-default btn-daterangepicker">
+    <fa name="calendar"
+        fw></fa>
+    {{ $ctrl.caption ? $ctrl.caption + ($ctrl.dateRange.startDate ? ': ' : '') : '' }}
+    {{ $ctrl.dateRange.startDate | amDateFormat:'lll' }} {{ $ctrl.dateRange.startDate ? '-' : '' }}
+    {{ $ctrl.dateRange.endDate | amDateFormat:'lll' }}
+    <span class="caret"></span>
+</button>

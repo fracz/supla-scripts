@@ -3,13 +3,16 @@ angular.module('supla-scripts').component 'temperatureHistoryPage',
   controller: ($scope, Channels, channelLabelFilter, swangular) ->
     new class
       $onInit: ->
-        @changePeriod('-1hour')
         Channels.getList(['FNC_THERMOMETER', 'FNC_HUMIDITYANDTEMPERATURE']).then((@sensors) =>)
+        @dateRange =
+          startDate: moment().subtract(24, 'hours')
+          endDate: moment()
+        @onDateRangeChange()
 
       downloadDataForSensor: (sensor) ->
         if not sensor.status
           sensor.status = 'downloading'
-          Channels.getLogs(sensor.id, @period)
+          Channels.getLogs(sensor.id, @dateRange)
           .finally(-> sensor.status = 'downloaded')
           .then (logs) =>
             if not logs?.length
@@ -58,7 +61,7 @@ angular.module('supla-scripts').component 'temperatureHistoryPage',
                 fill: no
 
 
-      changePeriod: (@period) ->
+      onDateRangeChange: ->
         delete sensor.status for sensor in @sensors if @sensors
         @timestamps = []
         @data = []

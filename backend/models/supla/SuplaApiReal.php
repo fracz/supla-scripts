@@ -91,8 +91,9 @@ class SuplaApiReal extends SuplaApi {
         return $result !== false;
     }
 
-    public function getSensorLogs(int $channelId, $fromTime = '-1day'): array {
+    public function getSensorLogs(int $channelId, $fromTime = '-1day', $toTime = 'now'): array {
         $fromTime = strtotime($fromTime);
+        $toTime = strtotime($toTime);
         $timeDiff = abs(time() - $fromTime);
         $withHumidity = false;
         $totalLogCount = $this->client->temperatureLogItemCount($channelId);
@@ -110,8 +111,8 @@ class SuplaApiReal extends SuplaApi {
             ? $this->client->temperatureAndHumidityLogGetItems($channelId, $offset, $desiredLogCount)
             : $this->client->temperatureLogGetItems($channelId, $offset, $desiredLogCount);
         $this->handleError($result);
-        $result = array_values(array_filter($result->log, function ($entry) use ($fromTime) {
-            return $entry->date_timestamp >= $fromTime;
+        $result = array_values(array_filter($result->log, function ($entry) use ($toTime, $fromTime) {
+            return $entry->date_timestamp >= $fromTime && $entry->date_timestamp <= $toTime;
         }));
         return $result;
     }
