@@ -5,8 +5,8 @@ angular.module('supla-scripts').component 'temperatureHistoryPage',
       $onInit: ->
         Channels.getList(['FNC_THERMOMETER', 'FNC_HUMIDITYANDTEMPERATURE']).then((@sensors) =>)
         @dateRange =
-          startDate: moment().subtract(24, 'hours')
-          endDate: moment()
+          startDate: moment().subtract(24, 'hours').startOf('minute')
+          endDate: moment().endOf('minute')
         @onDateRangeChange()
 
       downloadDataForSensor: (sensor) ->

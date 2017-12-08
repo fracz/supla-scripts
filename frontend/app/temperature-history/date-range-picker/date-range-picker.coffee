@@ -31,9 +31,9 @@ angular.module('supla-scripts').component 'dateRangePicker',
             cancelLabel: if @clearable then 'Wyczyść' else 'Anuluj'
             customRangeLabel: 'Wybierz'
           ranges:
-            'Ostatnia godzina': [moment().subtract(1, 'hours'), moment()],
-            'Ostatnie 6 godzin': [moment().subtract(6, 'hours'), moment()],
-            'Ostatnie 24 godziny': [moment().subtract(24, 'hours'), moment()],
+            'Ostatnia godzina': [moment().subtract(1, 'hours').startOf('minute'), moment().endOf('minute')],
+            'Ostatnie 6 godzin': [moment().subtract(6, 'hours').startOf('minute'), moment().endOf('minute')],
+            'Ostatnie 24 godziny': [moment().subtract(24, 'hours').startOf('minute'), moment().endOf('minute')],
             'Dzisiaj': [moment().startOf('day'), moment()],
             'Wczoraj': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')]
             'Ostatnie 7 dni': [moment().subtract(6, 'days').startOf('day'), moment()]
