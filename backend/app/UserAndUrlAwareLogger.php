@@ -23,9 +23,9 @@ class UserAndUrlAwareLogger implements LoggerInterface {
     private $level;
 
     public function __construct($level = Logger::NOTICE) {
+        $this->level = $level;
         $this->logger = new Logger('app_logger');
         $this->defaultHandlers = [$this->logFileHandler('app')];
-        $this->level = $level;
     }
 
     private function logFileHandler(string $filename): HandlerInterface {
