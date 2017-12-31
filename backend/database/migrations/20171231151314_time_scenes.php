@@ -8,6 +8,6 @@ class TimeScenes extends Migration {
     public function change() {
         $table = Scene::TABLE_NAME;
         $actions = Scene::ACTIONS;
-        Application::getInstance()->db->getConnection()->update("UPDATE $table SET $actions = CONCAT('{0:\"', $actions, '\"}');");
+        Application::getInstance()->db->getConnection()->update("UPDATE $table SET $actions = CONCAT('{\"0\":\"', $actions, '\"}');");
     }
 }

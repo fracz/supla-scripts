@@ -29,7 +29,7 @@ class Scene extends Model {
 
     protected $dates = [self::LAST_USED];
     protected $fillable = [self::LABEL, self::ACTIONS, self::FEEDBACK, self::VOICE_TRIGGERS];
-    protected $jsonEncoded = [self::VOICE_TRIGGERS];
+    protected $jsonEncoded = [self::ACTIONS, self::VOICE_TRIGGERS];
 
     public function user(): BelongsTo {
         return $this->belongsTo(User::class, self::USER_ID);

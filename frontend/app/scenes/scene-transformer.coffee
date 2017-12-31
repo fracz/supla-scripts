@@ -7,4 +7,6 @@ angular.module('supla-scripts').run (Restangular, Scenes) ->
             swal
               type: 'info'
               text: feedback
+    if angular.isArray(scene.actions)
+      scene.actions = {0: scene.actions[0]}
     scene
