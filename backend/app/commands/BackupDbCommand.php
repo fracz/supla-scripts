@@ -54,7 +54,7 @@ class BackupDbCommand extends Command {
 
     private function askIfContinue(InputInterface $input, OutputInterface $output) {
         $helper = $this->getHelper('question');
-        $want = $helper->ask($input, $output, new ConfirmationQuestion('Do you want to continue without backup? [y/N] ', false));
+        $want = $helper->ask($input, $output, new ConfirmationQuestion('Do you want to continue without backup? [y/N] ', !$input->isInteractive()));
         if (!$want) {
             throw new \RuntimeException('Could not create database backup.');
         }

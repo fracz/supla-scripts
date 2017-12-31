@@ -41,10 +41,6 @@ if [ "$1" = "start" ]; then
 
   fi
 
-  sleep 1
-  docker exec -it -u www-data "$CONTAINER_NAME" php supla-scripts init && echo -e "${GREEN}SUPLA Scripts containers has been started.${NC}"
-  ./install-crontab.sh
-
 elif [ "$1" = "stop" ]; then
   echo -e "${GREEN}Stopping SUPLA Scripts containers${NC}"
   docker-compose -f docker-compose.base.yml stop && echo -e "${GREEN}SUPLA Scripts containers has been stopped.${NC}"

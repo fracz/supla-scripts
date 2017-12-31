@@ -1,2 +1,2 @@
-# Run supla-scripts dispatcher every 5 minutes
-* * * * * /usr/bin/docker exec -u www-data suplascripts php supla-scripts dispatch:all
+* * * * * root /usr/local/bin/php /var/www/supla-scripts dispatch:all > /proc/1/fd/1 2>/proc/1/fd/2
+* * * * * root /usr/local/bin/php /var/www/supla-scripts dispatch:time-scenes > /proc/1/fd/1 2>/proc/1/fd/2

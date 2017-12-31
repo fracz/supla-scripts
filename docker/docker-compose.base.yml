@@ -10,7 +10,7 @@ services:
       args:
         WWW_DATA_UID: ${UID}
     volumes:
-      - ../:/var/www:z
+      - ../var:/var/www/var:z
       - ./apache-conf:/etc/apache2/sites-available:z
       - ../var/ssl:/etc/apache2/ssl:z
     depends_on:

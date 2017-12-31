@@ -20,7 +20,7 @@ class DispatchTimeScenesCommand extends Command {
         $intervals = Application::getInstance()->getSetting('intervals', []);
         $interval = $intervals['timeScenes'] ?? 5;
         $sleep = 0;
-        $command = 'time /t >> var/logs/test.log';
+        $command = 'date >> ' . __DIR__ . '/../../../var/logs/test.log';
         while ($sleep < 60) {
             $process = new Process("sleep $sleep && $command");
             $process->start();
