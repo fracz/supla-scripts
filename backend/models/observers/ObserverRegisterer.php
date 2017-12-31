@@ -8,7 +8,6 @@ use suplascripts\models\thermostat\Thermostat;
 use suplascripts\models\thermostat\ThermostatProfile;
 use suplascripts\models\thermostat\ThermostatRoom;
 use suplascripts\models\User;
-use suplascripts\models\voice\VoiceCommand;
 
 class ObserverRegisterer {
 
