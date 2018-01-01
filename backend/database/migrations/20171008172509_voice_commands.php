@@ -15,7 +15,7 @@ class VoiceCommands extends Migration {
             ->addForeignKey(Scene::USER_ID, User::TABLE_NAME, User::ID, ['delete' => 'CASCADE'])
             ->addTimestamps(Scene::CREATED_AT, Scene::UPDATED_AT)
             ->create();
-        $this->table(Scene::TABLE_NAME)
+        $this->table('voice_commands')
             ->changeColumn(Scene::ID, 'uuid')
             ->update();
 
