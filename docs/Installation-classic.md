@@ -48,9 +48,10 @@
        1. Change `ServerAdmin` to something meaningful.
        1. Fix paths to the SSL certificates (the default configuration uses
           the same certificates as SUPLA-Cloud).
-   1. Enable the virtual host
+   1. Enable the virtual host and enable mod_rewrite
        ```
        a2ensite supla-scripts
+       a2enmod rewrite
        service apache2 restart
        ```
 1. Change the owner of the `/var/www/supla-scripts` directory to `www-data`
