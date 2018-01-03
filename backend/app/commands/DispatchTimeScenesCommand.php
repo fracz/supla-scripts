@@ -20,7 +20,7 @@ class DispatchTimeScenesCommand extends Command {
         $intervals = Application::getInstance()->getSetting('intervals', []);
         $interval = $intervals['timeScenes'] ?? 5;
         $sleep = 0;
-        $command = 'date >> ' . __DIR__ . '/../../../var/logs/test.log';
+        $command = 'php ' . __DIR__ . '/../../../supla-scripts dispatch:time-scenes-execution';
         while ($sleep < 60) {
             $process = new Process("sleep $sleep && $command");
             $process->start();

@@ -8,6 +8,7 @@ angular.module('supla-scripts').component 'sceneCaption',
 
       $onInit: ->
         actions = @scene?.actions or @scene
+        actions = actions[0] if angular.isObject(actions)
         if angular.isString(actions)
           sceneStrings = actions.split('|').filter((e) -> !!e)
           promises = sceneStrings.map((sceneString) -> Channels.get(sceneString.split(';')[0]))

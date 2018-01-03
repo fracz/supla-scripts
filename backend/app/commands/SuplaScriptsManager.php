@@ -15,6 +15,7 @@ class SuplaScriptsManager extends Application {
             new DispatchCyclicTasksCommand(),
             new DispatchThermostatCommand(),
             new DispatchTimeScenesCommand(),
+            new DispatchTimeScenesExecutionCommand(),
             new DisplayLogoCommand(),
             new GenerateEncryptionKeyCommand(),
             new InitializeApplicationCommand(),

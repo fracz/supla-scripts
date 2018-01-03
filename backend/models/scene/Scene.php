@@ -4,6 +4,7 @@ namespace suplascripts\models\scene;
 
 use Assert\Assertion;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Ramsey\Uuid\Uuid;
 use suplascripts\models\Model;
 use suplascripts\models\User;
@@ -11,7 +12,7 @@ use suplascripts\models\User;
 /**
  * @property string $slug
  * @property string $label
- * @property string $actions
+ * @property string[] $actions
  * @property string $feedback
  * @property string[] $voiceTriggers
  * @property \DateTime $lastUsed
@@ -33,6 +34,10 @@ class Scene extends Model {
 
     public function user(): BelongsTo {
         return $this->belongsTo(User::class, self::USER_ID);
+    }
+
+    public function pendingScenes(): HasMany {
+        return $this->hasMany(PendingScene::class, PendingScene::SCENE_ID);
     }
 
     public function log($data) {
