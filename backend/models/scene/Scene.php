@@ -74,5 +74,11 @@ class Scene extends Model {
             ($attributes[self::FEEDBACK] ?? false) || ($attributes[self::ACTIONS] ?? false),
             'Scene must have either feedback or actions.'
         );
+        if ($attributes[self::ACTIONS]) {
+            $actions = $attributes[self::ACTIONS];
+            Assertion::isArray($actions);
+            Assertion::allNumeric(array_keys($actions));
+            Assertion::allGreaterOrEqualThan(array_keys($actions), 0);
+        }
     }
 }

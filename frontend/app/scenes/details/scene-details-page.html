@@ -4,6 +4,10 @@
 </view-title>
 
 <div class="btn-group btn-group-sm pull-right" ng-hide="$ctrl.editing">
+    <button class="btn btn-warning" ng-click="$ctrl.scene.clearPending()" ng-if="$ctrl.scene.pending_scenes.length" promise-btn>
+        <fa name="history" fw></fa>
+        Scena w trakcie wykonywania, kliknij by zatrzymać
+    </button>
     <button class="btn btn-default" ng-click="$ctrl.editing = true">
         <fa name="edit" fw></fa>
         Edytuj

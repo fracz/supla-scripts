@@ -3,10 +3,9 @@
     <hr>
     <div class="form-group">
         <span class="input-group">
-            <span class="input-group-addon">Poniższe akcje wykonaj</span>
             <input type="number" ng-model="$ctrl.offsets[$index]" min="5" max="600" step="5" class="form-control" ng-change="$ctrl.onChange()"
                    ng-disabled="$ctrl.disabled">
-            <span class="input-group-addon">sekund po akcjach głównych</span>
+            <span class="input-group-addon">sekund po wykonaniu sceny wykonaj</span>
             <span class="input-group-btn" ng-if="!$ctrl.disabled">
                 <button type="button" class="btn btn-danger" ng-click="$ctrl.deleteDelayedActions($index)">
                     <fa name="trash"></fa>

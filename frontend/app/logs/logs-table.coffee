@@ -8,7 +8,7 @@ angular.module('supla-scripts').component 'logsTable',
     new class
       $onInit: ->
         @fetch()
-        ScopeInterval($scope, @fetch, 15000, 5000)
+        ScopeInterval($scope, @fetch, 20000, 5000)
 
       fetch: =>
         Logs.getList({entityId: @entityId, limit: @limit or 100}).then (@logs) =>
