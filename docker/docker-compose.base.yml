@@ -13,6 +13,9 @@ services:
       - ../var:/var/www/var:z
       - ./apache-conf:/etc/apache2/sites-available:z
       - ../var/ssl:/etc/apache2/ssl:z
+    logging:
+      options:
+        max-size: 50m
     depends_on:
      - suplascripts-db
 
@@ -28,6 +31,9 @@ services:
       MYSQL_PASSWORD: ${DATABASE_PASSWORD}
     volumes:
        - ${VOLUME_DATA}/mysql:/var/lib/mysql:z
+    logging:
+      options:
+        max-size: 50m
 
 networks:
   default: ~
