@@ -12,12 +12,12 @@
     "database": "suplascripts",
     "host": "suplascripts-db",
     "username": "suplascripts",
-    "password": "",
+    "password": "CHANGE_ME_BEFORE_FIRST_LAUNCH",
     "charset": "utf8",
     "prefix": ""
   },
   "jwt": {
-    "key": "CHANGE ME",
+    "key": "CHANGE_SECRET_BEFORE_FIRST_LAUNCH",
     "expirationTime": 3600,
     "expirationTimeRememberMe": 604800,
     "expirationTimeClient": 157680000,

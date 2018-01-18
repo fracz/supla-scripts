@@ -5,10 +5,7 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}
     restart: unless-stopped
     networks: [default]
-    build:
-      context: .
-      args:
-        WWW_DATA_UID: ${UID}
+    build: .
     volumes:
       - ../var:/var/www/var:z
       - ./apache-conf:/etc/apache2/sites-available:z

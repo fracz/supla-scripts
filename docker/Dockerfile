@@ -24,7 +24,7 @@ RUN apt-get update \
     && apt-get autoremove \
     && rm -r /var/lib/apt/lists/*
 
-COPY crontab /etc/cron.d/suplascripts-cron
+COPY utils/crontab /etc/cron.d/suplascripts-cron
 
 RUN { \
 		echo 'opcache.memory_consumption=128'; \
@@ -38,14 +38,14 @@ RUN { \
     && chmod 0644 /etc/cron.d/suplascripts-cron
 
 
-ENV SUPLA_SCRIPTS_VERSION=2.5.3
+ENV SUPLA_SCRIPTS_VERSION=2.5.5
 COPY supla-scripts-$SUPLA_SCRIPTS_VERSION.tar.gz ./
 RUN wget -nc https://github.com/fracz/supla-scripts/releases/download/v${SUPLA_SCRIPTS_VERSION}/supla-scripts-${SUPLA_SCRIPTS_VERSION}.tar.gz \
     && tar -xzf supla-scripts-${SUPLA_SCRIPTS_VERSION}.tar.gz -C . \
     && rm -f supla-scripts-${SUPLA_SCRIPTS_VERSION}.tar.gz \
     && chown -hR www-data:www-data .
 
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-COPY entrypoint.sh /usr/local/bin/docker-php-entrypoint
+COPY utils/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY utils/entrypoint.sh /usr/local/bin/docker-php-entrypoint
 
 CMD ["/usr/bin/supervisord", "--nodaemon", "--configuration", "/etc/supervisor/conf.d/supervisord.conf"]

@@ -1,0 +1,5 @@
+version: '3'
+
+services:
+  suplascripts-db:
+    image: hypriot/rpi-mysql:5.5
