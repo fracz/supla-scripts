@@ -9,7 +9,7 @@ if [ ! -f .env ]; then
     DB_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)"
     sed -i "s+CHANGE_ME_BEFORE_FIRST_LAUNCH+$DB_PASSWORD+g" docker-config.env
     if [ "$(expr substr $(dpkg --print-architecture) 1 3)" == "arm" ]; then
-      sed -i -E "s/COMPOSE_FILE=(.+)/COMPOSE_FILE=\1:docker-compose.arm32v7.yml/" .env
+      sed -i -E "s/COMPOSE_FILE=(.+)/COMPOSE_FILE=\1:docker-compose.arm32v7.yml/" docker-config.env
     fi
     if [ ! -f config.json ]; then
       cp config.sample.json config.json
