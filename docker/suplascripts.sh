@@ -33,9 +33,9 @@ YELLOW='\033[1;33m'
 NC='\033[0m'
 
 if [ "$1" = "start" ]; then
-  echo -e "${GREEN}Starting SUPLA scripts containers${NC}"
+  echo -e "${GREEN}Starting SUPLA Scripts containers${NC}"
   docker-compose up --build -d && \
-  echo -e "${YELLOW}Starting in STANDALONE mode${NC}"
+  echo -e "${GREEN}SUPLA Scripts containers have been started${NC}"
 
 elif [ "$1" = "stop" ]; then
   echo -e "${GREEN}Stopping SUPLA Scripts containers${NC}"
