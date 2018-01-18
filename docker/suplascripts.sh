@@ -2,6 +2,9 @@
 
 cd "$(dirname "$0")"
 
+cat ./../scripts/logo.txt
+echo ""
+
 if [ ! -f .env ]; then
   cd ./../var/config
   if [ ! -f docker-config.env ]; then

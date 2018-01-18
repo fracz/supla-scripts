@@ -6,8 +6,6 @@ var fs = require('fs-extra');
 var async = require('async');
 var del = require('del');
 var exec = require('child_process').exec;
-var gulp = require('gulp');
-var crlfToLf = require('gulp-line-ending-corrector');
 
 var releasePackageName = 'supla-scripts-' + version + '.tar.gz';
 
@@ -53,7 +51,6 @@ function copyToReleaseDirectory() {
     [
         'backend/',
         'public',
-        'docker/',
     ].forEach(function (filename) {
         calls.push(function (callback) {
             fs.mkdirsSync('release/' + filename);
@@ -110,7 +107,6 @@ function clearLocalConfigFiles() {
     del.sync([
         'release/**/.gitignore',
         'release/backend/composer.*',
-        'release/docker/.env',
     ]);
 }
 
@@ -133,7 +129,7 @@ function deleteUnwantedSources() {
     ])
         .then(() => {
             spinner.succeed('Unneeded sources deleted.');
-            preprocessSources();
+            createTarArchive();
         })
         .catch((err) => {
             console.log(err);
@@ -141,24 +137,7 @@ function deleteUnwantedSources() {
         })
 }
 
-
-function preprocessSources() {
-    var spinner = ora({text: 'Preparing application sources.', color: 'yellow'}).start();
-    gulp.src([
-        'release/backend/**/*.php',
-        'release/docker/**/*',
-        'release/docker/**/.*',
-        'release/var/**/*'
-    ], {base: 'release'})
-        .pipe(crlfToLf())
-        .pipe(gulp.dest('release'))
-        .on('end', function () {
-            spinner.succeed('Application sources ready.');
-            createZipArchive();
-        });
-}
-
-function createZipArchive() {
+function createTarArchive() {
     var spinner = ora({text: 'Creating release archive.', color: 'yellow'}).start();
     exec('tar -czf ' + releasePackageName + ' release --transform=\'s/release\\/\\{0,1\\}//g\'', function (err) {
         if (err) {
