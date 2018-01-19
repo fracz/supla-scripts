@@ -18,14 +18,17 @@ class DispatchTimeScenesCommand extends Command {
 
     protected function execute(InputInterface $input, OutputInterface $output) {
         $intervals = Application::getInstance()->getSetting('intervals', []);
+        $phpPath = Application::getInstance()->getSetting('phpPath', '/usr/local/bin/php');
         $interval = $intervals['timeScenes'] ?? 5;
         $sleep = 0;
-        $command = 'php ' . __DIR__ . '/../../../supla-scripts dispatch:time-scenes-execution';
+        $command = $phpPath . ' ' . __DIR__ . '/../../../supla-scripts dispatch:time-scenes-execution';
         while ($sleep < 60) {
             $process = new Process("sleep $sleep && $command");
             $process->start();
             $sleep += $interval;
         }
         $process->wait();
+        $output->writeln($process->getOutput());
+        $output->writeln($process->getErrorOutput());
     }
 }

@@ -3,6 +3,7 @@
   "readOnly": false,
   "apiCache": true,
   "clearLogsOlderThan": "1week",
+  "phpPath": "/usr/local/bin/php",
   "intervals": {
     "thermostat": 5,
     "clearLogs": 60

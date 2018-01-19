@@ -2,10 +2,9 @@
 
 cd "$(dirname "$0")"
 
-cat ./../scripts/logo.txt
-echo ""
-
 if [ ! -f .env ]; then
+  cat ./../scripts/logo.txt
+  echo ""
   cd ./../var/config
   if [ ! -f docker-config.env ]; then
     cp docker-config.env.sample docker-config.env
@@ -36,6 +35,8 @@ YELLOW='\033[1;33m'
 NC='\033[0m'
 
 if [ "$1" = "start" ]; then
+  cat ./../scripts/logo.txt
+  echo ""
   echo -e "${GREEN}Starting SUPLA Scripts containers${NC}"
   docker-compose up --build -d && \
   echo -e "${GREEN}SUPLA Scripts containers have been started${NC}"

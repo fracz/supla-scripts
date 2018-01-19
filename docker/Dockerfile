@@ -24,7 +24,7 @@ RUN apt-get update \
     && apt-get autoremove \
     && rm -r /var/lib/apt/lists/*
 
-COPY ./utils/crontab /etc/cron.d/suplascripts-cron
+COPY utils/crontab /etc/cron.d/suplascripts
 
 RUN { \
 		echo 'opcache.memory_consumption=128'; \
@@ -35,17 +35,17 @@ RUN { \
 		echo 'opcache.enable_cli=1'; \
 	} > /usr/local/etc/php/conf.d/opcache-recommended.ini \
     && a2enmod rewrite expires deflate ssl cgi alias env && a2ensite default-ssl \
-    && chmod 0644 /etc/cron.d/suplascripts-cron
+    && chmod 0644 /etc/cron.d/suplascripts
 
 
-ENV SUPLA_SCRIPTS_VERSION=2.5.5
-#COPY supla-scripts-$SUPLA_SCRIPTS_VERSION.tar.gz ./
+ENV SUPLA_SCRIPTS_VERSION=2.6.0-beta.1
+COPY supla-scripts-$SUPLA_SCRIPTS_VERSION.tar.gz ./
 RUN wget -nc https://github.com/fracz/supla-scripts/releases/download/v${SUPLA_SCRIPTS_VERSION}/supla-scripts-${SUPLA_SCRIPTS_VERSION}.tar.gz \
     && tar -xzf supla-scripts-${SUPLA_SCRIPTS_VERSION}.tar.gz -C . \
     && rm -f supla-scripts-${SUPLA_SCRIPTS_VERSION}.tar.gz \
     && chown -hR www-data:www-data .
 
-COPY ./utils/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-COPY ./utils/entrypoint.sh /usr/local/bin/docker-php-entrypoint
+COPY utils/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY utils/entrypoint.sh /usr/local/bin/docker-php-entrypoint
 
 CMD ["/usr/bin/supervisord", "--nodaemon", "--configuration", "/etc/supervisor/conf.d/supervisord.conf"]

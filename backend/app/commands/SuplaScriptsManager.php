@@ -20,6 +20,7 @@ class SuplaScriptsManager extends Application {
             new GenerateEncryptionKeyCommand(),
             new InitializeApplicationCommand(),
             new MetricsReleaseCommand(),
+            new SendMetricsGaugesCommand(),
             new MigrateDbCommand(),
         ]);
     }
