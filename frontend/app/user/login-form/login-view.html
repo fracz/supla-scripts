@@ -8,8 +8,15 @@
             </div>
             <div class="panel-body">
                 <login-form></login-form>
-                <div class="text-center">
+                <div class="clearfix" ng-class="{'form-group': $ctrl.showDontRememberHint}">
+                    <a ng-click="$ctrl.showDontRememberHint = true" class="pull-right" ng-if="!$ctrl.showDontRememberHint">Nie pamiętam hasła</a>
                     <a ui-sref="register">Zarejestruj</a>
+                </div>
+                <div class="alert alert-info fx-fade-down no-margin" ng-if="$ctrl.showDontRememberHint">
+                    <fa name="key" fw class="pull-right" size="2"></fa>
+                    <p>Jeśli nie pamiętasz hasła do swojego konta, do logowania użyj wartości <em>Secret</em> z danych logowania do Twojego API
+                        w SUPLA Cloud.</p>
+                    <p>Po zalogowaniu użyj jej ponownie by zmienić hasło do Twojego konta.</p>
                 </div>
             </div>
         </div>
