@@ -2,6 +2,11 @@
 
 cd "$(dirname "$0")"
 
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
+
 if [ ! -f .env ]; then
   cat ./../scripts/logo.txt
   echo ""
@@ -28,11 +33,6 @@ if [ ! -f .env ]; then
 fi
 
 source .env >/dev/null 2>&1
-
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-NC='\033[0m'
 
 if [ "$1" = "start" ]; then
   cat ./../scripts/logo.txt
