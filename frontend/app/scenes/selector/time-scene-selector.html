@@ -1,0 +1,21 @@
+<scene-selector ng-model="$ctrl.actions[0]" disabled="$ctrl.disabled" ng-change="$ctrl.onChange()"></scene-selector>
+<div ng-repeat="offset in $ctrl.offsets track by $index" ng-if="!$first">
+    <hr>
+    <div class="form-group">
+        <span class="input-group">
+            <input type="number" ng-model="$ctrl.offsets[$index]" min="5" max="600" step="5" class="form-control" ng-change="$ctrl.onChange()"
+                   ng-disabled="$ctrl.disabled">
+            <span class="input-group-addon">sekund po wykonaniu sceny wykonaj</span>
+            <span class="input-group-btn" ng-if="!$ctrl.disabled">
+                <button type="button" class="btn btn-danger" ng-click="$ctrl.deleteDelayedActions($index)">
+                    <fa name="trash"></fa>
+                </button>
+            </span>
+        </span>
+    </div>
+    <scene-selector ng-model="$ctrl.actions[$index]" ng-change="$ctrl.onChange()" disabled="$ctrl.disabled"></scene-selector>
+</div>
+<button class="btn btn-default" type="button" ng-click="$ctrl.offsets.push(5)" ng-if="!$ctrl.disabled">
+    <fa name="history" fw></fa>
+    Dodaj opóźnione akcje
+</button>

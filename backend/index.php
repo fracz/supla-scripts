@@ -85,6 +85,7 @@ $app->group('/api', function () use ($app) {
         $app->get('/{id}', ScenesController::class . ':get');
         $app->put('/{id}', ScenesController::class . ':put');
         $app->delete('/{id}', ScenesController::class . ':delete');
+        $app->delete('/{id}/pending', ScenesController::class . ':deletePending');
         $app->patch('/feedback', ScenesController::class . ':interpolateFeedback');
         $app->patch('/{id}', ScenesController::class . ':executeScene');
         $app->post('/{id}/tokens', ScenesController::class . ':createClientForScene');

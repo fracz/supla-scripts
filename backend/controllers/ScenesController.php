@@ -32,7 +32,7 @@ class ScenesController extends BaseController {
 
     public function getAction($params) {
         $this->ensureAuthenticated();
-        $scene = $this->ensureExists($this->getCurrentUser()->scenes()->getQuery()->find($params)->first());
+        $scene = $this->ensureExists($this->getCurrentUser()->scenes()->getQuery()->with('pendingScenes')->find($params)->first());
         return $this->response($scene);
     }
 
@@ -56,6 +56,15 @@ class ScenesController extends BaseController {
         $scene->log('Usunięto scenę.');
         $scene->delete();
         return $this->response()->withStatus(204);
+    }
+
+    public function deletePendingAction($params) {
+        $this->ensureAuthenticated();
+        /** @var Scene $scene */
+        $scene = $this->ensureExists($this->getCurrentUser()->scenes()->getQuery()->find($params)->first());
+        $scene->pendingScenes()->delete();
+        $scene->log('Usunięto opóźnione wykonania.');
+        return $this->response($scene);
     }
 
     public function interpolateFeedbackAction() {

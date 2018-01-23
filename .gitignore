@@ -6,8 +6,7 @@ public/*
 !public/img/
 !public/v1.0/
 /.*
-/var/config/config.json
-volumes/
 *.gz
 release/
 var/
+*.sql

@@ -4,6 +4,7 @@ namespace suplascripts\models\scene;
 
 use Assert\Assertion;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Ramsey\Uuid\Uuid;
 use suplascripts\models\Model;
 use suplascripts\models\User;
@@ -11,7 +12,7 @@ use suplascripts\models\User;
 /**
  * @property string $slug
  * @property string $label
- * @property string $actions
+ * @property string[] $actions
  * @property string $feedback
  * @property string[] $voiceTriggers
  * @property \DateTime $lastUsed
@@ -29,10 +30,14 @@ class Scene extends Model {
 
     protected $dates = [self::LAST_USED];
     protected $fillable = [self::LABEL, self::ACTIONS, self::FEEDBACK, self::VOICE_TRIGGERS];
-    protected $jsonEncoded = [self::VOICE_TRIGGERS];
+    protected $jsonEncoded = [self::ACTIONS, self::VOICE_TRIGGERS];
 
     public function user(): BelongsTo {
         return $this->belongsTo(User::class, self::USER_ID);
+    }
+
+    public function pendingScenes(): HasMany {
+        return $this->hasMany(PendingScene::class, PendingScene::SCENE_ID);
     }
 
     public function log($data) {
@@ -69,5 +74,11 @@ class Scene extends Model {
             ($attributes[self::FEEDBACK] ?? false) || ($attributes[self::ACTIONS] ?? false),
             'Scene must have either feedback or actions.'
         );
+        if ($attributes[self::ACTIONS]) {
+            $actions = $attributes[self::ACTIONS];
+            Assertion::isArray($actions);
+            Assertion::allNumeric(array_keys($actions));
+            Assertion::allGreaterOrEqualThan(array_keys($actions), 0);
+        }
     }
 }

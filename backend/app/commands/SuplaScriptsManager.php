@@ -14,10 +14,13 @@ class SuplaScriptsManager extends Application {
             new ClearDbLogsCommand(),
             new DispatchCyclicTasksCommand(),
             new DispatchThermostatCommand(),
+            new DispatchTimeScenesCommand(),
+            new DispatchTimeScenesExecutionCommand(),
             new DisplayLogoCommand(),
             new GenerateEncryptionKeyCommand(),
             new InitializeApplicationCommand(),
             new MetricsReleaseCommand(),
+            new SendMetricsGaugesCommand(),
             new MigrateDbCommand(),
         ]);
     }

@@ -9,7 +9,7 @@ angular.module('supla-scripts').component 'thermostatPreview',
 
       $onInit: ->
         @fetch()
-        ScopeInterval($scope, @fetch, 15000, 5000)
+        ScopeInterval($scope, @fetch, 20000, 5000)
 
       fetch: =>
         if not @changingPromise

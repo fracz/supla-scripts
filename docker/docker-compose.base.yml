@@ -5,14 +5,14 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}
     restart: unless-stopped
     networks: [default]
-    build:
-      context: .
-      args:
-        WWW_DATA_UID: ${UID}
+    build: .
     volumes:
-      - ../:/var/www:z
+      - ../var:/var/www/var:z
       - ./apache-conf:/etc/apache2/sites-available:z
       - ../var/ssl:/etc/apache2/ssl:z
+    logging:
+      options:
+        max-size: 50m
     depends_on:
      - suplascripts-db
 
@@ -28,6 +28,9 @@ services:
       MYSQL_PASSWORD: ${DATABASE_PASSWORD}
     volumes:
        - ${VOLUME_DATA}/mysql:/var/lib/mysql:z
+    logging:
+      options:
+        max-size: 50m
 
 networks:
   default: ~
