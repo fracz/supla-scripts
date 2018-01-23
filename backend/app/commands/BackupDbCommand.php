@@ -30,7 +30,7 @@ class BackupDbCommand extends Command {
     }
 
     private function backupMysqlDatabase(array $dbSettings, InputInterface $input, OutputInterface $output) {
-        $backupName = 'supla-scripts-before-' . Application::version() . '-' . date('YmdHis') . '.sql.gz';
+        $backupName = 'supla-scripts-' . date('YmdHis') . '.sql.gz';
         $backupPath = self::BACKUP_DIR . '/' . $backupName;
         $process = new Process(sprintf(
             'mysqldump --user="%s" --password="%s" --host="%s" --single-transaction "%s" | gzip > "%s"',
