@@ -14,6 +14,7 @@ new features into your SUPLA account, today!
 * thermostat
 * voice commands
 * scenes
+* delayed scens
 * widgets (witch scenes' direct urls)
 * ability to check and change channel's state via web browser
 * temperature history charts
@@ -24,7 +25,6 @@ There are two ways to install supla-scripts.
 
 * [using Docker](https://github.com/fracz/supla-scripts/blob/master/docs/Installation-docker.md)
 * [using a local MySQL database and local server](https://github.com/fracz/supla-scripts/blob/master/docs/Installation-classic.md)
-  (suitable for e.g. RaspberyPI where Docker has problems)
 
 ## Where is v1.0?
 
