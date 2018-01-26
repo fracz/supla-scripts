@@ -36,6 +36,7 @@
    1. Set the `db/password` to the password you have generated for MySQL.
    1. Change `jwt/key` to something strong, different than MySQL password 
       (generate a different value with any generator).
+   1. Set the `phpPath` to where your `php` executable can be found, e.g. `/usr/bin/php`. Find it with `which php`.
 1. Initialize the application
    ```
    php /var/www/supla-scripts/supla-scripts init
@@ -59,7 +60,7 @@
     chown -R www-data:www-data /var/www/supla-scripts
     ```
 1. Check if the application is available on your server address and configured port.
-1. Install watchdog crontab by executing:
+1. Install necessary crontabs by executing:
    ```
    /var/www/supla-scripts/var/config/install-crontab.sh
    ```

@@ -12,7 +12,7 @@ class TimeScenes extends Migration {
         Application::getInstance()->db->getConnection()->update("UPDATE $table SET $actions = CONCAT('{\"0\":\"', $actions, '\"}');");
 
         $this->table(PendingScene::TABLE_NAME)
-            ->addColumn(PendingScene::EXECUTE_AFTER, 'timestamp')
+            ->addColumn(PendingScene::EXECUTE_AFTER, 'timestamp', ['default' => '2018-01-01 00:00:00'])
             ->addColumn(PendingScene::ACTIONS, 'text')
             ->addColumn(PendingScene::SCENE_ID, 'uuid')
             ->addForeignKey(PendingScene::SCENE_ID, Scene::TABLE_NAME, Scene::ID, ['delete' => 'CASCADE'])
