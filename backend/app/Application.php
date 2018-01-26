@@ -127,7 +127,7 @@ class Application extends App {
     }
 
     public static function version(): string {
-        $version = @file_get_contents(self::VAR_PATH . '/system/version');
+        $version = @file_get_contents(__DIR__ . '/../version');
         return $version ?: 'UNKNOWN';
     }
 }
