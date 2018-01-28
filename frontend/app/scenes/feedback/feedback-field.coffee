@@ -5,7 +5,7 @@ angular.module('supla-scripts').component 'feedbackField',
   controller: (Channels, channelLabelFilter, $timeout, $element) ->
 
     CHANNEL_FEEDBACKS =
-      FNC_LIGHTSWITCH: [{display: 'zaświeczone/zgaszone', suffix: 'on|bool:zaświecone,zgaszone'}]
+      FNC_LIGHTSWITCH: [{display: 'zaświecone/zgaszone', suffix: 'on|bool:zaświecone,zgaszone'}]
       FNC_POWERSWITCH: [{display: 'włączone/wyłączone', suffix: 'on|bool:włączone,wyłączone'}]
       FNC_THERMOMETER: [{display: 'temperatura', suffix: 'temperature|number:1'}]
       FNC_HUMIDITYANDTEMPERATURE: [{display: 'temperatura', suffix: 'temperature|number:1'}, {display: 'wilgotność', suffix: 'humidity|number:0'}]
