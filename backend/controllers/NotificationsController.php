@@ -39,7 +39,7 @@ class NotificationsController extends BaseController {
             if ($automate) {
                 $notification->log('Wyświetlono powiadomienie: ' . $response['show']['header'] . ' / ' . $response['show']['message']);
             }
-        } else if ($automate) {
+        } elseif ($automate) {
             $notification->log('Sprawdzanie stanu powiadomienia: nie wyświetlono');
         }
         return $this->response($response);
