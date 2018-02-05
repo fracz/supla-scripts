@@ -18,4 +18,5 @@ angular.module('supla-scripts').component 'notificationForm',
 
       submit: ->
         savedNotification = angular.copy(@notification)
+        savedNotification = angular.copy(@notification)
         @onSubmit({savedNotification})

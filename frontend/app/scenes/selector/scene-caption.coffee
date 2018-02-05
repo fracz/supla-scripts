@@ -31,8 +31,8 @@ angular.module('supla-scripts').component 'sceneCaption',
             .map (sceneString, index) ->
               channel = channels[index]
               action = sceneString.split(';')[1]
-              availableActions = CHANNEL_AVAILABLE_ACTIONS[channel.function.name]
-              actionDefinition = availableActions.filter((a) -> a.action == action)[0]
+              availableActions = CHANNEL_AVAILABLE_ACTIONS[channel?.function.name]
+              actionDefinition = availableActions?.filter((a) -> a.action == action)[0]
               if actionDefinition
                 "#{actionDefinition.label} #{channelLabelFilter(channel)}"
             .filter((a) -> !!a)

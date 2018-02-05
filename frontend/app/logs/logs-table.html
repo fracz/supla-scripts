@@ -28,6 +28,10 @@
                    ui-sref="scenes.details({id: entry.entityId})">
                     Scena
                 </a>
+                <a ng-switch-when="notification"
+                   ui-sref="notifications.details({id: entry.entityId})">
+                    Powiadomienie
+                </a>
             </span>
             <span ng-else>n.d.</span>
         </td>

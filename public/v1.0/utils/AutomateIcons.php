@@ -18,7 +18,7 @@ class AutomateIcons
     const HEART = 0xf117;
     const INFO = 0xf0e9;
     const KEY = 0xf053;
-    const LOCK_CLOSED = 0xf00b;
+    const LOCK_CLOSED = 0xf020;
     const LOCK_OPENED = 0xf00b;
     const MOON = 0xf0b9;
     const QUESTION_MARK = 0xf0ed;

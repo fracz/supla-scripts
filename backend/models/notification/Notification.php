@@ -39,7 +39,7 @@ class Notification extends Model {
     const USER_ID = 'userId';
 
     protected $fillable = [self::LABEL, self::CONDITION, self::INTERVALS, self::HEADER, self::MESSAGE, self::SOUND, self::VIBRATE, self::FLASH,
-        self::CANCELLABLE, self::ONGOING, self::AWAKE, self::ACTIONS, self::RETRY_INTERVAL, self::MIN_CONDITIONS];
+        self::CANCELLABLE, self::ONGOING, self::AWAKE, self::ACTIONS, self::RETRY_INTERVAL, self::MIN_CONDITIONS, self::ICON];
     protected $jsonEncoded = [self::ACTIONS];
 
     public function user(): BelongsTo {
@@ -62,7 +62,7 @@ class Notification extends Model {
         return array_map('trim', explode(',', $intervals));
     }
 
-    public function calculateNextNotificationTime($retry = true): int {
+    public function calculateNextNotificationTime($retry = false): int {
         if ($retry) {
             return time() + $this->retryInterval;
         } else {

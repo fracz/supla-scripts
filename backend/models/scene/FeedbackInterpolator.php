@@ -22,7 +22,7 @@ class FeedbackInterpolator {
         }
         switch ($varType) {
             case 'bool':
-                return $desiredValue ? ($config[0] ?? 'true') : ($config[1] ?? 'false');
+                return $desiredValue ? ($config[0] ?? '1') : ($config[1] ?? '0');
             case 'number':
                 return number_format($desiredValue, intval($config[0] ?? 1));
         }
