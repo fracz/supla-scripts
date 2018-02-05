@@ -15,6 +15,7 @@ use suplascripts\models\User;
  * @property string $header
  * @property string $message
  * @property array $intervals
+ * @property array $actions
  * @property int $retryInterval
  * @property int $minConditions
  * @property User $user
@@ -94,13 +95,22 @@ class Notification extends Model {
         if (!$attributes) {
             $attributes = $this->getAttributes();
         }
+        Assertion::keyExists($attributes, self::HEADER);
+        Assertion::notBlank($attributes[self::HEADER], 'Notification header is required');
         Assertion::keyExists($attributes, self::INTERVALS);
         Assertion::keyExists($attributes, self::MIN_CONDITIONS);
+        Assertion::keyExists($attributes, self::ACTIONS);
+        Assertion::isArray($attributes[self::ACTIONS]);
         Assertion::greaterOrEqualThan($attributes[self::MIN_CONDITIONS], 0, 'minConditions must be greater than or equal 0');
         $intervals = array_filter($this->getIntervals($attributes[self::INTERVALS]));
         Assertion::notEmpty($intervals);
         foreach ($intervals as $interval) {
             Assertion::true(CronExpression::isValidExpression($interval), 'Invalid interval: ' . $interval);
+        }
+        foreach ($attributes[self::ACTIONS] as $action) {
+            Assertion::isArray($action);
+            Assertion::keyExists($action, 'label');
+            Assertion::notBlank($action['label']);
         }
     }
 }

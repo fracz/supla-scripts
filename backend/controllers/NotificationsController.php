@@ -2,8 +2,10 @@
 
 namespace suplascripts\controllers;
 
+use Assert\Assertion;
 use suplascripts\models\notification\Notification;
 use suplascripts\models\scene\FeedbackInterpolator;
+use suplascripts\models\scene\SceneExecutor;
 
 class NotificationsController extends BaseController {
     public function postAction() {
@@ -29,7 +31,7 @@ class NotificationsController extends BaseController {
         $response = $notification->toArray();
         $response['nextRunTimestamp'] = $notification->calculateNextNotificationTime();
         $automate = $this->request()->getParam('automate', false);
-        if ($notification->isConditionMet()) {
+        if ($notification->isConditionMet() && !$this->request()->isMethod('PATCH')) {
             $feedbackInterpolator = new FeedbackInterpolator();
             $response['show'] = [
                 'header' => $feedbackInterpolator->interpolate($notification->header),
@@ -41,6 +43,9 @@ class NotificationsController extends BaseController {
             }
         } elseif ($automate) {
             $notification->log('Sprawdzanie stanu powiadomienia: nie wyświetlono');
+        }
+        if ($this->request()->isMethod('PATCH')) {
+            $response['nextRunTimestamp'] = $notification->calculateNextNotificationTime(true);
         }
         return $this->response($response);
     }
@@ -62,5 +67,23 @@ class NotificationsController extends BaseController {
         $notifications->log('Usunięto powiadomienie.');
         $notifications->delete();
         return $this->response()->withStatus(204);
+    }
+
+    public function executeActionAction($params) {
+        $this->ensureAuthenticated();
+        /** @var Notification $notification */
+        $notification = $this->ensureExists($this->getCurrentUser()->notifications()->getQuery()->find($params)->first());
+        $parsedBody = $this->request()->getParsedBody();
+        Assertion::keyExists($parsedBody, 'action');
+        $actionIndex = $parsedBody['action'];
+        Assertion::inArray($actionIndex, [0, 1, 2]);
+        Assertion::lessThan($actionIndex, count($notification->actions));
+        $action = $notification->actions[$actionIndex];
+        if (isset($action['scene']) && $action['scene']) {
+            $sceneExecutor = new SceneExecutor();
+            $sceneExecutor->executeCommandsFromString($action['scene']);
+        }
+        $notification->log('Wykonano akcję z powiadomienia: ' . $action['label']);
+        return $this->getAction($params);
     }
 }

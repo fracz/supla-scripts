@@ -97,6 +97,7 @@ $app->group('/api', function () use ($app) {
         $app->post('', NotificationsController::class . ':post');
         $app->get('/{id}', NotificationsController::class . ':get');
         $app->put('/{id}', NotificationsController::class . ':put');
+        $app->patch('/{id}', NotificationsController::class . ':executeAction');
         $app->delete('/{id}', NotificationsController::class . ':delete');
     });
 

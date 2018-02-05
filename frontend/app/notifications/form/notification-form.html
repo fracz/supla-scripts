@@ -110,6 +110,35 @@
         </label>
     </div>
 
+    <div class="form-group" ng-repeat="action in $ctrl.notification.actions">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <a class="btn btn-danger pull-right" ng-click="$ctrl.notification.actions.splice($ctrl.notification.actions.indexOf(actions), 1)">
+                    <fa name="trash" fw></fa>
+                    Usuń
+                </a>
+                <h4>Akcja {{ $index + 1 }}</h4>
+                <div class="form-group" show-errors>
+                    <label>Nazwa</label>
+                    <input type="text" ng-model="action.label" class="form-control" required name="action-name{{$index}}">
+                </div>
+                <div class="form-group">
+                    <label>Ikona</label>
+                    <notification-icon-chooser ng-model="action.icon"></notification-icon-chooser>
+                </div>
+                <div class="form-group">
+                    <label>Akcja</label>
+                    <scene-selector ng-model="action.scene"></scene-selector>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-default" ng-click="$ctrl.notification.actions.push({})" ng-disabled="$ctrl.notification.actions.length >= 3">
+        <fa name="cogs" fw></fa>
+        Dodaj akcję powiadomienia
+    </button>
+
     <div class="row">
         <div class="col-xs-12 text-right">
             <button type="button" class="btn btn-default" ng-click="$ctrl.onCancel()">

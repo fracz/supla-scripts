@@ -13,7 +13,7 @@ angular.module('supla-scripts').component 'notificationForm',
           @notification =
             intervals: '*/15 * * * *'
             minConditions: 1
-            actions: {}
+            actions: []
             cancellable: yes
 
       submit: ->
