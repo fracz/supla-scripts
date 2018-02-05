@@ -6,6 +6,20 @@ use suplascripts\models\notification\Notification;
 use suplascripts\models\scene\Scene;
 use suplascripts\models\User;
 
+/*
+ * const CONDITION = 'condition';
+    const INTERVAL = 'interval';
+    const HEADER = 'header';
+    const MESSAGE = 'message';
+    const SOUND = 'sound';
+    const VIBRATE = 'vibrate';
+    const FLASH = 'flash';
+    const CANCELLABLE = 'cancellable';
+    const ONGOING = 'ongoing';
+    const AWAKE = 'awake';
+    const ACTIONS = 'actions';
+ */
+
 class Notifications extends Migration {
     public function change() {
         $table = Scene::TABLE_NAME;
@@ -14,7 +28,19 @@ class Notifications extends Migration {
 
         $this->table(Notification::TABLE_NAME)
             ->addColumn(Notification::LABEL, 'string')
-            ->addColumn(Notification::CONFIG, 'text')
+            ->addColumn(Notification::CONDITION, 'text')
+            ->addColumn(Notification::INTERVALS, 'text')
+            ->addColumn(Notification::RETRY_INTERVAL, 'integer', ['default' => 60])
+            ->addColumn(Notification::HEADER, 'text')
+            ->addColumn(Notification::MESSAGE, 'text')
+            ->addColumn(Notification::ICON, 'integer', ['default' => 0])
+            ->addColumn(Notification::SOUND, 'boolean', ['default' => false])
+            ->addColumn(Notification::VIBRATE, 'boolean', ['default' => false])
+            ->addColumn(Notification::FLASH, 'boolean', ['default' => false])
+            ->addColumn(Notification::CANCELLABLE, 'boolean', ['default' => true])
+            ->addColumn(Notification::ONGOING, 'boolean', ['default' => false])
+            ->addColumn(Notification::AWAKE, 'boolean', ['default' => false])
+            ->addColumn(Notification::ACTIONS, 'text', ['null' => true])
             ->addColumn(Notification::USER_ID, 'uuid')
             ->addForeignKey(Notification::USER_ID, User::TABLE_NAME, User::ID, ['delete' => 'CASCADE'])
             ->addTimestamps(Notification::CREATED_AT, Notification::UPDATED_AT)

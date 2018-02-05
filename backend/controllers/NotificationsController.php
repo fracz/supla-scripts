@@ -2,14 +2,10 @@
 
 namespace suplascripts\controllers;
 
+use Cron\CronExpression;
 use suplascripts\models\notification\Notification;
 
 class NotificationsController extends BaseController {
-    public function getNotificationsCountAction() {
-        $this->ensureAuthenticated();
-        return ['count' => $this->getCurrentUser()->notifications()->getQuery()->count()];
-    }
-
     public function postAction() {
         $this->ensureAuthenticated();
         $parsedBody = $this->request()->getParsedBody();
@@ -28,8 +24,11 @@ class NotificationsController extends BaseController {
 
     public function getAction($params) {
         $this->ensureAuthenticated();
+        /** @var Notification $notification */
         $notification = $this->ensureExists($this->getCurrentUser()->notifications()->getQuery()->find($params)->first());
-        return $this->response($notification);
+        $response = $notification->toArray();
+        $response['nextRunTimestamp'] = $this->calculateNextNotificationTime($notification->getIntervals());
+        return $this->response($response);
     }
 
     public function putAction($params) {
@@ -49,5 +48,23 @@ class NotificationsController extends BaseController {
         $notifications->log('Usunięto powiadomienie.');
         $notifications->delete();
         return $this->response()->withStatus(204);
+    }
+
+    function calculateNextNotificationTime($interval) {
+        if (is_array($interval) && isset($interval['interval'])) {
+            $interval = $interval['interval'];
+        }
+        if (is_int($interval)) {
+            return time() + $interval;
+        } else {
+            if (!is_array($interval)) {
+                $interval = [$interval];
+            }
+            $nextRunDates = array_map(function ($cronExpression) {
+                $cron = CronExpression::factory($cronExpression);
+                return $cron->getNextRunDate()->getTimestamp();
+            }, $interval);
+            return min($nextRunDates);
+        }
     }
 }

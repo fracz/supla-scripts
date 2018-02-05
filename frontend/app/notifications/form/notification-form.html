@@ -9,9 +9,64 @@
         <input type="text" class="form-control" name="label" required ng-model="$ctrl.notification.label">
     </div>
 
+    <div class="form-group">
+        <label>Warunek</label>
+        <feedback-field ng-model="$ctrl.notification.condition"></feedback-field>
+    </div>
+    <div class="well fx-fade-up" ng-if="$ctrl.notification.condition">
+        <feedback-interpolation feedback="$ctrl.notification.condition"></feedback-interpolation>
+    </div>
+
     <div class="form-group" show-errors>
-        <label>Konfiguracja</label>
-        <textarea class="form-control" name="config" required ng-model="$ctrl.notification.config"></textarea>
+        <label>Czas</label>
+        <input type="text" class="form-control" ng-model="$ctrl.notification.intervals" required name="interval">
+    </div>
+
+    <div class="form-group">
+        <label>Powiadomienie (nagłówek)</label>
+        <feedback-field ng-model="$ctrl.notification.header"></feedback-field>
+    </div>
+    <div class="well fx-fade-up" ng-if="$ctrl.notification.header">
+        <feedback-interpolation feedback="$ctrl.notification.header"></feedback-interpolation>
+    </div>
+
+    <div class="form-group">
+        <label>Powiadomienie (treść)</label>
+        <feedback-field ng-model="$ctrl.notification.message"></feedback-field>
+    </div>
+    <div class="well fx-fade-up" ng-if="$ctrl.notification.message">
+        <feedback-interpolation feedback="$ctrl.notification.message"></feedback-interpolation>
+    </div>
+
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" ng-model="$ctrl.notification.sound"> Dźwięk
+        </label>
+    </div>
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" ng-model="$ctrl.notification.vibrate"> Wibracje
+        </label>
+    </div>
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" ng-model="$ctrl.notification.flash"> Dioda
+        </label>
+    </div>
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" ng-model="$ctrl.notification.cancellable"> Usuwalne
+        </label>
+    </div>
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" ng-model="$ctrl.notification.ongoing"> Trwające
+        </label>
+    </div>
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" ng-model="$ctrl.notification.awake"> Wybudź urządzenie
+        </label>
     </div>
 
     <div class="row">
