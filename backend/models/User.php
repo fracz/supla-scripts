@@ -5,6 +5,7 @@ namespace suplascripts\models;
 use Assert\Assert;
 use Assert\Assertion;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use suplascripts\models\notification\Notification;
 use suplascripts\models\scene\Scene;
 use suplascripts\models\supla\SuplaApi;
 use suplascripts\models\thermostat\Thermostat;
@@ -18,6 +19,7 @@ use suplascripts\models\thermostat\Thermostat;
  * @property string $timezone
  * @property Scene[] $scenes
  * @property Client[] $clients
+ * @property Notification[] $notifications
  */
 class User extends Model {
 
@@ -61,6 +63,10 @@ class User extends Model {
 
     public function scenes(): HasMany {
         return $this->hasMany(Scene::class, Scene::USER_ID);
+    }
+
+    public function notifications(): HasMany {
+        return $this->hasMany(Notification::class, Notification::USER_ID);
     }
 
     public function clients(): HasMany {

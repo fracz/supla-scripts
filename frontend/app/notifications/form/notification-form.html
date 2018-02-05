@@ -1,0 +1,30 @@
+<h2 class="no-margin-top">{{ $ctrl.notification.id ? 'Edytuj' : 'Dodaj' }} powiadomienie</h2>
+<form name="notificationForm"
+      novalidate
+      promise-btn
+      ng-submit="$broadcast('show-errors-check-validity') && notificationForm.$valid && $ctrl.submit()">
+
+    <div class="form-group" show-errors>
+        <label>Nazwa</label>
+        <input type="text" class="form-control" name="label" required ng-model="$ctrl.notification.label">
+    </div>
+
+    <div class="form-group" show-errors>
+        <label>Konfiguracja</label>
+        <textarea class="form-control" name="config" required ng-model="$ctrl.notification.config"></textarea>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 text-right">
+            <button type="button" class="btn btn-default" ng-click="$ctrl.onCancel()">
+                <fa name="times" fw></fa>
+                Anuluj
+            </button>
+            <button type="submit" class="btn btn-primary">
+                <fa name="{{ $ctrl.notification.id ? 'save' : 'plus' }}" fw></fa>
+                {{ $ctrl.notification.id ? 'Zapisz' : 'Dodaj' }} powiadomienie
+            </button>
+        </div>
+    </div>
+</form>
+

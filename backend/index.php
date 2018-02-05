@@ -7,6 +7,7 @@ use suplascripts\controllers\ChannelsController;
 use suplascripts\controllers\ClientsController;
 use suplascripts\controllers\DevicesController;
 use suplascripts\controllers\LogsController;
+use suplascripts\controllers\NotificationsController;
 use suplascripts\controllers\ScenesController;
 use suplascripts\controllers\SystemController;
 use suplascripts\controllers\thermostat\ThermostatProfilesController;
@@ -89,6 +90,14 @@ $app->group('/api', function () use ($app) {
         $app->patch('/feedback', ScenesController::class . ':interpolateFeedback');
         $app->patch('/{id}', ScenesController::class . ':executeScene');
         $app->post('/{id}/tokens', ScenesController::class . ':createClientForScene');
+    });
+
+    $app->group('/notifications', function () use ($app) {
+        $app->get('', NotificationsController::class . ':getList');
+        $app->post('', NotificationsController::class . ':post');
+        $app->get('/{id}', NotificationsController::class . ':get');
+        $app->put('/{id}', NotificationsController::class . ':put');
+        $app->delete('/{id}', NotificationsController::class . ':delete');
     });
 
     $app->group('/clients', function () use ($app) {

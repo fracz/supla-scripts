@@ -81,6 +81,17 @@ angular.module('supla-scripts')
     resolve:
       scene: (Scenes, $stateParams) -> Scenes.one($stateParams.id).get()
 
+  .state 'notifications',
+    url: '/notifications'
+    template: '<notifications-page></notifications-page>'
+
+  .state 'notifications.details',
+    url: '/:id'
+    template: '<notification-details-page notification="notification"></notification-details-page>'
+    controller: ($scope, notification) -> $scope.notification = notification
+    resolve:
+      notification: (Notifications, $stateParams) -> Notifications.one($stateParams.id).get()
+
   .state 'account',
     url: '/account'
     abstract: true
