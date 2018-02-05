@@ -51,8 +51,11 @@ class Notification extends Model {
     }
 
     public function save(array $options = []) {
-        if (!$this->intervals) {
-            $this->intervals = '*/15 * * * *';
+        if (!$this->message) {
+            $this->message = '';
+        }
+        if (!$this->header) {
+            $this->header = '';
         }
         return parent::save($options);
     }
