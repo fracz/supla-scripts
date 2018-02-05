@@ -74,7 +74,7 @@ class Notification extends Model {
         } else {
             $nextRunDates = array_map(function ($cronExpression) {
                 $cron = CronExpression::factory($cronExpression);
-                return $cron->getNextRunDate()->getTimestamp();
+                return $cron->getNextRunDate(new \DateTime('now', $this->user->getTimezone()))->getTimestamp();
             }, $this->getIntervals());
             return min($nextRunDates);
         }
