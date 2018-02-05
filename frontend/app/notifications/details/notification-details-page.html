@@ -22,9 +22,20 @@
     <h2 class="no-margin-top">
         {{ $ctrl.notification.label }}
     </h2>
-    <p class="text-muted">
-        {{ $ctrl.notification.config }}
+    <p>
+        Aktualnie powiadomienie jest:
+        <span class="label label-success" ng-if="$ctrl.notification.show">POKAZYWANE</span>
+        <span class="label label-danger" ng-else>UKRYTE</span>
     </p>
+    <h3>Podgląd</h3>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="panel" ng-class="$ctrl.notification.show ? 'panel-info' : 'panel-default'">
+                <div class="panel-heading">{{ $ctrl.notification.show.header || $ctrl.notification.header }}</div>
+                <div class="panel-body">{{ $ctrl.notification.show.message || $ctrl.notification.message }}</div>
+            </div>
+        </div>
+    </div>
     <h3>Logi</h3>
     <logs-table entity-id="$ctrl.notification.id" limit="30" on-new-logs="$ctrl.reloadNotification()"></logs-table>
 </div>

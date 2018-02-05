@@ -13,6 +13,6 @@ angular.module('supla-scripts').config ($httpProvider) ->
         else if rejection.status in [401, 403] and rejection.config.method is 'GET'
           $injector.get('$timeout')(-> $injector.get('$state').go('notAllowed', {}, {reload: yes, location: no}))
         else if rejection.status isnt 404 and rejection.status > 0
-          error = rejection.config.onError or ['Wystąpił nieoczekiwany błąd', rejection.data?.message]
+          error = rejection.config.onError or ['Błąd', rejection.data?.message]
           Notifier.error(error...)
       $q.reject(rejection)

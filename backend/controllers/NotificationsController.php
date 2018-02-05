@@ -2,8 +2,8 @@
 
 namespace suplascripts\controllers;
 
-use Cron\CronExpression;
 use suplascripts\models\notification\Notification;
+use suplascripts\models\scene\FeedbackInterpolator;
 
 class NotificationsController extends BaseController {
     public function postAction() {
@@ -27,7 +27,20 @@ class NotificationsController extends BaseController {
         /** @var Notification $notification */
         $notification = $this->ensureExists($this->getCurrentUser()->notifications()->getQuery()->find($params)->first());
         $response = $notification->toArray();
-        $response['nextRunTimestamp'] = $this->calculateNextNotificationTime($notification->getIntervals());
+        $response['nextRunTimestamp'] = $notification->calculateNextNotificationTime();
+        $automate = $this->request()->getParam('automate', false);
+        if ($notification->isConditionMet()) {
+            $feedbackInterpolator = new FeedbackInterpolator();
+            $response['show'] = [
+                'header' => $feedbackInterpolator->interpolate($notification->header),
+                'message' => $feedbackInterpolator->interpolate($notification->message),
+            ];
+            if ($automate) {
+                $notification->log('Wyświetlono powiadomienie: ' . var_export($response['show'], true));
+            }
+        } else if ($automate) {
+            $notification->log('Sprawdzanie stanu powiadomienia: nie wyświetlono');
+        }
         return $this->response($response);
     }
 
@@ -48,23 +61,5 @@ class NotificationsController extends BaseController {
         $notifications->log('Usunięto powiadomienie.');
         $notifications->delete();
         return $this->response()->withStatus(204);
-    }
-
-    function calculateNextNotificationTime($interval) {
-        if (is_array($interval) && isset($interval['interval'])) {
-            $interval = $interval['interval'];
-        }
-        if (is_int($interval)) {
-            return time() + $interval;
-        } else {
-            if (!is_array($interval)) {
-                $interval = [$interval];
-            }
-            $nextRunDates = array_map(function ($cronExpression) {
-                $cron = CronExpression::factory($cronExpression);
-                return $cron->getNextRunDate()->getTimestamp();
-            }, $interval);
-            return min($nextRunDates);
-        }
     }
 }

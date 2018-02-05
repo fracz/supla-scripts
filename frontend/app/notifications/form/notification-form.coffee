@@ -9,9 +9,12 @@ angular.module('supla-scripts').component 'notificationForm',
       $onInit: ->
         if @notification
           @notification = angular.copy(@notification.plain?() or @notification)
-          @notification.generateSlug = !!@notification.slug
         else
-          @notification = {actions: {}}
+          @notification =
+            intervals: '*/15 * * * *'
+            minConditions: 1
+            actions: {}
+            cancellable: yes
 
       submit: ->
         savedNotification = angular.copy(@notification)

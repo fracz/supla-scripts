@@ -6,20 +6,6 @@ use suplascripts\models\notification\Notification;
 use suplascripts\models\scene\Scene;
 use suplascripts\models\User;
 
-/*
- * const CONDITION = 'condition';
-    const INTERVAL = 'interval';
-    const HEADER = 'header';
-    const MESSAGE = 'message';
-    const SOUND = 'sound';
-    const VIBRATE = 'vibrate';
-    const FLASH = 'flash';
-    const CANCELLABLE = 'cancellable';
-    const ONGOING = 'ongoing';
-    const AWAKE = 'awake';
-    const ACTIONS = 'actions';
- */
-
 class Notifications extends Migration {
     public function change() {
         $table = Scene::TABLE_NAME;
@@ -29,6 +15,7 @@ class Notifications extends Migration {
         $this->table(Notification::TABLE_NAME)
             ->addColumn(Notification::LABEL, 'string')
             ->addColumn(Notification::CONDITION, 'text')
+            ->addColumn(Notification::MIN_CONDITIONS, 'integer', ['default' => 1])
             ->addColumn(Notification::INTERVALS, 'text')
             ->addColumn(Notification::RETRY_INTERVAL, 'integer', ['default' => 60])
             ->addColumn(Notification::HEADER, 'text')

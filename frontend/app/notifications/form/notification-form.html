@@ -10,16 +10,52 @@
     </div>
 
     <div class="form-group">
+        <fa name="question-circle" class="pull-right pointer" ng-click="$ctrl.conditionHelp = !$ctrl.conditionHelp"></fa>
         <label>Warunek</label>
         <feedback-field ng-model="$ctrl.notification.condition"></feedback-field>
+        <div class="help-block fx-fade-up" ng-if="$ctrl.conditionHelp">
+            Warunek powiadomienia to stan kanału: jeśli coś jest włączone, jeśli coś jest zamknięte itp.
+            Kilka warunków oddziel spacją.
+            Użyj znaku <code>{</code> by wyświetlić dostępne podpowiedzi.
+            <div>
+                Przykładowe warunki:<br>
+                <code ng-non-bindable>{{1|on|bool}} {{2|hi|bool}} {{3|on|bool:false,true}}</code>
+            </div>
+            oznaczają: wyświetl to powiadomienie, jeśli kanał 1 jest włączony, 2 jest zamknięty i 3 jest wyłączony.
+            Po wypełnieniu wartości w tym polu otrzymasz aktualny wynik.
+        </div>
     </div>
     <div class="well fx-fade-up" ng-if="$ctrl.notification.condition">
         <feedback-interpolation feedback="$ctrl.notification.condition"></feedback-interpolation>
     </div>
 
     <div class="form-group" show-errors>
+        <fa name="question-circle" class="pull-right pointer" ng-click="$ctrl.minConditionsHelp = !$ctrl.minConditionsHelp"></fa>
+        <label>Minimalna liczba warunków do spełnienia</label>
+        <input type="number" ng-model="$ctrl.notification.minConditions" required name="min-conditions" class="form-control" min="0">
+        <div class="help-block fx-fade-up" ng-if="$ctrl.minConditionsHelp">
+            Ile warunków z pola <em>Warunek</em> musi być spełnione by pokazać powiadomienie? Wartość <code>0</code> spowoduje pokazywanie
+            powiadomienia za każdym razem przy sprawdzaniu stanu.
+        </div>
+    </div>
+
+    <div class="form-group" show-errors>
+        <fa name="question-circle" class="pull-right pointer" ng-click="$ctrl.intervalHelp = !$ctrl.intervalHelp"></fa>
         <label>Czas</label>
         <input type="text" class="form-control" ng-model="$ctrl.notification.intervals" required name="interval">
+        <div class="help-block fx-fade-up" ng-if="$ctrl.intervalHelp">
+            W notacji <a href="https://pl.wikipedia.org/wiki/Crontab">crontab</a> podaj kiedy aplikacja ma sprawdzać warunki i ewentualnie pokazywać
+            powiadomienie. Wiele specyfikacji oddziel przecinkami. Przykłady:
+            <ul>
+                <li><code>* * * * *</code> - co minutę</li>
+                <li><code>*/15 * * * *</code> - co 15 minut</li>
+                <li><code>30 6 * * *, 0 15 * * *</code> - o 6:30 i o 15:00</li>
+                <li><code>44 7 * * 6,7</code> - o 7:44 w soboty i niedziele</li>
+                <li><code>13 * 20 5 *</code> - co godzinę w 13 minucie, tylko 20 maja</li>
+            </ul>
+            Ustawianie częstszego sprawdzania spowoduje szybsze pokazanie powiadomienia, ale wpłynie negatywnie na czas pracy na baterii Twojego
+            urządzenia mobilnego.
+        </div>
     </div>
 
     <div class="form-group">
