@@ -57,6 +57,9 @@ class Notification extends Model {
         if (!$this->header) {
             $this->header = '';
         }
+        if (!$this->condition) {
+            $this->condition = '';
+        }
         return parent::save($options);
     }
 
@@ -66,7 +69,7 @@ class Notification extends Model {
     }
 
     public function calculateNextNotificationTime($retry = false): int {
-        if ($retry) {
+        if ($retry && $this->condition) {
             return time() + $this->retryInterval;
         } else {
             $nextRunDates = array_map(function ($cronExpression) {
