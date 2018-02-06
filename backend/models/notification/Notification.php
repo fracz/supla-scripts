@@ -105,8 +105,6 @@ class Notification extends Model {
         if (!$attributes) {
             $attributes = $this->getAttributes();
         }
-        Assertion::keyExists($attributes, self::HEADER);
-        Assertion::notBlank($attributes[self::HEADER], 'Notification header is required');
         Assertion::keyExists($attributes, self::INTERVALS);
         Assertion::keyExists($attributes, self::MIN_CONDITIONS);
         Assertion::keyExists($attributes, self::ACTIONS);

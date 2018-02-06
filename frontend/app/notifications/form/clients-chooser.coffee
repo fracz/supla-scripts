@@ -10,7 +10,7 @@ angular.module('supla-scripts').component 'clientsChooser',
 
       updateSelectedClients: =>
         @selectedClients = {}
-        if @ngModel.$viewValue
+        if @ngModel.$viewValue and @clients
           availableIds = @clients.map(({id}) -> id)
           @selectedClients[id] = yes for id in @ngModel.$viewValue when id in availableIds
         @updateLabel()

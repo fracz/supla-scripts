@@ -9,7 +9,7 @@ class FeedbackInterpolator {
 
     const NOT_CONNECTED_RESPONSE = ' DISCONNECTED ';
 
-    public function interpolate(string $feedback) {
+    public function interpolate($feedback) {
         if (!$feedback) {
             return $feedback;
         }
