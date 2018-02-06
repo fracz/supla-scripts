@@ -25,11 +25,13 @@ angular.module('supla-scripts').component 'feedbackField',
             {
               trigger: /\{([^\s]*)/ig
               list: (match, callback) =>
-                availableFeedbacks =  @flatten @feedbackableChannels.map (channel) ->
-                  angular.copy(CHANNEL_FEEDBACKS[channel.function.name]).map (feedback) ->
-                    feedback.display = channelLabelFilter(channel) + " (#{feedback.display})"
-                    feedback.channel = channel
-                    feedback
+                availableFeedbacks = []
+                if @feedbackableChannels
+                  availableFeedbacks = @flatten @feedbackableChannels.map (channel) ->
+                    angular.copy(CHANNEL_FEEDBACKS[channel.function.name]).map (feedback) ->
+                      feedback.display = channelLabelFilter(channel) + " (#{feedback.display})"
+                      feedback.channel = channel
+                      feedback
                 callback availableFeedbacks.filter (feedback) ->
                   !match[0] or feedback.display.toLocaleLowerCase().indexOf(match[1].toLowerCase()) >= 0
               onSelect: (item) =>

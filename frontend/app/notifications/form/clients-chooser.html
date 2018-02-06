@@ -1,0 +1,19 @@
+<div class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" id="clientsChooser" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="true">
+        {{ $ctrl.label }}
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="clientsChooser" ng-click="$event.stopPropagation()">
+        <li ng-repeat="client in $ctrl.clients" ng-class="{active: $ctrl.selectedClients[client.id]}">
+            <a ng-click="$ctrl.toggle(client)">
+                <fa name="{{ $ctrl.selectedClients[client.id] ? 'check' : '' }}" class="pull-right" fw></fa>
+                {{ client.label }}
+                <div class="text-muted">
+                    Ostatnio używany: &nbsp;
+                    <date-with-tooltip date="client.lastConnectionDate"></date-with-tooltip>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>

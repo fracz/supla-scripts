@@ -3,6 +3,7 @@
 namespace suplascripts\controllers;
 
 use Assert\Assertion;
+use suplascripts\models\Client;
 use suplascripts\models\notification\Notification;
 use suplascripts\models\scene\FeedbackInterpolator;
 use suplascripts\models\scene\SceneExecutor;
@@ -21,6 +22,13 @@ class NotificationsController extends BaseController {
     public function getListAction() {
         $this->ensureAuthenticated();
         $notifications = $this->getCurrentUser()->notifications()->getQuery()->orderBy(Notification::LABEL)->get();
+        if ($this->request()->getParam('onlyForMe') && $this->getApp()->getContainer()->has('currentClient')) {
+            /** @var Client $currentClient */
+            $currentClient = $this->getApp()->currentClient;
+            $notifications = $notifications->filter(function (Notification $notification) use ($currentClient) {
+                return is_array($notification->clientIds) ? in_array($currentClient->id, $notification->clientIds) : false;
+            });
+        }
         return $this->response($notifications);
     }
 

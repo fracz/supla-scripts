@@ -19,6 +19,7 @@ use suplascripts\models\User;
  * @property int $retryInterval
  * @property int $minConditions
  * @property User $user
+ * @property string[] $clientIds
  */
 class Notification extends Model {
     const TABLE_NAME = 'notifications';
@@ -38,10 +39,14 @@ class Notification extends Model {
     const AWAKE = 'awake';
     const ACTIONS = 'actions';
     const USER_ID = 'userId';
+    const CLIENT_IDS = 'clientIds';
+    const SPEECH = 'speech';
+    const DISPLAY_IF_DISCONNECTED = 'displayIfDisconnected';
 
     protected $fillable = [self::LABEL, self::CONDITION, self::INTERVALS, self::HEADER, self::MESSAGE, self::SOUND, self::VIBRATE, self::FLASH,
-        self::CANCELLABLE, self::ONGOING, self::AWAKE, self::ACTIONS, self::RETRY_INTERVAL, self::MIN_CONDITIONS, self::ICON];
-    protected $jsonEncoded = [self::ACTIONS];
+        self::CANCELLABLE, self::ONGOING, self::AWAKE, self::ACTIONS, self::RETRY_INTERVAL, self::MIN_CONDITIONS, self::ICON, self::CLIENT_IDS,
+        self::SPEECH, self::DISPLAY_IF_DISCONNECTED];
+    protected $jsonEncoded = [self::ACTIONS, self::CLIENT_IDS];
 
     public function user(): BelongsTo {
         return $this->belongsTo(User::class, self::USER_ID);
@@ -101,6 +106,9 @@ class Notification extends Model {
         Assertion::keyExists($attributes, self::MIN_CONDITIONS);
         Assertion::keyExists($attributes, self::ACTIONS);
         Assertion::isArray($attributes[self::ACTIONS]);
+        Assertion::keyExists($attributes, self::CLIENT_IDS, 'Notification should be shown on at least one device.');
+        Assertion::isArray($attributes[self::CLIENT_IDS]);
+        Assertion::notEmpty($attributes[self::CLIENT_IDS], 'Notification should be shown on at least one device.');
         Assertion::greaterOrEqualThan($attributes[self::MIN_CONDITIONS], 0, 'minConditions must be greater than or equal 0');
         $intervals = array_filter($this->getIntervals($attributes[self::INTERVALS]));
         Assertion::notEmpty($intervals);

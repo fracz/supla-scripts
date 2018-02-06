@@ -30,6 +30,9 @@
     <p>
         Najbliższe sprawdzenie: {{ $ctrl.notification.nextRunTimestamp | amFromUnix | amCalendar }}
     </p>
+    <p>
+        Liczba urządzeń korzystająych z powiadomienia: {{ $ctrl.notification.clientIds.length }}
+    </p>
     <h3>Podgląd</h3>
     <div class="row">
         <div class="col-lg-6">
