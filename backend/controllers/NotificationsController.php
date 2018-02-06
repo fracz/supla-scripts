@@ -44,6 +44,7 @@ class NotificationsController extends BaseController {
             $response['show'] = [
                 'header' => $feedbackInterpolator->interpolate($notification->header),
                 'message' => $feedbackInterpolator->interpolate($notification->message),
+                'speech' => $feedbackInterpolator->interpolate($notification->speech),
             ];
             $response['nextRunTimestamp'] = $notification->calculateNextNotificationTime(true);
             if ($automate) {

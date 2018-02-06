@@ -14,6 +14,7 @@ use suplascripts\models\User;
  * @property string $condition
  * @property string $header
  * @property string $message
+ * @property string $speech
  * @property array $intervals
  * @property array $actions
  * @property int $retryInterval
