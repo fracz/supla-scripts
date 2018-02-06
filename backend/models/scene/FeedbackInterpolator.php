@@ -18,7 +18,7 @@ class FeedbackInterpolator {
         $state = $this->getApi()->getChannelState($channelId);
         $desiredValue = $state->{$field};
         if (!$state->connected) {
-            return ' false ';
+            return ' BRAK POŁĄCZENIA ';
         }
         switch ($varType) {
             case 'bool':
