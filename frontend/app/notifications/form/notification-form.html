@@ -118,6 +118,12 @@
             <input type="checkbox" ng-model="$ctrl.notification.awake"> Wybudź urządzenie
         </label>
     </div>
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" ng-model="$ctrl.notification.displayIfDisconnected">
+            Wyświetlaj gdy nie udało się połączyć z jednym z warunkowych kanałów
+        </label>
+    </div>
 
     <div class="form-group" ng-repeat="action in $ctrl.notification.actions">
         <div class="panel panel-default">

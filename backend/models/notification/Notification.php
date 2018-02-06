@@ -21,6 +21,7 @@ use suplascripts\models\User;
  * @property int $minConditions
  * @property User $user
  * @property string[] $clientIds
+ * @property bool $displayIfDisconnected
  */
 class Notification extends Model {
     const TABLE_NAME = 'notifications';
@@ -93,6 +94,9 @@ class Notification extends Model {
         }
         $feedbackInterpolator = new FeedbackInterpolator();
         $condition = $feedbackInterpolator->interpolate($this->condition);
+        if (strpos($condition, FeedbackInterpolator::NOT_CONNECTED_RESPONSE) !== false) {
+            return $this->displayIfDisconnected;
+        }
         $conditions = array_map('boolval', array_map('trim', explode(' ', $condition)));
         return count(array_filter($conditions)) >= $this->minConditions;
     }
