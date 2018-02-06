@@ -66,7 +66,7 @@ class Notification extends Model {
 
     public function getIntervals(string $fromIntervals = null) {
         $intervals = $fromIntervals ?: $this->intervals;
-        return array_map('trim', explode(',', $intervals));
+        return array_map('trim', explode('|', $intervals));
     }
 
     public function calculateNextNotificationTime($retry = false): int {

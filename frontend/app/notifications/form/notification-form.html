@@ -45,13 +45,14 @@
         <input type="text" class="form-control" ng-model="$ctrl.notification.intervals" required name="interval">
         <div class="help-block fx-fade-up" ng-if="$ctrl.intervalHelp">
             W notacji <a href="https://pl.wikipedia.org/wiki/Crontab">crontab</a> podaj kiedy aplikacja ma sprawdzać warunki i ewentualnie pokazywać
-            powiadomienie. Wiele specyfikacji oddziel przecinkami. Przykłady:
+            powiadomienie. Wiele specyfikacji oddziel znakiem <code>|</code>. Przykłady:
             <ul>
                 <li><code>* * * * *</code> - co minutę</li>
                 <li><code>*/15 * * * *</code> - co 15 minut</li>
-                <li><code>30 6 * * *, 0 15 * * *</code> - o 6:30 i o 15:00</li>
+                <li><code>30 6 * * * | 0 15 * * *</code> - o 6:30 i o 15:00</li>
                 <li><code>44 7 * * 6,7</code> - o 7:44 w soboty i niedziele</li>
                 <li><code>13 * 20 5 *</code> - co godzinę w 13 minucie, tylko 20 maja</li>
+                <li><code>*/15 22-23,0-6 * * *</code> - co 15 minut od 22 do 6 rano</li>
             </ul>
             Ustawianie częstszego sprawdzania spowoduje szybsze pokazanie powiadomienia, ale wpłynie negatywnie na czas pracy na baterii Twojego
             urządzenia mobilnego.
