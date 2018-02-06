@@ -70,7 +70,8 @@ class ScenesController extends BaseController {
     public function interpolateFeedbackAction() {
         $this->ensureAuthenticated();
         $request = $this->request()->getParsedBody();
-        Assertion::notEmptyKey($request, 'feedback');
+        Assertion::keyExists($request, 'feedback');
+        Assertion::notBlank($request['feedback']);
         return (new FeedbackInterpolator())->interpolate($request['feedback']);
     }
 

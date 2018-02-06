@@ -77,6 +77,7 @@ class Notification extends Model {
     }
 
     public function calculateNextNotificationTime($retry = false): int {
+//        return time() + 10;
         if ($retry && $this->condition) {
             return time() + $this->retryInterval;
         } else {

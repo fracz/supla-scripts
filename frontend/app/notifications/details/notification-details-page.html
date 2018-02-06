@@ -36,8 +36,9 @@
     <h3>Podgląd</h3>
     <div class="row">
         <div class="col-lg-6">
-            <div class="panel" ng-class="$ctrl.notification.show ? 'panel-info' : 'panel-default'">
-                <div class="panel-heading">
+            <div class="panel" ng-class="$ctrl.notification.show ? 'panel-info' : 'panel-default'"
+                 ng-if="$ctrl.notification.header || $ctrl.notification.message">
+                <div class="panel-heading" ng-if="$ctrl.notification.header">
                     <fa name="{{ $ctrl.notification.icon | notificationIcon }}"></fa>
                     &nbsp;
                     {{ $ctrl.notification.show.header || $ctrl.notification.header }}
@@ -53,6 +54,10 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div ng-if="$ctrl.notification.speech">
+        <fa name="bullhorn" fw></fa>
+        {{ $ctrl.notification.show.speech || $ctrl.notification.speech }}
     </div>
     <h3>Logi</h3>
     <logs-table entity-id="$ctrl.notification.id" limit="30" on-new-logs="$ctrl.reloadNotification()"></logs-table>

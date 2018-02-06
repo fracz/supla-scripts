@@ -48,7 +48,12 @@ class NotificationsController extends BaseController {
             ];
             $response['nextRunTimestamp'] = $notification->calculateNextNotificationTime(true);
             if ($automate) {
-                $notification->log('Wyświetlono powiadomienie: ' . $response['show']['header'] . ' / ' . $response['show']['message']);
+                if ($notification->header) {
+                    $notification->log('Wyświetlono powiadomienie: ' . $response['show']['header'] . ' / ' . $response['show']['message']);
+                }
+                if ($notification->speech) {
+                    $notification->log('Wypowiedziano powiadomienie: ' . $response['show']['speech']);
+                }
             }
         } elseif ($automate) {
             $notification->log('Sprawdzanie stanu powiadomienia: nie wyświetlono');
