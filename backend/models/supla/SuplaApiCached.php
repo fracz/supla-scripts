@@ -3,6 +3,7 @@
 namespace suplascripts\models\supla;
 
 use Supla\ApiClient\SuplaApiClient;
+use suplascripts\app\Application;
 use suplascripts\models\User;
 
 class SuplaApiCached extends SuplaApi {
@@ -16,7 +17,6 @@ class SuplaApiCached extends SuplaApi {
         $this->api = $api;
         $this->user = $user;
     }
-
 
     public function getDevices(): array {
         return $this->getFromCache(__METHOD__, [], function () {
@@ -79,7 +79,10 @@ class SuplaApiCached extends SuplaApi {
         $group = $this->user->id . ($channelId ? '/' . $channelId : '');
         $key = \FileSystemCache::generateCacheKey([$method, $arguments], $group);
         $value = \FileSystemCache::retrieve($key);
-        if (!$value) {
+        if ($value) {
+            Application::getInstance()->metrics->increment('cache_hit');
+        } else {
+            Application::getInstance()->metrics->increment('cache_miss');
             $value = $factory();
             \FileSystemCache::store($key, $value, 60);
         }
