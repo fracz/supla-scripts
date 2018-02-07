@@ -18,6 +18,7 @@ angular.module('supla-scripts').component 'feedbackField',
       ]
       FNC_OPENINGSENSOR_GARAGEDOOR: [{display: 'otwarta/zamknięta', suffix: 'hi|bool:zamknięta,otwarta'}]
       FNC_OPENINGSENSOR_DOOR: [{display: 'otwarte/zamknięte', suffix: 'hi|bool:zamknięte,otwarte'}]
+      FNC_OPENINGSENSOR_ROLLERSHUTTER: [{display: 'otwarte/zamknięte', suffix: 'hi|bool:zamknięte,otwarte'}]
       FNC_OPENINGSENSOR_GATE: [{display: 'otwarta/zamknięta', suffix: 'hi|bool:zamknięta,otwarta'}]
       FNC_OPENINGSENSOR_GATEWAY: [{display: 'otwarta/zamknięta', suffix: 'hi|bool:zamknięta,otwarta'}]
       FNC_OPENINGSENSOR_WINDOW: [{display: 'otwarte/zamknięte', suffix: 'hi|bool:zamknięte,otwarte'}]
