@@ -6,8 +6,16 @@ angular.module('supla-scripts').component 'feedbackField',
     CHANNEL_FEEDBACKS =
       FNC_LIGHTSWITCH: [{display: 'zaświecone/zgaszone', suffix: 'on|bool:zaświecone,zgaszone'}]
       FNC_POWERSWITCH: [{display: 'włączone/wyłączone', suffix: 'on|bool:włączone,wyłączone'}]
-      FNC_THERMOMETER: [{display: 'temperatura', suffix: 'temperature|number:1'}]
-      FNC_HUMIDITYANDTEMPERATURE: [{display: 'temperatura', suffix: 'temperature|number:1'}, {display: 'wilgotność', suffix: 'humidity|number:0'}]
+      FNC_THERMOMETER: [
+        {display: 'temperatura', suffix: 'temperature|number:1'}
+        {display: 'warunek temperatury', suffix: 'temperature|compare:<,10,zimno,ciepło'}
+      ]
+      FNC_HUMIDITYANDTEMPERATURE: [
+        {display: 'temperatura', suffix: 'temperature|number:1'},
+        {display: 'warunek temperatury', suffix: 'temperature|compare:<,10,zimno,ciepło'}
+        {display: 'wilgotność', suffix: 'humidity|number:0'}
+        {display: 'warunek wilgotności', suffix: 'humidity|compare:<,50,sucho,wilgotno'}
+      ]
       FNC_OPENINGSENSOR_GARAGEDOOR: [{display: 'otwarta/zamknięta', suffix: 'hi|bool:zamknięta,otwarta'}]
       FNC_OPENINGSENSOR_DOOR: [{display: 'otwarte/zamknięte', suffix: 'hi|bool:zamknięte,otwarte'}]
       FNC_OPENINGSENSOR_GATE: [{display: 'otwarta/zamknięta', suffix: 'hi|bool:zamknięta,otwarta'}]

@@ -21,20 +21,35 @@
         <fa name="question-circle" class="pull-right pointer" ng-click="$ctrl.conditionHelp = !$ctrl.conditionHelp"></fa>
         <label>Warunek</label>
         <feedback-field ng-model="$ctrl.notification.condition"></feedback-field>
-        <div class="help-block fx-fade-up" ng-if="$ctrl.conditionHelp">
-            Warunek powiadomienia to stan kanału: jeśli coś jest włączone, jeśli coś jest zamknięte itp.
-            Kilka warunków oddziel spacją.
-            Użyj znaku <code>{</code> by wyświetlić dostępne podpowiedzi.
-            <div>
-                Przykładowe warunki:<br>
-                <code ng-non-bindable>{{1|on|bool}} {{2|hi|bool}} {{3|on|bool:0,1}}</code>
-            </div>
-            oznaczają: wyświetl to powiadomienie, jeśli kanał 1 jest włączony, 2 jest zamknięty i 3 jest wyłączony.
-            Po wypełnieniu wartości w tym polu otrzymasz aktualny wynik. <code>1</code> oznacza warunek spełniony, <code>0</code> - niespełniony.
-        </div>
+
     </div>
     <div class="well fx-fade-up" ng-if="$ctrl.notification.condition">
         <feedback-interpolation feedback="$ctrl.notification.condition"></feedback-interpolation>
+    </div>
+    <div class="well fx-fade-up" ng-if="$ctrl.conditionHelp">
+        <p>Warunek powiadomienia to stan kanału: jeśli coś jest włączone, jeśli coś jest zamknięte itp.</p>
+        <p>Kilka warunków oddziel spacją.</p>
+        <p>Użyj znaku <code>{</code> by wyświetlić dostępne podpowiedzi.</p>
+        <ul>
+            <li>
+                <code ng-non-bindable>{{1|on|bool}}</code>
+                wyświetli powiadomienie, jeśli kanał 1 jest włączony
+            </li>
+            <li>
+                <code ng-non-bindable>{{1|on|bool}} {{2|hi|bool}} {{3|on|bool:0,1}}</code> -
+                wyświetli, jeśli kanał 1 jest włączony, 2 jest zamknięty i 3 jest wyłączon
+            </li>
+            <li>
+                <code ng-non-bindable>{{4|temperature|compare:&lt;,-2.5}}</code>
+                wyświetli powiadomienie, jeśli temperatura na kanale 4 jest mniejsza od -2.5&deg;C
+            </li>
+            <li>
+                <code ng-non-bindable>{{5|temperature|compare:&gt;=,10}}</code>
+                wyświetli powiadomienie, jeśli temperatura na kanale 5 jest większa lub równa 10&deg;C
+            </li>
+        </ul>
+        <p>Po wypełnieniu wartości w tym polu otrzymasz aktualny wynik. <code>1</code> oznacza warunek spełniony, <code>0</code> - niespełniony.
+        </p>
     </div>
 
     <div class="form-group" show-errors>
