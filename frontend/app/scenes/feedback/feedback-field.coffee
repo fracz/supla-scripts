@@ -3,7 +3,6 @@ angular.module('supla-scripts').component 'feedbackField',
   require:
     ngModel: 'ngModel'
   controller: (Channels, channelLabelFilter, $timeout, $element) ->
-
     CHANNEL_FEEDBACKS =
       FNC_LIGHTSWITCH: [{display: 'zaświecone/zgaszone', suffix: 'on|bool:zaświecone,zgaszone'}]
       FNC_POWERSWITCH: [{display: 'włączone/wyłączone', suffix: 'on|bool:włączone,wyłączone'}]
@@ -13,6 +12,8 @@ angular.module('supla-scripts').component 'feedbackField',
       FNC_OPENINGSENSOR_DOOR: [{display: 'otwarte/zamknięte', suffix: 'hi|bool:zamknięte,otwarte'}]
       FNC_OPENINGSENSOR_GATE: [{display: 'otwarta/zamknięta', suffix: 'hi|bool:zamknięta,otwarta'}]
       FNC_OPENINGSENSOR_GATEWAY: [{display: 'otwarta/zamknięta', suffix: 'hi|bool:zamknięta,otwarta'}]
+      FNC_OPENINGSENSOR_WINDOW: [{display: 'otwarte/zamknięte', suffix: 'hi|bool:zamknięte,otwarte'}]
+      FNC_MAILSENSOR: [{display: 'jest/nie ma', suffix: 'hi|bool:nie ma,jest'}]
 
     new class
       $onInit: ->
