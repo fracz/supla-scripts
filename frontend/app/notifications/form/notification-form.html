@@ -37,7 +37,7 @@
             </li>
             <li>
                 <code ng-non-bindable>{{1|on|bool}} {{2|hi|bool}} {{3|on|bool:0,1}}</code> -
-                wyświetli, jeśli kanał 1 jest włączony, 2 jest zamknięty i 3 jest wyłączon
+                wyświetli, jeśli kanał 1 jest włączony, 2 jest zamknięty i 3 jest wyłączony
             </li>
             <li>
                 <code ng-non-bindable>{{4|temperature|compare:&lt;,-2.5}}</code>
@@ -46,6 +46,10 @@
             <li>
                 <code ng-non-bindable>{{5|temperature|compare:&gt;=,10}}</code>
                 wyświetli powiadomienie, jeśli temperatura na kanale 5 jest większa lub równa 10&deg;C
+            </li>
+            <li>
+                <code ng-non-bindable>{{5|temperature|compare:>,15#temperature}}</code>
+                wyświetli powiadomienie, jeśli temperatura na kanale 5 jest większa od temperatury na kanale 15
             </li>
         </ul>
         <p>Po wypełnieniu wartości w tym polu otrzymasz aktualny wynik. <code>1</code> oznacza warunek spełniony, <code>0</code> - niespełniony.
