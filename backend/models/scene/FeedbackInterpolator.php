@@ -30,11 +30,15 @@ class FeedbackInterpolator {
             case 'bool':
                 return $desiredValue ? ($config[0] ?? '1') : ($config[1] ?? '0');
             case 'number':
-                return number_format($desiredValue, intval($config[0] ?? 1));
+                return number_format(floatval($desiredValue), intval($config[0] ?? 1));
             case 'compare':
                 $operator = $config[0] ?? '==';
                 Assertion::inArray($operator, ['<', '<=', '>', '>=', '==']);
                 $compareTo = $config[1] ?? 0;
+                if (preg_match('@(\d+)#(temperature|humidity)@', $compareTo, $matches)) {
+                    $compateToInterpolation = '{{' . "$matches[1]|$matches[2]|number}}";
+                    $compareTo = $this->interpolate($compateToInterpolation);
+                }
                 eval('$result = ($desiredValue ' . $operator . ' $compareTo);');
                 return $result ? ($config[2] ?? '1') : ($config[3] ?? '0');
         }
