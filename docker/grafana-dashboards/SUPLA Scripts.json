@@ -18,6 +18,12 @@
     },
     {
       "type": "panel",
+      "id": "grafana-piechart-panel",
+      "name": "Pie Chart",
+      "version": "1.1.6"
+    },
+    {
+      "type": "panel",
       "id": "graph",
       "name": "Graph",
       "version": ""
@@ -216,11 +222,11 @@
           "targets": [
             {
               "refId": "A",
-              "target": "stats.timers.suplascripts.$Instance.time.upper_90",
-              "textEditor": true
+              "target": "stats.timers.suplascripts.$Instance.time.mean_90",
+              "textEditor": false
             }
           ],
-          "thresholds": "400,1000,2000",
+          "thresholds": "300,600,1200",
           "title": "90% odpowiedzi poniżej",
           "type": "singlestat",
           "valueFontSize": "80%",
@@ -238,9 +244,9 @@
           "colorBackground": false,
           "colorValue": false,
           "colors": [
-            "rgba(245, 54, 54, 0.9)",
+            "rgba(50, 172, 45, 0.97)",
             "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
+            "rgba(245, 54, 54, 0.9)"
           ],
           "datasource": "${DS_LOCAL_GRAPHITE}",
           "decimals": 0,
@@ -295,7 +301,7 @@
               "textEditor": true
             }
           ],
-          "thresholds": "",
+          "thresholds": "60,80",
           "title": "Częstotliwość requestów",
           "type": "singlestat",
           "valueFontSize": "80%",
@@ -398,7 +404,9 @@
       "height": 203,
       "panels": [
         {
-          "aliasColors": {},
+          "aliasColors": {
+            "Wykonanie sceny": "#AEA2E0"
+          },
           "bars": false,
           "dashLength": 10,
           "dashes": false,
@@ -450,7 +458,12 @@
             },
             {
               "refId": "E",
-              "target": "alias(averageSeries(stats.timers.suplascripts.$Instance.endpoint.ScenesController.{executeSceneBySlug,executeScene}.time.upper_90), 'Wykonanie sceny')",
+              "target": "alias(averageSeries(stats.timers.suplascripts.$Instance.endpoint.ScenesController.{executeSceneBySlug,executeScene,executeSceneByClient}.time.upper_90), 'Wykonanie sceny')",
+              "textEditor": true
+            },
+            {
+              "refId": "F",
+              "target": "alias(stats.timers.suplascripts.$Instance.endpoint.NotificationsController.get.time.upper_90, 'Sprawdzenie powiadomienia')",
               "textEditor": true
             }
           ],
@@ -491,7 +504,9 @@
           ]
         },
         {
-          "aliasColors": {},
+          "aliasColors": {
+            "Wykonanie sceny": "#AEA2E0"
+          },
           "bars": true,
           "dashLength": 10,
           "dashes": false,
@@ -543,9 +558,14 @@
               "textEditor": false
             },
             {
+              "hide": false,
               "refId": "E",
-              "target": "alias(sumSeries(stats.counters.suplascripts.$Instance.endpoint.ScenesController.{executeSceneBySlug,executeScene}.*.count), 'Wykonanie sceny')",
-              "textEditor": true
+              "target": "alias(sumSeries(stats.counters.suplascripts.$Instance.endpoint.ScenesController.{executeSceneBySlug,executeScene,executeSceneByClient}.*.count), 'Wykonanie sceny')",
+              "textEditor": false
+            },
+            {
+              "refId": "F",
+              "target": "alias(sumSeries(stats.counters.suplascripts.$Instance.endpoint.NotificationsController.get.*.count), 'Powiadomienia')"
             }
           ],
           "thresholds": [],
@@ -594,7 +614,7 @@
     },
     {
       "collapse": false,
-      "height": 137,
+      "height": 164,
       "panels": [
         {
           "cacheTimeout": null,
@@ -642,7 +662,7 @@
               "to": "null"
             }
           ],
-          "span": 3,
+          "span": 2,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
@@ -716,7 +736,7 @@
               "to": "null"
             }
           ],
-          "span": 3,
+          "span": 2,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
@@ -789,7 +809,7 @@
               "to": "null"
             }
           ],
-          "span": 3,
+          "span": 2,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
@@ -863,7 +883,7 @@
               "to": "null"
             }
           ],
-          "span": 3,
+          "span": 2,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
@@ -936,7 +956,7 @@
               "to": "null"
             }
           ],
-          "span": 12,
+          "span": 2,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
@@ -947,7 +967,7 @@
           "targets": [
             {
               "refId": "A",
-              "target": "consolidateBy(sumSeries(stats.counters.suplascripts.$Instance.endpoint.ScenesController.{executeSceneBySlug,executeScene}.*.count), 'sum')",
+              "target": "consolidateBy(sumSeries(stats.counters.suplascripts.$Instance.endpoint.ScenesController.{executeSceneBySlug,executeSceneByClient,executeScene}.*.count), 'sum')",
               "textEditor": true
             }
           ],
@@ -962,6 +982,515 @@
               "value": "null"
             }
           ],
+          "valueName": "total"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "datasource": "${DS_LOCAL_GRAPHITE}",
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "id": 17,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "span": 2,
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": true
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "refId": "A",
+              "target": "consolidateBy(sumSeries(stats.counters.suplascripts.$Instance.endpoint.NotificationsController.get.*.count), 'sum')",
+              "textEditor": true
+            }
+          ],
+          "thresholds": "",
+          "title": "Odczyt powiadomień",
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "total"
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Dashboard Row",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": false,
+      "height": 197,
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_LOCAL_GRAPHITE}",
+          "fill": 1,
+          "id": 13,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 3,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "refId": "A",
+              "target": "stats.gauges.suplascripts.$Instance.users"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Accounts count",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_LOCAL_GRAPHITE}",
+          "fill": 1,
+          "id": 14,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "minSpan": null,
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 3,
+          "stack": false,
+          "steppedLine": true,
+          "targets": [
+            {
+              "refId": "A",
+              "target": "stats.gauges.suplascripts.$Instance.scenes"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Scenes count",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_LOCAL_GRAPHITE}",
+          "fill": 1,
+          "id": 15,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 3,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "refId": "A",
+              "target": "stats.gauges.suplascripts.$Instance.pending_scenes"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Pending scenes",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_LOCAL_GRAPHITE}",
+          "fill": 1,
+          "id": 16,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 3,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "refId": "A",
+              "target": "stats.gauges.suplascripts.$Instance.notifications"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Notifications",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ]
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Dashboard Row",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": false,
+      "height": 250,
+      "panels": [
+        {
+          "aliasColors": {
+            "Cache Miss": "#E24D42"
+          },
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_LOCAL_GRAPHITE}",
+          "fill": 1,
+          "id": 18,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": false,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": true,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "refId": "A",
+              "target": "alias(stats.counters.suplascripts.$Instance.cache_hit.count, 'Cache Hit')"
+            },
+            {
+              "refId": "B",
+              "target": "alias(stats.counters.suplascripts.$Instance.cache_miss.count, 'Cache Miss')"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Cache usage",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "cacheTimeout": null,
+          "combine": {
+            "label": "Others",
+            "threshold": 0
+          },
+          "datasource": "${DS_LOCAL_GRAPHITE}",
+          "fontSize": "80%",
+          "format": "short",
+          "hideTimeOverride": false,
+          "id": 12,
+          "interval": null,
+          "legend": {
+            "percentage": false,
+            "show": true,
+            "values": false
+          },
+          "legendType": "Right side",
+          "links": [],
+          "maxDataPoints": 3,
+          "nullPointMode": "connected",
+          "pieType": "pie",
+          "span": 6,
+          "strokeWidth": "3",
+          "targets": [
+            {
+              "refId": "A",
+              "target": "alias(consolidateBy(sumSeries(stats.counters.suplascripts.$Instance.endpoint.ScenesController.executeSceneBySlug.*.count), 'sum'), 'Publiczny URL')",
+              "textEditor": true
+            },
+            {
+              "refId": "B",
+              "target": "alias(consolidateBy(sumSeries(stats.counters.suplascripts.$Instance.endpoint.ScenesController.executeSceneByClient.*.count), 'sum'), 'Autoryzowany URL')"
+            },
+            {
+              "refId": "C",
+              "target": "alias(consolidateBy(sumSeries(stats.counters.suplascripts.$Instance.endpoint.ScenesController.executeScene.*.count), 'sum'), 'Kokpit')"
+            }
+          ],
+          "title": "Sposoby uruchamiania scen",
+          "type": "grafana-piechart-panel",
           "valueName": "total"
         }
       ],
@@ -1030,5 +1559,5 @@
   },
   "timezone": "",
   "title": "SUPLA Scripts",
-  "version": 71
+  "version": 103
 }
