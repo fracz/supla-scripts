@@ -13,11 +13,24 @@ new features into your SUPLA account, today!
 
 * thermostat
 * voice commands
+* notifications
 * scenes
 * delayed scens
 * widgets (witch scenes' direct urls)
 * ability to check and change channel's state via web browser
 * temperature history charts
+
+## Demo videos
+
+### Voice commands
+
+[![SUPLA Voice control - Instructions](https://img.youtube.com/vi/YOvxetkskmc/0.jpg)](https://www.youtube.com/watch?v=YOvxetkskmc)
+
+### Scenes & widgets
+[![SUPLA Scenes - Instructions](https://img.youtube.com/vi/m9JipPYhm6I/0.jpg)](https://www.youtube.com/watch?v=m9JipPYhm6I)
+
+### Notifications
+[![SUPLA Notifications - Instructions](https://img.youtube.com/vi/cTxzOcThwqU/0.jpg)](https://www.youtube.com/watch?v=cTxzOcThwqU)
 
 ## Installation
 

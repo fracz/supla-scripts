@@ -5,8 +5,16 @@
       ng-submit="$broadcast('show-errors-check-validity') && notificationForm.$valid && $ctrl.submit()">
 
     <div class="form-group" show-errors>
+        <fa name="question-circle" class="pull-right pointer" ng-click="$ctrl.globalHelp = !$ctrl.globalHelp"></fa>
         <label>Nazwa</label>
         <input type="text" class="form-control" name="label" required ng-model="$ctrl.notification.label">
+    </div>
+
+    <div class="well fx-fade-up" ng-if="$ctrl.globalHelp">
+        <h3 class="no-margin-top">Skomplikowany formularz?</h3>
+        <p>Zobacz krótką demonstrację możliwości powiadomień.</p>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/cTxzOcThwqU?rel=0" frameborder="0" allowfullscreen></iframe>
+        <p class="small muted">*) i pamiętaj, że aktualnie powiadomienia udało się skonfigurować wyłącznie z systemem Android</p>
     </div>
 
     <div class="form-group">
