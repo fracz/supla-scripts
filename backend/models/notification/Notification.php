@@ -15,7 +15,7 @@ use suplascripts\models\User;
  * @property string $header
  * @property string $message
  * @property string $speech
- * @property array $intervals
+ * @property string $intervals
  * @property array $actions
  * @property int $retryInterval
  * @property int $minConditions
@@ -79,6 +79,8 @@ class Notification extends Model {
     public function calculateNextNotificationTime($retry = false): int {
         if ($retry && $this->condition) {
             return time() + $this->retryInterval;
+        } elseif (preg_match('#\s*\*/?(\d+)? \* \* \* \* ?\*?\s*#', $this->intervals, $matches)) {
+            return time() + max(1, ($matches[1] ?? 1)) * 60;
         } else {
             $nextRunDates = array_map(function ($cronExpression) {
                 $cron = CronExpression::factory($cronExpression);
