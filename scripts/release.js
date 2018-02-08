@@ -121,8 +121,12 @@ function deleteUnwantedSources() {
         'release/backend/vendor/**/img/**',
         'release/backend/vendor/**/composer.json',
         'release/backend/vendor/**/composer.lock',
+        'release/backend/vendor/**/.travis.yml',
+        'release/backend/vendor/**/phpunit.xml',
         'release/backend/vendor/**/*.md',
         'release/backend/vendor/**/LICENSE',
+        'release/backend/vendor/**/CHANGELOG',
+        'release/backend/vendor/**/README*',
         'release/backend/vendor/**/*.dist',
         'release/public/v1.0',
     ])

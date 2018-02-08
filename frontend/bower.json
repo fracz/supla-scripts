@@ -144,8 +144,8 @@
         "locale/pl.js"
       ]
     },
-    "moment-timezeon": {
-      "main": "builds/moment-timezone.min.js"
+    "moment-timezone": {
+      "main": "builds/moment-timezone-with-data-2012-2022.min.js"
     },
     "ngstorage": {
       "main": "ngStorage.min.js"
