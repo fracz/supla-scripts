@@ -27,5 +27,6 @@ class DispatchCyclicTasksCommand extends Command {
             $this->getApplication()->run(new StringInput('clear:db-logs'), $output);
         }
         $this->getApplication()->run(new StringInput('metrics:gauges'), $output);
+        $this->getApplication()->run(new StringInput('cache:fix-owner'), $output);
     }
 }
