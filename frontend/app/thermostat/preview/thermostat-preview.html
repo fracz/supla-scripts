@@ -83,9 +83,12 @@
         <thermostat-working-devices thermostat="$ctrl.thermostat"></thermostat-working-devices>
         <div class="row">
             <div class="col-xs-12 text-center">
-                <p class="text-muted">Kolejna automatyczna zmiana profilu nastąpi po {{
-                    $ctrl.thermostat.nextProfileChange |
-                    date:'short' }}</p>
+                <p class="text-muted">
+                    Kolejna automatyczna zmiana profilu nastąpi po
+                    {{ $ctrl.thermostat.nextProfileChange | date:'short' }}
+                    &nbsp;
+                    <thermostat-manual-profile-time-change thermostat="$ctrl.thermostat" on-time-change="$ctrl.setNextProfileChange(time)"></thermostat-manual-profile-time-change>
+                </p>
                 <p class="text-muted" ng-hide="$ctrl.slug">
                     Ten widok dostępny jest bez logowania pod adresem {{ $ctrl.thermostat.slug | thermostatPreviewUrl }}
                     &nbsp;

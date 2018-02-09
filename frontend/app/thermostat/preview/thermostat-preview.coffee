@@ -34,7 +34,7 @@ angular.module('supla-scripts').component 'thermostatPreview',
 
       updateActiveProfile: ->
         @changeStateManually =>
-          @thermostat.patch(activeProfileId: @thermostat.activeProfile.id).then(@receiveThermostat)
+          @thermostat.patch(activeProfileId: @thermostat.activeProfile?.id).then(@receiveThermostat)
 
       setRoomAction: (room, action, time) ->
         @changeStateManually =>
@@ -43,3 +43,7 @@ angular.module('supla-scripts').component 'thermostatPreview',
       clearRoomAction: (room) ->
         @changeStateManually =>
           @thermostat.patch(roomAction: {roomId: room.id, clear: yes}).then(@receiveThermostat)
+
+      setNextProfileChange: (time) ->
+        @changeStateManually =>
+          @thermostat.patch(nextProfileChange: time).then(@receiveThermostat)

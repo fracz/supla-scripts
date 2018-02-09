@@ -92,6 +92,9 @@ class ThermostatsController extends BaseController {
             }
             $room->updateState($thermostat, $parsedBody['roomAction']['roomId']);
         }
+        if (isset($parsedBody['nextProfileChange'])) {
+            $thermostat->nextProfileChange = new \DateTime($parsedBody['nextProfileChange']);
+        }
         $thermostat->save();
         if ($thermostat->enabled) {
             $this->adjustThermostat($thermostat);

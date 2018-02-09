@@ -1,0 +1,33 @@
+<p>Po wybranym czasie termostat powróci do profilu, który wynika z ustalonych reguł.</p>
+
+<div class="row">
+    <div class="col-xs-6">
+        <h4 class="text-center">Teraz +</h4>
+        <button class="btn btn-info btn-block" ng-click="$ctrl.adjustTime(15); $ctrl.apply()">15 minut</button>
+        <button class="btn btn-info btn-block" ng-click="$ctrl.adjustTime(30); $ctrl.apply()">30 minut</button>
+        <button class="btn btn-info btn-block" ng-click="$ctrl.adjustTime(60); $ctrl.apply()">1 godzina</button>
+        <button class="btn btn-info btn-block" ng-click="$ctrl.adjustTime(1440); $ctrl.apply()">1 dzień</button>
+    </div>
+    <div class="col-xs-6">
+        <h4 class="text-center">{{ $ctrl.nextProfileChange | amDateFormat:'L LT' }}</h4>
+        <div class="btn-block" ng-repeat="option in [
+            {time: 10, label: '10 minut'},
+            {time: 60, label: '1 godzina'},
+            {time: 360, label: '6 godzin'},
+            {time: 1440, label: '1 dzień'}
+        ]">
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-disabled="$ctrl.now.isAfter($ctrl.nextProfileChange)"
+                            ng-click="$ctrl.adjustTime(-option.time)">-
+                    </button>
+                </span>
+                <input type="text" class="form-control text-center" readonly disabled value="{{ option.label }}">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="$ctrl.adjustTime(option.time)">+</button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
