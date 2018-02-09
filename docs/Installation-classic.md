@@ -76,4 +76,12 @@
 3. Change the owner of the `/var/www/supla-scripts` directory to `www-data`
     ```
     chown -R www-data:www-data /var/www/supla-scripts
-    ```
+    ```    
+
+Or use update script:
+
+`./sudo update.sh (new version number)`
+
+Once before using the script, download it to your server:
+
+`wget https://github.com/fracz/supla-scripts/classic/update.sh`
