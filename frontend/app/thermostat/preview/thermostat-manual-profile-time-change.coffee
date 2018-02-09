@@ -17,6 +17,10 @@ angular.module('supla-scripts').component 'thermostatManualProfileTimeChange',
           cancelButtonText: 'Anuluj'
         .then(@apply)
 
+      adjustTimeFromNow: (diff) ->
+        @nextProfileChange = moment().add(diff, 'minutes')
+        @apply()
+
       adjustTime: (diff) ->
         @nextProfileChange.add(diff, 'minutes')
 
