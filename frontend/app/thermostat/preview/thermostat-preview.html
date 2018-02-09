@@ -88,6 +88,8 @@
                     date:'short' }}</p>
                 <p class="text-muted" ng-hide="$ctrl.slug">
                     Ten widok dostępny jest bez logowania pod adresem {{ $ctrl.thermostat.slug | thermostatPreviewUrl }}
+                    &nbsp;
+                    <copy-button text="$ctrl.thermostat.slug | thermostatPreviewUrl" link="true"></copy-button>
                 </p>
             </div>
         </div>

@@ -1,21 +1,23 @@
 angular.module('supla-scripts').component 'copyButton',
-  template: '<button clipboard
-                     type="button"
+  template: '<a clipboard
                      supported="supported"
                      ng-hide="!supported"
                      text="$ctrl.text"
                      on-copied="$ctrl.onCopied()"
-                     class="btn"
-                     ng-class="{\'btn-default\': !$ctrl.copied, \'btn-success\': $ctrl.copied}">
+                     ng-class="{
+                        \'btn btn-default\': !$ctrl.copied && !$ctrl.link,
+                        \'btn btn-success\': $ctrl.copied && !$ctrl.link,
+                     }">
             <fa name="{{ $ctrl.copied ? \'check\' : \'clipboard\' }}" fw></fa>
             <span ng-if="$ctrl.copied">{{ $ctrl.labelCopied }}</span>
             <span ng-else>{{ $ctrl.label }}</span>
-    </button>'
+    </a>'
   bindings:
     text: '<'
     label: '@'
     labelCopied: '@'
     timeout: '<'
+    link: '<'
   controller: ($timeout) ->
     new class
       $onInit: ->
