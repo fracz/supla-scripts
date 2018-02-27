@@ -7,6 +7,7 @@ use suplascripts\models\Client;
 use suplascripts\models\notification\Notification;
 use suplascripts\models\scene\FeedbackInterpolator;
 use suplascripts\models\scene\SceneExecutor;
+use suplascripts\models\supla\SuplaApiException;
 
 class NotificationsController extends BaseController {
     public function postAction() {
@@ -39,24 +40,33 @@ class NotificationsController extends BaseController {
         $response = $notification->toArray();
         $response['nextRunTimestamp'] = $notification->calculateNextNotificationTime();
         $automate = $this->request()->getParam('automate', false);
-        if ($notification->isConditionMet() && !$this->request()->isMethod('PATCH')) {
-            $feedbackInterpolator = new FeedbackInterpolator();
-            $response['show'] = [
-                'header' => $feedbackInterpolator->interpolate($notification->header),
-                'message' => $feedbackInterpolator->interpolate($notification->message),
-                'speech' => $feedbackInterpolator->interpolate($notification->speech),
-            ];
-            $response['nextRunTimestamp'] = $notification->calculateNextNotificationTime(true);
-            if ($automate) {
-                if ($notification->header) {
-                    $notification->log('Wyświetlono powiadomienie: ' . $response['show']['header'] . ' / ' . $response['show']['message']);
+        try {
+            if ($notification->isConditionMet() && !$this->request()->isMethod('PATCH')) {
+                $feedbackInterpolator = new FeedbackInterpolator();
+                $response['show'] = [
+                    'header' => $feedbackInterpolator->interpolate($notification->header),
+                    'message' => $feedbackInterpolator->interpolate($notification->message),
+                    'speech' => $feedbackInterpolator->interpolate($notification->speech),
+                ];
+                $response['nextRunTimestamp'] = $notification->calculateNextNotificationTime(true);
+                if ($automate) {
+                    if ($notification->header) {
+                        $notification->log('Wyświetlono powiadomienie: ' . $response['show']['header'] . ' / ' . $response['show']['message']);
+                    }
+                    if ($notification->speech) {
+                        $notification->log('Wypowiedziano powiadomienie: ' . $response['show']['speech']);
+                    }
                 }
-                if ($notification->speech) {
-                    $notification->log('Wypowiedziano powiadomienie: ' . $response['show']['speech']);
-                }
+            } elseif ($automate) {
+                $notification->log('Sprawdzanie stanu powiadomienia: nie wyświetlono');
             }
-        } elseif ($automate) {
-            $notification->log('Sprawdzanie stanu powiadomienia: nie wyświetlono');
+        } catch (SuplaApiException $exception) {
+            if ($automate) {
+                $notification->log('Błąd przy generowaniu powiadomienia: ' . $exception->getMessage());
+                throw $exception;
+            } else {
+                $response['error'] = $exception->getMessage();
+            }
         }
         if ($this->request()->isMethod('PATCH')) {
             $response['nextRunTimestamp'] = $notification->calculateNextNotificationTime(true);
