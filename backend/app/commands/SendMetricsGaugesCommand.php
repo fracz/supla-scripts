@@ -3,6 +3,8 @@
 namespace suplascripts\app\commands;
 
 use suplascripts\app\Application;
+use suplascripts\models\Client;
+use suplascripts\models\LogEntry;
 use suplascripts\models\notification\Notification;
 use suplascripts\models\scene\PendingScene;
 use suplascripts\models\scene\Scene;
@@ -27,6 +29,8 @@ class SendMetricsGaugesCommand extends Command {
             Application::getInstance()->metrics->gauge('pending_scenes', PendingScene::count());
             Application::getInstance()->metrics->gauge('scenes', Scene::count());
             Application::getInstance()->metrics->gauge('notifications', Notification::count());
+            Application::getInstance()->metrics->gauge('logs', LogEntry::count());
+            Application::getInstance()->metrics->gauge('clients', Client::count());
             Application::getInstance()->metrics->send();
         }
     }
