@@ -7,11 +7,13 @@ angular.module('supla-scripts').component 'logsTable',
   controller: (Logs, ScopeInterval, $scope) ->
     new class
       $onInit: ->
+        @page = 0
         @fetch()
         ScopeInterval($scope, @fetch, 20000, 5000)
 
-      fetch: =>
-        Logs.getList({entityId: @entityId, limit: @limit or 100}).then (@logs) =>
+      fetch: (page = @page) =>
+        Logs.getList({entityId: @entityId, limit: @limit or 50, page}).then (@logs) =>
+          @page = page
           if @logs.length and @logs[0].id != @newestLogId
             @onNewLogs() if @newestLogId
             @newestLogId = @logs[0].id

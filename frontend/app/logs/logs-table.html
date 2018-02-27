@@ -38,4 +38,16 @@
         <td>{{ entry.data }}</td>
     </tr>
     </tbody>
+    <tfoot>
+    <tr>
+        <th colspan="4">
+            <a ng-click="$ctrl.fetch($ctrl.page - 1)" ng-if="$ctrl.page > 0">
+                &laquo; Późnej
+            </a>
+            <a ng-click="$ctrl.fetch($ctrl.page + 1)" ng-if="$ctrl.logs.length == $ctrl.limit" class="pull-right">
+                Wcześniej &raquo;
+            </a>
+        </th>
+    </tr>
+    </tfoot>
 </table>
