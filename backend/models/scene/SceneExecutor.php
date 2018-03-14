@@ -19,10 +19,14 @@ class SceneExecutor {
         list($channelId, $action) = explode(self::CHANNEL_DELIMITER, $command);
         $args = explode(self::ARGUMENT_DELIMITER, $action);
         $action = array_shift($args);
-        Assertion::inArray($action, ['turnOn', 'turnOff', 'toggle', 'getChannelState', 'setRgb', 'shut', 'reveal']);
-        array_unshift($args, $channelId);
-        $this->getApi($user)->clearCache($channelId);
-        return call_user_func_array([$this->getApi($user), $action], $args);
+        Assertion::inArray($action, ['turnOn', 'turnOff', 'toggle', 'getChannelState', 'setRgb', 'shut', 'reveal', 'setThermostatProfile']);
+        if ($action == 'setThermostatProfile') {
+            return (new ThermostatSceneExecutor())->setThermostatProfile($channelId, $args[0]);
+        } else {
+            array_unshift($args, $channelId);
+            $this->getApi($user)->clearCache($channelId);
+            return call_user_func_array([$this->getApi($user), $action], $args);
+        }
     }
 
     public function executeCommandsFromString($commands, User $user = null) {
