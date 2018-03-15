@@ -19,9 +19,14 @@ class ThermostatSceneExecutor {
             $user = $user ? $user : $this->getApp()->getCurrentUser();
             Assertion::eq($user->id, $thermostat->userId);
             $profile = $thermostat->profiles()->find([ThermostatProfile::ID => $profileId])->first();
-            if ($profile) {
-                $thermostat->activeProfile()->associate($profile);
-                $thermostat->log('Manualnie ustawiono profil (sceną) na ' . $profile->name);
+            if ($profile || !boolval($profileId) || $profileId == 'false') {
+                if ($profile) {
+                    $thermostat->activeProfile()->associate($profile);
+                    $thermostat->log('Manualnie ustawiono profil (sceną) na ' . $profile->name);
+                } else {
+                    $thermostat->activeProfile()->dissociate();
+                    $thermostat->log('Manualnie wyłączono profil (sceną).');
+                }
                 $thermostat->save();
                 $command = new DispatchThermostatCommand();
                 $command->adjust($thermostat);

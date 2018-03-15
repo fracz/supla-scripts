@@ -14,7 +14,7 @@ angular.module('supla-scripts').component 'thermostatProfileButtonSelector',
       $onChanges: (changes) =>
         if changes?.thermostat
           @thermostat.all('thermostat-profiles').getList().then (@availableProfiles) =>
-            @availableProfiles.unshift({id: null, name: 'Brak'})
+            @availableProfiles.unshift({id: false, name: 'Brak'})
             @index = 0
             if @ngModel.$viewValue
               @index = @availableProfiles.map((o) -> o.id).indexOf(@ngModel.$viewValue)

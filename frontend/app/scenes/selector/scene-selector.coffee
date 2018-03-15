@@ -16,7 +16,7 @@ angular.module('supla-scripts').component 'sceneSelector',
           promises = sceneStrings.map (sceneString) ->
             parts = sceneString.split(';')
             if parts[1].indexOf('thermostat') == 0
-              Thermostats.get(parts[0])
+              Thermostats.get(parts[0], simple: yes)
             else
               Channels.get(parts[0])
           @loadingChannels = yes
