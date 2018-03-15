@@ -1,0 +1,6 @@
+<select class="form-control"
+        ng-model="$ctrl.chosenThermostatId"
+        ng-change="$ctrl.updateModel()"
+        ng-options="thermostat as (thermostat.label) for thermostat in $ctrl.thermostats | filter:$ctrl.isNotHidden track by thermostat.id">
+    <option value="" disabled selected>Wybierz termostat</option>
+</select>

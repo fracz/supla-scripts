@@ -1,11 +1,24 @@
 <div ng-class="{disabled: $ctrl.disabled}">
+
     <div class="form-group" ng-if="!$ctrl.disabled">
-        <channel-selector
-                ng-model="newChannel"
-                ng-change="$ctrl.addNewChannelToScene(newChannel)"
-                hide-ids="$ctrl.usedChannelIds"
-                functions="$ctrl.sceneableFunctions">
-        </channel-selector>
+        <label>Na czym chcesz wykonać akcję?</label>
+        <div class="row">
+            <div class="col-md-6">
+                <channel-selector
+                        ng-model="newChannel"
+                        ng-change="$ctrl.addNewChannelToScene(newChannel)"
+                        hide-ids="$ctrl.usedChannelIds"
+                        functions="$ctrl.sceneableFunctions">
+                </channel-selector>
+            </div>
+            <div class="col-md-6">
+                <thermostat-selector
+                        ng-model="newThermostat"
+                        ng-change="$ctrl.addNewThermostatToScene(newThermostat)"
+                        hide-ids="$ctrl.usedThermostatIds">
+                </thermostat-selector>
+            </div>
+        </div>
     </div>
     <loader-dots ng-if="$ctrl.loadingChannels"></loader-dots>
     <div class="form-group fx-fade-left" ng-if="$ctrl.scene.length">
@@ -14,14 +27,25 @@
                 <td>
                     <channel-action-button-selector channel="operation.channel" disabled="$ctrl.disabled"
                                                     ng-model="operation.action"
-                                                    ng-change="$ctrl.onChange()"></channel-action-button-selector>
+                                                    ng-change="$ctrl.onChange()"
+                                                    ng-if="operation.channel"></channel-action-button-selector>
+                    <thermostat-profile-button-selector thermostat="operation.thermostat" disabled="$ctrl.disabled"
+                                                        ng-model="operation.action"
+                                                        ng-change="$ctrl.onChange()"
+                                                        ng-else></thermostat-profile-button-selector>
                 </td>
                 <td>
                     <a ng-click="$ctrl.scene.splice($ctrl.scene.indexOf(operation), 1)" class="floating-delete-btn"
                        ng-if="!$ctrl.disabled">
                         <fa name="times-circle-o"></fa>
                     </a>
-                    <channel-brief channel="operation.channel"></channel-brief>
+                    <channel-brief channel="operation.channel" ng-if="operation.channel"></channel-brief>
+                    <span ng-else>
+                        <h4>
+                            <fa name="{{ operation.thermostat|byThermostatTarget:'thermometer':'tint' }}" fw></fa>
+                            {{ operation.thermostat.label }}
+                        </h4>
+                    </span>
                 </td>
             </tr>
         </table>
