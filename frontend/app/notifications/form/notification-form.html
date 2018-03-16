@@ -72,7 +72,8 @@
         <input type="text" class="form-control" ng-model="$ctrl.notification.intervals" required name="interval">
         <div class="help-block fx-fade-up" ng-if="$ctrl.intervalHelp">
             W notacji <a href="https://pl.wikipedia.org/wiki/Crontab">crontab</a> podaj kiedy aplikacja ma sprawdzać warunki i ewentualnie pokazywać
-            powiadomienie. Wiele specyfikacji oddziel znakiem <code>|</code>. Przykłady:
+            powiadomienie. Wiele specyfikacji oddziel znakiem <code>|</code>. Serwis <a href="https://crontab.guru">crontab.guru</a> może być pomocny.
+            Przykłady:
             <ul>
                 <li><code>* * * * *</code> - co minutę</li>
                 <li><code>*/15 * * * *</code> - co 15 minut</li>

@@ -86,7 +86,6 @@ class Notification extends Model {
         } else {
             $nextRunDates = array_map(function ($cronExpression) {
                 $cron = CronExpression::factory($cronExpression);
-                $cron->setMaxIterationCount(100);
                 return $cron->getNextRunDate(new \DateTime('now', $this->user->getTimezone()))->getTimestamp();
             }, $this->getIntervals());
             return min($nextRunDates);
@@ -123,9 +122,13 @@ class Notification extends Model {
         foreach ($intervals as $interval) {
             Assertion::true(CronExpression::isValidExpression($interval), 'Invalid interval: ' . $interval);
             $cron = CronExpression::factory($interval);
-            $cron->setMaxIterationCount(20);
-            $nextTimestamp = $cron->getNextRunDate(new \DateTime('now', $this->user->getTimezone()))->getTimestamp();
-            Assertion::greaterOrEqualThan($nextTimestamp, time());
+            $time = time();
+            try {
+                $nextTimestamp = $cron->getNextRunDate(new \DateTime('now', $this->user->getTimezone()))->getTimestamp();
+            } catch (\RuntimeException $e) {
+                Assertion::false(true, 'Invalid interval: ' . $interval);
+            }
+            Assertion::greaterOrEqualThan($nextTimestamp, $time);
         }
         foreach ($attributes[self::ACTIONS] as $action) {
             Assertion::isArray($action);

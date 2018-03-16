@@ -13,7 +13,7 @@ class NotificationOnlyInTime extends Migration {
         $notifications = Notification::all();
         foreach ($notifications as $notification) {
             try {
-                $notification->calculateNextNotificationTime();
+                @$notification->calculateNextNotificationTime();
             } catch (RuntimeException $e) {
                 $notification->update([Notification::INTERVALS => '*/15 * * * *']);
                 $notification->save();
