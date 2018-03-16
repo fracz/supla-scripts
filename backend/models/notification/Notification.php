@@ -22,6 +22,7 @@ use suplascripts\models\User;
  * @property User $user
  * @property string[] $clientIds
  * @property bool $displayIfDisconnected
+ * @property bool $onlyInTime
  */
 class Notification extends Model {
     const TABLE_NAME = 'notifications';
@@ -44,10 +45,11 @@ class Notification extends Model {
     const CLIENT_IDS = 'clientIds';
     const SPEECH = 'speech';
     const DISPLAY_IF_DISCONNECTED = 'displayIfDisconnected';
+    const ONLY_IN_TIME = 'onlyInTime';
 
     protected $fillable = [self::LABEL, self::CONDITION, self::INTERVALS, self::HEADER, self::MESSAGE, self::SOUND, self::VIBRATE, self::FLASH,
         self::CANCELLABLE, self::ONGOING, self::AWAKE, self::ACTIONS, self::RETRY_INTERVAL, self::MIN_CONDITIONS, self::ICON, self::CLIENT_IDS,
-        self::SPEECH, self::DISPLAY_IF_DISCONNECTED];
+        self::SPEECH, self::DISPLAY_IF_DISCONNECTED, self::ONLY_IN_TIME];
     protected $jsonEncoded = [self::ACTIONS, self::CLIENT_IDS];
 
     public function user(): BelongsTo {
@@ -77,13 +79,14 @@ class Notification extends Model {
     }
 
     public function calculateNextNotificationTime($retry = false): int {
-        if ($retry && $this->condition) {
+        if ($retry && $this->condition && !$this->onlyInTime) {
             return time() + $this->retryInterval;
         } elseif (preg_match('#\s*\*/?(\d+)? \* \* \* \* ?\*?\s*#', $this->intervals, $matches)) {
             return time() + max(1, ($matches[1] ?? 1)) * 60;
         } else {
             $nextRunDates = array_map(function ($cronExpression) {
                 $cron = CronExpression::factory($cronExpression);
+                $cron->setMaxIterationCount(100);
                 return $cron->getNextRunDate(new \DateTime('now', $this->user->getTimezone()))->getTimestamp();
             }, $this->getIntervals());
             return min($nextRunDates);
