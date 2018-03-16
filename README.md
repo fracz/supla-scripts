@@ -32,6 +32,9 @@ new features into your SUPLA account, today!
 ### Notifications
 [![SUPLA Notifications - Instructions](https://img.youtube.com/vi/cTxzOcThwqU/0.jpg)](https://www.youtube.com/watch?v=cTxzOcThwqU)
 
+### Scene Launcher
+[![SUPLA Scene Launcher - Instructions](https://img.youtube.com/vi/bvfTRKj-xrM/0.jpg)](https://youtu.be/bvfTRKj-xrM)
+
 ## Installation
 
 There are two ways to install supla-scripts.
