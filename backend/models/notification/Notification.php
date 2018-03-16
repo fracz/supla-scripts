@@ -119,6 +119,10 @@ class Notification extends Model {
         Assertion::notEmpty($intervals);
         foreach ($intervals as $interval) {
             Assertion::true(CronExpression::isValidExpression($interval), 'Invalid interval: ' . $interval);
+            $cron = CronExpression::factory($interval);
+            $cron->setMaxIterationCount(20);
+            $nextTimestamp = $cron->getNextRunDate(new \DateTime('now', $this->user->getTimezone()))->getTimestamp();
+            Assertion::greaterOrEqualThan($nextTimestamp, time());
         }
         foreach ($attributes[self::ACTIONS] as $action) {
             Assertion::isArray($action);
