@@ -5,6 +5,7 @@ node_modules/
 public/*
 !public/img/
 !public/v1.0/
+!public/rhythm/
 /.*
 *.gz
 release/
