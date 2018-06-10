@@ -44,10 +44,16 @@
             <span v-else>
                 <em>Click the button to start recording</em>
             </span>
-            <a @click="play(beat)" v-if="!playingBeat && !currentBeat">
-                <i class="fas fa-play"></i>
-            </a>
-            <i class="fas fa-volume-up" v-if="playingBeat === beat || currentBeat === beat"></i>
+            <div>
+                <a @click="play(beat)" v-if="!playingBeat && !currentBeat">
+                    <i class="fas fa-play text-info"></i>
+                </a>
+                &nbsp;
+                <a @click="deleteBeat(beat)" v-if="!playingBeat && !currentBeat">
+                    <i class="fas fa-trash text-danger"></i>
+                </a>
+                <i class="fas fa-volume-up text-success" v-if="playingBeat === beat || currentBeat === beat"></i>
+            </div>
         </li>
     </ul>
 </div>
@@ -119,6 +125,13 @@
                     var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?';
                     newurl += 'rhythms=' + serialized;
                     window.history.pushState({path: newurl}, '', newurl);
+                }
+            },
+            deleteBeat(beat) {
+                const index = this.beats.indexOf(beat);
+                if (index >= 0) {
+                    this.beats.splice(index, 1);
+                    this.updateURL();
                 }
             }
         },
