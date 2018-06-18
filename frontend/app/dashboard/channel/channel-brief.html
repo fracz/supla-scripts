@@ -22,6 +22,10 @@
               ng-class="$ctrl.channel.hi ? 'label-success' : 'label-default'">
             {{ $ctrl.channel.hi ? 'Zamknięty' : 'Otwarty' }}
         </span>
+        <span class="label label-success" ng-if="$ctrl.channel.shut !== undefined">
+            <span ng-if="$ctrl.channel.shut">Zamknięta {{ $ctrl.channel.shut }}%</span>
+            <span ng-else>Otwarta</span>
+        </span>
         <span class="label label-info" ng-if="$ctrl.channel.temperature">
             {{ $ctrl.channel.temperature | number:2 }}&deg;C
         </span>

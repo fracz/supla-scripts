@@ -25,10 +25,14 @@ angular.module('supla-scripts').constant 'CHANNEL_AVAILABLE_ACTIONS', do ->
     ]
     FNC_CONTROLLINGTHEROLLERSHUTTER: [
       {label: 'odsłoń', action: 'reveal', isActive: -> no}
+      {label: 'zasłoń 20%', action: 'shut,20', isActive: -> no}
+      {label: 'zasłoń 40%', action: 'shut,40', isActive: -> no}
+      {label: 'zasłoń 60%', action: 'shut,60', isActive: -> no}
+      {label: 'zasłoń 80%', action: 'shut,80', isActive: -> no}
       {label: 'zasłoń', action: 'shut', isActive: -> no}
     ]
 
-  actions.FNC_LIGHTSWITCH = actions.FNC_POWERSWITCH
+  actions.FNC_LIGHTSWITCH = actions.FNC_STAIRCASETIMER = actions.FNC_POWERSWITCH
   actions.FNC_CONTROLLINGTHEGARAGEDOOR = actions.FNC_CONTROLLINGTHEGATE
   actions.FNC_CONTROLLINGTHEDOORLOCK = actions.FNC_CONTROLLINGTHEGATEWAYLOCK
   actions.FNC_DIMMERANDRGBLIGHTING = actions.FNC_RGBLIGHTING
