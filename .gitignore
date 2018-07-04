@@ -5,9 +5,10 @@ node_modules/
 public/*
 !public/img/
 !public/v1.0/
-!public/rhythm/
+!public/helpers/
 /.*
 *.gz
 release/
 var/
 *.sql
+ą
