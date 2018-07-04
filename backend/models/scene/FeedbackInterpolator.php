@@ -14,6 +14,9 @@ class FeedbackInterpolator {
         if (!$feedback) {
             return $feedback;
         }
+        $feedback = preg_replace_callback('#\[\[(http.+?)\]\]#i', function ($match) {
+            return file_get_contents($match[1]);
+        }, $feedback);
         return preg_replace_callback('#{{(\d+)\|(on|temperature|humidity|hi)\|(bool|number|compare):?([^}]+?)?}}#', function ($match) {
             $replacement = $this->replaceChannelState($match[1], $match[2], $match[3], isset($match[4]) ? explode(',', $match[4]) : []);
             return $replacement !== null ? $replacement : $match[0];
