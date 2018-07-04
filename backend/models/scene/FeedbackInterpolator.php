@@ -8,6 +8,7 @@ use suplascripts\models\HasSuplaApi;
 class FeedbackInterpolator {
     use HasSuplaApi;
 
+    const URL_FETCH_TIMEOUT = 5;
     const NOT_CONNECTED_RESPONSE = ' DISCONNECTED ';
 
     public function interpolate($feedback) {
@@ -15,12 +16,31 @@ class FeedbackInterpolator {
             return $feedback;
         }
         $feedback = preg_replace_callback('#\[\[(http.+?)\]\]#i', function ($match) {
-            return file_get_contents($match[1]);
+            return $this->getUrlContents($match[1]);
         }, $feedback);
         return preg_replace_callback('#{{(\d+)\|(on|temperature|humidity|hi)\|(bool|number|compare):?([^}]+?)?}}#', function ($match) {
             $replacement = $this->replaceChannelState($match[1], $match[2], $match[3], isset($match[4]) ? explode(',', $match[4]) : []);
             return $replacement !== null ? $replacement : $match[0];
         }, $feedback);
+    }
+
+    public function getUrlContents(string $url): string {
+        $key = \FileSystemCache::generateCacheKey([$url], 'urls');
+        $value = \FileSystemCache::retrieve($key);
+        if ($value === false) {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_TIMEOUT, self::URL_FETCH_TIMEOUT);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, self::URL_FETCH_TIMEOUT);
+            $value = curl_exec($ch);
+            curl_close($ch);
+            if ($value === false) {
+                $value = 'URL_FETCH_ERROR';
+            }
+            \FileSystemCache::store($key, $value, 60);
+        }
+        return $value;
     }
 
     public function replaceChannelState($channelId, $field, $varType, $config) {
