@@ -28,6 +28,7 @@ $app = new Application();
 $app->group('/api', function () use ($app) {
     $app->get('/time', SystemController::class . ':getTime');
     $app->get('/info', SystemController::class . ':getInfo');
+    $app->get('/oauth', TokensController::class . ':oauthAuthenticate');
     $app->group('/tokens', function () use ($app) {
         $app->post('/new', TokensController::class . ':createToken');
         $app->post('/client', TokensController::class . ':createTokenForClient');

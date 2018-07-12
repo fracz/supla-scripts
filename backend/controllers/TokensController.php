@@ -38,6 +38,32 @@ class TokensController extends BaseController {
         });
     }
 
+    public function oauthAuthenticateAction() {
+        $code = $this->request()->getParam('code');
+        if ($code) {
+            $suplaDomain = base64_decode(explode('.', $code)[1] ?? '');
+            $handle = curl_init($suplaDomain . '/oauth/v2/token');
+            $data = [
+                'grant_type' => 'authorization_code',
+                'client_id' => '4_2xp8vpeeen40scwsg8k8os8sgc4wwscs844ow08sc004c408ok',
+                'client_secret' => '6ahzymhhc60woc40skgcgw4kg404c0kwkc4s8o8sgkoc8cgwcw',
+                'redirect_uri' => 'http://suplascripts.local/api/oauth',
+                'code' => $code
+            ];
+            curl_setopt($handle, CURLOPT_POST, true);
+            curl_setopt($handle, CURLOPT_POSTFIELDS, $data);
+            curl_setopt($handle, CURLOPT_RETURNTRANSFER, 1);
+            $resp = curl_exec($handle);
+            if ($resp) {
+                $resp = json_decode($resp, true);
+                if (isset($resp['access_token'])) {
+                    return 'OK: ' . $resp['access_token'];
+                }
+            }
+        }
+        return 'Smuteczek';
+    }
+
     public function refreshTokenAction() {
         $currentToken = $this->getApp()->currentToken;
         $user = $this->getCurrentUser();
