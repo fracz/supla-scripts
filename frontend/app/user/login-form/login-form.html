@@ -49,5 +49,12 @@
             Zaloguj
         </button>
     </div>
+    <div class="form-group text-center">
+        <a ng-href="http://supla.local/oauth/v2/auth?client_id={{$root.APP_CONFIG.oAuthClientId}}&redirect_uri=http://suplascripts.local/api/oauth&response_type=code&scope=account_r offline_access">
+            <fa name="sign-in"
+                fw></fa>
+            Zaloguj z SUPLA
+        </a>
+    </div>
 </form>
 

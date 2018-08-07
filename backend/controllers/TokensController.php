@@ -45,8 +45,8 @@ class TokensController extends BaseController {
             $handle = curl_init($suplaDomain . '/oauth/v2/token');
             $data = [
                 'grant_type' => 'authorization_code',
-                'client_id' => '4_2xp8vpeeen40scwsg8k8os8sgc4wwscs844ow08sc004c408ok',
-                'client_secret' => '6ahzymhhc60woc40skgcgw4kg404c0kwkc4s8o8sgkoc8cgwcw',
+                'client_id' => $this->getApp()->getSetting('oauth')['clientId'],
+                'client_secret' => $this->getApp()->getSetting('oauth')['secret'],
                 'redirect_uri' => 'http://suplascripts.local/api/oauth',
                 'code' => $code
             ];
@@ -58,6 +58,9 @@ class TokensController extends BaseController {
                 $resp = json_decode($resp, true);
                 if (isset($resp['access_token'])) {
                     return 'OK: ' . $resp['access_token'];
+                }
+                else {
+                    return json_encode($resp);
                 }
             }
         }

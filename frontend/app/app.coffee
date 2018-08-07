@@ -25,9 +25,11 @@ angular.module 'supla-scripts', [
 ]
 .config(($compileProvider, ANGULAR_DEBUG_DATA_ENABLED) -> $compileProvider.debugInfoEnabled(ANGULAR_DEBUG_DATA_ENABLED))
 .config((msdElasticConfig) -> msdElasticConfig.append = '\n')
-.run (Restangular) -> # synchronize browser time with server's
+.run (Restangular, $rootScope) -> # synchronize browser time with server's
   requestStartTime = Date.now()
-  Restangular.one('time').withHttpConfig(skipErrorHandler: yes).get().then (serverTime) ->
+  Restangular.one('info').withHttpConfig(skipErrorHandler: yes).get().then (response) ->
     requestTime = Date.now() - requestStartTime
-    offset = new Date(serverTime).getTime() - Date.now() + requestTime
+    offset = new Date(response.time).getTime() - Date.now() + requestTime
     moment.now = -> Date.now() + offset
+    $rootScope.APP_CONFIG = response
+
