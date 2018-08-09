@@ -22,6 +22,10 @@ angular.module('supla-scripts')
     url: '/login?register'
     template: '<login-view></login-view>'
 
+  .state 'oauthAuthorize',
+    url: '/authorize?code'
+    template: '<oauth-authorize-page></oauth-authorize-page>'
+
   .state 'register',
     url: '/register'
     template: '<register-view></register-view>'
@@ -159,6 +163,6 @@ angular.module('supla-scripts').decorator '$state', ($delegate) ->
 
 angular.module('supla-scripts').run ($rootScope, Token, $state) ->
   $rootScope.$on '$stateChangeStart', (event, toState) ->
-    if not Token.getRememberedToken() and toState.name not in ['login', 'register', 'thermostatPreview', 'notFound']
+    if not Token.getRememberedToken() and toState.name not in ['login', 'register', 'thermostatPreview', 'notFound', 'oauthAuthorize']
       event.preventDefault()
       $state.go('login')

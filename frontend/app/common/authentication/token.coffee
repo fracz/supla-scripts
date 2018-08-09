@@ -44,9 +44,10 @@ angular.module('supla-scripts').service 'Token', (Restangular, $localStorage, $t
   Token.isPasswordExpired = ->
     !!Token.getRememberedTokenPayload()?.expiredPassword
 
-  Token.authenticate = (userData) ->
+  Token.authenticate = (authCode) ->
     Token.one('').all('new').withHttpConfig(skipErrorHandler: yes)
-      .post(userData)
+#      .post(authCode)
+      .post({authCode})
       .then(({token}) -> Token.rememberToken(token))
 
   Token.forgetRememberedToken = ->

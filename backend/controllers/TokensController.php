@@ -39,29 +39,50 @@ class TokensController extends BaseController {
     }
 
     public function oauthAuthenticateAction() {
-        $code = $this->request()->getParam('code');
-        if ($code) {
-            $suplaDomain = base64_decode(explode('.', $code)[1] ?? '');
-            $handle = curl_init($suplaDomain . '/oauth/v2/token');
-            $data = [
-                'grant_type' => 'authorization_code',
-                'client_id' => $this->getApp()->getSetting('oauth')['clientId'],
-                'client_secret' => $this->getApp()->getSetting('oauth')['secret'],
-                'redirect_uri' => 'http://suplascripts.local/api/oauth',
-                'code' => $code
-            ];
-            curl_setopt($handle, CURLOPT_POST, true);
-            curl_setopt($handle, CURLOPT_POSTFIELDS, $data);
-            curl_setopt($handle, CURLOPT_RETURNTRANSFER, 1);
-            $resp = curl_exec($handle);
-            if ($resp) {
-                $resp = json_decode($resp, true);
-                if (isset($resp['access_token'])) {
-                    return 'OK: ' . $resp['access_token'];
+        $body = $this->request()->getParsedBody();
+        Assert::that($body)->notEmptyKey('authCode');
+        $code = $body['authCode'];
+        $suplaDomain = base64_decode(explode('.', $code)[1] ?? '');
+        $handle = curl_init($suplaDomain . '/oauth/v2/token');
+        $data = [
+            'grant_type' => 'authorization_code',
+            'client_id' => $this->getApp()->getSetting('oauth')['clientId'],
+            'client_secret' => $this->getApp()->getSetting('oauth')['secret'],
+            'redirect_uri' => 'http://suplascripts.local/authorize',
+            'code' => $code
+        ];
+        curl_setopt($handle, CURLOPT_POST, true);
+        curl_setopt($handle, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($handle, CURLOPT_RETURNTRANSFER, 1);
+        $resp = curl_exec($handle);
+        if ($resp) {
+            $resp = json_decode($resp, true);
+            if (isset($resp['access_token'])) {
+                // TODO check scope
+                $handle = curl_init($suplaDomain . '/api/users/current');
+                curl_setopt($handle, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($handle, CURLOPT_HTTPHEADER, ['Authorization: Bearer ' . $resp['access_token']]);
+                $userResp = curl_exec($handle);
+                $userData = json_decode($userResp, true);
+
+                $email = $userData['email'];
+
+                if ($user = User::findByUsername($email)) {
+                    $user->setApiCredentials($resp);
+                    $user->save();
+                } else {
+                    $user = User::create([
+                        User::USERNAME => $userData['email'],
+                        User::API_CREDENTIALS => $resp
+                    ]);
                 }
-                else {
-                    return json_encode($resp);
-                }
+
+                $token = JwtToken::create()->user($user)->rememberMe($body['rememberMe'] ?? false)->issue();
+                $this->getApp()->getContainer()['currentUser'] = $user;
+                $user->trackLastLogin();
+                return $this->response(['token' => $token]);
+            } else {
+                return $this->response($resp)->withStatus(401);
             }
         }
         return 'Smuteczek';
