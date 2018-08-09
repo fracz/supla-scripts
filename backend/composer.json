@@ -19,7 +19,7 @@
     "tuupola/slim-basic-auth": "^2.2",
     "tuupola/slim-jwt-auth": "^2.3",
     "slim/slim": "^3.8",
-    "supla/api-client": "dev-master",
+    "supla/api-client": "^2.1",
     "symfony/console": "^3.3",
     "symfony/process": "^3.3",
     "twig/twig": "^2.5"
