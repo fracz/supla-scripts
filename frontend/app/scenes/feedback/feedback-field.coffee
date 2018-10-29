@@ -23,6 +23,7 @@ angular.module('supla-scripts').component 'feedbackField',
       FNC_OPENINGSENSOR_GATEWAY: [{display: 'otwarta/zamknięta', suffix: 'hi|bool:zamknięta,otwarta'}]
       FNC_OPENINGSENSOR_WINDOW: [{display: 'otwarte/zamknięte', suffix: 'hi|bool:zamknięte,otwarte'}]
       FNC_MAILSENSOR: [{display: 'jest/nie ma', suffix: 'hi|bool:nie ma,jest'}]
+      FNC_NOLIQUIDSENSOR: [{display: 'pusto/pełno', suffix: 'hi|bool:pusto,pełno'}]
 
     new class
       $onInit: ->
