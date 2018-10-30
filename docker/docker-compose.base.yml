@@ -19,7 +19,7 @@ services:
   suplascripts-db:
     container_name: ${COMPOSE_PROJECT_NAME}-db
     restart: unless-stopped
-    image: mysql
+    image: mysql:5.7
     networks: [default]
     environment:
       MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
