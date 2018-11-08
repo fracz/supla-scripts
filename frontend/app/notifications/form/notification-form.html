@@ -32,23 +32,23 @@
         <p>Użyj znaku <code>{</code> by wyświetlić dostępne podpowiedzi.</p>
         <ul>
             <li>
-                <code ng-non-bindable>{{1|on|bool}}</code>
+                <code ng-non-bindable>{{state(1).on?1:0}}</code>
                 wyświetli powiadomienie, jeśli kanał 1 jest włączony
             </li>
             <li>
-                <code ng-non-bindable>{{1|on|bool}} {{2|hi|bool}} {{3|on|bool:0,1}}</code> -
+                <code ng-non-bindable>{{state(1).on?1:0}} {{state(2).hi?1:0}} {{state(3).on?0:1}}</code> -
                 wyświetli, jeśli kanał 1 jest włączony, 2 jest zamknięty i 3 jest wyłączony
             </li>
             <li>
-                <code ng-non-bindable>{{4|temperature|compare:&lt;,-2.5}}</code>
+                <code ng-non-bindable>{{state(4).temperature &lt; -2.5 ? 1 : 0}}</code>
                 wyświetli powiadomienie, jeśli temperatura na kanale 4 jest mniejsza od -2.5&deg;C
             </li>
             <li>
-                <code ng-non-bindable>{{5|temperature|compare:&gt;=,10}}</code>
+                <code ng-non-bindable>{{state(5).temperature &gt;= 10 ? 1 : 0}}</code>
                 wyświetli powiadomienie, jeśli temperatura na kanale 5 jest większa lub równa 10&deg;C
             </li>
             <li>
-                <code ng-non-bindable>{{5|temperature|compare:>,15#temperature}}</code>
+                <code ng-non-bindable>{{state(5).temperature > state(15).temperature ? 1 : 0}}</code>
                 wyświetli powiadomienie, jeśli temperatura na kanale 5 jest większa od temperatury na kanale 15
             </li>
         </ul>

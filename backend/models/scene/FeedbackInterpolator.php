@@ -15,7 +15,7 @@ class FeedbackInterpolator {
 
     public function __construct() {
         $this->twig = new Twig_Environment(new Twig_Loader_Filesystem(__DIR__));
-        $this->twig->addFunction(new \Twig_Function('state', [$this, 'getChannelState']));
+        $this->twig->addExtension(new FeedbackTwigExtension());
     }
 
     public function interpolate($feedback) {
@@ -79,9 +79,5 @@ class FeedbackInterpolator {
                 eval('$result = ($desiredValue ' . $operator . ' $compareTo);');
                 return $result ? ($config[2] ?? '1') : ($config[3] ?? '0');
         }
-    }
-
-    public function getChannelState($channelId) {
-        return $this->getApi()->getChannelState($channelId);
     }
 }

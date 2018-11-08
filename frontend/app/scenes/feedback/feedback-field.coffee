@@ -24,6 +24,17 @@ angular.module('supla-scripts').component 'feedbackField',
       FNC_OPENINGSENSOR_WINDOW: [{display: 'otwarte/zamknięte', suffix: 'hi ? "zamknięte" : "otwarte"'}]
       FNC_MAILSENSOR: [{display: 'jest/nie ma', suffix: 'hi ? "nie ma" : "jest"'}]
       FNC_NOLIQUIDSENSOR: [{display: 'pusto/pełno', suffix: 'hi ? "pusto" : "pełno"'}]
+      FNC_DIMMERANDRGBLIGHTING: [
+        {display: 'jasność', suffix: 'brightness'}
+        {display: 'kolor', suffix: 'color|colorNamePl'}
+        {display: 'jasność koloru', suffix: 'color_brightness'}
+        {display: 'warunek koloru', suffix: 'color|colorNamePl == "czerwony" ? "jest romantycznie" : "jest nudno"'}
+      ]
+      FNC_RGBLIGHTING: [
+        {display: 'kolor', suffix: 'color|colorNamePl'}
+        {display: 'jasność koloru', suffix: 'color_brightness'}
+        {display: 'warunek koloru', suffix: 'color|colorNamePl == "czerwony" ? "jest romantycznie" : "jest nudno"'}
+      ]
 
     new class
       $onInit: ->
