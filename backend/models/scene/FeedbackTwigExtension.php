@@ -66,43 +66,44 @@ class FeedbackTwigExtension extends \Twig_Extension {
             $color = $color->color;
         }
         $value = str_replace('0x', '#', $color);
-        $html2rgb = function ($color) {
-            if ($color[0] == '#')
-                $color = substr($color, 1);
-
-            if (strlen($color) == 6)
-                list($r, $g, $b) = array($color[0] . $color[1],
-                    $color[2] . $color[3],
-                    $color[4] . $color[5]);
-            elseif (strlen($color) == 3)
-                list($r, $g, $b) = array($color[0] . $color[0],
-                    $color[1] . $color[1], $color[2] . $color[2]);
-            else
-                return false;
-
-            $r = hexdec($r);
-            $g = hexdec($g);
-            $b = hexdec($b);
-
-            return array($r, $g, $b);
-        };
-        $distancel2 = function (array $color1, array $color2) {
-            return sqrt(pow($color1[0] - $color2[0], 2) + pow($color1[1] - $color2[1], 2) + pow($color1[2] - $color2[2], 2));
-        };
         $distances = array();
-        $val = $html2rgb($value);
-        foreach ($colors as $name => $c) {
-            $distances[$name] = $distancel2($c, $val);
-        }
-        $mincolor = "";
-        $minval = pow(2, 30); /*big value*/
-        foreach ($distances as $k => $v) {
-            if ($v < $minval) {
-                $minval = $v;
-                $mincolor = $k;
+        $val = $this->html2rgb($value);
+        $nearestColor = '';
+        if ($val) {
+            foreach ($colors as $name => $c) {
+                $color1 = $c;
+                $color2 = $val;
+                $distances[$name] = sqrt(pow($color1[0] - $color2[0], 2) + pow($color1[1] - $color2[1], 2) + pow($color1[2] - $color2[2], 2));
+            }
+            $minval = pow(2, 30); /*big value*/
+            foreach ($distances as $k => $v) {
+                if ($v < $minval) {
+                    $minval = $v;
+                    $nearestColor = $k;
+                }
             }
         }
-        return $mincolor;
+        return $nearestColor;
+    }
+
+    private function html2rgb($color): array {
+        if ($color[0] == '#') {
+            $color = substr($color, 1);
+        }
+        if (strlen($color) == 6) {
+            list($r, $g, $b) = array($color[0] . $color[1],
+                $color[2] . $color[3],
+                $color[4] . $color[5]);
+        } elseif (strlen($color) == 3) {
+            list($r, $g, $b) = array($color[0] . $color[0],
+                $color[1] . $color[1], $color[2] . $color[2]);
+        } else {
+            return [];
+        }
+        $r = hexdec($r);
+        $g = hexdec($g);
+        $b = hexdec($b);
+        return array($r, $g, $b);
     }
 
     public function getNearestColorNamePolish($color) {
