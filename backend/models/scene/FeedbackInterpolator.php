@@ -4,12 +4,19 @@ namespace suplascripts\models\scene;
 
 use Assert\Assertion;
 use suplascripts\models\HasSuplaApi;
+use Twig_Environment;
+use Twig_Loader_Filesystem;
 
 class FeedbackInterpolator {
     use HasSuplaApi;
 
     const URL_FETCH_TIMEOUT = 5;
     const NOT_CONNECTED_RESPONSE = ' DISCONNECTED ';
+
+    public function __construct() {
+        $this->twig = new Twig_Environment(new Twig_Loader_Filesystem(__DIR__));
+        $this->twig->addFunction(new \Twig_Function('state', [$this, 'getChannelState']));
+    }
 
     public function interpolate($feedback) {
         if (!$feedback) {
@@ -18,10 +25,17 @@ class FeedbackInterpolator {
         $feedback = preg_replace_callback('#\[\[(http.+?)\]\]#i', function ($match) {
             return $this->getUrlContents($match[1]);
         }, $feedback);
-        return preg_replace_callback('#{{(\d+)\|(on|temperature|humidity|hi)\|(bool|number|compare):?([^}]+?)?}}#', function ($match) {
+        $feedback = preg_replace_callback('#{{(\d+)\|(on|temperature|humidity|hi)\|(bool|number|compare):?([^}]+?)?}}#', function ($match) {
             $replacement = $this->replaceChannelState($match[1], $match[2], $match[3], isset($match[4]) ? explode(',', $match[4]) : []);
             return $replacement !== null ? $replacement : $match[0];
         }, $feedback);
+        try {
+            $template = $this->twig->createTemplate($feedback);
+            $feedback = $template->render([]);
+        } catch (\Throwable $e) {
+            $feedback .= ' (ERROR: ' . $e->getMessage() . ')';
+        }
+        return $feedback;
     }
 
     public function getUrlContents(string $url): string {
@@ -65,5 +79,9 @@ class FeedbackInterpolator {
                 eval('$result = ($desiredValue ' . $operator . ' $compareTo);');
                 return $result ? ($config[2] ?? '1') : ($config[3] ?? '0');
         }
+    }
+
+    public function getChannelState($channelId) {
+        return $this->getApi()->getChannelState($channelId);
     }
 }

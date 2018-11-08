@@ -14,7 +14,7 @@ angular.module('supla-scripts').component 'feedbackInterpolation',
             @pending = no
             @fetching = yes
             Scenes.one('feedback').patch(feedback: @feedback)
-              .then((@interpolatedFeedback) =>)
+              .then((feedback) => @interpolatedFeedback = feedback.plain?() or feedback)
               .finally =>
                 @fetching = no
                 @$onChanges() if @pending

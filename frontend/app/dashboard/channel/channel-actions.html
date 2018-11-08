@@ -10,7 +10,7 @@
             promise-btn>
         {{ operation.label | ucfirst }}
     </button>
-    <div class="btn-group btn-group-xs" ng-if="['FNC_DIMMERANDRGBLIGHTING'].indexOf($ctrl.channel.function.name) >= 0">
+    <div class="btn-group btn-group-xs" ng-if="['FNC_DIMMERANDRGBLIGHTING', 'FNC_RGBLIGHTING'].indexOf($ctrl.channel.function.name) >= 0">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
             Ustaw kolor
             <span class="caret"></span>

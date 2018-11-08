@@ -4,26 +4,26 @@ angular.module('supla-scripts').component 'feedbackField',
     ngModel: 'ngModel'
   controller: (Channels, channelLabelFilter, $timeout, $element) ->
     CHANNEL_FEEDBACKS =
-      FNC_LIGHTSWITCH: [{display: 'zaświecone/zgaszone', suffix: 'on|bool:zaświecone,zgaszone'}]
-      FNC_POWERSWITCH: [{display: 'włączone/wyłączone', suffix: 'on|bool:włączone,wyłączone'}]
+      FNC_LIGHTSWITCH: [{display: 'zaświecone/zgaszone', suffix: 'on ? "zaświecone" : "zgaszone"'}]
+      FNC_POWERSWITCH: [{display: 'włączone/wyłączone', suffix: 'on ? "włączone" : "wyłączone"'}]
       FNC_THERMOMETER: [
-        {display: 'temperatura', suffix: 'temperature|number:1'}
-        {display: 'warunek temperatury', suffix: 'temperature|compare:<,10,zimno,ciepło'}
+        {display: 'temperatura', suffix: 'temperature|number_format(1)'}
+        {display: 'warunek temperatury', suffix: 'temperature < 10 ? "zimno" : "ciepło"'}
       ]
       FNC_HUMIDITYANDTEMPERATURE: [
-        {display: 'temperatura', suffix: 'temperature|number:1'},
-        {display: 'warunek temperatury', suffix: 'temperature|compare:<,10,zimno,ciepło'}
-        {display: 'wilgotność', suffix: 'humidity|number:0'}
-        {display: 'warunek wilgotności', suffix: 'humidity|compare:<,50,sucho,wilgotno'}
+        {display: 'temperatura', suffix: 'temperature|number_format(1)'},
+        {display: 'warunek temperatury', suffix: 'temperature < 10 ? "zimno" : "ciepło"'}
+        {display: 'wilgotność', suffix: 'humidity|number_format(1)'}
+        {display: 'warunek wilgotności', suffix: 'humidity < 50 ? "sucho" : "wilgotno"'}
       ]
-      FNC_OPENINGSENSOR_GARAGEDOOR: [{display: 'otwarta/zamknięta', suffix: 'hi|bool:zamknięta,otwarta'}]
-      FNC_OPENINGSENSOR_DOOR: [{display: 'otwarte/zamknięte', suffix: 'hi|bool:zamknięte,otwarte'}]
-      FNC_OPENINGSENSOR_ROLLERSHUTTER: [{display: 'otwarte/zamknięte', suffix: 'hi|bool:zamknięte,otwarte'}]
-      FNC_OPENINGSENSOR_GATE: [{display: 'otwarta/zamknięta', suffix: 'hi|bool:zamknięta,otwarta'}]
-      FNC_OPENINGSENSOR_GATEWAY: [{display: 'otwarta/zamknięta', suffix: 'hi|bool:zamknięta,otwarta'}]
-      FNC_OPENINGSENSOR_WINDOW: [{display: 'otwarte/zamknięte', suffix: 'hi|bool:zamknięte,otwarte'}]
-      FNC_MAILSENSOR: [{display: 'jest/nie ma', suffix: 'hi|bool:nie ma,jest'}]
-      FNC_NOLIQUIDSENSOR: [{display: 'pusto/pełno', suffix: 'hi|bool:pusto,pełno'}]
+      FNC_OPENINGSENSOR_GARAGEDOOR: [{display: 'otwarta/zamknięta', suffix: 'hi ? "zamknięta" : "otwarta"'}]
+      FNC_OPENINGSENSOR_DOOR: [{display: 'otwarte/zamknięte', suffix: 'hi ? "zamknięte" : "otwarte"'}]
+      FNC_OPENINGSENSOR_ROLLERSHUTTER: [{display: 'otwarte/zamknięte', suffix: 'hi ? "zamknięte" : "otwarte"'}]
+      FNC_OPENINGSENSOR_GATE: [{display: 'otwarta/zamknięta', suffix: 'hi ? "zamknięta" : "otwarta"'}]
+      FNC_OPENINGSENSOR_GATEWAY: [{display: 'otwarta/zamknięta', suffix: 'hi ? "zamknięta" : "otwarta"'}]
+      FNC_OPENINGSENSOR_WINDOW: [{display: 'otwarte/zamknięte', suffix: 'hi ? "zamknięte" : "otwarte"'}]
+      FNC_MAILSENSOR: [{display: 'jest/nie ma', suffix: 'hi ? "nie ma" : "jest"'}]
+      FNC_NOLIQUIDSENSOR: [{display: 'pusto/pełno', suffix: 'hi ? "pusto" : "pełno"'}]
 
     new class
       $onInit: ->
@@ -47,7 +47,7 @@ angular.module('supla-scripts').component 'feedbackField',
                   !match[0] or feedback.display.toLocaleLowerCase().indexOf(match[1].toLowerCase()) >= 0
               onSelect: (item) =>
                 $timeout(@onChange)
-                "{#{item.channel.id}|#{item.suffix}}}"
+                "{state(#{item.channel.id}).#{item.suffix}}}"
               mode: 'replace'
             }
           ]
