@@ -2,6 +2,8 @@
   "name": "fracz/supla-scripts",
   "type": "project",
   "require": {
+    "ext-curl": "*",
+    "ext-json": "*",
     "beberlei/assert": "^2.7",
     "defuse/php-encryption": "^2.0",
     "firebase/php-jwt": "^4.0",

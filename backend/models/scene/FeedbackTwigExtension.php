@@ -22,9 +22,12 @@ use suplascripts\models\HasSuplaApi;
 class FeedbackTwigExtension extends \Twig_Extension {
     use HasSuplaApi;
 
+    const URL_FETCH_TIMEOUT = 5;
+
     public function getFunctions() {
         return [
             new \Twig_Function('state', [$this, 'getChannelState']),
+            new \Twig_Function('getUrl', self::class . '::getUrlContents'),
         ];
     }
 
@@ -126,5 +129,31 @@ class FeedbackTwigExtension extends \Twig_Extension {
             "fuchsia" => 'różowy',
             "aqua" => 'morski',
         ][$this->getNearestColorName($color)];
+    }
+
+    public static function getUrlContents(string $url, string $regex = '', array $config = []): string {
+        $key = \FileSystemCache::generateCacheKey(array_merge($config, [$url]), 'urls');
+        $value = \FileSystemCache::retrieve($key);
+        if ($value === false) {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_TIMEOUT, self::URL_FETCH_TIMEOUT);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, self::URL_FETCH_TIMEOUT);
+            if ($config['ignoreSslErrors'] ?? false) {
+                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            }
+            $value = curl_exec($ch);
+            curl_close($ch);
+            if ($value === false) {
+                $value = 'URL_FETCH_ERROR';
+            }
+            \FileSystemCache::store($key, $value, 60);
+        }
+        if ($regex && preg_match($regex, $value, $match)) {
+            return $match[$config['regexGroup'] ?? 1];
+        }
+        return $value;
     }
 }
