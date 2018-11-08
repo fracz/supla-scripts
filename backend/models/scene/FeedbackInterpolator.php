@@ -5,7 +5,7 @@ namespace suplascripts\models\scene;
 use Assert\Assertion;
 use suplascripts\models\HasSuplaApi;
 use Twig_Environment;
-use Twig_Loader_Filesystem;
+use Twig_Loader_Array;
 
 class FeedbackInterpolator {
     use HasSuplaApi;
@@ -14,7 +14,7 @@ class FeedbackInterpolator {
     const NOT_CONNECTED_RESPONSE = ' DISCONNECTED ';
 
     public function __construct() {
-        $this->twig = new Twig_Environment(new Twig_Loader_Filesystem(__DIR__));
+        $this->twig = new Twig_Environment(new Twig_Loader_Array([]));
         $this->twig->addExtension(new FeedbackTwigExtension());
     }
 
