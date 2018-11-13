@@ -1,5 +1,7 @@
 angular.module('supla-scripts').component 'feedbackField',
   templateUrl: 'app/scenes/feedback/feedback-field.html'
+  bindings:
+    condition: '<'
   require:
     ngModel: 'ngModel'
   controller: (Channels, channelLabelFilter, $timeout, $element) ->
@@ -49,11 +51,17 @@ angular.module('supla-scripts').component 'feedbackField',
               list: (match, callback) =>
                 availableFeedbacks = []
                 if @feedbackableChannels
-                  availableFeedbacks = @flatten @feedbackableChannels.map (channel) ->
-                    angular.copy(CHANNEL_FEEDBACKS[channel.function.name]).map (feedback) ->
+                  availableFeedbacks = @flatten @feedbackableChannels.map (channel) =>
+                    angular.copy(CHANNEL_FEEDBACKS[channel.function.name]).map (feedback) =>
                       feedback.display = channelLabelFilter(channel) + " (#{feedback.display})"
                       feedback.channel = channel
+                      if @condition
+                        if feedback.suffix.indexOf('?') > 0
+                          feedback.suffix = feedback.suffix.substr(0, feedback.suffix.indexOf('?')).trim()
+                        else
+                          return false
                       feedback
+                availableFeedbacks = availableFeedbacks.filter((a) -> a)
                 callback availableFeedbacks.filter (feedback) ->
                   !match[0] or feedback.display.toLocaleLowerCase().indexOf(match[1].toLowerCase()) >= 0
               onSelect: (item) =>

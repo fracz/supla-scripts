@@ -48,7 +48,7 @@ class Notification extends Model {
     const ONLY_IN_TIME = 'onlyInTime';
 
     protected $fillable = [self::LABEL, self::CONDITION, self::INTERVALS, self::HEADER, self::MESSAGE, self::SOUND, self::VIBRATE, self::FLASH,
-        self::CANCELLABLE, self::ONGOING, self::AWAKE, self::ACTIONS, self::RETRY_INTERVAL, self::MIN_CONDITIONS, self::ICON, self::CLIENT_IDS,
+        self::CANCELLABLE, self::ONGOING, self::AWAKE, self::ACTIONS, self::RETRY_INTERVAL, self::ICON, self::CLIENT_IDS,
         self::SPEECH, self::DISPLAY_IF_DISCONNECTED, self::ONLY_IN_TIME];
     protected $jsonEncoded = [self::ACTIONS, self::CLIENT_IDS];
 
@@ -61,6 +61,7 @@ class Notification extends Model {
     }
 
     public function save(array $options = []) {
+        $this->minConditions = 1; // backward compatibility
         if (!$this->message) {
             $this->message = '';
         }
