@@ -18,6 +18,7 @@
 namespace suplascripts\models\supla;
 
 use Supla\ApiClient\SuplaApiClient;
+use suplascripts\app\Application;
 
 class SuplaApiClientWithOAuthSupport extends SuplaApiClient {
     private $serverParams;
@@ -54,4 +55,29 @@ class SuplaApiClientWithOAuthSupport extends SuplaApiClient {
         }
     }
 
+    protected function remoteRequest($data, $path, $method = 'POST', $bearer = false) {
+        $result = parent::remoteRequest($data, $path, $method, $bearer);
+        if (!$result && $this->getLastError() == 'HTTP: 401' && array_key_exists('refresh_token', $this->serverParams)) {
+            $refreshTokenRequestData = [
+                'grant_type' => 'refresh_token',
+                'client_id' => Application::getInstance()->getSetting('oauth')['clientId'],
+                'client_secret' => Application::getInstance()->getSetting('oauth')['secret'],
+                'refresh_token' => $this->serverParams['refresh_token'],
+            ];
+            $suplaDomain = base64_decode(explode('.', $this->serverParams['refresh_token'])[1] ?? '');
+            // need to refresh the token
+            $handle = curl_init($suplaDomain . '/oauth/v2/token');
+            curl_setopt($handle, CURLOPT_POST, true);
+            curl_setopt($handle, CURLOPT_POSTFIELDS, $refreshTokenRequestData);
+            curl_setopt($handle, CURLOPT_RETURNTRANSFER, 1);
+            $resp = curl_exec($handle);
+            $resp = json_decode($resp, true);
+            $user = Application::getInstance()->getCurrentUser();
+            $user->setApiCredentials($resp);
+            $user->save();
+            $this->serverParams = $resp;
+            $result = parent::remoteRequest($data, $path, $method, $bearer);
+        }
+        return $result;
+    }
 }

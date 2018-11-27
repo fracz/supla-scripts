@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ce3502bb07bd2ab5d45a7b44984e4d8d",
+    "content-hash": "7c7cd5d37e1b45d28d1e591105fc9c80",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -1326,17 +1326,20 @@
         },
         {
             "name": "supla/api-client",
-            "version": "dev-master",
+            "version": "v2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SUPLA/api-client-php.git",
-                "reference": "f9e0d8c31ffc28d23c97e128bf4c048e9bb7153c"
+                "reference": "6506335bd39fb97df6152ff026ac6558d47e739f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SUPLA/api-client-php/zipball/f9e0d8c31ffc28d23c97e128bf4c048e9bb7153c",
-                "reference": "f9e0d8c31ffc28d23c97e128bf4c048e9bb7153c",
+                "url": "https://api.github.com/repos/SUPLA/api-client-php/zipball/6506335bd39fb97df6152ff026ac6558d47e739f",
+                "reference": "6506335bd39fb97df6152ff026ac6558d47e739f",
                 "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*"
             },
             "require-dev": {
                 "squizlabs/php_codesniffer": "^2.8"
@@ -1348,7 +1351,7 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "time": "2017-06-24T18:24:41+00:00"
+            "time": "2018-08-09T07:03:06+00:00"
         },
         {
             "name": "symfony/config",
@@ -2098,8 +2101,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "jdorn/file-system-cache": 20,
-        "supla/api-client": 20
+        "jdorn/file-system-cache": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
