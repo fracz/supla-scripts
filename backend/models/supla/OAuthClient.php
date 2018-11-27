@@ -17,6 +17,50 @@
 
 namespace suplascripts\models\supla;
 
-class OAuthClient {
+use Assert\Assertion;
+use suplascripts\models\HasApp;
+use suplascripts\models\User;
 
+class OAuthClient {
+    use HasApp;
+
+    public function refreshAccessToken(User $user) {
+        $apiCredentials = $user->getApiCredentials();
+        Assertion::keyExists($apiCredentials, 'refresh_token', 'We cannot refresh access token because there is no refresh_token.');
+        $refreshToken = $apiCredentials['refresh_token'];
+        $newCredentials = $this->issueNewAccessTokens($this->getSuplaAddress($refreshToken), [
+            'grant_type' => 'refresh_token',
+            'refresh_token' => $refreshToken,
+        ]);
+        $user->setApiCredentials($newCredentials);
+        $user->save();
+    }
+
+    public function issueNewAccessTokens(string $address, array $data): array {
+        $handle = curl_init($address . '/oauth/v2/token');
+        $data = array_merge([
+            'client_id' => $this->getApp()->getSetting('oauth')['clientId'],
+            'client_secret' => $this->getApp()->getSetting('oauth')['secret'],
+        ], $data);
+        curl_setopt($handle, CURLOPT_POST, true);
+        curl_setopt($handle, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($handle, CURLOPT_RETURNTRANSFER, 1);
+        $response = curl_exec($handle);
+        $responseStatus = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+        Assertion::eq(200, $responseStatus, 'Could not issue access token. Response status: ' . $responseStatus . ' ' . $response);
+        $response = json_decode($response, true);
+        Assertion::keyExists($response, 'access_token');
+        Assertion::keyExists($response, 'refresh_token');
+        Assertion::keyExists($response, 'scope');
+        $scopes = explode(' ', $response['scope']);
+        $missingScopes = array_diff(['account_r', 'iodevices_r', 'channels_ea', 'channels_r', 'offline_access'], $scopes);
+        Assertion::count($missingScopes, 0, 'Your token is missing some scopes: ' . implode(', ', $missingScopes));
+        return $response;
+    }
+
+    public function getSuplaAddress(string $token) {
+        $address = base64_decode(explode('.', $token)[1] ?? '');
+        Assertion::string($address, 'Could not decode SUPLA address from the given token.');
+        return $address;
+    }
 }

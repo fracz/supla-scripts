@@ -1,1 +1,10 @@
-<loader-dots></loader-dots>
+<div class="container" ng-if="$ctrl.errorResponse">
+    <h1>We could not authenticate you</h1>
+    <p>For some reason, the SUPLA Cloud server did not issue an authentication token or it was invalid.</p>
+    <p>You may find this rather ugly response message helpful.</p>
+    <div class="form-group">
+        <code>{{ $ctrl.errorResponse.data }}</code>
+    </div>
+    <a ui-sref="home" class="btn btn-default">Try again from homepage</a>
+</div>
+<loader-dots ng-else></loader-dots>

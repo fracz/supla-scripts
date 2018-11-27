@@ -3,14 +3,22 @@
   display: flex;
   height: 100%;
   width: 100%;
+
   .login-form, .register-form {
     margin: auto;
   }
+
   .login-form {
     width: 95%;
     max-width: 400px;
   }
+
   .version {
-    font-family:monospace;
+    font-family: monospace;
+  }
+
+  .supla-login {
+    background: #00d151;
+    border-color: #00d151;
   }
 }

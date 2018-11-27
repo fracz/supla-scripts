@@ -23,7 +23,7 @@ angular.module('supla-scripts')
     template: '<login-view></login-view>'
 
   .state 'oauthAuthorize',
-    url: '/authorize?code'
+    url: '/authorize?code&state'
     template: '<oauth-authorize-page></oauth-authorize-page>'
 
   .state 'register',

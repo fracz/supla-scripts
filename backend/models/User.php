@@ -7,7 +7,6 @@ use Assert\Assertion;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use suplascripts\models\notification\Notification;
 use suplascripts\models\scene\Scene;
-use suplascripts\models\supla\SuplaApi;
 use suplascripts\models\thermostat\Thermostat;
 
 /**
@@ -107,7 +106,9 @@ class User extends Model {
     }
 
     public function setApiCredentials(array $apiCredentials) {
-        $apiCredentials['server'] = preg_replace('#^https?://#', '', $apiCredentials['server']);
+        if (isset($apiCredentials['server'])) {
+            $apiCredentials['server'] = preg_replace('#^https?://#', '', $apiCredentials['server']);
+        }
         $this->apiCredentials = json_encode($apiCredentials);
 //        SuplaApi::getInstance($this)->getDevices();
     }

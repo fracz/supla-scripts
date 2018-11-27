@@ -46,8 +46,7 @@ angular.module('supla-scripts').service 'Token', (Restangular, $localStorage, $t
 
   Token.authenticate = (authCode) ->
     Token.one('').all('new').withHttpConfig(skipErrorHandler: yes)
-#      .post(authCode)
-      .post({authCode})
+      .post(authCode)
       .then(({token}) -> Token.rememberToken(token))
 
   Token.forgetRememberedToken = ->

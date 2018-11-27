@@ -3,5 +3,6 @@ angular.module('supla-scripts').component 'oauthAuthorizePage',
   controller: (Token, $state, $stateParams) ->
     new class
       $onInit: ->
-        Token.authenticate($stateParams.code).then =>
-          $state.go('dashboard')
+        Token.authenticate({authCode: $stateParams.code, rememberMe: $stateParams.state == 'remember'})
+          .then(=> $state.go('dashboard'))
+          .catch((@errorResponse) => )

@@ -13,7 +13,9 @@ class SystemController extends BaseController {
         $response = [
             'version' => Application::version(),
             'authenticated' => $authenticated,
-            'oAuthClientId' => $this->getApp()->getSetting('oauth')['clientId'],
+            'oAuthClientId' => $this->getApp()->getSetting('oauth')['clientId'] ?? null,
+            'scriptsUrl' => $this->getApp()->getSetting('oauth')['scriptsUrl'] ?? 'https://supla.fracz.com',
+            'cloudUrl' => $this->getApp()->getSetting('oauth')['cloudUrl'] ?? 'https://cloud.supla.org',
             'time' => (new \DateTime())->format(\DateTime::ATOM),
         ];
         if ($authenticated) {

@@ -3,10 +3,13 @@
 namespace suplascripts\controllers;
 
 use Assert\Assert;
+use Assert\Assertion;
 use Slim\Http\Response;
 use suplascripts\controllers\exceptions\ApiException;
 use suplascripts\models\Client;
 use suplascripts\models\JwtToken;
+use suplascripts\models\supla\OAuthClient;
+use suplascripts\models\supla\SuplaApiClientWithOAuthSupport;
 use suplascripts\models\User;
 
 class TokensController extends BaseController {
@@ -41,51 +44,43 @@ class TokensController extends BaseController {
     public function oauthAuthenticateAction() {
         $body = $this->request()->getParsedBody();
         Assert::that($body)->notEmptyKey('authCode');
+        $oauthClient = new OAuthClient();
         $code = $body['authCode'];
-        $suplaDomain = base64_decode(explode('.', $code)[1] ?? '');
-        $handle = curl_init($suplaDomain . '/oauth/v2/token');
-        $data = [
+
+        $suplaAddress = $oauthClient->getSuplaAddress($code);
+        $apiCredentials = $oauthClient->issueNewAccessTokens($suplaAddress, [
             'grant_type' => 'authorization_code',
-            'client_id' => $this->getApp()->getSetting('oauth')['clientId'],
-            'client_secret' => $this->getApp()->getSetting('oauth')['secret'],
             'redirect_uri' => 'http://suplascripts.local/authorize',
-            'code' => $code
-        ];
-        curl_setopt($handle, CURLOPT_POST, true);
-        curl_setopt($handle, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($handle, CURLOPT_RETURNTRANSFER, 1);
-        $resp = curl_exec($handle);
-        if ($resp) {
-            $resp = json_decode($resp, true);
-            if (isset($resp['access_token'])) {
-                // TODO check scope
-                $handle = curl_init($suplaDomain . '/api/users/current');
-                curl_setopt($handle, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($handle, CURLOPT_HTTPHEADER, ['Authorization: Bearer ' . $resp['access_token']]);
-                $userResp = curl_exec($handle);
-                $userData = json_decode($userResp, true);
+            'code' => $code,
+        ]);
 
-                $email = $userData['email'];
+        $suplaApi = new SuplaApiClientWithOAuthSupport($apiCredentials, false, false, false);
+        $userData = $suplaApi->remoteRequest(null, '/api/users/current', 'GET', true);
+        Assertion::isObject($userData);
+        $email = $userData->email;
 
-                if ($user = User::findByUsername($email)) {
-                    $user->setApiCredentials($resp);
-                    $user->save();
-                } else {
-                    $user = User::create([
-                        User::USERNAME => $userData['email'],
-                        User::API_CREDENTIALS => $resp
-                    ]);
-                }
-
-                $token = JwtToken::create()->user($user)->rememberMe($body['rememberMe'] ?? false)->issue();
-                $this->getApp()->getContainer()['currentUser'] = $user;
-                $user->trackLastLogin();
-                return $this->response(['token' => $token]);
-            } else {
-                return $this->response($resp)->withStatus(401);
+        $user = User::findByUsername($email);
+        if (!$user && ($compatUsername = $userData->oauthCompatUsername ?? null)) {
+            $user = $this->findByCompatUsername($compatUsername, $suplaAddress);
+            if ($user) {
+                $user->username = $email;
             }
         }
-        return 'Smuteczek';
+        if (!$user) {
+            $user = User::create([
+                User::USERNAME => $userData['email'],
+                User::API_CREDENTIALS => $apiCredentials,
+                User::TIMEZONE => $userData->timezone ?? 'Europe/Warsaw',
+            ]);
+        }
+
+        $user->setApiCredentials($apiCredentials);
+        $user->save();
+
+        $token = JwtToken::create()->user($user)->rememberMe($body['rememberMe'] ?? false)->issue();
+        $this->getApp()->getContainer()['currentUser'] = $user;
+        $user->trackLastLogin();
+        return $this->response(['token' => $token]);
     }
 
     public function refreshTokenAction() {
@@ -107,5 +102,17 @@ class TokensController extends BaseController {
             return $user;
         }
         throw new ApiException('Invalid username or password', 401);
+    }
+
+    private function findByCompatUsername($compatUsername, $suplaAddress) {
+        $suplaDomain = preg_replace('#^https?://#', '', $suplaAddress);
+        $users = User::all();
+        foreach ($users as $user) {
+            $apiCredentials = $user->getApiCredentials();
+            $username = $apiCredentials['username'] ?? null;
+            if ($username == $compatUsername && ($apiCredentials['server'] ?? '') == $suplaDomain) {
+                return $user;
+            }
+        }
     }
 }

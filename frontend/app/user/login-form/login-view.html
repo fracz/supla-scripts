@@ -1,22 +1,28 @@
 <div class="login-form-container">
     <div class="login-form">
-        <div class="panel panel-success">
+        <div class="panel panel-primary">
             <div class="panel-heading">
                 <span class="badge pull-right version">v{{ $ctrl.APP_VERSION }}</span>
                 <h4>SUPLA Scripts</h4>
                 <view-title>Logowanie</view-title>
             </div>
             <div class="panel-body">
-                <login-form></login-form>
-                <div class="clearfix" ng-class="{'form-group': $ctrl.showDontRememberHint}">
-                    <a ng-click="$ctrl.showDontRememberHint = true" class="pull-right" ng-if="!$ctrl.showDontRememberHint">Nie pamiętam hasła</a>
-                    <a ui-sref="register">Zarejestruj</a>
-                </div>
-                <div class="alert alert-info fx-fade-down no-margin" ng-if="$ctrl.showDontRememberHint">
-                    <fa name="key" fw class="pull-right" size="2"></fa>
-                    <p>Jeśli nie pamiętasz hasła do swojego konta, do logowania użyj wartości <em>Secret</em> z danych logowania do Twojego API
-                        w SUPLA Cloud.</p>
-                    <p>Po zalogowaniu użyj jej ponownie by zmienić hasło do Twojego konta.</p>
+                <div class="form-group text-center">
+                    <a ng-href="{{$root.APP_CONFIG.cloudUrl}}/oauth/v2/auth?client_id={{$root.APP_CONFIG.oAuthClientId}}&redirect_uri={{$root.APP_CONFIG.scriptsUrl}}/authorize&state={{$ctrl.rememberMe?'remember':'noremember'}}&response_type=code&scope=account_r iodevices_r channels_ea channels_r offline_access"
+                       class="btn btn-success btn-lg supla-login">
+                        <fa name="sign-in"
+                            fw></fa>
+                        Zaloguj się z SUPLA
+                    </a>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox"
+                                       ng-model="$ctrl.rememberMe">
+                                Po zalogowaniu zapamiętaj mnie na dłużej
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
