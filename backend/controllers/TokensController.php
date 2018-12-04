@@ -43,6 +43,9 @@ class TokensController extends BaseController {
 
     public function oauthAuthenticateAction() {
         $body = $this->request()->getParsedBody();
+        if (isset($body[User::USERNAME])) {
+            return $this->authenticateUser($body);
+        }
         Assert::that($body)->notEmptyKey('authCode');
         $oauthClient = new OAuthClient();
         $code = $body['authCode'];
@@ -58,8 +61,9 @@ class TokensController extends BaseController {
         $userData = $suplaApi->remoteRequest(null, '/api/users/current', 'GET', true);
         Assertion::isObject($userData);
         $email = $userData->email;
+        $shortUniqueId = $userData->shortUniqueId;
 
-        $user = User::findByUsername($email);
+        $user = User::where(User::SHORT_UNIQUE_ID, $shortUniqueId)->first();
         if (!$user && ($compatUsername = $userData->oauthCompatUsername ?? null)) {
             $user = $this->findByCompatUsername($compatUsername, $suplaAddress);
             if ($user) {
@@ -68,7 +72,8 @@ class TokensController extends BaseController {
         }
         if (!$user) {
             $user = User::create([
-                User::USERNAME => $userData['email'],
+                User::SHORT_UNIQUE_ID => $shortUniqueId,
+                User::USERNAME => $email,
                 User::API_CREDENTIALS => $apiCredentials,
                 User::TIMEZONE => $userData->timezone ?? 'Europe/Warsaw',
             ]);
