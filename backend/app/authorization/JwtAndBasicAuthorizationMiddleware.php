@@ -31,6 +31,7 @@ class JwtAndBasicAuthorizationMiddleware {
                 '/api/oauth',
                 '/api/scenes/public',
                 '/api/tokens/new',
+                '/api/tokens/personal',
                 '/api/tokens/client',
                 '/api/thermostats/preview',
                 '/api/users/register',

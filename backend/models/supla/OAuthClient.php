@@ -24,6 +24,8 @@ use suplascripts\models\User;
 class OAuthClient {
     use HasApp;
 
+    const REQUIRED_SCOPES = ['account_r', 'iodevices_r', 'channels_ea', 'channels_r'];
+
     public function refreshAccessToken(User $user) {
         $apiCredentials = $user->getApiCredentials();
         Assertion::keyExists($apiCredentials, 'refresh_token', 'We cannot refresh access token because there is no refresh_token.');
@@ -53,7 +55,7 @@ class OAuthClient {
         Assertion::keyExists($response, 'refresh_token');
         Assertion::keyExists($response, 'scope');
         $scopes = explode(' ', $response['scope']);
-        $missingScopes = array_diff(['account_r', 'iodevices_r', 'channels_ea', 'channels_r', 'offline_access'], $scopes);
+        $missingScopes = array_diff(array_merge(self::REQUIRED_SCOPES, ['offline_access']), $scopes);
         Assertion::count($missingScopes, 0, 'Your token is missing some scopes: ' . implode(', ', $missingScopes));
         return $response;
     }

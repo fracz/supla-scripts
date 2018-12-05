@@ -101,6 +101,29 @@ class TokensController extends BaseController {
         return $this->response(['token' => $newToken]);
     }
 
+    public function checkPersonalAccessTokenAction() {
+        $body = $this->request()->getParsedBody();
+        Assertion::keyExists($body, 'token');
+        $token = $body['token'];
+        $oauthClient = new OAuthClient();
+        $suplaUrl = $oauthClient->getSuplaAddress($token);
+        Assertion::url($suplaUrl, 'Invalid token (no encoded SUPLA Cloud URL).');
+        $suplaApi = new SuplaApiClientWithOAuthSupport(['access_token' => $token, 'server' => $suplaUrl], false, false, false);
+        $tokenInfo = $suplaApi->remoteRequest(null, '/api/token-info', 'GET', true);
+        Assertion::isObject($tokenInfo, "Invalid token (SUPLA Cloud $suplaUrl does not authorize it).");
+        $scopes = explode(' ', $tokenInfo->scope);
+        $missingScopes = array_diff(OAuthClient::REQUIRED_SCOPES, $scopes);
+        Assertion::count($missingScopes, 0, 'Your token is missing some scopes: ' . implode(', ', $missingScopes));
+        $userData = $suplaApi->remoteRequest(null, '/api/users/current', 'GET', true);
+        $user = User::where(User::SHORT_UNIQUE_ID, $tokenInfo->userShortUniqueId)->first();
+        return $this->response([
+            'userId' => $user ? $user->id : null,
+            'username' => $user ? $user->username : null,
+            'cloudUrl' => $suplaUrl,
+            'cloudUsername' => $userData->email,
+        ]);
+    }
+
     private function findMatchingUser($username, $plainPassword) {
         $user = User::findByUsername($username);
         if ($user != null && $user->isPasswordValid($plainPassword)) {

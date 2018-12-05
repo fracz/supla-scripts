@@ -1,3 +1,35 @@
-<div class="form-group text-center">
-    TOKEN
+<div class="form-group">
+    <div ng-if="!$ctrl.tokenInfo">
+        <p>Tym sposobem zalogujesz się na dowolną instancję SUPLA Cloud, bez względu na to czy jest ona zarejestrowana czy nie. W celu uzyskania
+            tokena
+            dostępu, przejdź do ustawień integracji w swoim koncie SUPLA Cloud, wybierz "Osobiste tokeny dostępowe" i wygeneruj nowy token.</p>
+        <p>Ważne jest, by nadać mu uprawnienia: odczyt konta, odczyt i wykonywanie akcji na kanałach oraz odczyt urządzeń.</p>
+        <p>Po wygenerowaniu tokena wklej go w pole poniżej - powiemy Ci co dalej.</p>
+    </div>
+    <div class="alert alert-danger" ng-if="$ctrl.error">
+        {{ $ctrl.error }}
+    </div>
+    <form name="loginForm"
+          novalidate
+          promise-btn
+          promise-btn-options="{minDuration: 1000}"
+          ng-submit="$broadcast('show-errors-check-validity') && loginForm.$valid && $ctrl.login()">
+        <div class="form-group"
+             show-errors>
+            <label class="control-label">Token</label>
+            <input type="password"
+                   ng-model="$ctrl.token"
+                   ng-change="$ctrl.checkToken()"
+                   required
+                   name="token"
+                   ng-model-options="{debounce: 500}"
+                   class="form-control"
+                   ng-disabled="$ctrl.loading || $ctrl.tokenInfo">
+        </div>
+        <div class="text-center" ng-if="$ctrl.loading">
+            <loader-dots-small></loader-dots-small>
+        </div>
+
+    </form>
 </div>
+MDU5ZDNmYzQwZmY5OWE1ZTU5MWZmYmUzMDYyYWMzOWE0NDAzNzQ1ODI3NTRkZTBkMTQ2NTczZGQ3YzRmNWU1Yg.aHR0cDovL3N1cGxhLmxvY2Fs

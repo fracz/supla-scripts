@@ -28,8 +28,8 @@ $app = new Application();
 $app->group('/api', function () use ($app) {
     $app->get('/info', SystemController::class . ':getInfo');
     $app->group('/tokens', function () use ($app) {
-//        $app->post('/new', TokensController::class . ':createToken');
         $app->post('/new', TokensController::class . ':oauthAuthenticate');
+        $app->patch('/personal', TokensController::class . ':checkPersonalAccessToken');
         $app->post('/client', TokensController::class . ':createTokenForClient');
         $app->put('', TokensController::class . ':refreshToken');
     });
