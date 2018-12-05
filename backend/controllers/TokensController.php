@@ -73,7 +73,7 @@ class TokensController extends BaseController {
         if (!$user) {
             $user = User::create([
                 User::SHORT_UNIQUE_ID => $shortUniqueId,
-                User::USERNAME => $email,
+//                User::USERNAME => $email,
                 User::API_CREDENTIALS => $apiCredentials,
                 User::TIMEZONE => $userData->timezone ?? 'Europe/Warsaw',
             ]);
@@ -82,7 +82,7 @@ class TokensController extends BaseController {
         $user->setApiCredentials($apiCredentials);
         $user->save();
 
-        $token = JwtToken::create()->user($user)->rememberMe($body['rememberMe'] ?? false)->issue();
+        $token = JwtToken::create()->user($user, $email)->rememberMe($body['rememberMe'] ?? false)->issue();
         $this->getApp()->getContainer()['currentUser'] = $user;
         $user->trackLastLogin();
         return $this->response(['token' => $token]);
