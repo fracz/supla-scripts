@@ -49,12 +49,17 @@
             Zaloguj
         </button>
     </div>
-    <div class="form-group text-center">
-        <a ng-href="http://supla.local/oauth/v2/auth?client_id={{$root.APP_CONFIG.oAuthClientId}}&redirect_uri=http://suplascripts.local/authorize&response_type=code&scope=account_r iodevices_r channels_ea channels_r offline_access">
-            <fa name="sign-in"
-                fw></fa>
-            Zaloguj z SUPLA
-        </a>
-    </div>
 </form>
+
+<div class="form-group">
+    <div class="text-center" ng-class="{'form-group': $ctrl.showDontRememberHint}">
+        <a ng-click="$ctrl.showDontRememberHint = true" ng-if="!$ctrl.showDontRememberHint">Nie pamiętam hasła</a>
+    </div>
+    <div class="alert alert-info fx-fade-down no-margin" ng-if="$ctrl.showDontRememberHint">
+        <fa name="key" fw class="pull-right" size="2"></fa>
+        <p>Jeśli nie pamiętasz hasła do swojego konta, do logowania użyj wartości <em>Secret</em> z danych logowania do Twojego API
+            w SUPLA Cloud.</p>
+        <p>Po zalogowaniu użyj jej ponownie by zmienić hasło do Twojego konta.</p>
+    </div>
+</div>
 
