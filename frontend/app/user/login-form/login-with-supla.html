@@ -1,0 +1,17 @@
+<div class="form-group text-center">
+    <a ng-href="{{$root.APP_CONFIG.cloudUrl}}/oauth/v2/auth?client_id={{$root.APP_CONFIG.oAuthClientId}}&redirect_uri={{$root.APP_CONFIG.scriptsUrl}}/authorize&state={{$ctrl.rememberMe?'remember':'noremember'}}&response_type=code&scope=account_r iodevices_r channels_ea channels_r offline_access"
+       class="btn btn-success btn-lg supla-login">
+        <fa name="sign-in"
+            fw></fa>
+        Zaloguj się z SUPLA
+    </a>
+    <div class="form-group">
+        <div class="checkbox">
+            <label>
+                <input type="checkbox"
+                       ng-model="$ctrl.rememberMe">
+                Po zalogowaniu zapamiętaj mnie na dłużej
+            </label>
+        </div>
+    </div>
+</div>

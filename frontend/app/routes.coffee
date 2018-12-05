@@ -19,7 +19,7 @@ angular.module('supla-scripts')
     template: '<home-view></home-view>'
 
   .state 'login',
-    url: '/login?register'
+``    url: '/login?mode'
     template: '<login-view></login-view>'
 
   .state 'oauthAuthorize',

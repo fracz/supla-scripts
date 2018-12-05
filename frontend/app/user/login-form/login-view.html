@@ -1,30 +1,40 @@
 <div class="login-form-container">
     <div class="login-form">
-        <div class="panel panel-primary">
+        <div class="panel panel-primary" ng-if="$ctrl.mode">
             <div class="panel-heading">
-                <span class="badge pull-right version">v{{ $ctrl.APP_VERSION }}</span>
+                <span class="badge pull-right version">v{{ $ctrl.version }}</span>
                 <h4>SUPLA Scripts</h4>
                 <view-title>Logowanie</view-title>
             </div>
-            <div class="panel-body">
-                <div class="form-group text-center">
-                    <a ng-href="{{$root.APP_CONFIG.cloudUrl}}/oauth/v2/auth?client_id={{$root.APP_CONFIG.oAuthClientId}}&redirect_uri={{$root.APP_CONFIG.scriptsUrl}}/authorize&state={{$ctrl.rememberMe?'remember':'noremember'}}&response_type=code&scope=account_r iodevices_r channels_ea channels_r offline_access"
-                       class="btn btn-success btn-lg supla-login">
-                        <fa name="sign-in"
-                            fw></fa>
-                        Zaloguj się z SUPLA
+            <div class="panel-body"
+                 ng-if="($ctrl.mode == 'oauth' && $root.APP_CONFIG.oAuthClientId) || $ctrl.mode == 'password' || $ctrl.mode == 'token'">
+                <login-with-supla ng-if="$ctrl.mode == 'oauth'"></login-with-supla>
+                <login-form ng-else-if="$ctrl.mode == 'password'"></login-form>
+                <login-with-token ng-else></login-with-token>
+                <div class="text-center">
+                    <a ng-click="$ctrl.changeMode('choose')">Inne metody logowania</a>
+                </div>
+            </div>
+            <div class="panel-body" ng-else>
+                <h4>Wybierz metodę logowania</h4>
+                <div class="list-group">
+                    <a ng-click="$ctrl.changeMode('oauth')" class="list-group-item" ng-class="!$root.APP_CONFIG.oAuthClientId ? 'disabled' : ''">
+                        <strong>Zaloguj się kontem w SUPLA Cloud</strong>
+                        <p>SUPLA Scripts przekieruje Cię do SUPLA Cloud. Zalogujesz się tam na swoje konto, po czym zostaniesz poproszony o
+                            autoryzację. Wymagane jest posiadanie konta na cloud.supla.org lub zarejsetrowanie swojej instancji SUPLA Cloud.</p>
+                        <p ng-if="!$root.APP_CONFIG.oAuthClientId" class="text-danger">Instancja skryptów nie posiada konfiguracji OAuth.</p>
                     </a>
-                    <div class="form-group">
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox"
-                                       ng-model="$ctrl.rememberMe">
-                                Po zalogowaniu zapamiętaj mnie na dłużej
-                            </label>
-                        </div>
-                    </div>
+                    <a ng-click="$ctrl.changeMode('password')" class="list-group-item">
+                        <strong>Zaloguj się loginem i hasłem do SUPLA Scripts</strong>
+                        <p>Jeśli miałeś już wcześniej konto w SUPLA Scripts lub powiązałeś już konto przy użyciu prywatnego tokena.</p>
+                    </a>
+                    <a ng-click="$ctrl.changeMode('token')" class="list-group-item">
+                        <strong>Powiąż swoje konto z prywatnym, niezarejestrowanym SUPLA Cloud</strong>
+                        <p>Jeśli nie logowałeś się jeszcze w SUPLA Scripts, a chcesz zintegrować niezarejestrowaną Twoją instancję SUPLA Cloud.</p>
+                    </a>
                 </div>
             </div>
         </div>
+        <loader-dots ng-else></loader-dots>
     </div>
 </div>
