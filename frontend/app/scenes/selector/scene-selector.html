@@ -3,20 +3,33 @@
     <div class="form-group" ng-if="!$ctrl.disabled">
         <label>Na czym chcesz wykonać akcję?</label>
         <div class="row">
-            <div class="col-md-6">
-                <channel-selector
-                        ng-model="newChannel"
-                        ng-change="$ctrl.addNewChannelToScene(newChannel)"
-                        hide-ids="$ctrl.usedChannelIds"
-                        functions="$ctrl.sceneableFunctions">
-                </channel-selector>
+            <div class="col-xs-12 form-group">
+                <div class="btn-group btn-group-justified">
+                    <a class="btn btn-default" ng-click="$ctrl.newMode = 'channel'" ng-class="$ctrl.newMode == 'channel' ? 'active btn-primary' : ''">Kanał</a>
+                    <a class="btn btn-default" ng-click="$ctrl.newMode = 'thermostat'"
+                       ng-class="$ctrl.newMode == 'thermostat' ? 'active btn-primary' : ''">Termostat</a>
+                    <a class="btn btn-default" ng-click="$ctrl.newMode = 'scene'" ng-class="$ctrl.newMode == 'scene' ? 'active btn-primary' : ''">Inna
+                        scena</a>
+                </div>
             </div>
-            <div class="col-md-6">
-                <thermostat-selector
-                        ng-model="newThermostat"
-                        ng-change="$ctrl.addNewThermostatToScene(newThermostat)"
-                        hide-ids="$ctrl.usedThermostatIds">
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <channel-selector ng-if="$ctrl.newMode == 'channel'"
+                                  ng-model="newChannel"
+                                  ng-change="$ctrl.addNewChannelToScene(newChannel)"
+                                  hide-ids="$ctrl.usedChannelIds"
+                                  functions="$ctrl.sceneableFunctions">
+                </channel-selector>
+                <thermostat-selector ng-if="$ctrl.newMode == 'thermostat'"
+                                     ng-model="newThermostat"
+                                     ng-change="$ctrl.addNewThermostatToScene(newThermostat)"
+                                     hide-ids="$ctrl.usedThermostatIds">
                 </thermostat-selector>
+                <scenes-dropdown ng-if="$ctrl.newMode == 'scene'"
+                                 ng-model="newScene"
+                                 ng-change="$ctrl.addNewSceneToScene(newScene)"
+                                 hide-ids="$ctrl.usedSceneIds"></scenes-dropdown>
             </div>
         </div>
     </div>
@@ -32,7 +45,10 @@
                     <thermostat-profile-button-selector thermostat="operation.thermostat" disabled="$ctrl.disabled"
                                                         ng-model="operation.action"
                                                         ng-change="$ctrl.onChange()"
-                                                        ng-else></thermostat-profile-button-selector>
+                                                        ng-else-if="operation.thermostat"></thermostat-profile-button-selector>
+                    <span ng-else class="btn btn-warning btn-lg disabled">
+                        Wykonaj scenę
+                    </span>
                 </td>
                 <td>
                     <a ng-click="$ctrl.scene.splice($ctrl.scene.indexOf(operation), 1)" class="floating-delete-btn"
@@ -40,11 +56,14 @@
                         <fa name="times-circle-o"></fa>
                     </a>
                     <channel-brief channel="operation.channel" ng-if="operation.channel"></channel-brief>
-                    <span ng-else>
+                    <span ng-else-if="operation.thermostat">
                         <h4>
                             <fa name="{{ operation.thermostat|byThermostatTarget:'thermometer':'tint' }}" fw></fa>
                             {{ operation.thermostat.label }}
                         </h4>
+                    </span>
+                    <span ng-else>
+                        <h4>{{ operation.scene.label }}</h4>
                     </span>
                 </td>
             </tr>

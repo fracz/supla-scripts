@@ -1,0 +1,6 @@
+<select class="form-control"
+        ng-model="$ctrl.chosenSceneId"
+        ng-change="$ctrl.updateModel()"
+        ng-options="scene as (scene.label) for scene in $ctrl.scenes | filter:$ctrl.isNotHidden track by scene.id">
+    <option value="" disabled selected>Wybierz scenę</option>
+</select>
