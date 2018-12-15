@@ -158,7 +158,9 @@ class TokensController extends BaseController {
         } else {
             Assertion::keyExists($body, 'username');
             Assertion::keyExists($body, 'password');
-            $user = User::create([User::USERNAME => $body['username'], User::PASSWORD => $body['password'], User::API_CREDENTIALS => $apiCredentials]);
+            $user = User::create(
+                [User::USERNAME => $body['username'], User::PASSWORD => $body['password'], User::API_CREDENTIALS => $apiCredentials]
+            );
             $user->shortUniqueId = $userData->shortUniqueId;
         }
         $user->setApiCredentials($apiCredentials);

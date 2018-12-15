@@ -48,13 +48,13 @@ class SuplaApiClientWithOAuthSupport extends SuplaApiClient {
     }
 
     protected function getAccessToken() {
-        if ($this->isOAuth())
+        if ($this->isOAuth()) {
             if (isset($this->serverParams['access_token'])) {
                 return $this->serverParams['access_token'];
             } else {
                 return $this->serverParams['personal_token'];
             }
-        else {
+        } else {
             return parent::getAccessToken();
         }
     }
