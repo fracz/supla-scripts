@@ -7,5 +7,6 @@
     <dt>Strefa czasowa</dt>
     <dd>{{ $ctrl.user.timezone }}</dd>
     <dt>Nazwa użytkownika w SUPLA Scripts</dt>
-    <dd>{{ $ctrl.user.username }}</dd>
+    <dd ng-if="$ctrl.user.username">{{ $ctrl.user.username }}</dd>
+    <dd ng-else><em>brak</em></dd>
 </dl>
