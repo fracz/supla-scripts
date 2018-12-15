@@ -30,7 +30,7 @@ class JwtToken {
         if ($user) {
             $this->tokenData['user'] = [
                 'id' => $user->id,
-                'username' => $username ?: $user->username,
+                'username' => $user->username ?: $username,
             ];
             if (method_exists($user, 'hasExpiredPassword')) {
                 if ($user->hasExpiredPassword()) {

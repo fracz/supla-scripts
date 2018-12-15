@@ -141,6 +141,7 @@ class TokensController extends BaseController {
         $token = $body['personalToken'];
         list($suplaUrl, $userData) = $this->getUserDataBasedOnPersonalToken($token);
         $user = $this->findUserBasedOnUserData($suplaUrl, $userData);
+        $apiCredentials = ['personal_token' => $token, 'target_url' => $suplaUrl];
         if ($user) {
             if ($user->username) {
                 $newPassword = $body['newPassword'] ?? null;
@@ -155,8 +156,12 @@ class TokensController extends BaseController {
                 $user->setPassword($body['password']);
             }
         } else {
+            Assertion::keyExists($body, 'username');
+            Assertion::keyExists($body, 'password');
+            $user = User::create([User::USERNAME => $body['username'], User::PASSWORD => $body['password'], User::API_CREDENTIALS => $apiCredentials]);
+            $user->shortUniqueId = $userData->shortUniqueId;
         }
-        $user->setApiCredentials(['personal_token' => $token, 'target_url' => $suplaUrl]);
+        $user->setApiCredentials($apiCredentials);
         $user->save();
         $token = JwtToken::create()->user($user)->issue();
         $this->getApp()->getContainer()['currentUser'] = $user;

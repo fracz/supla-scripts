@@ -45,6 +45,12 @@
                 <p>Posiadasz już konto w SUPLA Scripts, ale do tej pory zawsze logowałeś się za pomocą SUPLI.</p>
                 <p>Jeśli chcesz logować się do skryptów osobnym loginem i hasłem - możesz to zrobić wypełniając poniższy formularz.</p>
                 <p>Logowanie z SUPLĄ będzie działać nadal.</p>
+            </div>
+            <div ng-else>
+                <p>Nie posiadasz jeszcze konta w SUPLA Scripts.</p>
+                <p>Aby nie podawać za każdym razem tokena dostępu, ustal swoją nazwę użytkownika i hasło dla konta w SUPLA Scripts.</p>
+            </div>
+            <div ng-if="!$ctrl.tokenInfo.username">
                 <div class="form-group label-floating"
                      show-errors>
                     <label class="control-label">Nazwa użytkownika</label>
