@@ -47,8 +47,8 @@ class OAuthClient {
         curl_setopt($handle, CURLOPT_POST, true);
         curl_setopt($handle, CURLOPT_POSTFIELDS, $data);
         curl_setopt($handle, CURLOPT_RETURNTRANSFER, 1);
-//        curl_setopt($handle, CURLOPT_SSL_VERIFYHOST, false);
-//        curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($handle, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, false);
         $response = curl_exec($handle);
         $responseStatus = curl_getinfo($handle, CURLINFO_HTTP_CODE);
         Assertion::eq(200, $responseStatus, 'Could not issue access token. Response status: ' . $responseStatus . ' ' . $response);

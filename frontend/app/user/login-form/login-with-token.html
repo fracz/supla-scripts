@@ -13,12 +13,12 @@
           novalidate
           promise-btn
           promise-btn-options="{minDuration: 1000}"
-          ng-submit="$broadcast('show-errors-check-validity') && loginForm.$valid && $ctrl.login()">
+          ng-submit="$broadcast('show-errors-check-validity') && loginForm.$valid && $ctrl.loginWithToken()">
         <div class="form-group"
              show-errors>
             <label class="control-label">Token</label>
             <input type="password"
-                   ng-model="$ctrl.token"
+                   ng-model="$ctrl.userData.personalToken"
                    ng-change="$ctrl.checkToken()"
                    required
                    name="token"
@@ -30,14 +30,15 @@
             <loader-dots-small></loader-dots-small>
         </div>
         <div ng-if="$ctrl.tokenInfo">
-            <p>Token wystawiony przez <strong>{{ $ctrl.tokenInfo.cloudUrl }}</strong> dla użytkownika <strong>{{ $ctrl.tokenInfo.cloudUsername
-                }}</strong></p>
+            <p>Token wystawiony przez <strong>{{ $ctrl.tokenInfo.cloudUrl }}</strong> dla użytkownika
+                <strong>{{ $ctrl.tokenInfo.cloudUsername }}</strong></p>
             <div ng-if="$ctrl.tokenInfo.username">
                 <p>Posiadasz już konto w SUPLA Scripts:</p>
                 <h3 class="text-center no-margin-top">{{ $ctrl.tokenInfo.username }}</h3>
                 <p>Ponieważ logujesz się ponownie za pomocą prywatnego tokena dostępu, możesz ustalić nowe hasło do swojego konta.</p>
                 <div class="form-group">
-                    <input type="password" placeholder="Podaj nowe hasło do konta, jeśli chcesz je zmienić" class="form-control">
+                    <input type="password" placeholder="Podaj nowe hasło do konta, jeśli chcesz je zmienić" class="form-control"
+                           ng-model="$ctrl.userData.newPassword">
                 </div>
                 <div class="text-center">
                     <button type="submit" class="btn btn-success btn-raised btn-lg check-issue-button">
@@ -50,5 +51,5 @@
         </div>
     </form>
 
-    <!--YTRmYTA4MjQzMjBhYWM4MzFlYjE0NTEyOTEwNTA4MTQyNTc1YTdhOTkwNjBhZDNmYTAwMmQzZjJmZWEwOGE5Ng.aHR0cHM6Ly9jb3B5LXN2cjMuc3VwbGEub3Jn-->
+    <!--NTBiNjliYjgxMGQ4MTZkMjIzYzdmZTMyY2U5ZGUzMGM0MzBhMWI4OTFkYTYyNzg1MGY3Nzc3NmJiOWQwNWFhOA.aHR0cHM6Ly9jb3B5LXN2cjMuc3VwbGEub3Jn-->
 </div>

@@ -26,7 +26,7 @@ class SuplaApiClientWithOAuthSupport extends SuplaApiClient {
     public function __construct($server_params, $auto_logout = true, $debug = false, $sslVerify = true) {
         $this->serverParams = $server_params;
         if ($this->isOAuth()) {
-            $server_params['server'] = base64_decode(explode('.', $server_params['access_token'])[1] ?? '');
+            $server_params['server'] = $server_params['target_url'];
             $server_params['server'] = preg_replace('#^https?://#', '', $server_params['server']);
             $server_params = array_merge(['clientId' => null, 'secret' => null, 'username' => null, 'password' => null], $server_params);
         }
@@ -34,7 +34,7 @@ class SuplaApiClientWithOAuthSupport extends SuplaApiClient {
     }
 
     private function isOAuth(): bool {
-        return array_key_exists('access_token', $this->serverParams);
+        return array_key_exists('target_url', $this->serverParams);
     }
 
     public function logout() {
@@ -48,9 +48,13 @@ class SuplaApiClientWithOAuthSupport extends SuplaApiClient {
     }
 
     protected function getAccessToken() {
-        if ($this->isOAuth()) {
-            return $this->serverParams['access_token'];
-        } else {
+        if ($this->isOAuth())
+            if (isset($this->serverParams['access_token'])) {
+                return $this->serverParams['access_token'];
+            } else {
+                return $this->serverParams['personal_token'];
+            }
+        else {
             return parent::getAccessToken();
         }
     }

@@ -22,7 +22,7 @@ class JwtToken {
     public function basedOnPreviousToken($currentToken): JwtToken {
         return $this
             ->user($currentToken->user)
-            ->rememberMe($currentToken->rememberMe);
+            ->rememberMe($currentToken->rememberMe ?? false);
     }
 
     /** @param User|null $user */

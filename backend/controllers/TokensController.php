@@ -43,6 +43,9 @@ class TokensController extends BaseController {
 
     public function oauthAuthenticateAction() {
         $body = $this->request()->getParsedBody();
+        if (isset($body['personalToken'])) {
+            return $this->authenticateWithToken($body);
+        }
         if (isset($body[User::USERNAME])) {
             return $this->authenticateUser($body);
         }
@@ -61,20 +64,10 @@ class TokensController extends BaseController {
         $userData = $suplaApi->remoteRequest(null, '/api/users/current', 'GET', true);
         Assertion::isObject($userData);
         $email = $userData->email;
-        $shortUniqueId = $userData->shortUniqueId;
-
-        $user = User::where(User::SHORT_UNIQUE_ID, $shortUniqueId)->first();
-        if (!$user && ($compatUsername = $userData->oauthCompatUserName ?? null)) {
-            $user = $this->findByCompatUsername($compatUsername, $suplaAddress);
-            /** @var User $user */
-            if ($user) {
-                $user->shortUniqueId = $shortUniqueId;
-                $user->timezone = $userData->timezone ?? 'Europe/Warsaw';
-            }
-        }
+        $user = $this->findUserBasedOnUserData($suplaAddress, $userData);
         if (!$user) {
             $user = User::create([
-                User::SHORT_UNIQUE_ID => $shortUniqueId,
+                User::SHORT_UNIQUE_ID => $userData->shortUniqueId,
 //                User::USERNAME => $email,
                 User::API_CREDENTIALS => $apiCredentials,
                 User::TIMEZONE => $userData->timezone ?? 'Europe/Warsaw',
@@ -88,6 +81,33 @@ class TokensController extends BaseController {
         $this->getApp()->getContainer()['currentUser'] = $user;
         $user->trackLastLogin();
         return $this->response(['token' => $token]);
+    }
+
+    protected function findUserBasedOnUserData(string $suplaAddress, $userData) {
+        $user = User::where(User::SHORT_UNIQUE_ID, $userData->shortUniqueId)->first();
+        if (!$user && ($compatUsername = $userData->oauthCompatUserName ?? null)) {
+            $user = $this->findByCompatUsername($compatUsername, $suplaAddress);
+            /** @var User $user */
+            if ($user) {
+                $user->shortUniqueId = $userData->shortUniqueId;
+                $user->timezone = $userData->timezone ?? 'Europe/Warsaw';
+            }
+        }
+        return $user;
+    }
+
+    private function findByCompatUsername($compatUsername, $suplaAddress) {
+        $suplaDomain = preg_replace('#^https?://#', '', $suplaAddress);
+//        $suplaDomain = 'svr3.supla.org';
+        /** @var User[] $users */
+        $users = User::where(User::SHORT_UNIQUE_ID, null)->get();
+        foreach ($users as $user) {
+            $apiCredentials = $user->getApiCredentials();
+            $username = $apiCredentials['username'] ?? null;
+            if ($username == $compatUsername && ($apiCredentials['server'] ?? '') == $suplaDomain) {
+                return $user;
+            }
+        }
     }
 
     public function refreshTokenAction() {
@@ -107,23 +127,35 @@ class TokensController extends BaseController {
         $body = $this->request()->getParsedBody();
         Assertion::keyExists($body, 'token');
         $token = $body['token'];
-        $oauthClient = new OAuthClient();
-        $suplaUrl = $oauthClient->getSuplaAddress($token);
-        Assertion::url($suplaUrl, 'Invalid token (no encoded SUPLA Cloud URL).');
-        $suplaApi = new SuplaApiClientWithOAuthSupport(['access_token' => $token, 'server' => $suplaUrl], false, false, false);
-        $tokenInfo = $suplaApi->remoteRequest(null, '/api/token-info', 'GET', true);
-        Assertion::isObject($tokenInfo, "Invalid token (SUPLA Cloud $suplaUrl does not authorize it).");
-        $scopes = explode(' ', $tokenInfo->scope);
-        $missingScopes = array_diff(OAuthClient::REQUIRED_SCOPES, $scopes);
-        Assertion::count($missingScopes, 0, 'Your token is missing some scopes: ' . implode(', ', $missingScopes));
-        $userData = $suplaApi->remoteRequest(null, '/api/users/current', 'GET', true);
-        $user = User::where(User::SHORT_UNIQUE_ID, $tokenInfo->userShortUniqueId)->first();
+        list($suplaUrl, $userData) = $this->getUserDataBasedOnPersonalToken($token);
+        $user = $this->findUserBasedOnUserData($suplaUrl, $userData);
         return $this->response([
             'userId' => $user ? $user->id : null,
             'username' => $user ? $user->username : null,
             'cloudUrl' => $suplaUrl,
             'cloudUsername' => $userData->email,
         ]);
+    }
+
+    private function authenticateWithToken(array $body): Response {
+        $token = $body['personalToken'];
+        list($suplaUrl, $userData) = $this->getUserDataBasedOnPersonalToken($token);
+        $user = $this->findUserBasedOnUserData($suplaUrl, $userData);
+        if ($user) {
+            if ($user->username) {
+                $newPassword = $body['newPassword'] ?? null;
+                if ($newPassword) {
+                    $user->setPassword($newPassword);
+                }
+            }
+        } else {
+        }
+        $user->setApiCredentials(['personal_token' => $token, 'target_url' => $suplaUrl]);
+        $user->save();
+        $token = JwtToken::create()->user($user)->issue();
+        $this->getApp()->getContainer()['currentUser'] = $user;
+        $user->trackLastLogin();
+        return $this->response(['token' => $token]);
     }
 
     private function findMatchingUser($username, $plainPassword) {
@@ -134,15 +166,17 @@ class TokensController extends BaseController {
         throw new ApiException('Invalid username or password', 401);
     }
 
-    private function findByCompatUsername($compatUsername, $suplaAddress) {
-        $suplaDomain = preg_replace('#^https?://#', '', $suplaAddress);
-        $users = User::where(User::SHORT_UNIQUE_ID, null)->get();
-        foreach ($users as $user) {
-            $apiCredentials = $user->getApiCredentials();
-            $username = $apiCredentials['username'] ?? null;
-            if ($username == $compatUsername && ($apiCredentials['server'] ?? '') == $suplaDomain) {
-                return $user;
-            }
-        }
+    protected function getUserDataBasedOnPersonalToken($token): array {
+        $oauthClient = new OAuthClient();
+        $suplaUrl = $oauthClient->getSuplaAddress($token);
+        Assertion::url($suplaUrl, 'Invalid token (no encoded SUPLA Cloud URL).');
+        $suplaApi = new SuplaApiClientWithOAuthSupport(['personal_token' => $token, 'target_url' => $suplaUrl], false, false, false);
+        $tokenInfo = $suplaApi->remoteRequest(null, '/api/token-info', 'GET', true);
+        Assertion::isObject($tokenInfo, "Invalid token (SUPLA Cloud $suplaUrl does not authorize it).");
+        $scopes = explode(' ', $tokenInfo->scope);
+        $missingScopes = array_diff(OAuthClient::REQUIRED_SCOPES, $scopes);
+        Assertion::count($missingScopes, 0, 'Your token is missing some scopes: ' . implode(', ', $missingScopes));
+        $userData = $suplaApi->remoteRequest(null, '/api/users/current', 'GET', true);
+        return array($suplaUrl, $userData);
     }
 }
