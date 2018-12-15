@@ -40,13 +40,40 @@
                     <input type="password" placeholder="Podaj nowe hasło do konta, jeśli chcesz je zmienić" class="form-control"
                            ng-model="$ctrl.userData.newPassword">
                 </div>
-                <div class="text-center">
-                    <button type="submit" class="btn btn-success btn-raised btn-lg check-issue-button">
-                        <fa name="sign-in"
-                            fw></fa>
-                        Zaloguj
-                    </button>
+            </div>
+            <div ng-else-if="$ctrl.tokenInfo.userId">
+                <p>Posiadasz już konto w SUPLA Scripts, ale do tej pory zawsze logowałeś się za pomocą SUPLI.</p>
+                <p>Jeśli chcesz logować się do skryptów osobnym loginem i hasłem - możesz to zrobić wypełniając poniższy formularz.</p>
+                <p>Logowanie z SUPLĄ będzie działać nadal.</p>
+                <div class="form-group label-floating"
+                     show-errors>
+                    <label class="control-label">Nazwa użytkownika</label>
+                    <input type="text"
+                           autocomplete="off"
+                           autocorrect="off"
+                           autocapitalize="off"
+                           spellcheck="false"
+                           class="form-control"
+                           ng-model="$ctrl.userData.username"
+                           required
+                           name="username">
                 </div>
+                <div class="form-group label-floating"
+                     show-errors>
+                    <label class="control-label">Hasło</label>
+                    <input type="password"
+                           ng-model="$ctrl.userData.password"
+                           required
+                           name="password"
+                           class="form-control">
+                </div>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-success btn-raised btn-lg check-issue-button">
+                    <fa name="sign-in"
+                        fw></fa>
+                    Zaloguj
+                </button>
             </div>
         </div>
     </form>

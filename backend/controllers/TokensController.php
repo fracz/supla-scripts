@@ -147,6 +147,12 @@ class TokensController extends BaseController {
                 if ($newPassword) {
                     $user->setPassword($newPassword);
                 }
+            } else {
+                Assertion::keyExists($body, 'username');
+                Assertion::keyExists($body, 'password');
+                User::validateUsernameUnique($body['username']);
+                $user->username = $body['username'];
+                $user->setPassword($body['password']);
             }
         } else {
         }
