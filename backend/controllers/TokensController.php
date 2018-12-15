@@ -64,10 +64,12 @@ class TokensController extends BaseController {
         $shortUniqueId = $userData->shortUniqueId;
 
         $user = User::where(User::SHORT_UNIQUE_ID, $shortUniqueId)->first();
-        if (!$user && ($compatUsername = $userData->oauthCompatUsername ?? null)) {
+        if (!$user && ($compatUsername = $userData->oauthCompatUserName ?? null)) {
             $user = $this->findByCompatUsername($compatUsername, $suplaAddress);
+            /** @var User $user */
             if ($user) {
-                $user->username = $email;
+                $user->shortUniqueId = $shortUniqueId;
+                $user->timezone = $userData->timezone ?? 'Europe/Warsaw';
             }
         }
         if (!$user) {
@@ -134,7 +136,7 @@ class TokensController extends BaseController {
 
     private function findByCompatUsername($compatUsername, $suplaAddress) {
         $suplaDomain = preg_replace('#^https?://#', '', $suplaAddress);
-        $users = User::all();
+        $users = User::where(User::SHORT_UNIQUE_ID, null)->get();
         foreach ($users as $user) {
             $apiCredentials = $user->getApiCredentials();
             $username = $apiCredentials['username'] ?? null;
