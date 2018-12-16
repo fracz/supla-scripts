@@ -3,10 +3,15 @@ angular.module('supla-scripts').component 'feedbackInterpolation',
   bindings:
     feedback: '<'
     condition: '<'
-  controller: (Scenes) ->
+    refreshing: '<'
+  controller: (Scenes, $scope, ScopeInterval) ->
     new class
       fetching: no
       pending: no
+
+      $onInit: ->
+        if @refreshing
+          ScopeInterval($scope, (() => @$onChanges()), 10000, 1000)
 
       $onChanges: ->
         if not @fetching

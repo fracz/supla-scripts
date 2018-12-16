@@ -3,7 +3,7 @@
         <loader-dots-small></loader-dots-small>
     </span>
     <div ng-if="$ctrl.condition">
-        <div ng-if="$ctrl.fetching" class="alert alert-default">
+        <div ng-if="$ctrl.fetching && !$ctrl.refreshing" class="alert alert-default">
             Sprawdzam warunek...
         </div>
         <div ng-else-if="$ctrl.conditionMet" class="alert alert-success">

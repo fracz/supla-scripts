@@ -61,6 +61,13 @@ class SceneExecutor {
         $this->lastScene = $scene;
         $scene->lastUsed = new \DateTime();
         $scene->save();
+        if (is_string($scene->condition) && $scene->condition !== '') {
+            $conditionMet = (new FeedbackInterpolator())->interpolate($scene->condition);
+            if (!$conditionMet) {
+                $scene->log('Scena nie została wykonana - niespełniony warunek.');
+                return '';
+            }
+        }
         $actions = is_array($scene->actions) ? array_filter($scene->actions) : [];
         if (count($actions)) {
             if ($actions[0]) {

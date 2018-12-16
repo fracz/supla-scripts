@@ -14,6 +14,7 @@ use suplascripts\models\User;
  * @property string $label
  * @property string[] $actions
  * @property string $feedback
+ * @property string $condition
  * @property string[] $voiceTriggers
  * @property \DateTime $lastUsed
  * @property User $user
@@ -24,12 +25,13 @@ class Scene extends Model {
     const LABEL = 'label';
     const ACTIONS = 'actions';
     const FEEDBACK = 'feedback';
+    const CONDITION = 'condition';
     const VOICE_TRIGGERS = 'voiceTriggers';
     const LAST_USED = 'lastUsed';
     const USER_ID = 'userId';
 
     protected $dates = [self::LAST_USED];
-    protected $fillable = [self::LABEL, self::ACTIONS, self::FEEDBACK, self::VOICE_TRIGGERS];
+    protected $fillable = [self::LABEL, self::ACTIONS, self::FEEDBACK, self::VOICE_TRIGGERS, self::CONDITION];
     protected $jsonEncoded = [self::ACTIONS, self::VOICE_TRIGGERS];
 
     public function user(): BelongsTo {
