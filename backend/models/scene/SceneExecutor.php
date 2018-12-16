@@ -66,6 +66,7 @@ class SceneExecutor {
                 return '';
             }
         }
+        $this->sceneStack[] = $scene->id;
         $actions = is_array($scene->actions) ? array_filter($scene->actions) : [];
         if (count($actions)) {
             if (isset($actions[0])) {
@@ -79,6 +80,7 @@ class SceneExecutor {
                     $scene->pendingScenes()->create([
                         PendingScene::ACTIONS => $pendingAction,
                         PendingScene::EXECUTE_AFTER => (new \DateTime())->setTimestamp($now + $offset),
+                        PendingScene::SCENE_STACK => $this->sceneStack,
                     ]);
                 }
             }
@@ -100,7 +102,7 @@ class SceneExecutor {
 
     public function executePendingScene(PendingScene $pendingScene) {
         $scene = $pendingScene->scene;
-        $this->sceneStack[] = $scene->id;
+        $this->sceneStack = $pendingScene->sceneStack;
         $scene->lastUsed = new \DateTime();
         $scene->save();
         $scene->log('Wykonanie opóźnionej akcji');
