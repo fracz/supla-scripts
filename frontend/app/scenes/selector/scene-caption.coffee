@@ -2,7 +2,7 @@ angular.module('supla-scripts').component 'sceneCaption',
   template: '{{ $ctrl.caption }}'
   bindings:
     scene: '<'
-  controller: (Channels, $q, channelLabelFilter, CHANNEL_AVAILABLE_ACTIONS) ->
+  controller: (Channels, $q, channelLabelFilter, CHANNEL_AVAILABLE_ACTIONS, Thermostats, Scenes) ->
     new class
       scene: []
 
@@ -25,15 +25,28 @@ angular.module('supla-scripts').component 'sceneCaption',
 
       sceneStringToCaption: (actions) ->
         sceneStrings = actions.split('|').filter((e) -> !!e)
-        promises = sceneStrings.map((sceneString) -> Channels.get(sceneString.split(';')[0]))
-        $q.all(promises).then (channels) ->
+        promises = sceneStrings.map (sceneString) ->
+          parts = sceneString.split(';')
+          if parts[1].indexOf('thermostat') == 0
+            Thermostats.get(parts[0], simple: yes)
+          else if parts[1].indexOf('scene') == 0
+            Scenes.get(parts[0])
+          else
+            Channels.get(parts[0])
+        $q.all(promises).then (entities) ->
           sceneStrings
             .map (sceneString, index) ->
-              channel = channels[index]
-              action = sceneString.split(';')[1]
-              availableActions = CHANNEL_AVAILABLE_ACTIONS[channel?.function.name]
-              actionDefinition = availableActions?.filter((a) -> a.action == action)[0]
-              if actionDefinition
-                "#{actionDefinition.label} #{channelLabelFilter(channel)}"
+              entity = entities[index]
+              parts = sceneString.split(';')
+              action = parts[1]
+              if parts[1].indexOf('thermostat') == 0
+                'zmień profil termostatu ' + entity.label
+              else if parts[1].indexOf('scene') == 0
+                "wykonaj scenę \"#{entity.label}\""
+              else
+                availableActions = CHANNEL_AVAILABLE_ACTIONS[entity?.function.name]
+                actionDefinition = availableActions?.filter((a) -> a.action == action)[0]
+                if actionDefinition
+                  "#{actionDefinition.label} #{channelLabelFilter(entity)}"
             .filter((a) -> !!a)
             .join(', ')
