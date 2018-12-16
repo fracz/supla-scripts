@@ -21,7 +21,7 @@ class ChannelsController extends BaseController {
         $body = $this->request()->getParsedBody();
         Assertion::notEmptyKey($body, 'action');
         $operation = $channelId . SceneExecutor::CHANNEL_DELIMITER . $body['action'];
-        $result = $sceneExecutor->executeCommandFromString($operation);
+        $result = $sceneExecutor->executeCommandFromString($operation, $this->getCurrentUser());
         if ($result === false) {
             throw new SuplaApiException($this->getApi()->getClient(), 'Could not execute the action.');
         }

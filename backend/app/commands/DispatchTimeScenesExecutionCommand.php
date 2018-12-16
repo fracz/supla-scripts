@@ -25,7 +25,7 @@ class DispatchTimeScenesExecutionCommand extends Command {
             $pendingScenesQuery->delete();
             foreach ($pendingScenes as $pendingScene) {
                 /** @var PendingScene $pendingScene */
-                $sceneExecutor->executeCommandsFromString($pendingScene->actions, $pendingScene->scene->user);
+                $sceneExecutor->executePendingScene($pendingScene);
             }
         }
     }

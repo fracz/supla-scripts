@@ -105,7 +105,7 @@ class NotificationsController extends BaseController {
         $action = $notification->actions[$actionIndex];
         if (isset($action['scene']) && $action['scene']) {
             $sceneExecutor = new SceneExecutor();
-            $sceneExecutor->executeCommandsFromString($action['scene']);
+            $sceneExecutor->executeCommandsFromString($action['scene'], $notification->user);
         }
         $notification->log('Wykonano akcję z powiadomienia: ' . $action['label']);
         return $this->getAction($params);

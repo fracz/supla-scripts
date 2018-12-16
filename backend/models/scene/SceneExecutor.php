@@ -16,10 +16,8 @@ class SceneExecutor {
     use HasSuplaApi;
 
     private $sceneStack = [];
-    /** @var Scene */
-    private $lastScene;
 
-    public function executeCommandFromString($command, User $user = null) {
+    public function executeCommandFromString($command, User $user) {
         list($channelId, $action) = explode(self::CHANNEL_DELIMITER, $command);
         $args = explode(self::ARGUMENT_DELIMITER, $action);
         $action = array_shift($args);
@@ -30,7 +28,7 @@ class SceneExecutor {
             $sceneId = $channelId;
             /** @var Scene $scene */
             $scene = Scene::find($sceneId);
-            Assertion::eq($scene->user->id, $this->lastScene->user->id);
+            Assertion::eq($scene->user->id, $user->id);
             if (!in_array($sceneId, $this->sceneStack)) {
                 $this->sceneStack[] = $sceneId;
                 return $this->executeWithFeedback($scene);
@@ -44,7 +42,7 @@ class SceneExecutor {
         }
     }
 
-    public function executeCommandsFromString($commands, User $user = null) {
+    public function executeCommandsFromString($commands, User $user) {
         $commands = explode(self::OPERATION_DELIMITER, $commands);
         $results = [];
         foreach ($commands as $command) {
@@ -58,7 +56,6 @@ class SceneExecutor {
     }
 
     public function executeWithFeedback(Scene $scene): string {
-        $this->lastScene = $scene;
         $scene->lastUsed = new \DateTime();
         $scene->save();
         $feedbackInterpolator = new FeedbackInterpolator($scene);
@@ -71,8 +68,9 @@ class SceneExecutor {
         }
         $actions = is_array($scene->actions) ? array_filter($scene->actions) : [];
         if (count($actions)) {
-            if ($actions[0]) {
-                $results = $this->executeCommandsFromString($scene->actions[0]);
+            if (isset($actions[0])) {
+                $results = $this->executeCommandsFromString($scene->actions[0], $scene->user);
+                $feedbackFromNestedScenes = implode(PHP_EOL, array_filter($results, 'is_string'));
                 unset($actions[0]);
             }
             if ($actions) {
@@ -86,16 +84,26 @@ class SceneExecutor {
             }
             $scene->log('Wykonanie');
         }
-        $feedbackFromNestedScenes = implode(PHP_EOL, array_filter($results, 'is_string'));
-        $feedback = $feedbackFromNestedScenes;
+
+        $feedback = $feedbackFromNestedScenes ?? '';
         if ($scene->feedback) {
-            $feedback .= $feedbackFromNestedScenes . PHP_EOL . $feedbackInterpolator->interpolate($scene->feedback);
+            $feedback .= $feedback . PHP_EOL . $feedbackInterpolator->interpolate($scene->feedback);
         }
+        $feedback = trim($feedback);
         if ($feedback) {
             $scene->log('Odpowiedź: ' . $feedback);
             return $feedback;
         } else {
             return '';
         }
+    }
+
+    public function executePendingScene(PendingScene $pendingScene) {
+        $scene = $pendingScene->scene;
+        $this->sceneStack[] = $scene->id;
+        $scene->lastUsed = new \DateTime();
+        $scene->save();
+        $scene->log('Wykonanie opóźnionej akcji');
+        $this->executeCommandsFromString($pendingScene->actions, $pendingScene->scene->user);
     }
 }
