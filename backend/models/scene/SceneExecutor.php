@@ -62,7 +62,7 @@ class SceneExecutor {
         $scene->lastUsed = new \DateTime();
         $scene->save();
         if (is_string($scene->condition) && $scene->condition !== '') {
-            $conditionMet = (new FeedbackInterpolator())->interpolate($scene->condition);
+            $conditionMet = (new FeedbackInterpolator())->interpolate($scene->condition, true);
             if (!$conditionMet) {
                 $scene->log('Scena nie została wykonana - niespełniony warunek.');
                 return '';

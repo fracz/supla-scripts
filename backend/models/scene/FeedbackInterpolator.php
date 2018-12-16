@@ -18,7 +18,7 @@ class FeedbackInterpolator {
         $this->twig->addExtension(new FeedbackTwigExtension());
     }
 
-    public function interpolate($feedback) {
+    public function interpolate($feedback, $noCache = false) {
         if (!$feedback) {
             return $feedback;
         }
@@ -31,7 +31,7 @@ class FeedbackInterpolator {
         }, $feedback);
         try {
             $template = $this->twig->createTemplate($feedback);
-            $feedback = $template->render([]);
+            $feedback = $template->render(['noCache' => $noCache]);
         } catch (\Throwable $e) {
             $feedback .= ' (ERROR: ' . $e->getMessage() . ')';
         }

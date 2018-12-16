@@ -26,7 +26,7 @@ class FeedbackTwigExtension extends \Twig_Extension {
 
     public function getFunctions() {
         return [
-            new \Twig_Function('state', [$this, 'getChannelState']),
+            new \Twig_Function('state', [$this, 'getChannelState'], ['needs_context' => true]),
             new \Twig_Function('getUrl', self::class . '::getUrlContents'),
         ];
     }
@@ -38,7 +38,10 @@ class FeedbackTwigExtension extends \Twig_Extension {
         ];
     }
 
-    public function getChannelState($channelId) {
+    public function getChannelState(array $context, $channelId) {
+        if ($context['noCache'] ?? false) {
+            $this->getApi()->clearCache($channelId);
+        }
         return $this->getApi()->getChannelState($channelId);
     }
 
