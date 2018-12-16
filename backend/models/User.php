@@ -80,14 +80,7 @@ class User extends Model {
     }
 
     public function isPasswordValid($plainPassword): bool {
-        $valid = password_verify($plainPassword, $this->password);
-        if (!$valid) {
-            $apiSecret = $this->getApiCredentials()['secret'] ?? '';
-            if ($apiSecret) {
-                return strcmp($apiSecret, $plainPassword) === 0;
-            }
-        }
-        return $valid;
+        return password_verify($plainPassword, $this->password);
     }
 
     public function validate(array $attributes = null): array {
