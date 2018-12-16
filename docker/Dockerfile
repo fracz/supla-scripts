@@ -38,7 +38,7 @@ RUN { \
     && chmod 0644 /etc/cron.d/suplascripts
 
 
-ENV SUPLA_SCRIPTS_VERSION=3.0.0-beta.2
+ENV SUPLA_SCRIPTS_VERSION=3.0.0-beta.3
 #COPY supla-scripts-$SUPLA_SCRIPTS_VERSION.tar.gz ./
 RUN wget -nc https://github.com/fracz/supla-scripts/releases/download/v${SUPLA_SCRIPTS_VERSION}/supla-scripts-${SUPLA_SCRIPTS_VERSION}.tar.gz \
     && tar -xzf supla-scripts-${SUPLA_SCRIPTS_VERSION}.tar.gz -C . \
