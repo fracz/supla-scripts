@@ -42,7 +42,7 @@ class NotificationsController extends BaseController {
         $automate = $this->request()->getParam('automate', false);
         try {
             if ($notification->isConditionMet() && !$this->request()->isMethod('PATCH')) {
-                $feedbackInterpolator = new FeedbackInterpolator();
+                $feedbackInterpolator = new FeedbackInterpolator($notification);
                 $response['show'] = [
                     'header' => $feedbackInterpolator->interpolate($notification->header),
                     'message' => $feedbackInterpolator->interpolate($notification->message),

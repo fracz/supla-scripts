@@ -6,6 +6,7 @@ use Assert\Assertion;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Ramsey\Uuid\Uuid;
+use suplascripts\models\BelongsToUser;
 use suplascripts\models\Model;
 use suplascripts\models\User;
 
@@ -19,7 +20,7 @@ use suplascripts\models\User;
  * @property \DateTime $lastUsed
  * @property User $user
  */
-class Scene extends Model {
+class Scene extends Model implements BelongsToUser {
     const TABLE_NAME = 'scenes';
     const SLUG = 'slug';
     const LABEL = 'label';

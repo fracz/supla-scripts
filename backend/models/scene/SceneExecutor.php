@@ -61,8 +61,9 @@ class SceneExecutor {
         $this->lastScene = $scene;
         $scene->lastUsed = new \DateTime();
         $scene->save();
+        $feedbackInterpolator = new FeedbackInterpolator($scene);
         if (is_string($scene->condition) && $scene->condition !== '') {
-            $conditionMet = (new FeedbackInterpolator())->interpolate($scene->condition, true);
+            $conditionMet = $feedbackInterpolator->interpolate($scene->condition, true);
             if (!$conditionMet) {
                 $scene->log('Scena nie została wykonana - niespełniony warunek.');
                 return '';
@@ -88,7 +89,7 @@ class SceneExecutor {
         $feedbackFromNestedScenes = implode(PHP_EOL, array_filter($results, 'is_string'));
         $feedback = $feedbackFromNestedScenes;
         if ($scene->feedback) {
-            $feedback .= $feedbackFromNestedScenes . PHP_EOL . (new FeedbackInterpolator())->interpolate($scene->feedback);
+            $feedback .= $feedbackFromNestedScenes . PHP_EOL . $feedbackInterpolator->interpolate($scene->feedback);
         }
         if ($feedback) {
             $scene->log('Odpowiedź: ' . $feedback);

@@ -5,6 +5,7 @@ namespace suplascripts\models\notification;
 use Assert\Assertion;
 use Cron\CronExpression;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use suplascripts\models\BelongsToUser;
 use suplascripts\models\Model;
 use suplascripts\models\scene\FeedbackInterpolator;
 use suplascripts\models\User;
@@ -24,7 +25,7 @@ use suplascripts\models\User;
  * @property bool $displayIfDisconnected
  * @property bool $onlyInTime
  */
-class Notification extends Model {
+class Notification extends Model implements BelongsToUser {
     const TABLE_NAME = 'notifications';
     const LABEL = 'label';
     const CONDITION = 'condition';
@@ -97,8 +98,7 @@ class Notification extends Model {
         if (!trim($this->condition) || !$this->minConditions) {
             return true;
         }
-        $feedbackInterpolator = new FeedbackInterpolator();
-        $condition = $feedbackInterpolator->interpolate($this->condition);
+        $condition = (new FeedbackInterpolator($this))->interpolate($this->condition);
         if (strpos($condition, FeedbackInterpolator::NOT_CONNECTED_RESPONSE) !== false) {
             return $this->displayIfDisconnected;
         }

@@ -3,7 +3,9 @@
 namespace suplascripts\models\scene;
 
 use Assert\Assertion;
+use suplascripts\models\BelongsToUser;
 use suplascripts\models\HasSuplaApi;
+use suplascripts\models\User;
 use Twig_Environment;
 use Twig_Loader_Array;
 
@@ -13,12 +15,23 @@ class FeedbackInterpolator {
     const URL_FETCH_TIMEOUT = 5;
     const NOT_CONNECTED_RESPONSE = ' DISCONNECTED ';
 
-    public function __construct() {
+    public function __construct($subject = null) {
         $this->twig = new Twig_Environment(new Twig_Loader_Array([]));
         $this->twig->addExtension(new FeedbackTwigExtension());
+        if ($subject instanceof BelongsToUser) {
+            $this->user = $subject->user;
+        } else if ($subject instanceof User) {
+            $this->user = $subject;
+        }
     }
 
     public function interpolate($feedback, $noCache = false) {
+        return self::wrapInUserTimezone($this->user, function () use ($noCache, $feedback) {
+            return $this->doInterpolate($feedback, $noCache);
+        });
+    }
+
+    private function doInterpolate($feedback, $noCache = false) {
         if (!$feedback) {
             return $feedback;
         }
@@ -60,5 +73,15 @@ class FeedbackInterpolator {
                 eval('$result = ($desiredValue ' . $operator . ' $compareTo);');
                 return $result ? ($config[2] ?? '1') : ($config[3] ?? '0');
         }
+    }
+
+    public static function wrapInUserTimezone($user, $function) {
+        $defaultTimezone = date_default_timezone_get();
+        if ($user) {
+            date_default_timezone_set($user->timezone);
+        }
+        $result = $function();
+        date_default_timezone_set($defaultTimezone);
+        return $result;
     }
 }
