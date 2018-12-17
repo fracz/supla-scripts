@@ -25,6 +25,7 @@ class DispatchCyclicTasksCommand extends Command {
         }
         if ($minute % ($intervals['clearLogs'] ?? 60) == 0) {
             $this->getApplication()->run(new StringInput('clear:db-logs'), $output);
+            $this->getApplication()->run(new StringInput('clear:request-quota-logs'), $output);
         }
         $this->getApplication()->run(new StringInput('metrics:gauges'), $output);
         $this->getApplication()->run(new StringInput('cache:fix-owner'), $output);

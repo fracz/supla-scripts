@@ -8,6 +8,9 @@
     "thermostat": 5,
     "clearLogs": 60
   },
+  "requestQuota": {
+    "perIpPerMinute": 60
+  },
   "db": {
     "driver": "mysql",
     "database": "suplascripts",

@@ -23,6 +23,7 @@ class SuplaScriptsManager extends Application {
             new MetricsReleaseCommand(),
             new SendMetricsGaugesCommand(),
             new MigrateDbCommand(),
+            new ClearRequestQuotaLogsCommand(),
         ]);
     }
 }

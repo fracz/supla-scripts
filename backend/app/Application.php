@@ -8,6 +8,7 @@ use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Events\Dispatcher;
 use Slim\App;
+use suplascripts\app\authorization\IpRequestQuotaMiddleware;
 use suplascripts\app\authorization\JwtAndBasicAuthorizationMiddleware;
 use suplascripts\database\EloquentExceptionHandler;
 use suplascripts\models\Client;
@@ -37,6 +38,7 @@ class Application extends App {
         $config = require __DIR__ . '/../settings.php';
         parent::__construct(['settings' => $config]);
         $this->configureServices();
+        $this->add(new IpRequestQuotaMiddleware());
         $this->add(new JwtAndBasicAuthorizationMiddleware());
         ObserverRegisterer::registerModelObservers();
     }

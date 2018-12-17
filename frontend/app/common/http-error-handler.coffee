@@ -12,6 +12,8 @@ angular.module('supla-scripts').config ($httpProvider) ->
           $injector.get('$timeout')(-> $injector.get('$state').go('notFound', {}, {reload: yes, location: no}))
         else if rejection.status in [401, 403] and rejection.config.method is 'GET'
           $injector.get('$timeout')(-> $injector.get('$state').go('notAllowed', {}, {reload: yes, location: no}))
+        else if rejection.status is 429
+          Notifier.error('Przekroczono dozwoloną liczbę żądań do API. Spróbuj ponownie za chwilę.')
         else if rejection.status isnt 404 and rejection.status > 0
           error = rejection.config.onError or ['Błąd', rejection.data?.message]
           Notifier.error(error...)
