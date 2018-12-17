@@ -28,12 +28,14 @@ class SceneExecutor {
             $sceneId = $channelId;
             /** @var Scene $scene */
             $scene = Scene::find($sceneId);
-            Assertion::eq($scene->user->id, $user->id);
-            if (!in_array($sceneId, $this->sceneStack)) {
-                $this->sceneStack[] = $sceneId;
-                return $this->executeWithFeedback($scene);
-            } else {
-                $scene->log('Nie wykonano sceny - wykryto rekurencyjne wykonania.');
+            if ($scene) {
+                Assertion::eq($scene->user->id, $user->id);
+                if (!in_array($sceneId, $this->sceneStack)) {
+                    $this->sceneStack[] = $sceneId;
+                    return $this->executeWithFeedback($scene);
+                } else {
+                    $scene->log('Nie wykonano sceny - wykryto rekurencyjne wykonania.');
+                }
             }
         } else {
             array_unshift($args, $channelId);

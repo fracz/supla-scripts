@@ -16,9 +16,9 @@ angular.module('supla-scripts').component 'sceneSelector',
           promises = sceneStrings.map (sceneString) ->
             parts = sceneString.split(';')
             if parts[1].indexOf('thermostat') == 0
-              Thermostats.get(parts[0], simple: yes)
+              Thermostats.one(parts[0]).withHttpConfig(skipErrorHandler: yes).get(simple: yes).catch(() => undefined)
             else if parts[1].indexOf('scene') == 0
-              Scenes.get(parts[0])
+              Scenes.one(parts[0]).withHttpConfig(skipErrorHandler: yes).get().catch(() => undefined)
             else
               Channels.get(parts[0])
           @loadingChannels = yes
@@ -34,6 +34,7 @@ angular.module('supla-scripts').component 'sceneSelector',
               else
                 model.channel = entities[index]
               model
+            @scene = @scene.filter((model) -> model.thermostat or model.scene or model.channel)
         $scope.$watch '$ctrl.scene.length', =>
           @usedChannelIds = @scene.filter((o) -> o.channel).map((o) -> o.channel.id)
           @usedThermostatIds = @scene.filter((o) -> o.thermostat).map((o) -> o.thermostat.id)

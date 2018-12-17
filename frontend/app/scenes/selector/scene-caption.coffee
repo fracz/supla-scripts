@@ -28,9 +28,9 @@ angular.module('supla-scripts').component 'sceneCaption',
         promises = sceneStrings.map (sceneString) ->
           parts = sceneString.split(';')
           if parts[1].indexOf('thermostat') == 0
-            Thermostats.get(parts[0], simple: yes)
+            Thermostats.one(parts[0]).withHttpConfig(skipErrorHandler: yes).get(simple: yes).catch(() => undefined)
           else if parts[1].indexOf('scene') == 0
-            Scenes.get(parts[0])
+            Scenes.one(parts[0]).withHttpConfig(skipErrorHandler: yes).get().catch(() => undefined)
           else
             Channels.get(parts[0])
         $q.all(promises).then (entities) ->
@@ -40,9 +40,9 @@ angular.module('supla-scripts').component 'sceneCaption',
               parts = sceneString.split(';')
               action = parts[1]
               if parts[1].indexOf('thermostat') == 0
-                'zmień profil termostatu ' + entity.label
+                'zmień profil termostatu ' + (entity?.label or '??')
               else if parts[1].indexOf('scene') == 0
-                "wykonaj scenę \"#{entity.label}\""
+                "wykonaj scenę \"#{entity?.label || '??'}\""
               else
                 availableActions = CHANNEL_AVAILABLE_ACTIONS[entity?.function.name]
                 actionDefinition = availableActions?.filter((a) -> a.action == action)[0]

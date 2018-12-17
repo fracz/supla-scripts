@@ -73,8 +73,9 @@ class Scene extends Model implements BelongsToUser {
         }
         Assertion::keyExists($attributes, self::LABEL, 'Scene must have a label.');
         Assertion::notBlank($attributes[self::LABEL], 'Scene must have a label.');
+        $actions = array_filter($attributes[self::ACTIONS] ?? []);
         Assertion::true(
-            ($attributes[self::FEEDBACK] ?? false) || ($attributes[self::ACTIONS] ?? false),
+            ($attributes[self::FEEDBACK] ?? false) || $actions,
             'Scene must have either feedback or actions.'
         );
         if ($attributes[self::ACTIONS]) {
