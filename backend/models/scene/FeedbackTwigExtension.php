@@ -28,6 +28,9 @@ class FeedbackTwigExtension extends \Twig_Extension {
         return [
             new \Twig_Function('state', [$this, 'getChannelState'], ['needs_context' => true]),
             new \Twig_Function('getUrl', self::class . '::getUrlContents'),
+            new \Twig_Function('time', [$this, 'getTime']),
+            new \Twig_Function('sunriseTime', [$this, 'getSunriseTime']),
+            new \Twig_Function('sunsetTime', [$this, 'getSunsetTime']),
         ];
     }
 
@@ -132,6 +135,31 @@ class FeedbackTwigExtension extends \Twig_Extension {
             "fuchsia" => 'różowy',
             "aqua" => 'morski',
         ][$this->getNearestColorName($color)];
+    }
+
+    public function getTime($date = 'now') {
+        return date('H:i', strtotime($date));
+    }
+
+    public function getSunriseTime($latitude = null, $longitude = null, $date = 'now') {
+        $location = $this->getLatitudeAndLongitude($latitude, $longitude);
+        return date_sunrise(strtotime($date), SUNFUNCS_RET_STRING, $location['latitude'], $location['longitude']);
+    }
+
+    public function getSunsetTime($latitude = null, $longitude = null, $date = 'now') {
+        $location = $this->getLatitudeAndLongitude($latitude, $longitude);
+        return date_sunset(strtotime($date), SUNFUNCS_RET_STRING, $location['latitude'], $location['longitude']);
+    }
+
+    private function getLatitudeAndLongitude($latitude, $longitude): array {
+        $location = (new \DateTimeZone(date_default_timezone_get()))->getLocation();
+        if ($latitude !== null) {
+            $location['latitude'] = $latitude;
+        }
+        if ($longitude !== null) {
+            $location['longitude'] = $longitude;
+        }
+        return $location;
     }
 
     public static function getUrlContents(string $url, string $regex = '', array $config = []): string {

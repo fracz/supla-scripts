@@ -4,17 +4,18 @@ angular.module('supla-scripts').component 'feedbackInterpolation',
     feedback: '<'
     condition: '<'
     refreshing: '<'
-  controller: (Scenes, $scope, ScopeInterval) ->
+  controller: (Scenes, $scope, ScopeInterval, $timeout) ->
     new class
       fetching: no
       pending: no
+      debouncing: no
 
       $onInit: ->
         if @refreshing
           ScopeInterval($scope, (() => @$onChanges()), 10000, 1000)
 
       $onChanges: ->
-        if not @fetching
+        if not @fetching and not @debouncing
           if @feedback
             @interpolatedFeedback ?= @feedback
             @pending = no
@@ -23,7 +24,11 @@ angular.module('supla-scripts').component 'feedbackInterpolation',
               .then((feedback) => @interpolatedFeedback = feedback?.plain?() or feedback or '')
               .finally =>
                 @fetching = no
-                @$onChanges() if @pending
                 @conditionMet = (not @feedback) or (@interpolatedFeedback and @interpolatedFeedback != '0')
+                @debouncing = yes
+                $timeout =>
+                  @debouncing = no
+                  @$onChanges() if @pending
+                , 500
         else
           @pending = yes
