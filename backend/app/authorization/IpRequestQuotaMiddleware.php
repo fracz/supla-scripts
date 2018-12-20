@@ -16,7 +16,7 @@ class IpRequestQuotaMiddleware {
     const COUNT = 'counter';
 
     public function __invoke(RequestInterface $request, ResponseInterface $response, callable $next) {
-        $ip = $_SERVER['REMOTE_ADDR'];
+        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['HTTP_X_REAL_IP'] ?? $_SERVER['REMOTE_ADDR'];
         $maxRequestsPerMinute = $this->getApp()->getSetting('requestQuota', [])['perIpPerMinute'] ?? 60;
         if (!$maxRequestsPerMinute) {
             return;
