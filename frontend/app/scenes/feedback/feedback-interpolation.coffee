@@ -22,6 +22,7 @@ angular.module('supla-scripts').component 'feedbackInterpolation',
             @fetching = yes
             Scenes.one('feedback').patch(feedback: @feedback)
               .then((feedback) => @interpolatedFeedback = feedback?.plain?() or feedback or '')
+              .then(() => @error = @interpolatedFeedback.indexOf('ERROR: ') > 0)
               .finally =>
                 @fetching = no
                 @conditionMet = (not @feedback) or (@interpolatedFeedback and @interpolatedFeedback != '0')
