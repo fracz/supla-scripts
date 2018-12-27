@@ -26,6 +26,7 @@ class SendMetricsGaugesCommand extends Command {
         $metricsEnabled = $metricsConfig['enabled'] ?? false;
         if ($metricsEnabled) {
             Application::getInstance()->metrics->gauge('users', User::count());
+            Application::getInstance()->metrics->gauge('users_oauth', User::whereNotNull(User::SHORT_UNIQUE_ID)->count());
             Application::getInstance()->metrics->gauge('pending_scenes', PendingScene::count());
             Application::getInstance()->metrics->gauge('scenes', Scene::count());
             Application::getInstance()->metrics->gauge('notifications', Notification::count());
