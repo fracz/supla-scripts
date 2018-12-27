@@ -84,10 +84,13 @@ class SuplaApiReal extends SuplaApi {
         } else {
             $color = hexdec($color);
         }
-        $result = $this->client->channelSetRGBW($channelId, $color, $colorBrightness, $brightness);
-        if ($result === false) {
-            $result = $this->client->channelSetRGB($channelId, $color, $colorBrightness);
-        }
+        $data = [
+            'action' => 'SET_RGBW_PARAMETERS',
+            'color' => $color,
+            'color_brightness' => $colorBrightness,
+            'brightness' => $brightness,
+        ];
+        $result = $this->client->remoteRequest($data, '/api/v2.3.0/channels/' . $channelId, 'PATCH', true);
         return $result !== false;
     }
 
