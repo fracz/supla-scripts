@@ -54,7 +54,8 @@ class TokensController extends BaseController {
         $code = $body['authCode'];
 
         $suplaAddress = $oauthClient->getSuplaAddress($code);
-        $apiCredentials = $oauthClient->issueNewAccessTokens($suplaAddress, [
+        $apiCredentials = $oauthClient->issueNewAccessTokens(
+            [
             'grant_type' => 'authorization_code',
             'redirect_uri' => ($this->getApp()->getSetting('oauth')['scriptsUrl'] ?? 'https://supla.fracz.com') . '/authorize',
             'code' => $code,

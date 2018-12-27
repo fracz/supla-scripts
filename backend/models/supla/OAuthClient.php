@@ -30,7 +30,7 @@ class OAuthClient {
         $apiCredentials = $user->getApiCredentials();
         Assertion::keyExists($apiCredentials, 'refresh_token', 'We cannot refresh access token because there is no refresh_token.');
         $refreshToken = $apiCredentials['refresh_token'];
-        $newCredentials = $this->issueNewAccessTokens($this->getSuplaAddress($refreshToken), [
+        $newCredentials = $this->issueNewAccessTokens([
             'grant_type' => 'refresh_token',
             'refresh_token' => $refreshToken,
         ]);
@@ -38,7 +38,8 @@ class OAuthClient {
         $user->save();
     }
 
-    public function issueNewAccessTokens(string $address, array $data): array {
+    public function issueNewAccessTokens(array $data): array {
+        $address = $this->getApp()->getSetting('oauth')['cloudUrl'];
         $handle = curl_init($address . '/oauth/v2/token');
         $data = array_merge([
             'client_id' => $this->getApp()->getSetting('oauth')['clientId'],
