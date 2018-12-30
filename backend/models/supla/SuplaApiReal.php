@@ -14,7 +14,7 @@ class SuplaApiReal extends SuplaApi {
 
     protected function __construct(User $user) {
         $apiCredentials = $user->getApiCredentials();
-        $this->client = new SuplaApiClientWithOAuthSupport($apiCredentials, false, false, false);
+        $this->client = new SuplaApiClientWithOAuthSupport($user, $apiCredentials, false, false, false);
     }
 
     public function getDevices(): array {

@@ -56,12 +56,13 @@ class TokensController extends BaseController {
         $suplaAddress = $oauthClient->getSuplaAddress($code);
         $apiCredentials = $oauthClient->issueNewAccessTokens(
             [
-            'grant_type' => 'authorization_code',
-            'redirect_uri' => ($this->getApp()->getSetting('oauth')['scriptsUrl'] ?? 'https://supla.fracz.com') . '/authorize',
-            'code' => $code,
-        ]);
+                'grant_type' => 'authorization_code',
+                'redirect_uri' => ($this->getApp()->getSetting('oauth')['scriptsUrl'] ?? 'https://supla.fracz.com') . '/authorize',
+                'code' => $code,
+            ]
+        );
 
-        $suplaApi = new SuplaApiClientWithOAuthSupport($apiCredentials, false, false, false);
+        $suplaApi = new SuplaApiClientWithOAuthSupport(null, $apiCredentials, false, false, false);
         $userData = $suplaApi->remoteRequest(null, '/api/users/current', 'GET', true);
         Assertion::isObject($userData);
         $email = $userData->email;
@@ -184,7 +185,7 @@ class TokensController extends BaseController {
         $oauthClient = new OAuthClient();
         $suplaUrl = $oauthClient->getSuplaAddress($token);
         Assertion::url($suplaUrl, 'Invalid token (no encoded SUPLA Cloud URL).');
-        $suplaApi = new SuplaApiClientWithOAuthSupport(['personal_token' => $token, 'target_url' => $suplaUrl], false, false, false);
+        $suplaApi = new SuplaApiClientWithOAuthSupport(null, ['personal_token' => $token, 'target_url' => $suplaUrl], false, false, false);
         $tokenInfo = $suplaApi->remoteRequest(null, '/api/token-info', 'GET', true);
         Assertion::isObject($tokenInfo, "Invalid token (SUPLA Cloud $suplaUrl does not authorize it).");
         $scopes = explode(' ', $tokenInfo->scope);

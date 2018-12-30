@@ -18,12 +18,16 @@
 namespace suplascripts\models\supla;
 
 use Supla\ApiClient\SuplaApiClient;
-use suplascripts\app\Application;
+use suplascripts\models\User;
 
 class SuplaApiClientWithOAuthSupport extends SuplaApiClient {
     private $serverParams;
 
-    public function __construct($server_params, $auto_logout = true, $debug = false, $sslVerify = true) {
+    /** @var User */
+    private $user;
+
+    public function __construct($user, $server_params, $auto_logout = true, $debug = false, $sslVerify = true) {
+        $this->user = $user;
         $this->serverParams = $server_params;
         if ($this->isOAuth()) {
             $server_params['server'] = $server_params['target_url'];
@@ -61,10 +65,9 @@ class SuplaApiClientWithOAuthSupport extends SuplaApiClient {
 
     public function remoteRequest($data, $path, $method = 'POST', $bearer = false) {
         $result = parent::remoteRequest($data, $path, $method, $bearer);
-        if (!$result && $this->getLastError() == 'HTTP: 401' && array_key_exists('refresh_token', $this->serverParams)) {
-            $user = Application::getInstance()->getCurrentUser();
-            (new OAuthClient())->refreshAccessToken($user);
-            $this->serverParams = $user->getApiCredentials();
+        if (!$result && $this->getLastError() == 'HTTP: 401' && array_key_exists('refresh_token', $this->serverParams) && $this->user) {
+            (new OAuthClient())->refreshAccessToken($this->user);
+            $this->serverParams = $this->user->getApiCredentials();
             $result = parent::remoteRequest($data, $path, $method, $bearer);
         }
         return $result;
