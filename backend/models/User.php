@@ -17,6 +17,7 @@ use suplascripts\models\thermostat\Thermostat;
  * @property string $password
  * @property string $apiCredentials
  * @property \DateTime $lastLoginDate
+ * @property \DateTime $tokenExpirationTime
  * @property string $timezone
  * @property Scene[] $scenes
  * @property Client[] $clients
@@ -32,6 +33,7 @@ class User extends Model {
     const LAST_LOGIN_DATE = 'lastLoginDate';
     const LAST_VOICE_COMMAND = 'lastVoiceCommand';
     const TIMEZONE = 'timezone';
+    const TOKEN_EXPIRATION_TIME = 'tokenExpirationTime';
 
     protected $dates = [self::LAST_LOGIN_DATE];
 
@@ -107,6 +109,14 @@ class User extends Model {
         }
         $this->apiCredentials = json_encode($apiCredentials);
         SuplaApi::getInstance($this)->getDevices();
+        if (isset($apiCredentials['expires_in']) && $apiCredentials['expires_in'] > 300) {
+            $expirationTime = new \DateTime();
+            $expirationTime->setTimestamp(time() + $apiCredentials['expires_in']);
+            $expirationTime->setTimezone(new \DateTimeZone('UTC'));
+            $this->tokenExpirationTime = $expirationTime;
+        } else {
+            $this->tokenExpirationTime = null;
+        }
     }
 
     public function getApiCredentials(): array {

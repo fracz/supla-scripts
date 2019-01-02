@@ -20,6 +20,9 @@ class DispatchCyclicTasksCommand extends Command {
         $this->getApplication()->setAutoExit(false);
         $minute = intval(date('H')) * 60 + intval(date('i'));
         $intervals = Application::getInstance()->getSetting('intervals', []);
+        if ($minute % ($intervals['thermostat'] ?? 2) == 0) {
+            $this->getApplication()->run(new StringInput('oauth:refresh-tokens'), $output);
+        }
         if ($minute % ($intervals['thermostat'] ?? 5) == 0) {
             $this->getApplication()->run(new StringInput('dispatch:thermostat'), $output);
         }
