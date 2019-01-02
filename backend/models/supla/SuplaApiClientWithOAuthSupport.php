@@ -18,6 +18,7 @@
 namespace suplascripts\models\supla;
 
 use Supla\ApiClient\SuplaApiClient;
+use suplascripts\app\Application;
 use suplascripts\models\User;
 
 class SuplaApiClientWithOAuthSupport extends SuplaApiClient {
@@ -65,10 +66,18 @@ class SuplaApiClientWithOAuthSupport extends SuplaApiClient {
 
     public function remoteRequest($data, $path, $method = 'POST', $bearer = false) {
         $result = parent::remoteRequest($data, $path, $method, $bearer);
-        if (!$result && $this->getLastError() == 'HTTP: 401' && array_key_exists('refresh_token', $this->serverParams) && $this->user) {
-            (new OAuthClient())->refreshAccessToken($this->user);
-            $this->serverParams = $this->user->getApiCredentials();
-            $result = parent::remoteRequest($data, $path, $method, $bearer);
+        if (!$result && strpos($this->getLastError(), 'HTTP: 401') === 0 && $this->user) {
+            $previousCredentials = $this->user->apiCredentials;
+            $this->user->refresh();
+            if ($previousCredentials != $this->user->apiCredentials) {
+                Application::getInstance()->logger->toOauthLog()->warning('UPDATED USER', ['userId' => $this->user->id, 'username' => $this->user->username]);
+                return $this->remoteRequest($data, $path, $method, $bearer);
+            }
+            if (array_key_exists('refresh_token', $this->serverParams)) {
+                (new OAuthClient())->refreshAccessToken($this->user);
+                $this->serverParams = $this->user->getApiCredentials();
+                $result = parent::remoteRequest($data, $path, $method, $bearer);
+            }
         }
         return $result;
     }

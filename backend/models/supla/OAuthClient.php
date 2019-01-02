@@ -30,12 +30,27 @@ class OAuthClient {
         $apiCredentials = $user->getApiCredentials();
         Assertion::keyExists($apiCredentials, 'refresh_token', 'We cannot refresh access token because there is no refresh_token.');
         $refreshToken = $apiCredentials['refresh_token'];
-        $newCredentials = $this->issueNewAccessTokens([
-            'grant_type' => 'refresh_token',
-            'refresh_token' => $refreshToken,
-        ]);
-        $user->setApiCredentials($newCredentials);
-        $user->save();
+        try {
+            $this->getApp()->logger->toOauthLog()->notice('Refreshing token.', ['userId' => $user->id, 'username' => $user->username, 'refreshToken' => $refreshToken]);
+            $newCredentials = $this->issueNewAccessTokens([
+                'grant_type' => 'refresh_token',
+                'refresh_token' => $refreshToken,
+            ]);
+            $user->setApiCredentials($newCredentials);
+            $user->save();
+        } catch (\Exception $e) {
+            $user->refresh();
+            $apiCredentials = $user->getApiCredentials();
+            $currentRefreshToken = $apiCredentials['refresh_token'];
+            if ($currentRefreshToken != $refreshToken) {
+                $this->getApp()->logger->toOauthLog()->notice(
+                    'Token assumed updated.',
+                    ['userId' => $user->id, 'username' => $user->username, 'oldToken' => $refreshToken, 'newToken' => $currentRefreshToken]
+                );
+            } else {
+                throw $e;
+            }
+        }
     }
 
     public function issueNewAccessTokens(array $data): array {
@@ -62,6 +77,7 @@ class OAuthClient {
             $missingScopes = array_diff(array_merge(self::REQUIRED_SCOPES, ['offline_access']), $scopes);
             Assertion::count($missingScopes, 0, 'Your token is missing some scopes: ' . implode(', ', $missingScopes));
             $this->getApp()->metrics->increment('oauth.token.success');
+            $this->getApp()->logger->toOauthLog()->notice('Token issued.', ['requestData' => $data, 'response' => $response]);
             return $response;
         } catch (\Exception $e) {
             $this->getApp()->metrics->increment('oauth.token.failure');
