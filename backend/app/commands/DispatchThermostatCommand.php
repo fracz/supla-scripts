@@ -34,12 +34,12 @@ class DispatchThermostatCommand extends Command {
             } catch (\Throwable $e) {
                 (new UserAndUrlAwareLogger())->toThermostatLog()->error($e->getMessage(), ['thermostat' => $thermostat->id]);
                 ++$thermostat->failureCount;
-                $thermostat->save();
                 if ($thermostat->failureCount > $failuresToDisable) {
                     $thermostat->enabled = false;
                     $thermostat->failureCount = 0;
                     $thermostat->log('Wyłączono termostat z powodu zbyt wielu błędów wykonania. Sprawdź jego konfigurację.');
                 }
+                $thermostat->save();
             }
         }
     }
