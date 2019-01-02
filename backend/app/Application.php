@@ -38,7 +38,7 @@ class Application extends App {
         $config = require __DIR__ . '/../settings.php';
         parent::__construct(['settings' => $config]);
         $this->configureServices();
-        $this->add(new IpRequestQuotaMiddleware());
+//        $this->add(new IpRequestQuotaMiddleware());
         $this->add(new JwtAndBasicAuthorizationMiddleware());
         ObserverRegisterer::registerModelObservers();
     }
