@@ -2,6 +2,7 @@
 
 namespace suplascripts\app\commands;
 
+use suplascripts\app\Application;
 use suplascripts\app\UserAndUrlAwareLogger;
 use suplascripts\models\supla\SuplaApi;
 use suplascripts\models\thermostat\Thermostat;
@@ -23,6 +24,7 @@ class DispatchThermostatCommand extends Command {
 
     protected function execute(InputInterface $input, OutputInterface $output) {
         $activeThermostats = Thermostat::where([Thermostat::ENABLED => true])->get();
+        $failuresToDisable = Application::getInstance()->getSetting('failuresToDisable', [])['thermostat'] ?? 60;
         foreach ($activeThermostats as $thermostat) {
             if (!$thermostat->user) {
                 continue; // there were thermostats without user - quick fix for now
@@ -31,6 +33,13 @@ class DispatchThermostatCommand extends Command {
                 $this->adjust($thermostat, $output);
             } catch (\Throwable $e) {
                 (new UserAndUrlAwareLogger())->toThermostatLog()->error($e->getMessage(), ['thermostat' => $thermostat->id]);
+                ++$thermostat->failureCount;
+                $thermostat->save();
+                if ($thermostat->failureCount > $failuresToDisable) {
+                    $thermostat->enabled = false;
+                    $thermostat->failureCount = 0;
+                    $thermostat->log('Wyłączono termostat z powodu zbyt wielu błędów wykonania. Sprawdź jego konfigurację.');
+                }
             }
         }
     }
@@ -145,6 +154,7 @@ class DispatchThermostatCommand extends Command {
             }
         }
         $thermostat->devicesState = array_values(array_unique($desiredDevicesTurnedOn));
+        $thermostat->failureCount = 0;
         $thermostat->save();
     }
 }

@@ -8,6 +8,7 @@ use suplascripts\models\LogEntry;
 use suplascripts\models\notification\Notification;
 use suplascripts\models\scene\PendingScene;
 use suplascripts\models\scene\Scene;
+use suplascripts\models\thermostat\Thermostat;
 use suplascripts\models\User;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -32,6 +33,7 @@ class SendMetricsGaugesCommand extends Command {
             Application::getInstance()->metrics->gauge('notifications', Notification::count());
             Application::getInstance()->metrics->gauge('logs', LogEntry::count());
             Application::getInstance()->metrics->gauge('clients', Client::count());
+            Application::getInstance()->metrics->gauge('thermostats_enabled', Thermostat::where(Thermostat::ENABLED, true)->count());
             Application::getInstance()->metrics->send();
         }
     }

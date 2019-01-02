@@ -11,6 +11,9 @@
   "requestQuota": {
     "perIpPerMinute": 60
   },
+  "failuresToDisable": {
+    "thermostat": 60
+  },
   "db": {
     "driver": "mysql",
     "database": "suplascripts",
