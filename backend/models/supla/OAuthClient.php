@@ -39,28 +39,39 @@ class OAuthClient {
     }
 
     public function issueNewAccessTokens(array $data): array {
-        $address = $this->getApp()->getSetting('oauth')['cloudUrl'];
-        $handle = curl_init($address . '/oauth/v2/token');
-        $data = array_merge([
-            'client_id' => $this->getApp()->getSetting('oauth')['clientId'],
-            'client_secret' => $this->getApp()->getSetting('oauth')['secret'],
-        ], $data);
-        curl_setopt($handle, CURLOPT_POST, true);
-        curl_setopt($handle, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($handle, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($handle, CURLOPT_SSL_VERIFYHOST, false);
-        curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, false);
-        $response = curl_exec($handle);
-        $responseStatus = curl_getinfo($handle, CURLINFO_HTTP_CODE);
-        Assertion::eq(200, $responseStatus, 'Could not issue access token. Response status: ' . $responseStatus . ' ' . $response);
-        $response = json_decode($response, true);
-        Assertion::keyExists($response, 'access_token');
-        Assertion::keyExists($response, 'refresh_token');
-        Assertion::keyExists($response, 'scope');
-        $scopes = explode(' ', $response['scope']);
-        $missingScopes = array_diff(array_merge(self::REQUIRED_SCOPES, ['offline_access']), $scopes);
-        Assertion::count($missingScopes, 0, 'Your token is missing some scopes: ' . implode(', ', $missingScopes));
-        return $response;
+        try {
+            $address = $this->getApp()->getSetting('oauth')['cloudUrl'];
+            $handle = curl_init($address . '/oauth/v2/token');
+            $data = array_merge([
+                'client_id' => $this->getApp()->getSetting('oauth')['clientId'],
+                'client_secret' => $this->getApp()->getSetting('oauth')['secret'],
+            ], $data);
+            curl_setopt($handle, CURLOPT_POST, true);
+            curl_setopt($handle, CURLOPT_POSTFIELDS, $data);
+            curl_setopt($handle, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($handle, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, false);
+            $response = curl_exec($handle);
+            $responseStatus = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+            Assertion::eq(200, $responseStatus, 'Could not issue access token. Response status: ' . $responseStatus . ' ' . $response);
+            $response = json_decode($response, true);
+            Assertion::keyExists($response, 'access_token');
+            Assertion::keyExists($response, 'refresh_token');
+            Assertion::keyExists($response, 'scope');
+            $scopes = explode(' ', $response['scope']);
+            $missingScopes = array_diff(array_merge(self::REQUIRED_SCOPES, ['offline_access']), $scopes);
+            Assertion::count($missingScopes, 0, 'Your token is missing some scopes: ' . implode(', ', $missingScopes));
+            $this->getApp()->metrics->increment('oauth.token.success');
+            return $response;
+        } catch (\Exception $e) {
+            $this->getApp()->metrics->increment('oauth.token.failure');
+            $this->getApp()->logger->toOauthLog()->error('OAuth error.', [
+                'requestData' => $data,
+                'responseStatus' => $responseStatus,
+                'response' => $response,
+            ]);
+            throw $e;
+        }
     }
 
     public function getSuplaAddress(string $token) {
