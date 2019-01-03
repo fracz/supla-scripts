@@ -31,7 +31,7 @@ class OAuthClient {
         Assertion::keyExists($apiCredentials, 'refresh_token', 'We cannot refresh access token because there is no refresh_token.');
         $refreshToken = $apiCredentials['refresh_token'];
         try {
-            $this->getApp()->logger->toOauthLog()->notice('Refreshing token.', ['userId' => $user->id, 'username' => $user->username, 'refreshToken' => $refreshToken]);
+            $this->getApp()->logger->toOauthLog()->debug('Refreshing token.', ['userId' => $user->id, 'username' => $user->username, 'refreshToken' => $refreshToken]);
             $newCredentials = $this->issueNewAccessTokens([
                 'grant_type' => 'refresh_token',
                 'refresh_token' => $refreshToken,
@@ -43,7 +43,7 @@ class OAuthClient {
             $apiCredentials = $user->getApiCredentials();
             $currentRefreshToken = $apiCredentials['refresh_token'];
             if ($currentRefreshToken != $refreshToken) {
-                $this->getApp()->logger->toOauthLog()->notice(
+                $this->getApp()->logger->toOauthLog()->debug(
                     'Token assumed updated.',
                     ['userId' => $user->id, 'username' => $user->username, 'oldToken' => $refreshToken, 'newToken' => $currentRefreshToken]
                 );
@@ -66,7 +66,7 @@ class OAuthClient {
             curl_setopt($handle, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($handle, CURLOPT_SSL_VERIFYHOST, false);
             curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, false);
-         //   curl_setopt($handle, CURLOPT_COOKIE, 'XDEBUG_SESSION=PHPUNIT'); // uncomment to enable XDEBUG debugging in dev
+            //   curl_setopt($handle, CURLOPT_COOKIE, 'XDEBUG_SESSION=PHPUNIT'); // uncomment to enable XDEBUG debugging in dev
             $response = curl_exec($handle);
             $responseStatus = curl_getinfo($handle, CURLINFO_HTTP_CODE);
             Assertion::eq(200, $responseStatus, 'Could not issue access token. Response status: ' . $responseStatus . ' ' . $response);
@@ -78,7 +78,7 @@ class OAuthClient {
             $missingScopes = array_diff(array_merge(self::REQUIRED_SCOPES, ['offline_access']), $scopes);
             Assertion::count($missingScopes, 0, 'Your token is missing some scopes: ' . implode(', ', $missingScopes));
             $this->getApp()->metrics->increment('oauth.token.success');
-            $this->getApp()->logger->toOauthLog()->notice('Token issued.', ['requestData' => $data, 'response' => $response]);
+            $this->getApp()->logger->toOauthLog()->debug('Token issued.', ['requestData' => $data, 'response' => $response]);
             return $response;
         } catch (\Exception $e) {
             $this->getApp()->metrics->increment('oauth.token.failure');
