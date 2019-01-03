@@ -38,6 +38,7 @@ class FeedbackTwigExtension extends \Twig_Extension {
         return [
             new \Twig_Filter('colorName', [$this, 'getNearestColorName']),
             new \Twig_Filter('colorNamePl', [$this, 'getNearestColorNamePolish']),
+            new \Twig_Filter('jsonDecode', [$this, 'jsonDecode']),
         ];
     }
 
@@ -135,6 +136,10 @@ class FeedbackTwigExtension extends \Twig_Extension {
             "fuchsia" => 'różowy',
             "aqua" => 'morski',
         ][$this->getNearestColorName($color)];
+    }
+
+    public function jsonDecode($json) {
+        return json_decode($json, true);
     }
 
     public function getTime($date = 'now') {
