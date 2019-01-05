@@ -167,7 +167,13 @@ class FeedbackTwigExtension extends \Twig_Extension {
         return $location;
     }
 
-    public static function getUrlContents(string $url, string $regex = '', array $config = []): string {
+    public static function getUrlContents(string $url, $regex = '', array $config = []): string {
+        if (is_array($regex)) {
+            $config = $regex;
+        }
+        if ($regex && is_string($regex)) {
+            $config['regex'] = $regex;
+        }
         $key = \FileSystemCache::generateCacheKey(array_merge($config, [$url]), 'urls');
         $value = \FileSystemCache::retrieve($key);
         if ($value === false) {
@@ -180,6 +186,13 @@ class FeedbackTwigExtension extends \Twig_Extension {
                 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             }
+            if (isset($config['headers']) && is_array($config['headers'])) {
+                $headers = [];
+                foreach ($config['headers'] as $headerName => $headerValue) {
+                    $headers[] = "$headerName: $headerValue";
+                }
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            }
             $value = curl_exec($ch);
             curl_close($ch);
             if ($value === false) {
@@ -187,7 +200,7 @@ class FeedbackTwigExtension extends \Twig_Extension {
             }
             \FileSystemCache::store($key, $value, 60);
         }
-        if ($regex && preg_match($regex, $value, $match)) {
+        if (isset($config['regex']) && $config['regex'] && preg_match($config['regex'], $value, $match)) {
             return $match[$config['regexGroup'] ?? 1];
         }
         return $value;
