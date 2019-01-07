@@ -94,7 +94,7 @@ copy-button {
 }
 
 .alert {
-  &-info, &-success {
+  &-info, &-success, &-warning {
     a {
       color: #ff0;
     }

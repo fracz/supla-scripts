@@ -2,6 +2,8 @@
 
 namespace suplascripts\controllers;
 
+use Ramsey\Uuid\Uuid;
+use suplascripts\models\automate\AutomateSender;
 use suplascripts\models\Client;
 
 class ClientsController extends BaseController {
@@ -29,5 +31,20 @@ class ClientsController extends BaseController {
         $client = $this->ensureExists($this->getCurrentUser()->clients()->getQuery()->find($params)->first());
         $client->delete();
         return $this->response()->withStatus(204);
+    }
+
+    public function postAction() {
+        $this->ensureAuthenticated();
+        /** @var Client $client */
+        $user = $this->getCurrentUser();
+        $client = $user->clients()->whereNotNull(Client::AUTH_CODE)->first();
+        if (!$client) {
+            $client = $user->clients()->create([]);
+        }
+        // TODO label
+        $client->authCode = Uuid::uuid4();
+        $client->save();
+        $automate = new AutomateSender($user);
+        $automate->sendCommand('newClient', $client->authCode);
     }
 }

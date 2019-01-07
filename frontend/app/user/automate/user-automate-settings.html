@@ -1,18 +1,17 @@
 <view-title>Ustawienia Automate</view-title>
 
-<div class="alert alert-info" ng-if="!$ctrl.user.hasAutomateCredentials">
-    <fa name="info-circle" fw class="pull-right" size="2"></fa>
-    <p>
-        Podanie konfiguracji Automate jest opcjonalne, ale umożliwi bezpośrednią komunikację SUPLA Scripts z Twoimi urządzeniami z zainstalowaną
-        aplikacją Automate. Jeśli nie chcesz podawać tych informacji, zaloguj się do SUPLA Scripts przy użyciu prywatnego tokena dostępu i skonfiguruj
-        urządzenie wybierając "Configure the device (old way)".
-    </p>
-    <p>Podany w tym formularzu dane autoryzacyjne Automate nigdy nie będą przesłane z powrotem do przeglądarki.</p>
-</div>
-
-<div ng-else>
-
-    <div class="alert alert-success">
+<div ng-if="$ctrl.mode == 'configure'">
+    <div class="alert alert-info" ng-if="!$ctrl.user.hasAutomateCredentials">
+        <fa name="info-circle" fw class="pull-right" size="2"></fa>
+        <p>
+            Podanie konfiguracji Automate jest opcjonalne, ale umożliwi bezpośrednią komunikację SUPLA Scripts z Twoimi urządzeniami z zainstalowaną
+            aplikacją Automate. Jeśli nie chcesz podawać tych informacji, zaloguj się do SUPLA Scripts przy użyciu prywatnego tokena dostępu i
+            skonfiguruj
+            urządzenie wybierając "Configure the device (old way)".
+        </p>
+        <p>Podany w tym formularzu dane autoryzacyjne Automate nigdy nie będą przesłane z powrotem do przeglądarki.</p>
+    </div>
+    <div class="alert alert-warning" ng-else>
         <fa name="exclamation-triangle" fw class="pull-right" size="2"></fa>
         <p>
             Twoje konto posiada już przypisaną konfigurację Automate Cloud. Jeśli wypełnisz ten formularz ponownie - dotychczasowa konfiguracja
@@ -20,63 +19,74 @@
             usunięta. Możesz też sam ją usunąć klikając <a ng-click="$ctrl.updateSettings()">tutaj</a>.
         </p>
     </div>
-
-    <div class="form-group">
-        <div class="text-center" ng-if="!$ctrl.addingAutomate">
-            <a class="btn btn-success btn-lg" ng-click="$ctrl.addingAutomate = true">
-                <fa name="android" fw></fa>
-                Dodaj nowe urządzenie z Automate
-            </a>
+    <div class="alert alert-info">
+        <fa name="info-circle" fw class="pull-right" size="2"></fa>
+        <p>
+            Przejdź do strony <a href="https://llamalab.com/automate/cloud/" target="_blank">Automate Cloud</a> aby wygenerować dane do poniższego
+            formularza. Wybierz tam przycisk z ikoną
+            <fa name="refresh" fw></fa>
+            obok pola <em>Secret</em>, przeprowadź autentykację a następnie
+            skopiuj wartości <em>Secret</em> oraz <em>To</em> do poniższego formularza i zapisz zmiany.
+        </p>
+    </div>
+    <form ng-submit="$ctrl.updateSettings()" promise-btn>
+        <div class="form-group">
+            <label>Secret</label>
+            <input type="password" class="form-control" ng-model="$ctrl.automate.secret" required>
         </div>
-        <div ng-else-if="$ctrl.user.hasAutomateCredentials">
+        <div class="form-group">
+            <label>To (e-mail)</label>
+            <input type="email" class="form-control" ng-model="$ctrl.automate.email" required>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">
+                <fa name="android" fw></fa>
+                Zapisz ustawienia
+            </button>
+        </div>
+    </form>
+
+</div>
+
+<div ng-else-if="$ctrl.mode == 'add'">
+    <div class="form-group">
+        <div>
             <h2>Dodawanie nowego urządzenia z Automate</h2>
             <p>
                 Na urządzeniu z Androidem zainstaluj aplikację
                 <a href="https://play.google.com/store/apps/details?id=com.llamalab.automate">Automate</a>.
-                Większość aplikacji zrealizowanych za pomocą Automate i działających z SUPLA Scripts jest na tyle skomplikowana, że aby je uruchomić -
+                Większość aplikacji zrealizowanych za pomocą Automate działających z SUPLA Scripts jest na tyle skomplikowana, że aby je uruchomić -
                 potrzebujesz wersji premium aplikacji.
             </p>
+            <p>
+                Następnie znajdź i zainstaluj w aplikacji Automate flow <a href="https://llamalab.com/automate/community/flows/16424">SUPLA Scripts
+                Configurator</a>.
+                Nadaj mu wszystkie konieczne uprawnienia i uruchom, wybierając opcję <em>Configure new device</em>.
+                Gdy zostaniesz o to poproszony, kliknij przycisk poniżej.
+            </p>
             <div class="text-center">
-                <a class="btn btn-success">
+                <a class="btn btn-success" ng-click="$ctrl.connectDevice()">
                     <fa name="mobile" fw></fa>
                     Powiąż urządzenie z kontem
                 </a>
             </div>
         </div>
-        <div ng-else>
-            <h2>Dodawanie nowego urządzenia z Automate</h2>
-            <p>
-                Najpierw musisz podać kilka informacji, które umożliwią odnalezienie Twojego urządzenia i dalszą komunikację.
-                <a ui-sref-active="active" ui-sref="account.automate">Przejdź do ustawień konta</a> w celu ich konfiguracji.
-            </p>
+    </div>
+</div>
+
+<div ng-else>
+    <div class="text-center" ng-if="!$ctrl.addingAutomate">
+        <div class="form-group">
+            <a class="btn btn-success btn-lg" ng-click="$ctrl.mode = 'add'">
+                <fa name="android" fw></fa>
+                Dodaj nowe urządzenie z Automate
+            </a>
+        </div>
+        <div class="form-group">
+            <a class="btn btn-warning btn-lg" ng-click="$ctrl.mode = 'configure'">
+                <fa name="cogs" fw></fa>
+                Zmień konfigurację Automate
+            </a>
         </div>
     </div>
 </div>
-
-<div class="alert alert-info">
-    <fa name="info-circle" fw class="pull-right" size="2"></fa>
-    <p>
-        Przejdź do strony <a href="https://llamalab.com/automate/cloud/" target="_blank">Automate Cloud</a> aby wygenerować dane do poniższego
-        formularza. Wybierz tam przycisk z ikoną
-        <fa name="refresh" fw></fa>
-        obok pola <em>Secret</em>, przeprowadź autentykację a następnie
-        skopiuj wartości <em>Secret</em> oraz <em>To</em> do poniższego formularza i zapisz zmiany.
-    </p>
-</div>
-
-<form ng-submit="$ctrl.updateSettings()" promise-btn>
-    <div class="form-group">
-        <label>Secret</label>
-        <input type="password" class="form-control" ng-model="$ctrl.automate.secret" required>
-    </div>
-    <div class="form-group">
-        <label>To (e-mail)</label>
-        <input type="email" class="form-control" ng-model="$ctrl.automate.email" required>
-    </div>
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">
-            <fa name="android" fw></fa>
-            Zapisz ustawienia
-        </button>
-    </div>
-</form>

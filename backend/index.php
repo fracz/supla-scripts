@@ -103,6 +103,7 @@ $app->group('/api', function () use ($app) {
 
     $app->group('/clients', function () use ($app) {
         $app->get('', ClientsController::class . ':getList');
+        $app->post('', ClientsController::class . ':post');
         $app->put('/{id}', ClientsController::class . ':put');
         $app->delete('/{id}', ClientsController::class . ':delete');
     });
