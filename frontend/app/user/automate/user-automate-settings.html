@@ -1,0 +1,26 @@
+<view-title>Ustawienia Automate</view-title>
+
+<div class="form-group">
+    <div>
+        <h2>Dodawanie nowego urządzenia z Automate</h2>
+        <p>
+            Na urządzeniu z Androidem zainstaluj aplikację
+            <a href="https://play.google.com/store/apps/details?id=com.llamalab.automate">Automate</a>.
+            Większość aplikacji zrealizowanych za pomocą Automate działających z SUPLA Scripts jest na tyle skomplikowana, że aby je uruchomić -
+            potrzebujesz wersji premium aplikacji.
+        </p>
+        <p>
+            Następnie znajdź i zainstaluj w aplikacji Automate flow <a href="https://llamalab.com/automate/community/flows/16424">SUPLA Scripts
+            Configurator</a>.
+            Nadaj mu wszystkie konieczne uprawnienia i uruchom, wybierając opcję <em>Configure new device</em>.
+            Gdy zostaniesz o to poproszony, wpisz poniższy kod w celu autoryzacji.
+        </p>
+        <h2 class="text-center">Kod autoryzacji</h2>
+        <p class="text-center client-auth-code">
+            <code>{{ $ctrl.client.authCode }}</code>
+        </p>
+    </div>
+</div>
+
+
+

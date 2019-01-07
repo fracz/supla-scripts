@@ -32,16 +32,33 @@ class ClientsController extends BaseController {
         return $this->response()->withStatus(204);
     }
 
-    public function createClientForGeneralPurposeAction() {
+    public function postAction() {
         $this->ensureAuthenticated();
-        return $this->getApp()->db->getConnection()->transaction(function () {
-            $client = new Client([Client::LABEL => 'Token #' . ($this->getCurrentUser()->clients()->count() + 1)]);
-            $client->purpose = Client::PURPOSE_GENERAL;
-            $client->save();
-            $token = JwtToken::create()->client($client)->issue();
-            $array = $client->toArray();
-            $array['token'] = $token;
-            return $this->response($array)->withStatus(201);
-        });
+        if ($this->request()->getParam('withAuthCode')) {
+            $user = $this->getCurrentUser();
+            $client = $user->clients()->whereNotNull(Client::AUTH_CODE)->first();
+            if (!$client) {
+                $client = $user->clients()->create([Client::ACTIVE => false]);
+                $client->authCode = 10000 + rand(0, 90000);
+                $client->save();
+            }
+            return $this->response($client);
+        } else {
+            return $this->getApp()->db->getConnection()->transaction(function () {
+                $client = new Client([Client::LABEL => 'Token #' . ($this->getCurrentUser()->clients()->count() + 1)]);
+                $client->purpose = Client::PURPOSE_GENERAL;
+                $client->save();
+                $token = JwtToken::create()->client($client)->issue();
+                $array = $client->toArray();
+                $array['token'] = $token;
+                return $this->response($array)->withStatus(201);
+            });
+        }
+    }
+
+    public function getAction($params) {
+        $this->ensureAuthenticated();
+        $client = $this->ensureExists($this->getCurrentUser()->clients()->getQuery()->find($params)->first());
+        return $this->response($client);
     }
 }

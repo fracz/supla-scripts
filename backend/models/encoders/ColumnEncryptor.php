@@ -36,10 +36,10 @@ class ColumnEncryptor implements ColumnEncoder {
     }
 
     public function encode($value) {
-        return self::$PREFIX . Crypto::encrypt($value, self::getCryptoKey());
+        return $value !== null ? self::$PREFIX . Crypto::encrypt($value, self::getCryptoKey()) : null;
     }
 
     public function decode($value) {
-        return Crypto::decrypt(str_replace(self::$PREFIX, '', $value), self::getCryptoKey());
+        return $value === null ? null : Crypto::decrypt(str_replace(self::$PREFIX, '', $value), self::getCryptoKey());
     }
 }

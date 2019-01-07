@@ -33,8 +33,22 @@ class TokensController extends BaseController {
     public function createTokenForClientAction() {
         $body = $this->request()->getParsedBody();
         $this->authenticateUser($body);
-        return $this->getApp()->db->getConnection()->transaction(function () use ($body) {
-            $client = new Client([Client::LABEL => $body['label'] ?? 'Client']);
+        $client = null;
+        if (isset($body[User::USERNAME])) {
+            $this->authenticateUser($body);
+        } else {
+            Assertion::keyExists($body, 'authCode', 'Invalid auth request. Try updating SUPLA Scripts Configurator.');
+            /** @var Client $client */
+            $client = Client::where(Client::AUTH_CODE, $body['authCode'])->first();
+            $this->ensureExists($client);
+        }
+        return $this->getApp()->db->getConnection()->transaction(function () use ($body, $client) {
+            if (!$client) {
+                $client = new Client([]);
+            }
+            $client->label = $body['label'] ?? 'Client';
+            $client->authCode = null;
+            $client->active = true;
             $client->purpose = Client::PURPOSE_AUTOMATE;
             $client->save();
             $token = JwtToken::create()->client($client)->issue();
