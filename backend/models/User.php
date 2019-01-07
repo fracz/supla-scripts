@@ -34,12 +34,14 @@ class User extends Model {
     const LAST_VOICE_COMMAND = 'lastVoiceCommand';
     const TIMEZONE = 'timezone';
     const TOKEN_EXPIRATION_TIME = 'tokenExpirationTime';
+    const AUTOMATE_EMAIL = 'automateEmail';
+    const AUTOMATE_SECRET = 'automateSecret';
 
     protected $dates = [self::LAST_LOGIN_DATE];
 
     protected $fillable = [];
     protected $hidden = [self::PASSWORD, self::API_CREDENTIALS, self::LAST_VOICE_COMMAND];
-    protected $encrypted = [self::API_CREDENTIALS];
+    protected $encrypted = [self::API_CREDENTIALS, self::AUTOMATE_SECRET];
 
     /** @return User|null */
     public static function findByUsername(string $username) {

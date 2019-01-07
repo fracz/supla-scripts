@@ -7,6 +7,30 @@
         <p>Usuń z tej listy wszystkie klucze których nie potrzebujesz (nie były dawno używane, nie wiesz skąd się wzięły itp.)</p>
     </div>
 
+    <div class="form-group">
+        <div class="text-center" ng-if="!$ctrl.addingAutomate">
+            <a class="btn btn-success btn-lg" ng-click="$ctrl.addingAutomate = true">
+                <fa name="android" fw></fa>
+                Dodaj nowe urządzenie z Automate
+            </a>
+        </div>
+        <div ng-else>
+            <h2>Dodawanie nowego urządzenia z Automate</h2>
+            <p>
+                Na urządzeniu z Androidem zainstaluj aplikację <a
+                    href="https://play.google.com/store/apps/details?id=com.llamalab.automate">Automate</a>.
+                Większość aplikacji zrealizowanych za pomocą Automate i działających z SUPLA Scripts jest na tyle skomplikowana, że aby je uruchomić -
+                potrzebujesz wersji premium aplikacji.
+            </p>
+            <div class="text-center">
+                <a class="btn btn-success">
+                    <fa name="mobile" fw></fa>
+                    Powiąż urządzenie z kontem
+                </a>
+            </div>
+        </div>
+    </div>
+
     <table class="table table-striped" ng-if="$ctrl.clients">
         <thead>
         <tr>
