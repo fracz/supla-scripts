@@ -92,3 +92,11 @@ copy-button {
 .swal2-modal h2 {
   line-height: 35px;
 }
+
+.alert {
+  &-info, &-success {
+    a {
+      color: #ff0;
+    }
+  }
+}

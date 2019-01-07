@@ -56,6 +56,10 @@ class UsersController extends BaseController {
                 $user->log('user', 'Zmieniono strefę czasową');
                 $user->setTimezone(new \DateTimeZone($request['timezone']));
             }
+            if (isset($request['automate']) && is_array($request['automate'])) {
+                $user->log('user', 'Zmieniono ustawienia dostępu do Automate Cloud');
+                $user->setAutomateCredentials($request['automate']);
+            }
             $user->save();
             return $this->response($user);
         });

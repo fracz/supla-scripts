@@ -5,7 +5,10 @@
     <dt>Ostatnie logowanie</dt>
     <dd>{{ $ctrl.user.lastLoginDate | date:'short' }}</dd>
     <dt>Strefa czasowa</dt>
-    <dd>{{ $ctrl.user.timezone }}</dd>
+    <dd>
+        {{ $ctrl.user.timezone }}
+        <div class="small text-muted">(jeśli jest niepoprawna - zmień ją w SUPLA Cloud i zaloguj się ponownie do SUPLA Scripts)</div>
+    </dd>
     <dt>Nazwa użytkownika w SUPLA Scripts</dt>
     <dd ng-if="$ctrl.user.username">{{ $ctrl.user.username }}</dd>
     <dd ng-else><em>brak</em></dd>

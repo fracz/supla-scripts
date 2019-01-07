@@ -1,8 +1,9 @@
 angular.module('supla-scripts').component 'clientsList',
   templateUrl: 'app/clients/clients-list.html'
-  controller: (Clients, swangular, Notifier, $scope, $q) ->
+  controller: (Clients, swangular, Notifier, $scope, $q, Users) ->
     new class
       $onInit: ->
+
         Clients.getList().then((@clients) =>)
 
       editLabel: (client) ->

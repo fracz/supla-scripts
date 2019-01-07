@@ -19,6 +19,7 @@ use suplascripts\models\thermostat\Thermostat;
  * @property \DateTime $lastLoginDate
  * @property \DateTime $tokenExpirationTime
  * @property string $timezone
+ * @property string $automateCredentials
  * @property Scene[] $scenes
  * @property Client[] $clients
  * @property Notification[] $notifications
@@ -34,14 +35,13 @@ class User extends Model {
     const LAST_VOICE_COMMAND = 'lastVoiceCommand';
     const TIMEZONE = 'timezone';
     const TOKEN_EXPIRATION_TIME = 'tokenExpirationTime';
-    const AUTOMATE_EMAIL = 'automateEmail';
-    const AUTOMATE_SECRET = 'automateSecret';
+    const AUTOMATE_CREDENTIALS = 'automateCredentials';
 
     protected $dates = [self::LAST_LOGIN_DATE];
 
     protected $fillable = [];
-    protected $hidden = [self::PASSWORD, self::API_CREDENTIALS, self::LAST_VOICE_COMMAND];
-    protected $encrypted = [self::API_CREDENTIALS, self::AUTOMATE_SECRET];
+    protected $hidden = [self::PASSWORD, self::API_CREDENTIALS, self::LAST_VOICE_COMMAND, self::AUTOMATE_CREDENTIALS];
+    protected $encrypted = [self::API_CREDENTIALS, self::AUTOMATE_CREDENTIALS];
 
     /** @return User|null */
     public static function findByUsername(string $username) {
@@ -125,6 +125,15 @@ class User extends Model {
         return json_decode($this->apiCredentials, true);
     }
 
+    public function setAutomateCredentials(array $automateCredentials) {
+        $credentials = array_filter(array_intersect_key($automateCredentials, ['secret' => '', 'email' => '']));
+        $this->automateCredentials = count($credentials) === 2 ? json_encode($credentials) : null;
+    }
+
+    public function getAutomateCredentials() {
+        return $this->automateCredentials ? json_decode($this->automateCredentials, true) : null;
+    }
+
     public function trackLastLogin() {
         $this->lastLoginDate = new \DateTime();
         $this->save();
@@ -167,5 +176,11 @@ class User extends Model {
 
     public function currentDateTimeInUserTimezone(): \DateTime {
         return new \DateTime('now', $this->getTimezone());
+    }
+
+    public function toArray() {
+        $attrs = parent::toArray();
+        $attrs['hasAutomateCredentials'] = !!$this->automateCredentials;
+        return $attrs;
     }
 }
