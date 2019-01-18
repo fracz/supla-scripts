@@ -35,6 +35,7 @@ class TokensController extends BaseController {
         $this->authenticateUser($body);
         return $this->getApp()->db->getConnection()->transaction(function () use ($body) {
             $client = new Client([Client::LABEL => $body['label'] ?? 'Client']);
+            $client->purpose = Client::PURPOSE_AUTOMATE;
             $client->save();
             $token = JwtToken::create()->client($client)->issue();
             return $this->response(['token' => $token])->withStatus(201);

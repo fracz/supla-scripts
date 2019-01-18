@@ -7,57 +7,80 @@
         <p>Usuń z tej listy wszystkie klucze których nie potrzebujesz (nie były dawno używane, nie wiesz skąd się wzięły itp.)</p>
     </div>
 
-    <table class="table table-striped" ng-if="$ctrl.clients">
-        <thead>
-        <tr>
-            <th></th>
-            <th>Nazwa</th>
-            <th>Wygenerowano</th>
-            <th>Ostatnio używany</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="client in $ctrl.clients" ng-class="{alpha60: !client.active}">
-            <td class="text-center">
-                <a ng-if="client.sceneId" ui-sref="scenes.details({id: client.sceneId})" tooltips tooltip-template="Scena" tooltip-side="left">
-                    <fa name="cogs" fw></fa>
-                </a>
-                <fa name="mobile" ng-if="!client.sceneId" fw tooltips tooltip-template="Automate" tooltip-side="left"></fa>
-            </td>
-            <td>
-                {{ client.label }}
-            </td>
-            <td>
-                <date-with-tooltip date="client.createdAt"></date-with-tooltip>
-            </td>
-            <td>
-                <date-with-tooltip date="client.lastConnectionDate"></date-with-tooltip>
-            </td>
-            <td class="text-right">
-                <div class="btn-group btn-group-xs">
-                    <button type="button" class="btn btn-default" ng-click="$ctrl.editLabel(client)">
-                        <fa name="edit" fw></fa>
-                        Zmień nazwę
-                    </button>
-                    <button type="button" class="btn btn-default" ng-click="$ctrl.deactivate(client)" promise-btn ng-if="client.active">
-                        <fa name="times" fw></fa>
-                        Dezaktywuj
-                    </button>
-                    <button type="button" class="btn btn-default" ng-click="$ctrl.activate(client)" promise-btn ng-if="!client.active">
-                        <fa name="times" fw></fa>
-                        Aktywuj
-                    </button>
-                    <button type="button" class="btn btn-danger" ng-click="$ctrl.deleteClient(client)">
-                        <fa name="trash" fw></fa>
-                        Usuń
-                    </button>
-                </div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <div ng-if="$ctrl.clients">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th></th>
+                <th>Nazwa</th>
+                <th>Wygenerowano</th>
+                <th>Ostatnio używany</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="client in $ctrl.clients" ng-class="{alpha60: !client.active}">
+                <td class="text-center">
+                    <a ng-if="client.sceneId" ui-sref="scenes.details({id: client.sceneId})" tooltips tooltip-template="Scena" tooltip-side="left">
+                        <fa name="cogs" fw></fa>
+                    </a>
+                    <fa name="mobile" ng-if="client.purpose == 1" fw tooltips tooltip-template="Automate" tooltip-side="left"></fa>
+                    <fa name="lock" ng-if="client.purpose == 0" fw tooltips tooltip-template="General" tooltip-side="left"></fa>
+                </td>
+                <td>
+                    {{ client.label }}
+                </td>
+                <td>
+                    <date-with-tooltip date="client.createdAt"></date-with-tooltip>
+                </td>
+                <td>
+                    <date-with-tooltip date="client.lastConnectionDate"></date-with-tooltip>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group btn-group-xs">
+                        <button type="button" class="btn btn-default" ng-click="$ctrl.editLabel(client)">
+                            <fa name="edit" fw></fa>
+                            Zmień nazwę
+                        </button>
+                        <button type="button" class="btn btn-default" ng-click="$ctrl.deactivate(client)" promise-btn ng-if="client.active">
+                            <fa name="times" fw></fa>
+                            Dezaktywuj
+                        </button>
+                        <button type="button" class="btn btn-default" ng-click="$ctrl.activate(client)" promise-btn ng-if="!client.active">
+                            <fa name="times" fw></fa>
+                            Aktywuj
+                        </button>
+                        <button type="button" class="btn btn-danger" ng-click="$ctrl.deleteClient(client)">
+                            <fa name="trash" fw></fa>
+                            Usuń
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
+        <h2>Wygeneruj nowy klucz</h2>
+        <p>Jeśli chcesz wykorzystać token dostępu do SUPLA Scripts w innym oprogramowaniu (soft urządzenia, IFTTT, Excel),
+            możesz wygenerować nowy token klikając w poniższy przycisk. Ten token, w odróznieniu od tokena do wykonania sceny daje pełny dostęp
+            do Twojego konta.</p>
+
+        <div class="form-group">
+            <button type="button" class="btn btn-warning" ng-click="$ctrl.generateNewClient()" promise-btn>
+                <fa name="lock" fw></fa>
+                Wygeneruj nowy token dostępu
+            </button>
+        </div>
+
+        <div class="alert alert-success fx-fade-down" ng-if="$ctrl.newClient">
+            <strong>{{ $ctrl.newClient.label }} został utworzony.</strong>
+            Kliknij przycisk poniżej by skopiować token do schowka i użyć go w miejscu docelowym.
+            Warto od razu zmienić mu nazwę, żeby pamiętać po co został stworzony.
+            <div>
+                <copy-button text="$ctrl.newClient.token" label="Kopiuj token" class="btn-group margin-bottom"></copy-button>
+            </div>
+        </div>
+
+    </div>
     <loader-dots ng-else></loader-dots>
-
 </div>

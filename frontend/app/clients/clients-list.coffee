@@ -3,6 +3,9 @@ angular.module('supla-scripts').component 'clientsList',
   controller: (Clients, swangular, Notifier, $scope, $q) ->
     new class
       $onInit: ->
+        @fetch()
+
+      fetch: ->
         Clients.getList().then((@clients) =>)
 
       editLabel: (client) ->
@@ -45,3 +48,6 @@ angular.module('supla-scripts').component 'clientsList',
         .then =>
           Notifier.success('Klucz dostępu został usunięty.')
           @clients.splice(@clients.indexOf(client), 1)
+
+      generateNewClient: ->
+        Clients.post().then((@newClient) => @fetch())

@@ -40,7 +40,7 @@ class JwtAndBasicAuthorizationMiddleware {
 
         $container = $this->getApp()->getContainer();
 
-        $this->jwtAuthentication = new JwtAuthentication(array_merge($options, [
+        $this->jwtAuthentication = new JwtWithBodyAuthentication(array_merge($options, [
             'secret' => $this->getApp()->getSetting('jwt')['key'],
             'algorithm' => ['HS256'],
             'callback' => function ($request, $response, $arguments) use ($container) {

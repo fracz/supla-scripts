@@ -8,6 +8,7 @@ use suplascripts\models\scene\Scene;
 /**
  * @property int $id
  * @property string $label
+ * @property int $purpose
  * @property bool $active
  * @property \DateTime $lastConnectionDate
  */
@@ -19,6 +20,11 @@ class Client extends Model {
     const LAST_CONNECTION_DATE = 'lastConnectionDate';
     const SCENE_ID = 'sceneId';
     const USER_ID = 'userId';
+    const PURPOSE = 'purpose';
+
+    const PURPOSE_GENERAL = 0;
+    const PURPOSE_AUTOMATE = 1;
+    const PURPOSE_SCENE = 2;
 
     protected $dates = [self::LAST_CONNECTION_DATE];
     protected $fillable = [self::LABEL, self::ACTIVE];
