@@ -10,6 +10,21 @@
 
             <div ng-else>
                 <h1 view-title>Termostaty</h1>
+                <div class="alert alert-warning">
+                    <fa name="exclamation-triangle" fw class="pull-right" size="2"></fa>
+                    <strong><big>To NIE jest oficjalna funkcjonalność SUPLA.</big></strong> Używając tej funkcjonalności zgadzasz się z tym, że:
+                    <ul>
+                        <li>Termostat NIE zadziała gdy nie będzie w Twoim domu Internetu. Twój piec - jeśli nie posiada innych zabezpieczeń - nie
+                            wyłączy się w takim przypadku. Jeśli jest choć cień wątpliwości, że taka sytuacja będzie prowadzić do niebezpieczeństwa -
+                            NIE UŻYWAJ TEJ FUNKCJONALNOŚCI.
+                        </li>
+                        <li>
+                            Warunki w termostacie są sprawdzane co określony czas. Jeśli temperatura spadnie lub wzrośnie ponad zadaną - POCZEKAJ
+                            zanim termostat na to zareaguje co najmniej 5 minut, zanim zaczniesz zgłaszać problem że coś nie działa. Jeśli wymagasz
+                            podejmowania akcji częściej, ta funkcjonalność NIE JEST DLA CIEBIE.
+                        </li>
+                    </ul>
+                </div>
                 <div class="list-group">
                     <div ng-repeat="thermostat in $ctrl.thermostats"
                          class="list-group-item"
