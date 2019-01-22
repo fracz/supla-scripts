@@ -8,7 +8,7 @@ use suplascripts\models\JwtToken;
 class ClientsController extends BaseController {
     public function getListAction() {
         $this->ensureAuthenticated();
-        $query = $this->getCurrentUser()->clients()->getQuery();
+        $query = $this->getCurrentUser()->clients()->getQuery()->whereNull(Client::REGISTRATION_CODE);
         if ($this->request()->getParam('onlyDevices')) {
             $query = $query->where(Client::SCENE_ID, null);
         }
@@ -50,7 +50,7 @@ class ClientsController extends BaseController {
         $user = $this->getCurrentUser();
         $client = $user->clients()->whereNotNull(Client::REGISTRATION_CODE)->first();
         if (!$client) {
-            $client = $user->clients()->create([Client::ACTIVE => false]);
+            $client = $user->clients()->create([Client::LABEL => 'Pending device...', Client::ACTIVE => false]);
             $client->registrationCode = 10000 + rand(0, 90000);
             $client->save();
         }
