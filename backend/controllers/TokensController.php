@@ -32,22 +32,23 @@ class TokensController extends BaseController {
 
     public function createTokenForClientAction() {
         $body = $this->request()->getParsedBody();
-        $this->authenticateUser($body);
         $client = null;
         if (isset($body[User::USERNAME])) {
             $this->authenticateUser($body);
         } else {
-            Assertion::keyExists($body, 'authCode', 'Invalid auth request. Try updating SUPLA Scripts Configurator.');
+            Assertion::keyExists($body, 'registrationCode', 'Invalid auth request. Try updating SUPLA Scripts Configurator.');
             /** @var Client $client */
-            $client = Client::where(Client::AUTH_CODE, $body['authCode'])->first();
-            $this->ensureExists($client);
+            $client = Client::where(Client::REGISTRATION_CODE, $body['registrationCode'])->first();
+            if (!$client) {
+                throw new ApiException('Invalid registration code. Try again.');
+            }
         }
         return $this->getApp()->db->getConnection()->transaction(function () use ($body, $client) {
             if (!$client) {
                 $client = new Client([]);
             }
             $client->label = $body['label'] ?? 'Client';
-            $client->authCode = null;
+            $client->registrationCode = null;
             $client->active = true;
             $client->purpose = Client::PURPOSE_AUTOMATE;
             $client->save();

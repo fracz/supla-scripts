@@ -7,7 +7,8 @@
             Na urządzeniu z Androidem zainstaluj aplikację
             <a href="https://play.google.com/store/apps/details?id=com.llamalab.automate">Automate</a>.
             Większość aplikacji zrealizowanych za pomocą Automate działających z SUPLA Scripts jest na tyle skomplikowana, że aby je uruchomić -
-            potrzebujesz wersji premium aplikacji.
+            potrzebujesz wersji premium aplikacji. Nie są to pieniądze wydane na projekt SUPLA. Autor SUPLA Scripts nie otrzymuje żadnych profitów z
+            tego tytułu. Automate jest wykorzystywane ze względu na swoje możliwości, nie znajomości.
         </p>
         <p>
             Następnie znajdź i zainstaluj w aplikacji Automate flow <a href="https://llamalab.com/automate/community/flows/16424">SUPLA Scripts
@@ -15,10 +16,20 @@
             Nadaj mu wszystkie konieczne uprawnienia i uruchom, wybierając opcję <em>Configure new device</em>.
             Gdy zostaniesz o to poproszony, wpisz poniższy kod w celu autoryzacji.
         </p>
-        <h2 class="text-center">Kod autoryzacji</h2>
-        <p class="text-center client-auth-code">
-            <code>{{ $ctrl.client.authCode }}</code>
-        </p>
+        <div ng-if="$ctrl.client && $ctrl.client.registrationCode">
+            <h2 class="text-center">Kod autoryzacji</h2>
+            <p class="text-center client-auth-code">
+                <code>{{ $ctrl.client.registrationCode }}</code>
+            </p>
+        </div>
+        <div ng-else-if="$ctrl.client" class="fx-fade-down">
+            <div class="alert alert-success">
+                <fa name="mobile" fw class="pull-right" size="2"></fa>
+                <strong>Super!</strong>
+                Twoje urządzenie {{$ctrl.client.label}} może już korzystać integracji dostarczanych przez Automate.
+            </div>
+        </div>
+        <loader-dots ng-else></loader-dots>
     </div>
 </div>
 
