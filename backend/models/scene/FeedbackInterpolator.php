@@ -20,7 +20,7 @@ class FeedbackInterpolator {
         $this->twig->addExtension(new FeedbackTwigExtension());
         if ($subject instanceof BelongsToUser) {
             $this->user = $subject->user;
-        } else if ($subject instanceof User) {
+        } elseif ($subject instanceof User) {
             $this->user = $subject;
         }
     }

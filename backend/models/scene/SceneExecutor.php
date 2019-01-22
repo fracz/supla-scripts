@@ -21,10 +21,13 @@ class SceneExecutor {
         list($channelId, $action) = explode(self::CHANNEL_DELIMITER, $command);
         $args = explode(self::ARGUMENT_DELIMITER, $action);
         $action = array_shift($args);
-        Assertion::inArray($action, ['turnOn', 'turnOff', 'toggle', 'getChannelState', 'setRgb', 'shut', 'reveal', 'thermostatSetProfile', 'sceneExecute']);
+        Assertion::inArray(
+            $action,
+            ['turnOn', 'turnOff', 'toggle', 'getChannelState', 'setRgb', 'shut', 'reveal', 'thermostatSetProfile', 'sceneExecute']
+        );
         if ($action == 'thermostatSetProfile') {
             return (new ThermostatSceneExecutor())->setThermostatProfile($channelId, $args[0]);
-        } else if ($action == 'sceneExecute') {
+        } elseif ($action == 'sceneExecute') {
             $sceneId = $channelId;
             /** @var Scene $scene */
             $scene = Scene::find($sceneId);

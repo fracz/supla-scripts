@@ -70,7 +70,10 @@ class SuplaApiClientWithOAuthSupport extends SuplaApiClient {
             $previousCredentials = $this->user->apiCredentials;
             $this->user->refresh();
             if ($previousCredentials != $this->user->apiCredentials) {
-                Application::getInstance()->logger->toOauthLog()->warning('UPDATED USER', ['userId' => $this->user->id, 'username' => $this->user->username]);
+                Application::getInstance()->logger->toOauthLog()->warning(
+                    'UPDATED USER',
+                    ['userId' => $this->user->id, 'username' => $this->user->username]
+                );
                 return $this->remoteRequest($data, $path, $method, $bearer);
             }
             if (array_key_exists('refresh_token', $this->serverParams)) {

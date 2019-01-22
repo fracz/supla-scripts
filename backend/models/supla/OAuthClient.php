@@ -31,7 +31,10 @@ class OAuthClient {
         Assertion::keyExists($apiCredentials, 'refresh_token', 'We cannot refresh access token because there is no refresh_token.');
         $refreshToken = $apiCredentials['refresh_token'];
         try {
-            $this->getApp()->logger->toOauthLog()->debug('Refreshing token.', ['userId' => $user->id, 'username' => $user->username, 'refreshToken' => $refreshToken]);
+            $this->getApp()->logger->toOauthLog()->debug(
+                'Refreshing token.',
+                ['userId' => $user->id, 'username' => $user->username, 'refreshToken' => $refreshToken]
+            );
             $newCredentials = $this->issueNewAccessTokens([
                 'grant_type' => 'refresh_token',
                 'refresh_token' => $refreshToken,
