@@ -114,11 +114,11 @@ angular.module('supla-scripts')
 #    template: '<user-api-credentials user="user"></user-api-credentials>'
 #    controller: ($scope, user) -> $scope.user = user
 
-#  .state 'account.timezone',
-#    url: '/timezone'
-#    template: '<user-timezone user="user"></user-timezone>'
-#    controller: ($scope, user) -> $scope.user = user
-#
+  .state 'account.timezone',
+    url: '/timezone'
+    template: '<user-timezone user="user"></user-timezone>'
+    controller: ($scope, user) -> $scope.user = user
+
   .state 'account.automate',
     url: '/automate'
     template: '<user-automate-settings user="user"></user-automate-settings>'
