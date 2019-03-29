@@ -1,4 +1,4 @@
-FROM php:7.0.27-apache
+FROM php:7.1.27-apache-stretch
 
 WORKDIR /var/www
 
@@ -15,6 +15,7 @@ RUN apt-get update \
       supervisor \
       cron \
       wget \
+      zlib1g-dev \
     && update-ca-certificates \
     && docker-php-ext-install \
       pdo_mysql \
