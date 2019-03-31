@@ -3,7 +3,7 @@ angular.module('supla-scripts').component 'dashboard',
   controller: (Devices, Channels, Scenes, ScopeInterval, $scope) ->
     new class
       $onInit: ->
-        ScopeInterval($scope, @fetchDevices, 7000, 2000)
+#        ScopeInterval($scope, @fetchDevices, 7000, 2000)
         @fetchDevices()
         Scenes.getList().then((@scenes) =>)
 
