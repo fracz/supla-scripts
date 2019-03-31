@@ -19,9 +19,9 @@ class SuplaApiReal extends SuplaApi {
 
     public function getDevices(): array {
         if (!$this->devices) {
-            $response = $this->client->ioDevices();
+            $response = $this->client->remoteRequest(null, '/api/v2.3.0/iodevices?include=channels,connected,state', 'GET', true);
             $this->handleError($response);
-            $this->devices = $response->iodevices;
+            $this->devices = $response;
         }
         return $this->devices;
     }
@@ -30,8 +30,7 @@ class SuplaApiReal extends SuplaApi {
         foreach ($this->getDevices() as $device) {
             foreach ($device->channels as $channel) {
                 if ($channel->id == $channelId) {
-                    $state = $this->getChannelState($channelId);
-                    return (object)array_merge((array)$channel, (array)$state);
+                    return $channel;
                 }
             }
         }
@@ -39,9 +38,7 @@ class SuplaApiReal extends SuplaApi {
     }
 
     public function getChannelState(int $channelId) {
-        $state = $this->client->channel($channelId);
-        $this->handleError($state);
-        return $state;
+        return $this->getChannelWithState($channelId)->state;
     }
 
     public function turnOn(int $channelId) {

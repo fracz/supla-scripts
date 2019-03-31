@@ -3,7 +3,7 @@ angular.module('supla-scripts').component 'temperatureHistoryPage',
   controller: ($scope, Channels, channelLabelFilter, swangular) ->
     new class
       $onInit: ->
-        Channels.getList(['FNC_THERMOMETER', 'FNC_HUMIDITYANDTEMPERATURE']).then((@sensors) =>)
+        Channels.getList(['THERMOMETER', 'HUMIDITYANDTEMPERATURE']).then((@sensors) =>)
         @dateRange =
           startDate: moment().subtract(24, 'hours').startOf('minute')
           endDate: moment().endOf('minute')

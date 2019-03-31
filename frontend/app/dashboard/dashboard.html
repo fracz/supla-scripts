@@ -23,10 +23,10 @@
                             <div class="list-group">
                                 <div class="list-group-item dashboard-channel clearfix"
                                      ng-class="{
-                                        'is-on': channel.on,
-                                        'is-off': channel.on === false,
-                                        'is-closed': channel.hi,
-                                        'is-opened': channel.hi === false,
+                                        'is-on': channel.state.on,
+                                        'is-off': channel.state.on === false,
+                                        'is-closed': channel.state.hi,
+                                        'is-opened': channel.state.hi === false,
                                      }"
                                      ng-repeat="channel in device.channels"
                                      ng-hide="!channel.function.id">

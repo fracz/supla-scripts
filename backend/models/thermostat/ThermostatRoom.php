@@ -41,7 +41,7 @@ class ThermostatRoom extends Model {
         $api = SuplaApi::getInstance($this->user()->first());
         $field = $this->thermostat->target;
         $temperatures = array_map(function ($channelId) use ($field, $api) {
-            return $api->getChannelWithState($channelId)->{$field} ?? 0;
+            return $api->getChannelWithState($channelId)->state->{$field} ?? 0;
         }, $this->thermometers);
         $temperatures = array_filter($temperatures);
         return array_sum($temperatures) / (count($temperatures) ?: 1);

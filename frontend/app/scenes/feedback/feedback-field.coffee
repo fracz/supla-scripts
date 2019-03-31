@@ -6,34 +6,34 @@ angular.module('supla-scripts').component 'feedbackField',
     ngModel: 'ngModel'
   controller: (Channels, channelLabelFilter, $timeout, $element) ->
     CHANNEL_FEEDBACKS =
-      FNC_LIGHTSWITCH: [{display: 'zaświecone/zgaszone', suffix: 'on ? "zaświecone" : "zgaszone"'}]
-      FNC_POWERSWITCH: [{display: 'włączone/wyłączone', suffix: 'on ? "włączone" : "wyłączone"'}]
-      FNC_THERMOMETER: [
+      LIGHTSWITCH: [{display: 'zaświecone/zgaszone', suffix: 'on ? "zaświecone" : "zgaszone"'}]
+      POWERSWITCH: [{display: 'włączone/wyłączone', suffix: 'on ? "włączone" : "wyłączone"'}]
+      THERMOMETER: [
         {display: 'temperatura', suffix: 'temperature|number_format(1)'}
         {display: 'warunek temperatury', suffix: 'temperature < 10 ? "zimno" : "ciepło"'}
       ]
-      FNC_HUMIDITYANDTEMPERATURE: [
+      HUMIDITYANDTEMPERATURE: [
         {display: 'temperatura', suffix: 'temperature|number_format(1)'},
         {display: 'warunek temperatury', suffix: 'temperature < 10 ? "zimno" : "ciepło"'}
         {display: 'wilgotność', suffix: 'humidity|number_format(1)'}
         {display: 'warunek wilgotności', suffix: 'humidity < 50 ? "sucho" : "wilgotno"'}
       ]
-      FNC_OPENINGSENSOR_GARAGEDOOR: [{display: 'otwarta/zamknięta', suffix: 'hi ? "zamknięta" : "otwarta"'}]
-      FNC_OPENINGSENSOR_DOOR: [{display: 'otwarte/zamknięte', suffix: 'hi ? "zamknięte" : "otwarte"'}]
-      FNC_OPENINGSENSOR_ROLLERSHUTTER: [{display: 'otwarte/zamknięte', suffix: 'hi ? "zamknięte" : "otwarte"'}]
-      FNC_CONTROLLINGTHEROLLERSHUTTER: [{display: 'procent zamknięcia', suffix: 'shut < 5 ? "zamknięte" : "otwarte"'}]
-      FNC_OPENINGSENSOR_GATE: [{display: 'otwarta/zamknięta', suffix: 'hi ? "zamknięta" : "otwarta"'}]
-      FNC_OPENINGSENSOR_GATEWAY: [{display: 'otwarta/zamknięta', suffix: 'hi ? "zamknięta" : "otwarta"'}]
-      FNC_OPENINGSENSOR_WINDOW: [{display: 'otwarte/zamknięte', suffix: 'hi ? "zamknięte" : "otwarte"'}]
-      FNC_MAILSENSOR: [{display: 'jest/nie ma', suffix: 'hi ? "nie ma" : "jest"'}]
-      FNC_NOLIQUIDSENSOR: [{display: 'pusto/pełno', suffix: 'hi ? "pusto" : "pełno"'}]
-      FNC_DIMMERANDRGBLIGHTING: [
+      OPENINGSENSOR_GARAGEDOOR: [{display: 'otwarta/zamknięta', suffix: 'hi ? "zamknięta" : "otwarta"'}]
+      OPENINGSENSOR_DOOR: [{display: 'otwarte/zamknięte', suffix: 'hi ? "zamknięte" : "otwarte"'}]
+      OPENINGSENSOR_ROLLERSHUTTER: [{display: 'otwarte/zamknięte', suffix: 'hi ? "zamknięte" : "otwarte"'}]
+      CONTROLLINGTHEROLLERSHUTTER: [{display: 'procent zamknięcia', suffix: 'shut < 5 ? "zamknięte" : "otwarte"'}]
+      OPENINGSENSOR_GATE: [{display: 'otwarta/zamknięta', suffix: 'hi ? "zamknięta" : "otwarta"'}]
+      OPENINGSENSOR_GATEWAY: [{display: 'otwarta/zamknięta', suffix: 'hi ? "zamknięta" : "otwarta"'}]
+      OPENINGSENSOR_WINDOW: [{display: 'otwarte/zamknięte', suffix: 'hi ? "zamknięte" : "otwarte"'}]
+      MAILSENSOR: [{display: 'jest/nie ma', suffix: 'hi ? "nie ma" : "jest"'}]
+      NOLIQUIDSENSOR: [{display: 'pusto/pełno', suffix: 'hi ? "pusto" : "pełno"'}]
+      DIMMERANDRGBLIGHTING: [
         {display: 'jasność', suffix: 'brightness'}
         {display: 'kolor', suffix: 'color|colorNamePl'}
         {display: 'jasność koloru', suffix: 'color_brightness'}
         {display: 'warunek koloru', suffix: 'color|colorNamePl == "czerwony" ? "jest romantycznie" : "jest nudno"'}
       ]
-      FNC_RGBLIGHTING: [
+      RGBLIGHTING: [
         {display: 'kolor', suffix: 'color|colorNamePl'}
         {display: 'jasność koloru', suffix: 'color_brightness'}
         {display: 'warunek koloru', suffix: 'color|colorNamePl == "czerwony" ? "jest romantycznie" : "jest nudno"'}

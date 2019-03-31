@@ -32,8 +32,8 @@
                                 {{ room.name }}
                             </h3>
                             <div class="temperature">
-                                <span ng-if="$ctrl.thermostat.channels[room.thermometers[0]][$ctrl.thermostat.target] !== undefined">
-                                    {{ $ctrl.thermostat.channels[room.thermometers[0]][$ctrl.thermostat.target] | number:1
+                                <span ng-if="$ctrl.thermostat.channels[room.thermometers[0]].state[$ctrl.thermostat.target] !== undefined">
+                                    {{ $ctrl.thermostat.channels[room.thermometers[0]].state[$ctrl.thermostat.target] | number:1
                                     }}{{::$ctrl.thermostat|thermostatUnit}}
                                 </span>
                                 <span ng-else>?</span>

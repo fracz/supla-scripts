@@ -14,8 +14,8 @@ angular.module('supla-scripts').component 'thermostatRoomForm',
           thermometers: []
           heaters: []
           coolers: []
-      @allowedSensorFunctions = ['FNC_HUMIDITYANDTEMPERATURE']
-      @allowedSensorFunctions.push('FNC_THERMOMETER') if @thermostat.target is 'temperature'
+      @allowedSensorFunctions = ['HUMIDITYANDTEMPERATURE']
+      @allowedSensorFunctions.push('THERMOMETER') if @thermostat.target is 'temperature'
 
     onChannelAdd: (channelId, group) ->
       @room[group].push(channelId)

@@ -1,7 +1,7 @@
 angular.module('supla-scripts').component 'channelStateHumidity',
   bindings:
     channelId: '<'
-  template: '<span ng-hide="!$ctrl.channel.humidity">{{ $ctrl.channel.humidity | number:1 }}%</span>'
+  template: '<span ng-hide="!$ctrl.channel.state.humidity">{{ $ctrl.channel.state.humidity | number:1 }}%</span>'
   controller: class
     constructor: (@Channels) ->
 
