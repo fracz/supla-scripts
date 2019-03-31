@@ -28,8 +28,10 @@ class SuplaApiReal extends SuplaApi {
 
     public function getChannelWithState(int $channelId) {
         foreach ($this->getDevices() as $device) {
-            foreach ($device->channels as $channel) {
+            foreach ($device->channels as &$channel) {
                 if ($channel->id == $channelId) {
+                    $state = $this->getChannelState($channelId);
+                    $channel->state = $state;
                     return $channel;
                 }
             }
@@ -38,7 +40,12 @@ class SuplaApiReal extends SuplaApi {
     }
 
     public function getChannelState(int $channelId) {
-        return $this->getChannelWithState($channelId)->state;
+        $state = $this->client->channel($channelId);
+        $this->handleError($state);
+        if (isset($state->enabled)) {
+            unset($state->enabled);
+        }
+        return $state;
     }
 
     public function turnOn(int $channelId) {
