@@ -7,5 +7,5 @@ angular.module('supla-scripts').component 'dashboard',
         Scenes.getList().then((@scenes) =>)
 
       executeChannelAction: (channel, action) ->
-        Channels.executeAction(channel.id, {action}).then (channelWithState) ->
-          angular.extend(channel, channelWithState) if angular.isObject(channelWithState)
+        Channels.executeAction(channel.id, {action}).then (newState) ->
+          angular.extend(channel.state, newState) if angular.isObject(newState)
