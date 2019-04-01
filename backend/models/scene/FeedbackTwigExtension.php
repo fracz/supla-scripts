@@ -148,12 +148,16 @@ class FeedbackTwigExtension extends \Twig_Extension {
 
     public function getSunriseTime($latitude = null, $longitude = null, $date = 'now') {
         $location = $this->getLatitudeAndLongitude($latitude, $longitude);
-        return date_sunrise(strtotime($date), SUNFUNCS_RET_STRING, $location['latitude'], $location['longitude']);
+        $timestamp = date_sunrise(strtotime($date), SUNFUNCS_RET_TIMESTAMP, $location['latitude'], $location['longitude']);
+        $date = (new \DateTime('now'))->setTimestamp($timestamp);
+        return $date->format('H:i');
     }
 
     public function getSunsetTime($latitude = null, $longitude = null, $date = 'now') {
         $location = $this->getLatitudeAndLongitude($latitude, $longitude);
-        return date_sunset(strtotime($date), SUNFUNCS_RET_STRING, $location['latitude'], $location['longitude']);
+        $timestamp = date_sunset(strtotime($date), SUNFUNCS_RET_TIMESTAMP, $location['latitude'], $location['longitude']);
+        $date = (new \DateTime('now'))->setTimestamp($timestamp);
+        return $date->format('H:i');
     }
 
     private function getLatitudeAndLongitude($latitude, $longitude): array {
