@@ -9,6 +9,8 @@ use suplascripts\models\supla\SuplaApiException;
 
 class ChannelsController extends BaseController {
 
+    const TEMPERATURE_OUTLIER_DELTA = 20;
+
     use HasSuplaApi;
 
     public function getAction($params) {
@@ -38,6 +40,19 @@ class ChannelsController extends BaseController {
             $this->request()->getParam('startDate', '-1hour'),
             $this->request()->getParam('endDate', 'now')
         );
+        $this->removeTemperatureOutliers($logs);
         return $this->response($logs);
+    }
+
+    private function removeTemperatureOutliers(&$logs) {
+        if ($logs && property_exists($logs[0], 'temperature')) {
+            $lastTemp = floatval($logs[0]->temperature);
+            $logs = array_values(array_filter($logs, function ($log) use (&$lastTemp) {
+                $currentTemp = floatval($log->temperature);
+                $diff = abs($lastTemp - $currentTemp);
+                $lastTemp = $currentTemp;
+                return $diff < self::TEMPERATURE_OUTLIER_DELTA;
+            }));
+        }
     }
 }
