@@ -15,7 +15,7 @@ angular.module('supla-scripts').component 'functionIcon',
             return '-partial'
           if @channel.state.color_brightness != undefined && @channel.state.brightness != undefined
             return '-' + (if @channel.state.brightness then 'on' else 'off') + (if @channel.state.color_brightness then 'on' else 'off')
-          else if @channel.state.color_brightness == 0 || @channel.state.brightness == 0
-            return '-off'
-          if @channel.state.on == false
-            return '-off'
+          else if @channel.state.color_brightness > 0 || @channel.state.brightness > 0
+            return '-on'
+          if @channel.state.on == true
+            return '-on'
