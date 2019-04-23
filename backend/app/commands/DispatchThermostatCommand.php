@@ -41,6 +41,7 @@ class DispatchThermostatCommand extends Command {
                 }
                 $thermostat->save();
             }
+            Application::getInstance()->metrics->send();
         }
     }
 
