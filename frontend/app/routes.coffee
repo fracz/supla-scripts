@@ -26,10 +26,6 @@ angular.module('supla-scripts')
     url: '/authorize?code&state'
     template: '<oauth-authorize-page></oauth-authorize-page>'
 
-  .state 'register',
-    url: '/register'
-    template: '<register-view></register-view>'
-
   .state 'dashboard',
     url: '/dashboard'
     template: '<dashboard></dashboard>'
