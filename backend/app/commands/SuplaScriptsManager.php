@@ -25,6 +25,7 @@ class SuplaScriptsManager extends Application {
             new ClearRequestQuotaLogsCommand(),
             new OauthRefreshTokensCommand(),
             new ClearClientRegistrationCodesCommand(),
+            new ClearInvalidUserTokensCommand(),
         ]);
     }
 }

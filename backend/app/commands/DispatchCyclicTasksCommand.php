@@ -9,7 +9,6 @@ use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class DispatchCyclicTasksCommand extends Command {
-
     protected function configure() {
         $this
             ->setName('dispatch:all')
@@ -30,6 +29,7 @@ class DispatchCyclicTasksCommand extends Command {
         if ($minute % ($intervals['clearLogs'] ?? 60) == 0) {
             $this->getApplication()->run(new StringInput('clear:db-logs'), $output);
             $this->getApplication()->run(new StringInput('clear:request-quota-logs'), $output);
+            $this->getApplication()->run(new StringInput('clear:invalid-user-tokens'), $output);
         }
         $this->getApplication()->run(new StringInput('metrics:gauges'), $output);
     }
