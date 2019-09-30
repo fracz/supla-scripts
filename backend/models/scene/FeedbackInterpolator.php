@@ -48,7 +48,7 @@ class FeedbackInterpolator {
         } catch (\Throwable $e) {
             $feedback .= ' (ERROR: ' . $e->getMessage() . ')';
         }
-        return $feedback;
+        return trim($feedback);
     }
 
     public function replaceChannelState($channelId, $field, $varType, $config) {
