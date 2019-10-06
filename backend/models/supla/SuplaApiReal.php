@@ -19,7 +19,10 @@ class SuplaApiReal extends SuplaApi {
 
     public function getDevices(): array {
         if (!$this->devices) {
-            $response = $this->client->remoteRequest(null, '/api/v2.3.0/iodevices?include=channels,connected,state', 'GET', true);
+            $response = $this->client->remoteRequest(null, '/api/v2.4.0/iodevices?include=channels,connected,state', 'GET', true);
+            if ($response === false) {
+                $response = $this->client->remoteRequest(null, '/api/v2.3.0/iodevices?include=channels,connected,state', 'GET', true);
+            }
             $this->handleError($response);
             $this->devices = $response;
         }
