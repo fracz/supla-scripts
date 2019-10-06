@@ -37,6 +37,15 @@
                         </div>
                     </div>
                 </div>
+                <div class="jumbotron" ng-if="$ctrl.devices && $ctrl.devices.length ===0">
+                    <h1>Twoje konto SUPLA jest PUSTE!</h1>
+                    <h3>Dodaj jakieś urządzenie do Twojego konta.</h3>
+                    <h3>Wszystko co <span style="text-decoration: line-through">otwarte</span> pełne jest lepsze :-)</h3>
+                    <div class="text-center">
+                        <img src="https://fracz.github.io/supla-noc-informatyka-1.1/resources/images/040-openbetter.JPG" alt="OPEN-BETTER"
+                             style="max-width: 500px">
+                    </div>
+                </div>
             </div>
             <loader-dots ng-else></loader-dots>
         </div>

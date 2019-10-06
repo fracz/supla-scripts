@@ -136,7 +136,7 @@ class SuplaApiReal extends SuplaApi {
     }
 
     private function handleError($response) {
-        if (!$response) {
+        if (!$response && $response != []) {
             throw new SuplaApiException($this->client);
         }
     }
