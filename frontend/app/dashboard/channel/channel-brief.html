@@ -10,13 +10,17 @@
               ng-class="$ctrl.channel.state.connected ? 'label-success' : 'label-danger'">
             {{ $ctrl.channel.state.connected ? 'Połączony' : 'Rozłączony' }}
         </span>
-        <span class="label" ng-if="$ctrl.channel.state.on !== undefined"
+        <span class="label" ng-if="$ctrl.channel.state.on !== undefined && !$ctrl.channel.state.brightness && !$ctrl.channel.state.color_brightness"
               ng-class="$ctrl.channel.state.on ? 'label-success' : 'label-default'">
             {{ $ctrl.channel.state.on ? 'Włączony' : 'Wyłączony' }}
         </span>
         <span class="label label-success"
-              ng-if="$ctrl.channel.state.color_brightness || $ctrl.channel.state.brightness">
-            Włączony
+              ng-if="$ctrl.channel.state.brightness">
+            Włączony ({{ $ctrl.channel.state.brightness }}%)
+        </span>
+        <span class="label label-success"
+              ng-if="$ctrl.channel.state.color_brightness">
+            Kolor włączony ({{ $ctrl.channel.state.color_brightness }}%)
         </span>
         <span class="label" ng-if="$ctrl.channel.state.hi !== undefined"
               ng-class="$ctrl.channel.state.hi ? 'label-success' : 'label-default'">
