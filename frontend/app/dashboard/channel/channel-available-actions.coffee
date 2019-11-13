@@ -32,7 +32,7 @@ angular.module('supla-scripts').constant 'CHANNEL_AVAILABLE_ACTIONS', do ->
       {label: 'zasłoń', action: 'shut', isActive: -> no}
     ]
 
-  actions.LIGHTSWITCH = actions.STAIRCASETIMER = actions.POWERSWITCH
+  actions.LIGHTSWITCH = actions.STAIRCASETIMER = actions.DIMMER = actions.POWERSWITCH
   actions.CONTROLLINGTHEGARAGEDOOR = actions.CONTROLLINGTHEGATE
   actions.CONTROLLINGTHEDOORLOCK = actions.CONTROLLINGTHEGATEWAYLOCK
   actions.DIMMERANDRGBLIGHTING = actions.RGBLIGHTING
