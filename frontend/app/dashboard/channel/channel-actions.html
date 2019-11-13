@@ -18,8 +18,19 @@
         <ul class="dropdown-menu rgb-color-picker">
             <li ng-repeat="color in ['ffffff', 'ffff00', 'ff0000', 'ff8800', 'ff00ff', '0000ff', '00ffff', '00ff00']">
                 <a class="rgb-color-pick" ng-style="{'background-color': '#' + color}"
-                   ng-click="$ctrl.onAction({action: 'setRgb,' + color + ',100,100'})"></a>
+                   ng-click="$ctrl.updateRgb({color: color, color_brightness: $ctrl.channel.state.color_brightness || 100})"></a>
             </li>
         </ul>
+    </div>
+    <div ng-if="$ctrl.brightness !== undefined">
+        <label>Jasność</label>
+        <rzslider rz-slider-model="$ctrl.brightness"
+                  rz-slider-options="$ctrl.brightnessSliderOptions"></rzslider>
+    </div>
+    <div ng-if="$ctrl.colorBrightness !== undefined">
+        <label>Jasność koloru</label>
+        <rzslider rz-slider-model="$ctrl.colorBrightness"
+                  rz-slider-options="$ctrl.colorBrightnessSliderOptions"></rzslider>
+
     </div>
 </div>
