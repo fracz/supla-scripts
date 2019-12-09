@@ -5,6 +5,7 @@ namespace suplascripts\models;
 use Assert\Assert;
 use Assert\Assertion;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use suplascripts\models\notification\Notification;
 use suplascripts\models\scene\Scene;
 use suplascripts\models\supla\SuplaApi;
@@ -72,6 +73,10 @@ class User extends Model {
 
     public function clients(): HasMany {
         return $this->hasMany(Client::class, Client::USER_ID);
+    }
+
+    public function eventFeedClient(): HasOne {
+        return $this->hasOne(EventFeedClient::class, EventFeedClient::USER_ID);
     }
 
     public function setPassword($plainPassword) {

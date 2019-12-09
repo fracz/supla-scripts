@@ -6,6 +6,7 @@ use suplascripts\app\Application;
 use suplascripts\controllers\ChannelsController;
 use suplascripts\controllers\ClientsController;
 use suplascripts\controllers\DevicesController;
+use suplascripts\controllers\EventFeedController;
 use suplascripts\controllers\LogsController;
 use suplascripts\controllers\NotificationsController;
 use suplascripts\controllers\ScenesController;
@@ -27,6 +28,7 @@ $startTime = microtime(true);
 $app = new Application();
 $app->group('/api', function () use ($app) {
     $app->get('/info', SystemController::class . ':getInfo');
+    $app->post('/event-feed', EventFeedController::class . ':receiveEvent');
     $app->group('/tokens', function () use ($app) {
         $app->post('/new', TokensController::class . ':oauthAuthenticate');
         $app->patch('/personal', TokensController::class . ':checkPersonalAccessToken');
