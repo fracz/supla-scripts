@@ -27,6 +27,7 @@ class JwtAndBasicAuthorizationMiddleware {
             'logger' => new UserAndUrlAwareLogger(Logger::ERROR),
             'secure' => false, // do not force SSL!
             'passthrough' => [
+                '/api/event-feed',
                 '/api/info',
                 '/api/oauth',
                 '/api/scenes/public',

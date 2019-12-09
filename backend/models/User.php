@@ -75,6 +75,10 @@ class User extends Model {
         return $this->hasMany(Client::class, Client::USER_ID);
     }
 
+    public function auditEntries(): HasMany {
+        return $this->hasMany(AuditEntry::class, AuditEntry::USER_ID);
+    }
+
     public function eventFeedClient(): HasOne {
         return $this->hasOne(EventFeedClient::class, EventFeedClient::USER_ID);
     }
