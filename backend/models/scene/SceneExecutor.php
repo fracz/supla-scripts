@@ -61,6 +61,10 @@ class SceneExecutor {
     }
 
     public function executeWithFeedback(Scene $scene): string {
+        if ($scene->lastUsed && $scene->lastUsed->getTimestamp() >= time() - 3) {
+            $scene->log('Zignorowano zbyt szybkie wykonanie sceny.');
+            return '';
+        }
         $scene->lastUsed = new \DateTime();
         $scene->save();
         $feedbackInterpolator = new FeedbackInterpolator($scene);
