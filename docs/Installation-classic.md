@@ -80,7 +80,7 @@
 
 Or use update script:
 
-`./sudo update.sh (new version number)`
+`./sudo update.sh`
 
 Once before using the script, download it to your server:
 
