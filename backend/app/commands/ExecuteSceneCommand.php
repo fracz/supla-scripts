@@ -29,7 +29,7 @@ class ExecuteSceneCommand extends Command {
             if ($feedback) {
                 $output->writeln($feedback);
             } else {
-                $output->writeln('<success>OK</success>');
+                $output->writeln('<info>OK</info>');
             }
         } else {
             $output->writeln('<error>No such scene.</error>');
