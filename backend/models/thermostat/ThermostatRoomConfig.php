@@ -71,7 +71,7 @@ class ThermostatRoomConfig {
     }
 
     public function shouldHeat(float $currentTemperature) {
-        if ($this->hasHeatingConfiguration()) {
+        if ($this->hasHeatingConfiguration() && $this->isTemperatureValid($currentTemperature)) {
             if ($this->isHeating()) {
                 return $currentTemperature <= $this->getHeatTo();
             } else {
@@ -86,7 +86,7 @@ class ThermostatRoomConfig {
     }
 
     public function shouldCool(float $currentTemperature) {
-        if ($this->hasCoolingConfiguration()) {
+        if ($this->hasCoolingConfiguration() && $this->isTemperatureValid($currentTemperature)) {
             if ($this->isCooling()) {
                 return $currentTemperature >= $this->getCoolTo();
             } else {
@@ -98,6 +98,10 @@ class ThermostatRoomConfig {
 
     private function getCoolTo(): float {
         return $this->config['coolTo'];
+    }
+
+    private function isTemperatureValid(float $temperature) {
+        return $temperature > -100 && $temperature < 100;
     }
 
     public function getState(): array {
