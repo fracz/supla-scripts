@@ -25,6 +25,7 @@ use suplascripts\models\User;
  * @property User $user
  * @property string $intervals
  * @property \DateTime $nextExecutionTime
+ * @property array $notifications
  */
 class Scene extends Model implements BelongsToUser {
     const TABLE_NAME = 'scenes';
@@ -40,11 +41,13 @@ class Scene extends Model implements BelongsToUser {
     const LAST_USED = 'lastUsed';
     const USER_ID = 'userId';
     const INTERVALS = 'intervals';
+    const NOTIFICATIONS = 'notifications';
     const NEXT_EXECUTION_TIME = 'nextExecutionTime';
 
     protected $dates = [self::LAST_USED, self::NEXT_EXECUTION_TIME];
-    protected $fillable = [self::LABEL, self::ACTIONS, self::FEEDBACK, self::VOICE_TRIGGERS, self::CONDITION, self::TRIGGER, self::INTERVALS];
-    protected $jsonEncoded = [self::ACTIONS, self::VOICE_TRIGGERS, self::TRIGGER_CHANNELS];
+    protected $fillable = [self::LABEL, self::ACTIONS, self::FEEDBACK, self::VOICE_TRIGGERS, self::CONDITION, self::TRIGGER, self::INTERVALS,
+        self::NOTIFICATIONS];
+    protected $jsonEncoded = [self::ACTIONS, self::VOICE_TRIGGERS, self::TRIGGER_CHANNELS, self::NOTIFICATIONS];
 
     public function user(): BelongsTo {
         return $this->belongsTo(User::class, self::USER_ID);
@@ -119,6 +122,14 @@ class Scene extends Model implements BelongsToUser {
                 Assertion::false(true, 'Invalid interval: ' . $interval);
             }
             Assertion::greaterOrEqualThan($nextTimestamp, $time);
+        }
+        $notifications = $attributes[self::NOTIFICATIONS];
+        if ($notifications) {
+            Assertion::isArray($notifications);
+            foreach ($notifications as $notification) {
+                Assertion::notEmptyKey($notification, 'title', 'Every notification must have a title.');
+                Assertion::lessOrEqualThan(count($notification), 3, 'Invalid notification config.');
+            }
         }
     }
 

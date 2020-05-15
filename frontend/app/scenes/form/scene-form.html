@@ -102,9 +102,13 @@
             możliwych do
             użycia zmiennych.</p>
     </div>
-
     <div class="well fx-fade-up" ng-if="$ctrl.scene.feedback">
         <feedback-interpolation feedback="$ctrl.scene.feedback"></feedback-interpolation>
+    </div>
+
+    <div class="form-group">
+        <label>Powiadomienia Pushover</label>
+        <scene-notifications-field ng-model="$ctrl.scene.notifications"></scene-notifications-field>
     </div>
 
     <div class="form-group">

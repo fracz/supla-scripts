@@ -1,0 +1,12 @@
+<div class="form-group" ng-repeat="notification in $ctrl.notifications">
+    <scene-notification-form ng-model="notification" ng-change="$ctrl.onChange()"
+                             on-delete="$ctrl.notifications.splice($ctrl.notifications.indexOf(notification), 1)"></scene-notification-form>
+</div>
+<div>
+    <button class="btn btn-default" type="button" ng-click="$ctrl.notifications.push({})">
+        <fa name="plus" fw></fa>
+        Dodaj nowe powiadomienie
+    </button>
+</div>
+
+

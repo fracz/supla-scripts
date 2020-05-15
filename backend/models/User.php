@@ -6,6 +6,7 @@ use Assert\Assert;
 use Assert\Assertion;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use suplascripts\models\notification\Notification;
+use suplascripts\models\scene\NotificationSender;
 use suplascripts\models\scene\Scene;
 use suplascripts\models\supla\SuplaApi;
 use suplascripts\models\thermostat\Thermostat;
@@ -120,23 +121,22 @@ class User extends Model {
         }
     }
 
+    public function getApiCredentials(): array {
+        return json_decode($this->apiCredentials, true);
+    }
+
     public function setPushoverCredentials(array $pushoverCredentials) {
         if ($pushoverCredentials) {
             Assertion::keyExists($pushoverCredentials, 'user');
             Assertion::keyExists($pushoverCredentials, 'token');
             Assertion::count($pushoverCredentials, 2);
         }
-        $pushover = new \Pushover();
-        $pushover->setToken($pushoverCredentials['token']);
-        $pushover->setUser($pushoverCredentials['user']);
-        $pushover->setTitle('SUPLA Scripts');
-        $pushover->setMessage('Konfiguracja udana');
-        $pushover->send();
         $this->pushoverCredentials = $pushoverCredentials ? json_encode($pushoverCredentials) : null;
+        (new NotificationSender($this))->send(['title' => 'SUPLA Scripts', 'message' => 'Konfiguracja udana']);
     }
 
-    public function getApiCredentials(): array {
-        return json_decode($this->apiCredentials, true);
+    public function getPushoverCredentials() {
+        return $this->pushoverCredentials ? json_decode($this->pushoverCredentials, true) : null;
     }
 
     public function trackLastLogin() {

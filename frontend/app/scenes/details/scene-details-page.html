@@ -126,6 +126,25 @@
         <h5 ng-repeat="trigger in $ctrl.scene.voiceTriggers">{{ trigger }}</h5>
     </div>
 
+    <div ng-if="$ctrl.scene.notifications.length">
+        <h3>Powiadomienia pushover</h3>
+        <div class="row">
+            <div class="col-sm-4" ng-repeat="notification in $ctrl.scene.notifications">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <feedback-interpolation feedback="notification.title"></feedback-interpolation>
+                    </div>
+                    <div class="panel-body">
+                        <feedback-interpolation feedback="notification.message"></feedback-interpolation>
+                        <div class="well well-sm no-margin" ng-if="notification.devices">
+                            Do urządzeń: {{ notification.devices }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <h3>Logi</h3>
     <logs-table entity-id="$ctrl.scene.id" limit="30" on-new-logs="$ctrl.reloadScene()"></logs-table>
 </div>

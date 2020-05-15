@@ -1,0 +1,25 @@
+<div class="well">
+    <a ng-click="$ctrl.onDelete()" class="floating-delete-btn">
+        <fa name="times-circle-o"></fa>
+    </a>
+    <div class="row">
+        <div class="col-sm-6">
+            <label>Tytuł powiadomienia</label>
+            <feedback-field ng-model="$ctrl.notification.title" ng-change="$ctrl.onChange()"></feedback-field>
+            <label>Treść powiadomienia</label>
+            <feedback-field ng-model="$ctrl.notification.message" ng-change="$ctrl.onChange()"></feedback-field>
+            <label>Docelowe urządzenia</label>
+            <input type="text" class="form-control" ng-model="$ctrl.notification.devices" ng-change="$ctrl.onChange()">
+            <span class="help-block small">Nazwy urządzeń z Pushover, do których ma trafić powiadmienie (oddziel przecinkiem)</span>
+        </div>
+        <div class="col-sm-6">
+            <label>Podgląd powiadomienia</label>
+            <h3>
+                <feedback-interpolation feedback="$ctrl.notification.title"></feedback-interpolation>
+            </h3>
+            <feedback-interpolation feedback="$ctrl.notification.message"></feedback-interpolation>
+        </div>
+    </div>
+</div>
+
+

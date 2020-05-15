@@ -96,6 +96,14 @@ class SceneExecutor {
             $scene->log('Wykonanie');
         }
 
+        $notifications = $scene->notifications;
+        if (is_array($notifications) && count($notifications)) {
+            $notifier = new NotificationSender($scene);
+            foreach ($notifications as $notification) {
+                $notifier->send($notification);
+            }
+        }
+
         $feedback = $feedbackFromNestedScenes ?? '';
         if ($scene->feedback) {
             $feedback .= $feedback . PHP_EOL . $feedbackInterpolator->interpolate($scene->feedback);
