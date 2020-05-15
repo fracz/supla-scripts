@@ -132,7 +132,8 @@ class User extends Model {
             Assertion::count($pushoverCredentials, 2);
         }
         $this->pushoverCredentials = $pushoverCredentials ? json_encode($pushoverCredentials) : null;
-        (new NotificationSender($this))->send(['title' => 'SUPLA Scripts', 'message' => 'Konfiguracja udana']);
+        $sent = (new NotificationSender($this))->send(['title' => 'SUPLA Scripts', 'message' => 'Konfiguracja udana']);
+        Assertion::true($sent, 'Invalid Pushover credentials.');
     }
 
     public function getPushoverCredentials() {

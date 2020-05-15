@@ -4,6 +4,7 @@ namespace suplascripts\controllers;
 
 use Assert\Assertion;
 use suplascripts\controllers\exceptions\Http403Exception;
+use suplascripts\models\scene\NotificationSender;
 use suplascripts\models\User;
 
 class UsersController extends BaseController {
@@ -54,7 +55,11 @@ class UsersController extends BaseController {
             }
             if (isset($request['pushoverCredentials'])) {
                 $user->setPushoverCredentials($request['pushoverCredentials']);
-                $user->log('user', 'Zmieniono dane do SUPLA API');
+                $user->log('user', 'Zmieniono dane do Pushover');
+            }
+            if (isset($request['testPushover'])) {
+                $sent = (new NotificationSender($user))->send(['title' => 'SUPLA Scripts', 'message' => 'Test']);
+                return $this->response(null)->withStatus($sent ? 200 : 400);
             }
             if (isset($request['timezone'])) {
                 $user->log('user', 'Zmieniono strefę czasową');

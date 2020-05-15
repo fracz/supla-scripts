@@ -9,5 +9,10 @@ angular.module('supla-scripts').component 'pushoverCredentials',
 
       changePushoverCredentials: ->
         @user.patch(pushoverCredentials: @pushoverCredentials).then =>
-          Notifier.success('Dane Pushover zostały zmienione', 'Testowe powiadomienie zostało wysłane.')
+          Notifier.success('Dane Pushover zostały zapisane', 'Testowe powiadomienie zostało wysłane.')
           $state.go('account.details')
+
+      testPushover: ->
+        @user.patch(testPushover: yes)
+          .then(=> Notifier.success('Testowe powiadomienie wysłane'))
+          .catch(=> Notifier.error('Nie udało się wysłać powiadmienia.', 'Podaj poprawne dane autentykacji w Pushover i spróbuj ponownie.'))

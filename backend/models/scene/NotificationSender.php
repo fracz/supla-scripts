@@ -37,8 +37,10 @@ class NotificationSender {
                 $devices = array_map('trim', explode(',', $notification['devices']));
                 $pushover->setDevice(implode(',', $devices));
             }
-            $pushover->send();
             Application::getInstance()->metrics->increment('notification_send');
+            return $pushover->send();
+        } else {
+            return false;
         }
     }
 }
