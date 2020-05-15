@@ -1,6 +1,14 @@
 <div class="container">
     <h1 view-title>Powiadomienia</h1>
 
+    <div class="alert alert-danger">
+        <fa name="exclamation-triangle" fw class="pull-right" size="2"></fa>
+        <strong><big>Te powiadomienia niedługo przestaną działać.</big></strong>
+        Skonfiguruj swoje powiadomienia w oparciu o serwis <a ui-sref="account.pushover">Pushover</a>
+        i sceny, które teraz mogą na koniec wykonania wysłać powiadomienie. Wsparcie dla powiadomień w oparciu o Automat
+        wkrótce zostanie usunięte.
+    </div>
+
     <div class="row" ng-if="$ctrl.notifications">
         <div ng-if="$ctrl.notifications.length !== 0" class="col-sm-3">
             <div class="list-group">
