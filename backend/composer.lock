@@ -90,6 +90,7 @@
             ],
             "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
             "homepage": "https://github.com/container-interop/container-interop",
+            "abandoned": "psr/container",
             "time": "2017-02-14T19:40:03+00:00"
         },
         {
@@ -763,6 +764,7 @@
                 "cron",
                 "schedule"
             ],
+            "abandoned": "dragonmantank/cron-expression",
             "time": "2017-01-23T04:29:33+00:00"
         },
         {
@@ -1326,16 +1328,16 @@
         },
         {
             "name": "supla/api-client",
-            "version": "v2.1.2",
+            "version": "v2.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SUPLA/api-client-php.git",
-                "reference": "6bb968ddf00d4b3fd9adbc486cf52af54f1b013f"
+                "reference": "b5aa98f01d607f6cf4a297abff61a34b780fb3a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SUPLA/api-client-php/zipball/6bb968ddf00d4b3fd9adbc486cf52af54f1b013f",
-                "reference": "6bb968ddf00d4b3fd9adbc486cf52af54f1b013f",
+                "url": "https://api.github.com/repos/SUPLA/api-client-php/zipball/b5aa98f01d607f6cf4a297abff61a34b780fb3a7",
+                "reference": "b5aa98f01d607f6cf4a297abff61a34b780fb3a7",
                 "shasum": ""
             },
             "require": {
@@ -1351,7 +1353,7 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "time": "2018-12-27T23:01:58+00:00"
+            "time": "2020-05-15T11:44:37+00:00"
         },
         {
             "name": "symfony/config",

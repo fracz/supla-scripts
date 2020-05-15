@@ -32,7 +32,6 @@ class SuplaApiClientWithOAuthSupport extends SuplaApiClient {
         $this->serverParams = $server_params;
         if ($this->isOAuth()) {
             $server_params['server'] = $server_params['target_url'];
-            $server_params['server'] = preg_replace('#^https?://#', '', $server_params['server']);
             $server_params = array_merge(['clientId' => null, 'secret' => null, 'username' => null, 'password' => null], $server_params);
         }
         parent::__construct($server_params, $auto_logout, $debug, $sslVerify);

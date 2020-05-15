@@ -3,6 +3,9 @@
         <loader-dots-small></loader-dots-small>
     </span>
     <div ng-if="$ctrl.condition">
+        <div ng-if="$ctrl.displayUsedChannels && !$ctrl.fetching" class="help-block small">
+            Wyrażenie używa następujących kanałów: {{ $ctrl.usedChannelsIds|join:', ' }}.
+        </div>
         <div ng-if="$ctrl.fetching && !$ctrl.refreshing" class="alert alert-default">
             Sprawdzam warunek...
         </div>

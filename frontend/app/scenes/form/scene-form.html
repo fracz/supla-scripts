@@ -11,13 +11,21 @@
 
     <div class="form-group">
         <fa name="question-circle" class="pull-right pointer" ng-click="$ctrl.conditionHelp = !$ctrl.conditionHelp"></fa>
+        <label>Wyzwalacz sceny</label>
+        <span class="help-block small">Scena zostanie wykonana za każdym razem gdy zmiana stanu któregoś z użytych kanałów spowoduje zmianę wyniku wyrażenia.</span>
+        <feedback-field ng-model="$ctrl.scene.trigger" condition="true"></feedback-field>
+    </div>
+    <feedback-interpolation feedback="$ctrl.scene.trigger" condition="true" display-used-channels="true"></feedback-interpolation>
+
+    <div class="form-group">
+        <fa name="question-circle" class="pull-right pointer" ng-click="$ctrl.conditionHelp = !$ctrl.conditionHelp"></fa>
         <label>Warunek wykonania sceny</label>
+        <span class="help-block small">Scena zostanie wykonana tylko wtedy, gdy poniższe wyrażenie będzie spełnione.</span>
         <feedback-field ng-model="$ctrl.scene.condition" condition="true"></feedback-field>
     </div>
     <feedback-interpolation feedback="$ctrl.scene.condition" condition="true"></feedback-interpolation>
+
     <div class="well fx-fade-up" ng-if="$ctrl.conditionHelp">
-        <p>Warunek wykonania to stan kanału: jeśli coś jest włączone, jeśli coś jest zamknięte itp. Scena wykona się, gdy warunek jest
-            spełniony.</p>
         <p>Użyty język wyrażeń to <a href="https://twig.symfony.com">Twig</a>.</p>
         <p>Użyj znaku <code>{</code> by wyświetlić dostępne podpowiedzi.</p>
         <p>Zaglądnij na <a href="https://forum.supla.org/viewtopic.php?f=9&t=4131">forum</a> by zobaczyć co można tu wyprodukować. Kilka pomysłów

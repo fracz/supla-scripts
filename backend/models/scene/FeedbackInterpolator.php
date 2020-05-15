@@ -15,6 +15,11 @@ class FeedbackInterpolator {
     const URL_FETCH_TIMEOUT = 5;
     const NOT_CONNECTED_RESPONSE = ' DISCONNECTED ';
 
+    /** @var Twig_Environment */
+    private $twig;
+    /** @var User */
+    private $user;
+
     public function __construct($subject = null) {
         $this->twig = new Twig_Environment(new Twig_Loader_Array([]));
         $this->twig->addExtension(new FeedbackTwigExtension());
@@ -29,6 +34,13 @@ class FeedbackInterpolator {
         return self::wrapInUserTimezone($this->user, function () use ($noCache, $feedback) {
             return $this->doInterpolate($feedback, $noCache);
         });
+    }
+
+    public function getUsedChannelsIds($feedback): array {
+        preg_match_all('#state\(\s*(\d+)\s*\)#', $feedback, $matches);
+        $usedChannelsIds = array_unique(array_map('intval', $matches[1]));
+        sort($usedChannelsIds);
+        return $usedChannelsIds;
     }
 
     private function doInterpolate($feedback, $noCache = false) {

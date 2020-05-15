@@ -4,6 +4,7 @@ angular.module('supla-scripts').component 'feedbackInterpolation',
     feedback: '<'
     condition: '<'
     refreshing: '<'
+    displayUsedChannels: '<'
   controller: (Scenes, $scope, ScopeInterval, $timeout) ->
     new class
       fetching: no
@@ -21,7 +22,9 @@ angular.module('supla-scripts').component 'feedbackInterpolation',
             @pending = no
             @fetching = yes
             Scenes.one('feedback').patch(feedback: @feedback)
-              .then((feedback) => @interpolatedFeedback = feedback?.plain?() or feedback or '')
+              .then (feedback) =>
+                @interpolatedFeedback = feedback?.feedback or ''
+                @usedChannelsIds = feedback?.usedChannelsIds or []
               .then(() => @error = @interpolatedFeedback.indexOf('ERROR: ') > 0)
               .finally =>
                 @fetching = no

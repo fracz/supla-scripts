@@ -16,6 +16,9 @@ use suplascripts\models\User;
  * @property string[] $actions
  * @property string $feedback
  * @property string $condition
+ * @property string $trigger
+ * @property boolean $lastTriggerState
+ * @property boolean $triggerChannels
  * @property string[] $voiceTriggers
  * @property \DateTime $lastUsed
  * @property User $user
@@ -27,13 +30,16 @@ class Scene extends Model implements BelongsToUser {
     const ACTIONS = 'actions';
     const FEEDBACK = 'feedback';
     const CONDITION = 'condition';
+    const TRIGGER = 'trigger';
+    const LAST_TRIGGER_STATE = 'lastTriggerState';
+    const TRIGGER_CHANNELS = 'triggerChannels';
     const VOICE_TRIGGERS = 'voiceTriggers';
     const LAST_USED = 'lastUsed';
     const USER_ID = 'userId';
 
     protected $dates = [self::LAST_USED];
-    protected $fillable = [self::LABEL, self::ACTIONS, self::FEEDBACK, self::VOICE_TRIGGERS, self::CONDITION];
-    protected $jsonEncoded = [self::ACTIONS, self::VOICE_TRIGGERS];
+    protected $fillable = [self::LABEL, self::ACTIONS, self::FEEDBACK, self::VOICE_TRIGGERS, self::CONDITION, self::TRIGGER];
+    protected $jsonEncoded = [self::ACTIONS, self::VOICE_TRIGGERS, self::TRIGGER_CHANNELS];
 
     public function user(): BelongsTo {
         return $this->belongsTo(User::class, self::USER_ID);
@@ -64,6 +70,11 @@ class Scene extends Model implements BelongsToUser {
         $this->voiceTriggers = array_values(array_unique(array_map(function ($trigger) {
             return trim(mb_strtolower($trigger, 'UTF-8'));
         }, $this->voiceTriggers)));
+        if ($this->trigger) {
+            $feedbackInterpolator = new FeedbackInterpolator($this);
+            $this->lastTriggerState = boolval($feedbackInterpolator->interpolate($this->trigger, true));
+            $this->triggerChannels = $feedbackInterpolator->getUsedChannelsIds($this->trigger);
+        }
         return parent::save($options);
     }
 
