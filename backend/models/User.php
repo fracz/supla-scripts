@@ -23,6 +23,7 @@ use suplascripts\models\thermostat\Thermostat;
  * @property Scene[] $scenes
  * @property Client[] $clients
  * @property Notification[] $notifications
+ * @property string $webhookToken
  */
 class User extends Model {
 
@@ -36,12 +37,13 @@ class User extends Model {
     const LAST_VOICE_COMMAND = 'lastVoiceCommand';
     const TIMEZONE = 'timezone';
     const TOKEN_EXPIRATION_TIME = 'tokenExpirationTime';
+    const WEBHOOK_TOKEN = 'webhookToken';
 
     protected $dates = [self::LAST_LOGIN_DATE];
 
     protected $fillable = [];
-    protected $hidden = [self::PASSWORD, self::API_CREDENTIALS, self::PUSHOVER_CREDENTIALS, self::LAST_VOICE_COMMAND];
-    protected $encrypted = [self::API_CREDENTIALS, self::PUSHOVER_CREDENTIALS];
+    protected $hidden = [self::PASSWORD, self::API_CREDENTIALS, self::PUSHOVER_CREDENTIALS, self::LAST_VOICE_COMMAND, self::WEBHOOK_TOKEN];
+    protected $encrypted = [self::API_CREDENTIALS, self::PUSHOVER_CREDENTIALS, self::WEBHOOK_TOKEN];
 
     /** @return User|null */
     public static function findByUsername(string $username) {

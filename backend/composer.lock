@@ -1358,16 +1358,16 @@
         },
         {
             "name": "supla/api-client",
-            "version": "v2.1.3",
+            "version": "v2.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SUPLA/api-client-php.git",
-                "reference": "b5aa98f01d607f6cf4a297abff61a34b780fb3a7"
+                "reference": "a20c243a349deac55bc93d9aa0cd077ce8ec67d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SUPLA/api-client-php/zipball/b5aa98f01d607f6cf4a297abff61a34b780fb3a7",
-                "reference": "b5aa98f01d607f6cf4a297abff61a34b780fb3a7",
+                "url": "https://api.github.com/repos/SUPLA/api-client-php/zipball/a20c243a349deac55bc93d9aa0cd077ce8ec67d2",
+                "reference": "a20c243a349deac55bc93d9aa0cd077ce8ec67d2",
                 "shasum": ""
             },
             "require": {
@@ -1383,7 +1383,7 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "time": "2020-05-15T11:44:37+00:00"
+            "time": "2020-05-15T23:06:23+00:00"
         },
         {
             "name": "symfony/config",

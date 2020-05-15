@@ -4,6 +4,7 @@ namespace suplascripts\controllers;
 
 use Assert\Assert;
 use Assert\Assertion;
+use Ramsey\Uuid\Uuid;
 use Slim\Http\Response;
 use suplascripts\controllers\exceptions\ApiException;
 use suplascripts\models\Client;
@@ -98,6 +99,7 @@ class TokensController extends BaseController {
         $token = JwtToken::create()->user($user, $email)->rememberMe($body['rememberMe'] ?? false)->issue();
         $this->getApp()->getContainer()['currentUser'] = $user;
         $user->trackLastLogin();
+        $this->registerStateWebhook($user, $suplaApi);
         return $this->response(['token' => $token]);
     }
 
@@ -209,5 +211,21 @@ class TokensController extends BaseController {
         Assertion::count($missingScopes, 0, 'Your token is missing some scopes: ' . implode(', ', $missingScopes));
         $userData = $suplaApi->remoteRequest(null, '/api/users/current', 'GET', true);
         return array($suplaUrl, $userData);
+    }
+
+    private function registerStateWebhook(User $user, SuplaApiClientWithOAuthSupport $api) {
+        $user->webhookToken = sha1(Uuid::getFactory()->uuid4());
+        $webhookRequest = [
+            'url' => ($this->getApp()->getSetting('oauth')['scriptsUrl'] ?? 'https://supla.fracz.com') . '/api/state-webhook',
+            'authToken' => $user->webhookToken,
+            'refreshToken' => $user->webhookToken,
+            'expiresAt' => strtotime('+1 month'),
+            'functions' => ['POWERSWITCH', 'LIGHTSWITCH'],
+        ];
+        $hook = $api->remoteRequest($webhookRequest, '/api/integrations/state-webhook', 'PUT', true);
+        if (!$hook) {
+            $user->webhookToken = null;
+        }
+        $user->save();
     }
 }
