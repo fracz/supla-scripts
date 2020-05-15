@@ -1,0 +1,31 @@
+<div class="container">
+    <h1 view-title>Reakcje</h1>
+
+    <div class="row" ng-if="$ctrl.reactions">
+        <div ng-if="$ctrl.reactions.length !== 0" class="col-sm-3">
+            <div class="list-group">
+                <a class="list-group-item" ng-repeat="reaction in $ctrl.reactions"
+                   ui-sref="reaction.details({id: scene.id})" ui-sref-active="active">
+                    <div>{{ reaction }}</div>
+                    <!--                    <scene-caption class="text-muted small" scene="scene"></scene-caption>-->
+                </a>
+            </div>
+        </div>
+
+        <div class="col-sm-9 col-12-if-alone">
+            <div ng-if="'reactions' | isState">
+                <div class="well text-center" ng-if="!$ctrl.addingReaction">
+                    <button type="button" class="btn btn-lg btn-primary" ng-click="$ctrl.addingReaction = true">
+                        <fa name="plus" fw></fa>
+                        Nowa reakcja
+                    </button>
+                </div>
+                <!--                <scene-form ng-else on-submit="$ctrl.addNewScene(savedScene)" on-cancel="$ctrl.addingReaction = false"></scene-form>-->
+            </div>
+            <div ui-view></div>
+        </div>
+    </div>
+
+    <loader-dots ng-else></loader-dots>
+</div>
+

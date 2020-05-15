@@ -81,6 +81,10 @@ angular.module('supla-scripts')
     resolve:
       scene: (Scenes, $stateParams) -> Scenes.one($stateParams.id).get()
 
+  .state 'reactions',
+    url: '/reactions'
+    template: '<reactions-page></reactions-page>'
+
   .state 'notifications',
     url: '/notifications'
     template: '<notifications-page></notifications-page>'
