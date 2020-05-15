@@ -52,6 +52,10 @@ class UsersController extends BaseController {
                 $user->log('user', 'Zmieniono dane do SUPLA API');
                 $user->setApiCredentials($request['apiCredentials']);
             }
+            if (isset($request['pushoverCredentials'])) {
+                $user->setPushoverCredentials($request['pushoverCredentials']);
+                $user->log('user', 'Zmieniono dane do SUPLA API');
+            }
             if (isset($request['timezone'])) {
                 $user->log('user', 'Zmieniono strefę czasową');
                 $user->setTimezone(new \DateTimeZone($request['timezone']));

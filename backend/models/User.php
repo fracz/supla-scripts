@@ -30,6 +30,7 @@ class User extends Model {
     const SHORT_UNIQUE_ID = 'shortUniqueId';
     const PASSWORD = 'password';
     const API_CREDENTIALS = 'apiCredentials';
+    const PUSHOVER_CREDENTIALS = 'pushoverCredentials';
     const LAST_LOGIN_DATE = 'lastLoginDate';
     const LAST_VOICE_COMMAND = 'lastVoiceCommand';
     const TIMEZONE = 'timezone';
@@ -38,8 +39,8 @@ class User extends Model {
     protected $dates = [self::LAST_LOGIN_DATE];
 
     protected $fillable = [];
-    protected $hidden = [self::PASSWORD, self::API_CREDENTIALS, self::LAST_VOICE_COMMAND];
-    protected $encrypted = [self::API_CREDENTIALS];
+    protected $hidden = [self::PASSWORD, self::API_CREDENTIALS, self::PUSHOVER_CREDENTIALS, self::LAST_VOICE_COMMAND];
+    protected $encrypted = [self::API_CREDENTIALS, self::PUSHOVER_CREDENTIALS];
 
     /** @return User|null */
     public static function findByUsername(string $username) {
@@ -117,6 +118,21 @@ class User extends Model {
         } else {
             $this->tokenExpirationTime = null;
         }
+    }
+
+    public function setPushoverCredentials(array $pushoverCredentials) {
+        if ($pushoverCredentials) {
+            Assertion::keyExists($pushoverCredentials, 'user');
+            Assertion::keyExists($pushoverCredentials, 'token');
+            Assertion::count($pushoverCredentials, 2);
+        }
+        $pushover = new \Pushover();
+        $pushover->setToken($pushoverCredentials['token']);
+        $pushover->setUser($pushoverCredentials['user']);
+        $pushover->setTitle('SUPLA Scripts');
+        $pushover->setMessage('Konfiguracja udana');
+        $pushover->send();
+        $this->pushoverCredentials = $pushoverCredentials ? json_encode($pushoverCredentials) : null;
     }
 
     public function getApiCredentials(): array {

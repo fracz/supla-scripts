@@ -110,6 +110,11 @@ angular.module('supla-scripts')
 #    template: '<user-api-credentials user="user"></user-api-credentials>'
 #    controller: ($scope, user) -> $scope.user = user
 
+  .state 'account.pushover',
+    url: '/pushover'
+    template: '<pushover-credentials user="user"></pushover-credentials>'
+    controller: ($scope, user) -> $scope.user = user
+
   .state 'account.timezone',
     url: '/timezone'
     template: '<user-timezone user="user"></user-timezone>'

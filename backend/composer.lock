@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7c7cd5d37e1b45d28d1e591105fc9c80",
+    "content-hash": "e8f08aa86c2cb946ce6c7302924e7ebc",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -910,6 +910,36 @@
                 "random"
             ],
             "time": "2017-03-13T16:27:32+00:00"
+        },
+        {
+            "name": "php-pushover/php-pushover",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cschalenborgh/php-pushover.git",
+                "reference": "b2d060efacf48e4c6821427691b19db0315ccedd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cschalenborgh/php-pushover/zipball/b2d060efacf48e4c6821427691b19db0315ccedd",
+                "reference": "b2d060efacf48e4c6821427691b19db0315ccedd",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "Pushover.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Chris Schalenborgh",
+                    "email": "chris@schalenborgh.be"
+                }
+            ],
+            "description": "PHP class for the Pushover.net project",
+            "time": "2019-09-26T19:38:11+00:00"
         },
         {
             "name": "pimple/pimple",
