@@ -44,7 +44,15 @@
     </div>
 
     <div ng-if="$ctrl.scene.condition">
-        <h3>Warunek</h3>
+        <h3>Wyzwalanie w oparciu o stan kanałów</h3>
+        <div class="form-group">
+            <code>{{ $ctrl.scene.trigger }}</code>
+        </div>
+        <feedback-interpolation feedback="$ctrl.scene.trigger" condition="true" refreshing="true"></feedback-interpolation>
+    </div>
+
+    <div ng-if="$ctrl.scene.condition">
+        <h3>Warunek wykonania</h3>
         <div class="form-group">
             <code>{{ $ctrl.scene.condition }}</code>
         </div>
