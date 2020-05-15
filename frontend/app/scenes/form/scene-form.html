@@ -9,10 +9,29 @@
         <input type="text" class="form-control" name="label" required ng-model="$ctrl.scene.label">
     </div>
 
+    <div class="form-group" show-errors>
+        <fa name="question-circle" class="pull-right pointer" ng-click="$ctrl.intervalHelp = !$ctrl.intervalHelp"></fa>
+        <label>Wyzwalacz sceny w oparciu o czas</label>
+        <input type="text" class="form-control" ng-model="$ctrl.scene.intervals" name="interval">
+        <div class="help-block fx-fade-up" ng-if="$ctrl.intervalHelp">
+            W notacji <a href="https://pl.wikipedia.org/wiki/Crontab">crontab</a> podaj kiedy scena ma wykonywać się automatycznie.
+            Wiele specyfikacji oddziel znakiem <code>|</code>. Serwis <a href="https://crontab.guru">crontab.guru</a> może być pomocny.
+            Przykłady:
+            <ul>
+                <li><code>* * * * *</code> - co minutę</li>
+                <li><code>*/15 * * * *</code> - co 15 minut</li>
+                <li><code>30 6 * * * | 0 15 * * *</code> - o 6:30 i o 15:00</li>
+                <li><code>44 7 * * 6,7</code> - o 7:44 w soboty i niedziele</li>
+                <li><code>13 * 20 5 *</code> - co godzinę w 13 minucie, tylko 20 maja</li>
+                <li><code>*/15 22-23,0-6 * * *</code> - co 15 minut od 22 do 6 rano</li>
+            </ul>
+        </div>
+    </div>
+
     <div class="form-group">
         <fa name="question-circle" class="pull-right pointer" ng-click="$ctrl.conditionHelp = !$ctrl.conditionHelp"></fa>
-        <label>Wyzwalacz sceny</label>
-        <span class="help-block small">Scena zostanie wykonana za każdym razem gdy zmiana stanu któregoś z użytych kanałów spowoduje zmianę wyniku wyrażenia.</span>
+        <label>Wyzwalacz sceny w oparciu o stan kanałów</label>
+        <span class="help-block small">Scena zostanie wykonana za każdym razem gdy zmiana stanu któregoś z użytych w wyrażeniu kanałów spowoduje zmianę jego wyniku.</span>
         <feedback-field ng-model="$ctrl.scene.trigger" condition="true"></feedback-field>
     </div>
     <feedback-interpolation feedback="$ctrl.scene.trigger" condition="true" display-used-channels="true"></feedback-interpolation>

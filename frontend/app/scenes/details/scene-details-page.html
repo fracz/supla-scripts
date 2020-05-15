@@ -36,6 +36,13 @@
         Wykonaj scenę
     </button>
 
+    <div ng-if="$ctrl.scene.intervals">
+        <h3>Wyzwalanie czasowe</h3>
+        <div class="form-group">
+            Najbliższe: {{ $ctrl.scene.nextExecutionTime | date:'short' }}
+        </div>
+    </div>
+
     <div ng-if="$ctrl.scene.condition">
         <h3>Warunek</h3>
         <div class="form-group">

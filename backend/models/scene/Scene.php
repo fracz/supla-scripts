@@ -3,6 +3,7 @@
 namespace suplascripts\models\scene;
 
 use Assert\Assertion;
+use Cron\CronExpression;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Ramsey\Uuid\Uuid;
@@ -22,6 +23,8 @@ use suplascripts\models\User;
  * @property string[] $voiceTriggers
  * @property \DateTime $lastUsed
  * @property User $user
+ * @property string $intervals
+ * @property \DateTime $nextExecutionTime
  */
 class Scene extends Model implements BelongsToUser {
     const TABLE_NAME = 'scenes';
@@ -36,9 +39,11 @@ class Scene extends Model implements BelongsToUser {
     const VOICE_TRIGGERS = 'voiceTriggers';
     const LAST_USED = 'lastUsed';
     const USER_ID = 'userId';
+    const INTERVALS = 'intervals';
+    const NEXT_EXECUTION_TIME = 'nextExecutionTime';
 
-    protected $dates = [self::LAST_USED];
-    protected $fillable = [self::LABEL, self::ACTIONS, self::FEEDBACK, self::VOICE_TRIGGERS, self::CONDITION, self::TRIGGER];
+    protected $dates = [self::LAST_USED, self::NEXT_EXECUTION_TIME];
+    protected $fillable = [self::LABEL, self::ACTIONS, self::FEEDBACK, self::VOICE_TRIGGERS, self::CONDITION, self::TRIGGER, self::INTERVALS];
     protected $jsonEncoded = [self::ACTIONS, self::VOICE_TRIGGERS, self::TRIGGER_CHANNELS];
 
     public function user(): BelongsTo {
@@ -74,6 +79,13 @@ class Scene extends Model implements BelongsToUser {
             $feedbackInterpolator = new FeedbackInterpolator($this);
             $this->lastTriggerState = boolval($feedbackInterpolator->interpolate($this->trigger, true));
             $this->triggerChannels = $feedbackInterpolator->getUsedChannelsIds($this->trigger);
+        } else {
+            $this->triggerChannels = [];
+        }
+        if ($this->getIntervals()) {
+            $this->updateNextExecutionTime();
+        } else {
+            $this->nextExecutionTime = null;
         }
         return parent::save($options);
     }
@@ -95,5 +107,39 @@ class Scene extends Model implements BelongsToUser {
             Assertion::allNumeric(array_keys($actions));
             Assertion::allGreaterOrEqualThan(array_keys($actions), 0);
         }
+        $intervals = array_filter($this->getIntervals($attributes[self::INTERVALS]));
+        Assertion::notEmpty($intervals);
+        foreach ($intervals as $interval) {
+            Assertion::true(CronExpression::isValidExpression($interval), 'Invalid interval: ' . $interval);
+            $cron = CronExpression::factory($interval);
+            $time = time();
+            try {
+                $nextTimestamp = $cron->getNextRunDate(new \DateTime('now', $this->user->getTimezone()))->getTimestamp();
+            } catch (\RuntimeException $e) {
+                Assertion::false(true, 'Invalid interval: ' . $interval);
+            }
+            Assertion::greaterOrEqualThan($nextTimestamp, $time);
+        }
+    }
+
+    private function getIntervals(string $fromIntervals = null) {
+        $intervals = $fromIntervals ?: $this->intervals;
+        return array_map('trim', explode('|', $intervals));
+    }
+
+    public function calculateNextExecutionTime(): int {
+        if (preg_match('#\s*\*/?(\d+)? \* \* \* \* ?\*?\s*#', $this->intervals, $matches)) {
+            return time() + max(1, ($matches[1] ?? 1)) * 60;
+        } else {
+            $nextRunDates = array_map(function ($cronExpression) {
+                $cron = CronExpression::factory($cronExpression);
+                return $cron->getNextRunDate(new \DateTime('now', $this->user->getTimezone()))->getTimestamp();
+            }, $this->getIntervals());
+            return min($nextRunDates);
+        }
+    }
+
+    public function updateNextExecutionTime() {
+        $this->nextExecutionTime = new \DateTime('@' . $this->calculateNextExecutionTime());
     }
 }

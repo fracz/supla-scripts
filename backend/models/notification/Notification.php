@@ -75,7 +75,7 @@ class Notification extends Model implements BelongsToUser {
         return parent::save($options);
     }
 
-    public function getIntervals(string $fromIntervals = null) {
+    private function getIntervals(string $fromIntervals = null) {
         $intervals = $fromIntervals ?: $this->intervals;
         return array_map('trim', explode('|', $intervals));
     }
