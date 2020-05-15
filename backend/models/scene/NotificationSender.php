@@ -2,6 +2,7 @@
 
 namespace suplascripts\models\scene;
 
+use suplascripts\app\Application;
 use suplascripts\models\BelongsToUser;
 use suplascripts\models\User;
 
@@ -37,6 +38,7 @@ class NotificationSender {
                 $pushover->setDevice(implode(',', $devices));
             }
             $pushover->send();
+            Application::getInstance()->metrics->increment('notification_send');
         }
     }
 }

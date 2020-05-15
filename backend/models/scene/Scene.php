@@ -140,14 +140,15 @@ class Scene extends Model implements BelongsToUser {
 
     public function calculateNextExecutionTime(): int {
         if (preg_match('#\s*\*/?(\d+)? \* \* \* \* ?\*?\s*#', $this->intervals, $matches)) {
-            return time() + max(1, ($matches[1] ?? 1)) * 60;
+            $nextExecutionTime = time() + max(1, ($matches[1] ?? 1)) * 60;
         } else {
             $nextRunDates = array_map(function ($cronExpression) {
                 $cron = CronExpression::factory($cronExpression);
                 return $cron->getNextRunDate(new \DateTime('now', $this->user->getTimezone()))->getTimestamp();
             }, $this->getIntervals());
-            return min($nextRunDates);
+            $nextExecutionTime = min($nextRunDates);
         }
+        return max($nextExecutionTime, time() + 600);
     }
 
     public function updateNextExecutionTime() {

@@ -27,6 +27,7 @@ class SuplaScriptsManager extends Application {
             new ClearClientRegistrationCodesCommand(),
             new ClearInvalidUserTokensCommand(),
             new ExecuteSceneCommand(),
+            new ExecuteIntervalScenesCommand(),
         ]);
     }
 }

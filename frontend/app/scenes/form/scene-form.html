@@ -14,9 +14,18 @@
         <label>Wyzwalacz sceny w oparciu o czas</label>
         <input type="text" class="form-control" ng-model="$ctrl.scene.intervals" name="interval">
         <div class="help-block fx-fade-up" ng-if="$ctrl.intervalHelp">
-            W notacji <a href="https://pl.wikipedia.org/wiki/Crontab">crontab</a> podaj kiedy scena ma wykonywać się automatycznie.
-            Wiele specyfikacji oddziel znakiem <code>|</code>. Serwis <a href="https://crontab.guru">crontab.guru</a> może być pomocny.
-            Przykłady:
+            <p>
+                Scena może być wykonywania <strong>najczęściej co 10 minut</strong>. Nawet jeśli podasz wyrażenie które będzie oznaczać
+                krótsze interwały, scena nie wykona się częściej. Ponadto, wyliczona godzina <strong>nie jest dokładną godziną wykonania
+                sceny</strong>.
+                Jej wykonanie nastąpi do maksymalnie kilku minut po wyznaczonym czasie.
+            </p>
+            <p>
+                Specyfikację czasu podaj w notacji <a href="https://pl.wikipedia.org/wiki/Crontab">crontab</a> podaj kiedy scena ma wykonywać się
+                automatycznie.
+                Wiele specyfikacji oddziel znakiem <code>|</code>. Serwis <a href="https://crontab.guru">crontab.guru</a> może być pomocny.
+                Przykłady:
+            </p>
             <ul>
                 <li><code>* * * * *</code> - co minutę</li>
                 <li><code>*/15 * * * *</code> - co 15 minut</li>
