@@ -99,7 +99,7 @@ class TokensController extends BaseController {
         $token = JwtToken::create()->user($user, $email)->rememberMe($body['rememberMe'] ?? false)->issue();
         $this->getApp()->getContainer()['currentUser'] = $user;
         $user->trackLastLogin();
-        $this->registerStateWebhook($user, $suplaApi);
+//        $this->registerStateWebhook($user, $suplaApi);
         return $this->response(['token' => $token]);
     }
 

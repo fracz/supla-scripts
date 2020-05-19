@@ -37,6 +37,7 @@
         </div>
     </div>
 
+    <!--
     <div class="form-group">
         <fa name="question-circle" class="pull-right pointer" ng-click="$ctrl.conditionHelp = !$ctrl.conditionHelp"></fa>
         <label>Wyzwalacz sceny w oparciu o stan kanałów</label>
@@ -44,11 +45,12 @@
         <feedback-field ng-model="$ctrl.scene.trigger" condition="true"></feedback-field>
     </div>
     <feedback-interpolation feedback="$ctrl.scene.trigger" condition="true" display-used-channels="true"></feedback-interpolation>
+    -->
 
     <div class="form-group">
         <fa name="question-circle" class="pull-right pointer" ng-click="$ctrl.conditionHelp = !$ctrl.conditionHelp"></fa>
         <label>Warunek wykonania sceny</label>
-        <span class="help-block small">Scena zostanie wykonana tylko wtedy, gdy poniższe wyrażenie będzie spełnione.</span>
+        <span class="help-block small">Przy wykonaniu sceny poniższy warunek musi być spełniony, by kontyunuować jej wykonanie.</span>
         <feedback-field ng-model="$ctrl.scene.condition" condition="true"></feedback-field>
     </div>
     <feedback-interpolation feedback="$ctrl.scene.condition" condition="true"></feedback-interpolation>
