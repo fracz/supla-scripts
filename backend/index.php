@@ -9,6 +9,7 @@ use suplascripts\controllers\DevicesController;
 use suplascripts\controllers\LogsController;
 use suplascripts\controllers\NotificationsController;
 use suplascripts\controllers\ScenesController;
+use suplascripts\controllers\StateLogsController;
 use suplascripts\controllers\StateWebhookController;
 use suplascripts\controllers\SystemController;
 use suplascripts\controllers\thermostat\ThermostatProfilesController;
@@ -113,6 +114,11 @@ $app->group('/api', function () use ($app) {
 
     $app->group('/state-webhook', function () use ($app) {
         $app->post('', StateWebhookController::class . ':post');
+        $app->put('', StateWebhookController::class . ':put');
+    });
+
+    $app->group('/state-logs', function () use ($app) {
+        $app->get('', StateLogsController::class . ':getLatest');
     });
 });
 $app->run();

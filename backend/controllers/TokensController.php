@@ -217,7 +217,7 @@ class TokensController extends BaseController {
         $user->webhookToken = sha1(Uuid::getFactory()->uuid4());
         $webhookRequest = [
             'url' => ($this->getApp()->getSetting('oauth')['scriptsUrl'] ?? 'https://supla.fracz.com') . '/api/state-webhook',
-            'authToken' => $user->webhookToken,
+            'authToken' => sha1($user->webhookToken),
             'refreshToken' => $user->webhookToken,
             'expiresAt' => strtotime('+1 month'),
             'functions' => ['POWERSWITCH', 'LIGHTSWITCH'],

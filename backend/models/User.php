@@ -5,6 +5,7 @@ namespace suplascripts\models;
 use Assert\Assert;
 use Assert\Assertion;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use suplascripts\models\log\StateLogEntry;
 use suplascripts\models\notification\Notification;
 use suplascripts\models\scene\NotificationSender;
 use suplascripts\models\scene\Scene;
@@ -72,6 +73,10 @@ class User extends Model {
 
     public function notifications(): HasMany {
         return $this->hasMany(Notification::class, Notification::USER_ID);
+    }
+
+    public function stateLogs(): HasMany {
+        return $this->hasMany(StateLogEntry::class, StateLogEntry::USER_ID);
     }
 
     public function clients(): HasMany {
