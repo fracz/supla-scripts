@@ -1,2 +1,3 @@
 * * * * * root su - www-data -s /bin/bash -c "/usr/local/bin/php /var/www/supla-scripts dispatch:all" > /proc/1/fd/1 2>/proc/1/fd/2
 * * * * * root su - www-data -s /bin/bash -c "/usr/local/bin/php /var/www/supla-scripts dispatch:time-scenes" > /proc/1/fd/1 2>/proc/1/fd/2
+* * * * * root su - www-data -s /bin/bash -c "/usr/local/bin/php /var/www/supla-scripts scene:dispatch-interval-scenes" > /proc/1/fd/1 2>/proc/1/fd/2
