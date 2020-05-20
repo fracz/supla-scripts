@@ -140,7 +140,7 @@ angular.module('supla-scripts')
     template: '<logs-view></logs-view>'
 
   .state 'stateLogs',
-    url: '/state-logs'
+    url: '/state-logs?channelId'
     template: '<state-logs-view></state-logs-view>'
 
   .state 'clients',

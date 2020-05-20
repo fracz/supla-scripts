@@ -43,7 +43,7 @@
         </div>
     </div>
 
-    <div ng-if="$ctrl.scene.condition">
+    <div ng-if="$ctrl.scene.trigger">
         <h3>Wyzwalanie w oparciu o stan kanałów</h3>
         <div class="form-group">
             <code>{{ $ctrl.scene.trigger }}</code>
@@ -59,7 +59,7 @@
         <feedback-interpolation feedback="$ctrl.scene.condition" condition="true" refreshing="true"></feedback-interpolation>
     </div>
 
-    <div ng-if="$ctrl.scene.actions">
+    <div ng-if="$ctrl.scene.actions.length">
         <h3>Akcje</h3>
         <time-scene-selector ng-model="$ctrl.scene.actions" disabled="true"></time-scene-selector>
     </div>

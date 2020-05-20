@@ -2,7 +2,12 @@
     <h1 view-title>Historia kanałów</h1>
     <div class="row">
         <div class="col-xs-12">
-
+            <div class="form-group">
+                <channel-selector ng-model="$ctrl.channelId"
+                                  ng-change="$ctrl.showLogsForChannel()"
+                                  functions="$ctrl.LOGGABLE_FUNCTIONS">
+                </channel-selector>
+            </div>
 
             <loader-dots ng-if="!$ctrl.stateLogs"></loader-dots>
             <table ng-else class="table table-striped table-state-logs">
@@ -20,7 +25,7 @@
                     <td>
                         <channel-brief class="state-log-channel-brief" channel="log.channelLog"></channel-brief>
                     </td>
-                <tfoot>
+                <tfoot ng-if="$ctrl.showMore">
                 <tr>
                     <th colspan="2" class="text-center">
                         <a ng-click="$ctrl.more()">
