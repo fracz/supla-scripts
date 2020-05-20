@@ -13,7 +13,11 @@ use suplascripts\models\scene\SceneExecutor;
 class ScenesController extends BaseController {
     public function postAction() {
         $this->ensureAuthenticated();
-        Assertion::lessOrEqualThan(count($this->getCurrentUser()->scenes), $this->getCurrentUser()->sceneLimit, 'You have reached your scenes limit.');
+        Assertion::lessOrEqualThan(
+            count($this->getCurrentUser()->scenes),
+            $this->getCurrentUser()->sceneLimit,
+            'You have reached your scenes limit.'
+        );
         $parsedBody = $this->request()->getParsedBody();
         /** @var Scene $scene */
         $scene = $this->getCurrentUser()->scenes()->create($parsedBody);
