@@ -7,21 +7,17 @@ angular.module('supla-scripts').component 'stateLogsView',
           @channels = {}
           for device in @devices
             @channels[c.id] = c for c in device.channels
-          @stateLogs = {}
-          @stateGroups = []
+          @stateLogs = []
           @fetchLogs()
 
+      more: =>
+        @fetchLogs(moment(@stateLogs[@stateLogs.length - 1].createdAt).format())
+
       fetchLogs: (before) =>
-        StateLogs.getList().then (stateLogs) =>
+        StateLogs.getList({before, limit: 50}).then (stateLogs) =>
           for log in stateLogs
             log.createdAt = moment(log.createdAt).toDate()
-            group = @logGroup(log)
-            if not @stateLogs[group]
-              @stateGroups.push(group)
-              @stateGroups.sort()
-              @stateLogs[group] = []
-            @stateLogs[group].push(log)
-
-      logGroup: (log) ->
-        moment(log.createdAt).format('MM.YYYY.MM.DD.HH')
+            log.channelLog = angular.copy(@channels[log.channelId])
+            log.channelLog.state = log.state
+            @stateLogs.push(log)
 

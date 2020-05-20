@@ -1,204 +1,35 @@
-<view-title>Logi</view-title>
 <div class="container">
+    <h1 view-title>Historia kanałów</h1>
     <div class="row">
         <div class="col-xs-12">
 
-            <div class="container">
-                <div class="timeline">
-                    <div class="timeline-month">
-                        19.05.2020
-                    </div>
-                    <div class="timeline-section">
-                        <div class="timeline-date">
-                            19.05.2020, 23:00
-                        </div>
-                        <div class="timeline-section-entries">
-                            <div class="timeline-box" ng-repeat="channel in $ctrl.devices[1].channels">
-                                <div class="box-content">
-                                    <channel-brief channel="channel"></channel-brief>
-                                </div>
-                                <div class="box-footer">23:12:33</div>
-                            </div>
-                        </div>
 
-                    </div>
-
-                    <div class="timeline-section">
-                        <div class="timeline-date">
-                            19.05.2020, 22:00
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="timeline-box">
-                                    <div class="box-title">
-                                        <i class="fa fa-pencil text-info" aria-hidden="true"></i> Job Edited
-                                    </div>
-                                    <div class="box-content">
-                                        <a class="btn btn-xs btn-default pull-right">Details</a>
-                                        <div class="box-item"><strong>Extraction Type</strong>: Carpet Heavy</div>
-                                        <div class="box-item"><strong>Water Category</strong>: 4</div>
-                                        <div class="box-item"><strong>No. Of Tech</strong>: 6</div>
-                                        <div class="box-item"><strong>Est. Complation</strong>: 09/01/2018</div>
-                                    </div>
-                                    <div class="box-footer">- Carol</div>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="timeline-box">
-                                    <div class="box-title">
-                                        <i class="fa fa-tasks text-primary" aria-hidden="true"></i> New Job To Do
-                                    </div>
-                                    <div class="box-content">
-                                        <a class="btn btn-xs btn-default pull-right">Details</a>
-                                        <div class="box-item"><strong>Employee</strong>: Sam</div>
-                                        <div class="box-item"><strong>To Do</strong>: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
-                                            nisi nulla, viverra quis felis sit amet, lacinia feugiat odio. Aliquam sed orci elementum, volutpat dolor
-                                            eget, venenatis nunc
-                                        </div>
-                                    </div>
-                                    <div class="box-footer">- Marlyn</div>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="timeline-box">
-                                    <div class="box-title">
-                                        <i class="fa fa-tasks text-primary" aria-hidden="true"></i> New Job To Do
-                                    </div>
-                                    <div class="box-content">
-                                        <a class="btn btn-xs btn-default pull-right">Details</a>
-                                        <div class="box-item"><strong>Employee</strong>: Jones</div>
-                                        <div class="box-item"><strong>To Do</strong>: Proin sit amet aliquet neque, eget sagittis nunc. Proin
-                                            convallis lectus quis volutpat pharetra. Donec quis ultrices eros. Ut eget mi faucibus.
-                                        </div>
-                                    </div>
-                                    <div class="box-footer">- Marlyn</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="timeline-box">
-                                    <div class="box-title">
-                                        <i class="fa fa-thermometer-half text-warning" aria-hidden="true"></i> Pschrometrics
-                                    </div>
-                                    <div class="box-content">
-                                        <div class="box-item"><strong>Temp.</strong>: 23 <sup>o</sup>C</div>
-                                        <div class="box-item"><strong>Rh </strong>: 42</div>
-                                        <div class="box-item"><strong>Comments</strong>: Integer nec placerat ipsum. Aliquam id ligula suscipit,
-                                            ornare dui nec, laoreet tortor.
-                                        </div>
-                                    </div>
-                                    <div class="box-footer">- Jones</div>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-4">
-                                <div class="timeline-box">
-                                    <div class="box-title">
-                                        <i class="fa fa-building-o text-default" aria-hidden="true"></i> Room Created
-                                    </div>
-                                    <div class="box-content">
-                                        <div class="box-item"><strong>Name</strong>: Kitchen</div>
-                                        <div class="box-item"><strong>Floor Level </strong>: 2</div>
-                                        <div class="box-item"><strong>Dimensions</strong>: 26 x 11 x 8</div>
-                                    </div>
-                                    <div class="box-footer">- Sam</div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <div class="timeline-section">
-                        <div class="timeline-date">
-                            23, Thursday
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="timeline-box">
-                                    <div class="box-title">
-                                        <i class="fa fa-tasks text-success" aria-hidden="true"></i> Job To Do Completed
-                                    </div>
-                                    <div class="box-content">
-                                        <a class="btn btn-xs btn-default pull-right">Details</a>
-                                        <div class="box-item"><strong>Employee</strong>: Sam</div>
-                                        <div class="box-item"><strong>Employee Response</strong>: Lorem ipsum dolor sit amet, consectetur adipiscing
-                                            elit. Nullam nisi nulla, viverra quis felis sit amet, lacinia feugiat odio. Aliquam sed orci elementum,
-                                            volutpat dolor eget, venenatis nunc
-                                        </div>
-                                    </div>
-                                    <div class="box-footer">- Carol</div>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="timeline-box">
-                                    <div class="box-title">
-                                        <i class="fa fa-cogs text-info" aria-hidden="true"></i> Equipment Entry
-                                    </div>
-                                    <div class="box-content">
-                                        <a class="btn btn-xs btn-default pull-right">Details</a>
-                                        <div class="box-item"><strong>ID</strong>: TW-3232</div>
-                                        <div class="box-item"><strong>Name</strong>: HEPA 600</div>
-                                        <div class="box-item"><strong>Date In</strong>: 08/22/2018</div>
-                                    </div>
-                                    <div class="box-footer">- Jones</div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <div class="timeline-month">
-                        August, 2018
-                        <span>3 Entries</span>
-                    </div>
-
-                    <div class="timeline-section">
-                        <div class="timeline-date">
-                            23, Thursday
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="timeline-box">
-                                    <div class="box-title">
-                                        <i class="fa fa-tasks text-success" aria-hidden="true"></i> Job To Do Completed
-                                    </div>
-                                    <div class="box-content">
-                                        <a class="btn btn-xs btn-default pull-right">Details</a>
-                                        <div class="box-item"><strong>Employee</strong>: Sam</div>
-                                        <div class="box-item"><strong>Employee Response</strong>: Lorem ipsum dolor sit amet, consectetur adipiscing
-                                            elit. Nullam nisi nulla, viverra quis felis sit amet, lacinia feugiat odio. Aliquam sed orci elementum,
-                                            volutpat dolor eget, venenatis nunc
-                                        </div>
-                                    </div>
-                                    <div class="box-footer">- Carol</div>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="timeline-box">
-                                    <div class="box-title">
-                                        <i class="fa fa-cogs text-info" aria-hidden="true"></i> Equipment Entry
-                                    </div>
-                                    <div class="box-content">
-                                        <a class="btn btn-xs btn-default pull-right">Details</a>
-                                        <div class="box-item"><strong>ID</strong>: TW-3232</div>
-                                        <div class="box-item"><strong>Name</strong>: HEPA 600</div>
-                                        <div class="box-item"><strong>Date In</strong>: 08/22/2018</div>
-                                    </div>
-                                    <div class="box-footer">- Jones</div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-
-
+            <loader-dots ng-if="!$ctrl.stateLogs"></loader-dots>
+            <table ng-else class="table table-striped table-state-logs">
+                <thead>
+                <tr>
+                    <th>Kiedy?</th>
+                    <th>Zmiana stanu</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="log in $ctrl.stateLogs">
+                    <td>
+                        <date-with-tooltip date="log.createdAt"></date-with-tooltip>
+                    </td>
+                    <td>
+                        <channel-brief class="state-log-channel-brief" channel="log.channelLog"></channel-brief>
+                    </td>
+                <tfoot>
+                <tr>
+                    <th colspan="2" class="text-center">
+                        <a ng-click="$ctrl.more()">
+                            Więcej
+                        </a>
+                    </th>
+                </tr>
+                </tfoot>
+            </table>
         </div>
     </div>
 </div>

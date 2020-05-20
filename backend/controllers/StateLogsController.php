@@ -23,7 +23,7 @@ class StateLogsController extends BaseController {
         $logs = StateLogEntry::where($filters);
         $before = $this->request()->getParam('before', 0);
         if ($before) {
-            $logs = $logs->andWhere(StateLogEntry::CREATED_AT, '<=', new \DateTime($before));
+            $logs = $logs->where(StateLogEntry::CREATED_AT, '<', new \DateTime($before));
         }
         $logs = $logs
             ->orderBy(StateLogEntry::CREATED_AT, 'desc')
