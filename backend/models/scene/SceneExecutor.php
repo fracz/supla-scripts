@@ -102,6 +102,7 @@ class SceneExecutor {
             foreach ($notifications as $notification) {
                 $notifier->send($notification);
             }
+            $scene->log('Wysłano powiadomienia');
         }
 
         $feedback = $feedbackFromNestedScenes ?? '';

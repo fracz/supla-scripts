@@ -35,6 +35,7 @@ class JwtAndBasicAuthorizationMiddleware {
                 '/api/tokens/client',
                 '/api/thermostats/preview',
                 '/api/users/register',
+                '/api/state-webhook',
             ],
         ];
 

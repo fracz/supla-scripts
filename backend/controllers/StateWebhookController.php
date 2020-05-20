@@ -23,7 +23,8 @@ class StateWebhookController extends BaseController {
 //            'channelFunction' => 'LIGHTSWITCH', 'authToken' => 'XXX'];
         Assertion::keyExists($parsedBody, 'userShortUniqueId');
         /** @var User $user */
-        $user = $this->ensureExists(User::find([User::SHORT_UNIQUE_ID => $parsedBody['userShortUniqueId']])->first());
+        $user = $this->ensureExists(User::where([User::SHORT_UNIQUE_ID => $parsedBody['userShortUniqueId']])->first());
+        $this->getApp()->getContainer()['currentUser'] = $user;
         Assertion::keyExists($parsedBody, 'authToken');
         if (sha1($user->webhookToken) !== $parsedBody['authToken']) {
             throw new Http403Exception('Invalid authToken.');
@@ -34,7 +35,7 @@ class StateWebhookController extends BaseController {
         Assertion::keyExists($parsedBody, 'state');
         Assertion::isArray($parsedBody['state']);
         Assertion::keyExists($parsedBody, 'channelFunction');
-        $this->getApi()->clearCache($channelId);
+        $this->getApi($user)->clearCache();//$channelId);
         if (in_array($parsedBody['channelFunction'], StateLogEntry::LOGGED_FUNCTIONS)) {
             $this->addStateLog($user, $channelId, $parsedBody['state'], $parsedBody['timestamp'] ?? time());
         }
@@ -60,9 +61,10 @@ class StateWebhookController extends BaseController {
             $feedbackInterpolator = new FeedbackInterpolator($scene);
             $triggerState = boolval($feedbackInterpolator->interpolate($scene->trigger));
             if ($triggerState != $scene->lastTriggerState) {
+                $scene->log('Wykryto zmianę warunku wyzwolenia sceny - wykonuję.');
                 $scene->lastTriggerState = $triggerState;
-                $scene->save();
                 $sceneExecutor->executeWithFeedback($scene);
+                $scene->save();
             }
         }
     }
@@ -72,7 +74,7 @@ class StateWebhookController extends BaseController {
 //        $parsedBody = ['userShortUniqueId' => 'dc85740d-cb27-405b-9da3-e8be5c71ae5b', 'refreshToken' => 'XXX'];
         Assertion::keyExists($parsedBody, 'userShortUniqueId');
         /** @var User $user */
-        $user = $this->ensureExists(User::find([User::SHORT_UNIQUE_ID => $parsedBody['userShortUniqueId']])->first());
+        $user = $this->ensureExists(User::where([User::SHORT_UNIQUE_ID => $parsedBody['userShortUniqueId']])->first());
         Assertion::keyExists($parsedBody, 'refreshToken');
         if ($user->webhookToken !== $parsedBody['refreshToken']) {
             throw new Http403Exception('Invalid refreshToken.');

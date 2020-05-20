@@ -126,7 +126,7 @@ class Scene extends Model implements BelongsToUser {
         if ($notifications) {
             Assertion::isArray($notifications);
             foreach ($notifications as $notification) {
-                Assertion::notEmptyKey($notification, 'title', 'Every notification must have a title.');
+                Assertion::notEmptyKey($notification, 'message', 'Every notification must have a message.');
                 Assertion::lessOrEqualThan(count($notification), 3, 'Invalid notification config.');
             }
         }
