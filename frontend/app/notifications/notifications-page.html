@@ -5,7 +5,7 @@
         <fa name="exclamation-triangle" fw class="pull-right" size="2"></fa>
         <strong><big>Te powiadomienia niedługo przestaną działać.</big></strong>
         Skonfiguruj swoje powiadomienia w oparciu o serwis <a ui-sref="account.pushover">Pushover</a>
-        i sceny, które teraz mogą na koniec wykonania wysłać powiadomienie. Wsparcie dla powiadomień w oparciu o Automat
+        i sceny, które teraz mogą na koniec wykonania wysłać powiadomienie. Wsparcie dla powiadomień w oparciu o Automate
         wkrótce zostanie usunięte.
     </div>
 
@@ -19,7 +19,7 @@
             </div>
         </div>
 
-        <div class="col-sm-9 col-12-if-alone">
+        <div class="col-sm-9 col-12-if-alone hidden">
             <div ng-if="'notifications' | isState">
                 <div class="well text-center" ng-if="!$ctrl.addingNotification">
                     <button type="button" class="btn btn-lg btn-primary" ng-click="$ctrl.addingNotification = true">
