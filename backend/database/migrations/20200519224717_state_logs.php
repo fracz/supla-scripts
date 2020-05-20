@@ -8,7 +8,7 @@ class StateLogs extends Migration {
     public function change() {
         $this->table(StateLogEntry::TABLE_NAME)
             ->addColumn(StateLogEntry::USER_ID, 'uuid')
-            ->addColumn(StateLogEntry::CHANNEL_ID, 'id')
+            ->addColumn(StateLogEntry::CHANNEL_ID, 'integer')
             ->addColumn(StateLogEntry::STATE, 'text')
             ->addForeignKey(StateLogEntry::USER_ID, User::TABLE_NAME, User::ID, ['delete' => 'CASCADE'])
             ->addColumn(StateLogEntry::CREATED_AT, 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])

@@ -25,10 +25,14 @@ class StateLogEntry extends Model implements BelongsToUser {
 
     protected $table = self::TABLE_NAME;
 
-    protected $fillable = [self::CHANNEL_ID, self::STATE];
+    protected $fillable = [self::CHANNEL_ID, self::STATE, self::CREATED_AT];
     protected $jsonEncoded = [self::STATE];
 
     public function user(): BelongsTo {
         return $this->belongsTo(User::class, self::USER_ID);
+    }
+
+    public function usesTimestamps() {
+        return false;
     }
 }
