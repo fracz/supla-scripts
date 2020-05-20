@@ -30,5 +30,6 @@ class ExecuteIntervalScenesCommand extends Command {
             $scene->updateNextExecutionTime();
             $scene->save();
         }
+        Application::getInstance()->metrics->send();
     }
 }
