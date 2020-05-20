@@ -131,7 +131,7 @@
         <div class="row">
             <div class="col-sm-4" ng-repeat="notification in $ctrl.scene.notifications">
                 <div class="panel panel-info">
-                    <div class="panel-heading">
+                    <div class="panel-heading" ng-if="notification.title">
                         <feedback-interpolation feedback="notification.title"></feedback-interpolation>
                     </div>
                     <div class="panel-body">

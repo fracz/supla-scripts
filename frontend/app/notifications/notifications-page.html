@@ -19,8 +19,8 @@
             </div>
         </div>
 
-        <div class="col-sm-9 col-12-if-alone hidden">
-            <div ng-if="'notifications' | isState">
+        <div class="col-sm-9 col-12-if-alone">
+            <div ng-if="'notifications' | isState" class="hidden">
                 <div class="well text-center" ng-if="!$ctrl.addingNotification">
                     <button type="button" class="btn btn-lg btn-primary" ng-click="$ctrl.addingNotification = true">
                         <fa name="plus" fw></fa>
