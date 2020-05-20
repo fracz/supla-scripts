@@ -13,7 +13,7 @@ use suplascripts\models\supla\SuplaApi;
 use suplascripts\models\thermostat\Thermostat;
 
 /**
- * @property int $id
+ * @property string $id
  * @property string $shortUniqueId
  * @property string $username
  * @property string $password
@@ -25,6 +25,7 @@ use suplascripts\models\thermostat\Thermostat;
  * @property Client[] $clients
  * @property Notification[] $notifications
  * @property string $webhookToken
+ * @property int $sceneLimit
  */
 class User extends Model {
 
@@ -39,6 +40,7 @@ class User extends Model {
     const TIMEZONE = 'timezone';
     const TOKEN_EXPIRATION_TIME = 'tokenExpirationTime';
     const WEBHOOK_TOKEN = 'webhookToken';
+    const SCENE_LIMIT = 'sceneLimit';
 
     protected $dates = [self::LAST_LOGIN_DATE];
 

@@ -17,10 +17,10 @@ class StateWebhookController extends BaseController {
     use HasSuplaApi;
 
     public function postAction() {
-        //$parsedBody = $this->request()->getParsedBody();
-        $parsedBody = ['userShortUniqueId' => 'dc85740d-cb27-405b-9da3-e8be5c71ae5b', 'channelId' => 123,
-            'state' => ['on' => true, 'connected' => true], 'timestamp' => time(),
-            'channelFunction' => 'LIGHTSWITCH', 'authToken' => 'XXX'];
+        $parsedBody = $this->request()->getParsedBody();
+//        $parsedBody = ['userShortUniqueId' => 'dc85740d-cb27-405b-9da3-e8be5c71ae5b', 'channelId' => 123,
+//            'state' => ['on' => true, 'connected' => true], 'timestamp' => time(),
+//            'channelFunction' => 'LIGHTSWITCH', 'authToken' => 'XXX'];
         Assertion::keyExists($parsedBody, 'userShortUniqueId');
         /** @var User $user */
         $user = $this->ensureExists(User::find([User::SHORT_UNIQUE_ID => $parsedBody['userShortUniqueId']])->first());
@@ -68,8 +68,8 @@ class StateWebhookController extends BaseController {
     }
 
     public function putAction() {
-        //$parsedBody = $this->request()->getParsedBody();
-        $parsedBody = ['userShortUniqueId' => 'dc85740d-cb27-405b-9da3-e8be5c71ae5b', 'refreshToken' => 'XXX'];
+        $parsedBody = $this->request()->getParsedBody();
+//        $parsedBody = ['userShortUniqueId' => 'dc85740d-cb27-405b-9da3-e8be5c71ae5b', 'refreshToken' => 'XXX'];
         Assertion::keyExists($parsedBody, 'userShortUniqueId');
         /** @var User $user */
         $user = $this->ensureExists(User::find([User::SHORT_UNIQUE_ID => $parsedBody['userShortUniqueId']])->first());

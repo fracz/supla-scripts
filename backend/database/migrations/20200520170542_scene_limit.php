@@ -3,10 +3,10 @@
 use suplascripts\database\migrations\Migration;
 use suplascripts\models\User;
 
-class UserWebhooks extends Migration {
+class SceneLimit extends Migration {
     public function change() {
         $this->table(User::TABLE_NAME)
-            ->addColumn(User::WEBHOOK_TOKEN, 'text', ['null' => true])
+            ->addColumn(User::SCENE_LIMIT, 'integer', ['null' => false, 'default' => 100])
             ->update();
     }
 }

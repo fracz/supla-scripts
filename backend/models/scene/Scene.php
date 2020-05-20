@@ -100,9 +100,10 @@ class Scene extends Model implements BelongsToUser {
         Assertion::keyExists($attributes, self::LABEL, 'Scene must have a label.');
         Assertion::notBlank($attributes[self::LABEL], 'Scene must have a label.');
         $actions = array_filter($attributes[self::ACTIONS] ?? []);
+        $notifications = array_filter($attributes[self::NOTIFICATIONS] ?? []);
         Assertion::true(
-            ($attributes[self::FEEDBACK] ?? false) || $actions,
-            'Scene must have either feedback or actions.'
+            ($attributes[self::FEEDBACK] ?? false) || $actions || $notifications,
+            'Scene must have either feedback, actions or notifications.'
         );
         if ($attributes[self::ACTIONS]) {
             $actions = $attributes[self::ACTIONS];
@@ -110,8 +111,7 @@ class Scene extends Model implements BelongsToUser {
             Assertion::allNumeric(array_keys($actions));
             Assertion::allGreaterOrEqualThan(array_keys($actions), 0);
         }
-        $intervals = array_filter($this->getIntervals($attributes[self::INTERVALS]));
-        Assertion::notEmpty($intervals);
+        $intervals = $this->getIntervals($attributes[self::INTERVALS]);
         foreach ($intervals as $interval) {
             Assertion::true(CronExpression::isValidExpression($interval), 'Invalid interval: ' . $interval);
             $cron = CronExpression::factory($interval);
@@ -123,7 +123,6 @@ class Scene extends Model implements BelongsToUser {
             }
             Assertion::greaterOrEqualThan($nextTimestamp, $time);
         }
-        $notifications = $attributes[self::NOTIFICATIONS];
         if ($notifications) {
             Assertion::isArray($notifications);
             foreach ($notifications as $notification) {
@@ -135,7 +134,7 @@ class Scene extends Model implements BelongsToUser {
 
     private function getIntervals(string $fromIntervals = null) {
         $intervals = $fromIntervals ?: $this->intervals;
-        return array_map('trim', explode('|', $intervals));
+        return array_filter(array_map('trim', explode('|', $intervals)));
     }
 
     public function calculateNextExecutionTime(): int {
