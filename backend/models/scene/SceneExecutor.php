@@ -69,7 +69,7 @@ class SceneExecutor {
         $scene->save();
         $feedbackInterpolator = new FeedbackInterpolator($scene);
         if (is_string($scene->condition) && $scene->condition !== '') {
-            $conditionMet = $feedbackInterpolator->interpolate($scene->condition, true);
+            $conditionMet = $feedbackInterpolator->isConditionMet($scene->condition, true);
             if (!$conditionMet) {
                 $scene->log('Scena nie została wykonana - niespełniony warunek.');
                 return '';

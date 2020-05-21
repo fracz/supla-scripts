@@ -36,6 +36,11 @@ class FeedbackInterpolator {
         });
     }
 
+    public function isConditionMet($feedback, $noCache = false): bool {
+        $conditionMet = trim($this->interpolate($feedback, $noCache));
+        return boolval($conditionMet) && strlen($conditionMet) < 6;
+    }
+
     public function getUsedChannelsIds($feedback): array {
         preg_match_all('#state\(\s*(\d+)\s*\)#', $feedback, $matches);
         $usedChannelsIds = array_unique(array_map('intval', $matches[1]));

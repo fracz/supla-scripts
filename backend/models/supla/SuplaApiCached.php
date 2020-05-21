@@ -91,6 +91,6 @@ class SuplaApiCached extends SuplaApi {
 
     public function clearCache($channelId = null) {
         $group = $this->user->id . ($channelId ? '/' . $channelId : '');
-        \FileSystemCache::invalidateGroup($group);
+        @\FileSystemCache::invalidateGroup($group);
     }
 }

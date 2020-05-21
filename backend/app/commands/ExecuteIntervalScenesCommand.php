@@ -20,12 +20,14 @@ class ExecuteIntervalScenesCommand extends Command {
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
         /** @var Scene[] $scenes */
         $scenes = Scene::where(Scene::NEXT_EXECUTION_TIME, '<=', $now)->orderBy(Scene::NEXT_EXECUTION_TIME)->limit(100)->get();
+        //  $scenes = [Scene::find('85b47744-1b47-47bc-be59-320df0ae951a')];
         Application::getInstance()->metrics->count('interval_scenes', count($scenes));
         if ($input->isInteractive()) {
             $output->writeln('Number of scenes: ' . count($scenes));
         }
         $sceneExecutor = new SceneExecutor();
         foreach ($scenes as $scene) {
+            Application::getInstance()->getContainer()['currentUser'] = $scene->user;
             $sceneExecutor->executeWithFeedback($scene);
             $scene->updateNextExecutionTime();
             $scene->save();
