@@ -40,7 +40,7 @@ RUN { \
 
 
 ENV SUPLA_SCRIPTS_VERSION=4.0.0-beta.3
-#COPY supla-scripts-$SUPLA_SCRIPTS_VERSION.tar.gz ./
+#COPY supla-scripts.tar.gz ./supla-scripts-$SUPLA_SCRIPTS_VERSION.tar.gz
 RUN wget -nc https://github.com/fracz/supla-scripts/releases/download/v${SUPLA_SCRIPTS_VERSION}/supla-scripts-${SUPLA_SCRIPTS_VERSION}.tar.gz \
     && tar -xzf supla-scripts-${SUPLA_SCRIPTS_VERSION}.tar.gz -C . \
     && rm -f supla-scripts-${SUPLA_SCRIPTS_VERSION}.tar.gz \
