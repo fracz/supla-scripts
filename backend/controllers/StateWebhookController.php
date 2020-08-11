@@ -25,9 +25,9 @@ class StateWebhookController extends BaseController {
         /** @var User $user */
         $user = $this->ensureExists(User::where([User::SHORT_UNIQUE_ID => $parsedBody['userShortUniqueId']])->first());
         $this->getApp()->getContainer()['currentUser'] = $user;
-        Assertion::keyExists($parsedBody, 'authToken');
-        if (sha1($user->webhookToken) !== $parsedBody['authToken']) {
-            throw new Http403Exception('Invalid authToken.');
+        Assertion::keyExists($parsedBody, 'accessToken');
+        if (sha1($user->webhookToken) !== $parsedBody['accessToken']) {
+            throw new Http403Exception('Invalid accessToken.');
         }
         Assertion::keyExists($parsedBody, 'channelId');
         $channelId = $parsedBody['channelId'];
@@ -82,7 +82,7 @@ class StateWebhookController extends BaseController {
         $user->webhookToken = sha1(Uuid::getFactory()->uuid4());
         $user->save();
         return $this->response([
-            'authToken' => sha1($user->webhookToken),
+            'accessToken' => sha1($user->webhookToken),
             'refreshToken' => $user->webhookToken,
             'expiresAt' => strtotime('+1 month'),
         ]);
