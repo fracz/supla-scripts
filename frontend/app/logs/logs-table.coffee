@@ -11,6 +11,7 @@ angular.module('supla-scripts').component 'logsTable',
         @page = 0
         @fetch()
         ScopeInterval($scope, @fetch, 20000, 5000)
+        $scope.$on('refreshLogs', @fetch)
 
       fetch: (page = @page) =>
         Logs.getList({entityId: @entityId, limit: @limit, page}).then (@logs) =>

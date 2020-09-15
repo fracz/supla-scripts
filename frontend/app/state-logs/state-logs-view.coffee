@@ -1,6 +1,6 @@
 angular.module('supla-scripts').component 'stateLogsView',
   templateUrl: 'app/state-logs/state-logs-view.html'
-  controller: (Devices, StateLogs, $stateParams, $state) ->
+  controller: (Devices, StateLogs, $stateParams, $state, $scope) ->
     new class
       $onInit: ->
         @channelId = +$stateParams.channelId or undefined
@@ -8,12 +8,17 @@ angular.module('supla-scripts').component 'stateLogsView',
           @channels = {}
           for device in @devices
             @channels[c.id] = c for c in device.channels
-          @stateLogs = []
-          @fetchLogs()
+          @loadNewestLogs()
+          $scope.$on('refreshLogs', @loadNewestLogs)
+
         @LOGGABLE_FUNCTIONS = [
           'POWERSWITCH',
           'LIGHTSWITCH',
         ]
+
+      loadNewestLogs: =>
+        @stateLogs = []
+        @fetchLogs()
 
       more: =>
         @fetchLogs(moment(@stateLogs[@stateLogs.length - 1].createdAt).format())

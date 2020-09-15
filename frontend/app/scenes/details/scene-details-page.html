@@ -145,6 +145,9 @@
         </div>
     </div>
 
-    <h3>Logi</h3>
+    <h3>
+        <a class="pull-right" ng-click="$broadcast('refreshLogs')"><fa name="refresh"></fa></a>
+        Logi
+    </h3>
     <logs-table entity-id="$ctrl.scene.id" limit="30" on-new-logs="$ctrl.reloadScene()"></logs-table>
 </div>
