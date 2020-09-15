@@ -38,6 +38,13 @@ angular.module('supla-scripts').component 'feedbackField',
         {display: 'jasność koloru', suffix: 'color_brightness'}
         {display: 'warunek koloru', suffix: 'color|colorNamePl == "czerwony" ? "jest romantycznie" : "jest nudno"'}
       ]
+      ELECTRICITYMETER: [
+        {display: 'stan licznika impulsów', suffix: 'calculatedValue'}
+        {display: 'aktualna moc', suffix: 'phases[0].powerActive'}
+        {display: 'aktualna moc (warunek)', suffix: 'phases[0].powerActive > 1000 ? "dość prasowania" : "może poprasujesz coś?"'}
+      ]
+      WATERMETER: [{display: 'stan licznika impulsów', suffix: 'calculatedValue'}]
+      GASMETER: [{display: 'stan licznika impulsów', suffix: 'calculatedValue'}]
 
     new class
       $onInit: ->
