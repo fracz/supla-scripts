@@ -31,7 +31,7 @@ class StateWebhookController extends BaseController {
             $accessToken = substr($authHeader, strlen('Bearer '));
         }
         Assertion::true(!!$accessToken, 'Provide the access token in the accessToken field or the Authorization header.');
-        if (sha1($user->webhookToken) !== $parsedBody['accessToken']) {
+        if (sha1($user->webhookToken) !== $accessToken) {
             throw new Http403Exception('Invalid accessToken.');
         }
         Assertion::keyExists($parsedBody, 'channelId');
