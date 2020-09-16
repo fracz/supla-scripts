@@ -25,7 +25,12 @@ class StateWebhookController extends BaseController {
         /** @var User $user */
         $user = $this->ensureExists(User::where([User::SHORT_UNIQUE_ID => $parsedBody['userShortUniqueId']])->first());
         $this->getApp()->getContainer()['currentUser'] = $user;
-        Assertion::keyExists($parsedBody, 'accessToken');
+        $accessToken = $parsedBody['accessToken'] ?? null;
+        if (!$accessToken) {
+            $authHeader = $this->request()->getHeader('Authorization')[0] ?? '';
+            $accessToken = substr($authHeader, strlen('Bearer '));
+        }
+        Assertion::true(!!$accessToken, 'Provide the access token in the accessToken field or the Authorization header.');
         if (sha1($user->webhookToken) !== $parsedBody['accessToken']) {
             throw new Http403Exception('Invalid accessToken.');
         }
