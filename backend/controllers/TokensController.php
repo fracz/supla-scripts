@@ -220,6 +220,7 @@ class TokensController extends BaseController {
             'accessToken' => sha1($user->webhookToken),
             'refreshToken' => $user->webhookToken,
             'expiresAt' => strtotime('+1 month'),
+            'expiresIn' => strtotime('+1 month') - time(),
             'functions' => ['POWERSWITCH', 'LIGHTSWITCH'],
         ];
         $hook = $api->remoteRequest($webhookRequest, '/api/integrations/state-webhook', 'PUT', true);

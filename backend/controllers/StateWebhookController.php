@@ -86,10 +86,13 @@ class StateWebhookController extends BaseController {
         }
         $user->webhookToken = sha1(Uuid::getFactory()->uuid4());
         $user->save();
+        $expiresAt = strtotime('+1 month');
+        $expiresIn = $expiresAt - time();
         return $this->response([
             'accessToken' => sha1($user->webhookToken),
             'refreshToken' => $user->webhookToken,
-            'expiresAt' => strtotime('+1 month'),
+            'expiresAt' => $expiresAt,
+            'expiresIn' => $expiresIn,
         ]);
     }
 }
