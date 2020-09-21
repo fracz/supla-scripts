@@ -21,6 +21,7 @@ class StateLogEntry extends Model implements BelongsToUser {
     const LOGGED_FUNCTIONS = [
         'LIGHTSWITCH',
         'POWERSWITCH',
+        'THERMOMETER',
     ];
 
     protected $table = self::TABLE_NAME;
