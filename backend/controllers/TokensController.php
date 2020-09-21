@@ -221,7 +221,7 @@ class TokensController extends BaseController {
             'refreshToken' => $user->webhookToken,
             'expiresAt' => strtotime('+1 month'),
             'expiresIn' => strtotime('+1 month') - time(),
-            'functions' => ['POWERSWITCH', 'LIGHTSWITCH'],
+            'functions' => ['POWERSWITCH', 'LIGHTSWITCH', 'THERMOMETER'],
         ];
         $hook = $api->remoteRequest($webhookRequest, '/api/integrations/state-webhook', 'PUT', true);
         if (!$hook) {
