@@ -17,7 +17,9 @@
 
 namespace suplascripts\models\scene;
 
+use Carbon\Carbon;
 use suplascripts\models\HasSuplaApi;
+use suplascripts\models\log\StateLogEntry;
 
 class FeedbackTwigExtension extends \Twig_Extension {
     use HasSuplaApi;
@@ -27,8 +29,10 @@ class FeedbackTwigExtension extends \Twig_Extension {
     public function getFunctions() {
         return [
             new \Twig_Function('state', [$this, 'getChannelState'], ['needs_context' => true]),
+            new \Twig_Function('history', [$this, 'getChannelHistory']),
             new \Twig_Function('getUrl', self::class . '::getUrlContents'),
             new \Twig_Function('time', [$this, 'getTime']),
+            new \Twig_Function('timestamp', [$this, 'getTimestamp']),
             new \Twig_Function('sunriseTime', [$this, 'getSunriseTime']),
             new \Twig_Function('sunsetTime', [$this, 'getSunsetTime']),
         ];
@@ -47,6 +51,16 @@ class FeedbackTwigExtension extends \Twig_Extension {
             $this->getApi()->clearCache($channelId);
         }
         return $this->getApi()->getChannelState($channelId);
+    }
+
+    public function getChannelHistory($channelId, int $before = 0) {
+        $before = $before ?: time();
+        return $this->getApp()->getCurrentUser()->stateLogs()->getQuery()
+            ->where([StateLogEntry::CHANNEL_ID => $channelId])
+            ->where(StateLogEntry::CREATED_AT, '<=', Carbon::createFromTimestamp($before))
+            ->orderByDesc(StateLogEntry::CREATED_AT)
+            ->limit(20)
+            ->get();
     }
 
     /**
@@ -144,6 +158,10 @@ class FeedbackTwigExtension extends \Twig_Extension {
 
     public function getTime($date = 'now') {
         return date('H:i', strtotime($date));
+    }
+
+    public function getTimestamp($date = 'now') {
+        return strtotime($date);
     }
 
     public function getSunriseTime($latitude = null, $longitude = null, $date = 'now') {
