@@ -45,6 +45,7 @@ class StateWebhookController extends BaseController {
             $this->addStateLog($user, $channelId, $parsedBody['state'], $parsedBody['timestamp'] ?? time());
         }
         $this->triggerScenesExecution($user, $channelId);
+        return $this->response(['status' => 'ok'])->withStatus(202);
     }
 
     private function addStateLog(User $user, int $channelId, array $state, int $timestamp) {
