@@ -1,0 +1,8 @@
+version: '3'
+
+# Use this config file if you want to contact with database from the host on port 3306.
+
+services:
+  suplascripts-db:
+    ports:
+      - 3306
