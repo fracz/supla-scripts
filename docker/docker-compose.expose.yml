@@ -5,4 +5,4 @@ version: '3'
 services:
   suplascripts-db:
     ports:
-      - 3306
+      - "3306:3306"
