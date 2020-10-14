@@ -23,7 +23,8 @@
     "symfony/console": "^3.3",
     "symfony/process": "^3.3",
     "twig/twig": "^2.5",
-    "php-pushover/php-pushover": "^1.0"
+    "php-pushover/php-pushover": "^1.0",
+    "myclabs/php-enum": "^1.7"
   },
   "autoload": {
     "psr-4": {

@@ -11,6 +11,7 @@ use suplascripts\models\log\StateLogEntry;
 use suplascripts\models\scene\FeedbackInterpolator;
 use suplascripts\models\scene\Scene;
 use suplascripts\models\scene\SceneExecutor;
+use suplascripts\models\supla\ChannelFunction;
 use suplascripts\models\User;
 
 class StateWebhookController extends BaseController {
@@ -41,7 +42,7 @@ class StateWebhookController extends BaseController {
         Assertion::isArray($parsedBody['state']);
         Assertion::keyExists($parsedBody, 'channelFunction');
         $this->getApi($user)->clearCache();//$channelId);
-        if (in_array($parsedBody['channelFunction'], StateLogEntry::LOGGED_FUNCTIONS)) {
+        if (in_array($parsedBody['channelFunction'], ChannelFunction::getFunctionsToRegisterInStateWebhook())) {
             $this->addStateLog($user, $channelId, $parsedBody['state'], $parsedBody['timestamp'] ?? time());
         }
         $this->triggerScenesExecution($user, $channelId);

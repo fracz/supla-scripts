@@ -9,6 +9,7 @@ use Slim\Http\Response;
 use suplascripts\controllers\exceptions\ApiException;
 use suplascripts\models\Client;
 use suplascripts\models\JwtToken;
+use suplascripts\models\supla\ChannelFunction;
 use suplascripts\models\supla\OAuthClient;
 use suplascripts\models\supla\SuplaApiClientWithOAuthSupport;
 use suplascripts\models\User;
@@ -221,7 +222,7 @@ class TokensController extends BaseController {
             'refreshToken' => $user->webhookToken,
             'expiresAt' => strtotime('+1 month'),
             'expiresIn' => strtotime('+1 month') - time(),
-            'functions' => ['POWERSWITCH', 'LIGHTSWITCH', 'THERMOMETER'],
+            'functions' => ChannelFunction::getFunctionsToRegisterInStateWebhook(),
         ];
         $hook = $api->remoteRequest($webhookRequest, '/api/integrations/state-webhook', 'PUT', true);
         if (!$hook) {
