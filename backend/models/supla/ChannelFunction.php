@@ -93,6 +93,14 @@ final class ChannelFunction extends Enum {
             self::LIGHTSWITCH,
             self::POWERSWITCH,
             self::THERMOMETER,
+            self::OPENINGSENSOR_DOOR,
+            self::OPENINGSENSOR_GATEWAY,
+            self::HUMIDITY,
+            self::HUMIDITYANDTEMPERATURE,
+            self::OPENINGSENSOR_GATE,
+            self::OPENINGSENSOR_GARAGEDOOR,
+            self::OPENINGSENSOR_WINDOW,
+            self::MAILSENSOR,
         ]);
     }
 }
