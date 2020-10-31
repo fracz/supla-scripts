@@ -8,6 +8,7 @@ class StateLogsIndexes extends Migration {
         $this->table(StateLogEntry::TABLE_NAME)
             ->addIndex([StateLogEntry::USER_ID, StateLogEntry::CREATED_AT])
             ->addIndex([StateLogEntry::USER_ID, StateLogEntry::CHANNEL_ID])
+            ->addIndex([StateLogEntry::CREATED_AT])
             ->update();
     }
 }
