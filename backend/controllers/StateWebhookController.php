@@ -53,7 +53,7 @@ class StateWebhookController extends BaseController {
         $user->stateLogs()->create([
             StateLogEntry::CHANNEL_ID => $channelId,
             StateLogEntry::STATE => $state,
-            StateLogEntry::CREATED_AT => Carbon::createFromTimestamp($timestamp)
+            StateLogEntry::CREATED_AT => Carbon::createFromTimestamp($timestamp, new \DateTimeZone('UTC')),
         ]);
     }
 

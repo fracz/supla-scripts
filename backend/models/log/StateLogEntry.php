@@ -18,6 +18,7 @@ class StateLogEntry extends Model implements BelongsToUser {
     const CHANNEL_ID = 'channelId';
     const STATE = 'state';
 
+    protected $dates = [self::CREATED_AT];
     protected $table = self::TABLE_NAME;
 
     protected $fillable = [self::CHANNEL_ID, self::STATE, self::CREATED_AT];
