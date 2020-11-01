@@ -1,3 +1,4 @@
 # Run supla-scripts dispatcher every 5 minutes
 * * * * * /usr/bin/php /var/www/supla-scripts/supla-scripts dispatch:all
 * * * * * /usr/bin/php /var/www/supla-scripts/supla-scripts dispatch:time-scenes
+* * * * * /usr/bin/php /var/www/supla-scripts/supla-scripts scene:dispatch-interval-scenes
