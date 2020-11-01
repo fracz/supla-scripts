@@ -2,6 +2,7 @@
 
 namespace suplascripts\controllers;
 
+use Carbon\Carbon;
 use suplascripts\models\log\StateLogEntry;
 
 class StateLogsController extends BaseController {
@@ -23,7 +24,7 @@ class StateLogsController extends BaseController {
         $logs = StateLogEntry::where($filters);
         $before = $this->request()->getParam('before', 0);
         if ($before) {
-            $logs = $logs->where(StateLogEntry::CREATED_AT, '<', new \DateTime($before));
+            $logs = $logs->where(StateLogEntry::CREATED_AT, '<', Carbon::createFromTimestamp($before, new \DateTimeZone('UTC')));
         }
         $logs = $logs
             ->orderBy(StateLogEntry::CREATED_AT, 'desc')

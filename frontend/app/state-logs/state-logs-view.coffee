@@ -21,16 +21,19 @@ angular.module('supla-scripts').component 'stateLogsView',
         @fetchLogs()
 
       more: =>
-        @fetchLogs(moment(@stateLogs[@stateLogs.length - 1].createdAt).format())
+        @fetchLogs(moment(@stateLogs[@stateLogs.length - 1].createdAt).unix())
 
       fetchLogs: (before) =>
+        @loading = true
         StateLogs.getList({before, limit: 50, channelId: @channelId}).then (stateLogs) =>
           @showMore = stateLogs.length > 0
           for log in stateLogs
             log.createdAt = moment(log.createdAt).toDate()
             log.channelLog = angular.copy(@channels[log.channelId])
-            log.channelLog.state = log.state
-            @stateLogs.push(log)
+            if log.channelLog
+              log.channelLog.state = log.state
+              @stateLogs.push(log)
+        .finally(() => @loading = false)
 
       showLogsForChannel: =>
         $state.go('stateLogs', {channelId: @channelId}, {reload: true})

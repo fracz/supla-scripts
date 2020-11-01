@@ -1,6 +1,8 @@
 <div class="container">
     <h1 view-title>
-        <a class="pull-right" ng-click="$broadcast('refreshLogs')"><fa name="refresh"></fa></a>
+        <a class="pull-right" ng-click="$broadcast('refreshLogs')">
+            <fa name="refresh"></fa>
+        </a>
         Historia kanałów
     </h1>
     <div class="row">
@@ -12,8 +14,7 @@
                 </channel-selector>
             </div>
 
-            <loader-dots ng-if="!$ctrl.stateLogs"></loader-dots>
-            <table ng-else class="table table-striped table-state-logs">
+            <table class="table table-striped table-state-logs">
                 <thead>
                 <tr>
                     <th>Kiedy?</th>
@@ -29,6 +30,11 @@
                         <channel-brief class="state-log-channel-brief" channel="log.channelLog"></channel-brief>
                     </td>
                 <tfoot ng-if="$ctrl.showMore">
+                <tr ng-if="$ctrl.loading">
+                    <th colspan="2">
+                        <loader-dots></loader-dots>
+                    </th>
+                </tr>
                 <tr>
                     <th colspan="2" class="text-center">
                         <a ng-click="$ctrl.more()">
@@ -38,6 +44,7 @@
                 </tr>
                 </tfoot>
             </table>
+
         </div>
     </div>
 </div>
