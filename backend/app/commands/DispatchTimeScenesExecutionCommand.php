@@ -2,6 +2,7 @@
 
 namespace suplascripts\app\commands;
 
+use suplascripts\app\Application;
 use suplascripts\models\scene\PendingScene;
 use suplascripts\models\scene\SceneExecutor;
 use Symfony\Component\Console\Command\Command;
@@ -25,6 +26,8 @@ class DispatchTimeScenesExecutionCommand extends Command {
             $pendingScenesQuery->delete();
             foreach ($pendingScenes as $pendingScene) {
                 /** @var PendingScene $pendingScene */
+                $container = Application::getInstance()->getContainer();
+                $container['currentUser'] = $pendingScene->scene->user;
                 $sceneExecutor->executePendingScene($pendingScene);
             }
         }
