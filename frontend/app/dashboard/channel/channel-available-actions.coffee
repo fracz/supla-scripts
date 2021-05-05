@@ -31,6 +31,14 @@ angular.module('supla-scripts').constant 'CHANNEL_AVAILABLE_ACTIONS', do ->
       {label: 'zasłoń 80%', action: 'shut,80', isActive: -> no}
       {label: 'zasłoń', action: 'shut', isActive: -> no}
     ]
+    CONTROLLINGTHEROOFWINDOW: [
+      {label: 'odsłoń', action: 'reveal', isActive: -> no}
+      {label: 'zamknij 20%', action: 'shut,20', isActive: -> no}
+      {label: 'zamknij 40%', action: 'shut,40', isActive: -> no}
+      {label: 'zamknij 60%', action: 'shut,60', isActive: -> no}
+      {label: 'zamknij 80%', action: 'shut,80', isActive: -> no}
+      {label: 'zamknij', action: 'shut', isActive: -> no}
+    ]
 
   actions.LIGHTSWITCH = actions.STAIRCASETIMER = actions.DIMMER = actions.POWERSWITCH
   actions.CONTROLLINGTHEGARAGEDOOR = actions.CONTROLLINGTHEGATE
