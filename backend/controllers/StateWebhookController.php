@@ -65,13 +65,22 @@ class StateWebhookController extends BaseController {
             ->get();
         $sceneExecutor = new SceneExecutor();
         foreach ($scenes as $scene) {
+            if ($scene->lastUsed && $scene->lastUsed->getTimestamp() >= time() - 3) {
+                $scene->log('Zignorowano zbyt szybkie sprawdzenie wyzwalacza.');
+                continue;
+            }
             $feedbackInterpolator = new FeedbackInterpolator($scene);
-            $triggerState = boolval($feedbackInterpolator->interpolate($scene->trigger));
-            if ($triggerState != $scene->lastTriggerState) {
-                $scene->log('Wykryto zmianę warunku wyzwolenia sceny - wykonuję.');
-                $scene->lastTriggerState = $triggerState;
-                $sceneExecutor->executeWithFeedback($scene);
-                $scene->save();
+            $feedback = $feedbackInterpolator->interpolate($scene->trigger);
+            if (strpos($feedback, 'ERROR') !== false) {
+                $scene->log('Błąd przy sprawdzeniu wyzwalacza sceny. ' . $feedback);
+            } else {
+                $triggerState = boolval($feedback);
+                if ($triggerState != $scene->lastTriggerState) {
+                    $scene->log('Wykryto zmianę warunku wyzwolenia sceny - wykonuję.');
+                    $scene->lastTriggerState = $triggerState;
+                    $sceneExecutor->executeWithFeedback($scene);
+                    $scene->save();
+                }
             }
         }
     }
