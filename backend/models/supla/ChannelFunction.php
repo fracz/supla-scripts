@@ -48,6 +48,7 @@ use MyCLabs\Enum\Enum;
 final class ChannelFunction extends Enum {
     const UNSUPPORTED = -1;
     const NONE = 0;
+    const SCENE = 2000;
     const CONTROLLINGTHEGATEWAYLOCK = 10;
     const CONTROLLINGTHEGATE = 20;
     const CONTROLLINGTHEGARAGEDOOR = 30;
@@ -61,7 +62,9 @@ final class ChannelFunction extends Enum {
     const CONTROLLINGTHEDOORLOCK = 90;
     const OPENINGSENSOR_DOOR = 100;
     const CONTROLLINGTHEROLLERSHUTTER = 110;
+    const CONTROLLINGTHEROOFWINDOW = 115;
     const OPENINGSENSOR_ROLLERSHUTTER = 120;
+    const OPENINGSENSOR_ROOFWINDOW = 125;
     const POWERSWITCH = 130;
     const LIGHTSWITCH = 140;
     const DIMMER = 180;
@@ -78,13 +81,18 @@ final class ChannelFunction extends Enum {
     const WEATHER_STATION = 290;
     const STAIRCASETIMER = 300;
     const ELECTRICITYMETER = 310;
-    const GASMETER = 320;
-    const WATERMETER = 330;
-    const HEATMETER = 340;
+    const IC_ELECTRICITYMETER = 315;
+    const IC_GASMETER = 320;
+    const IC_WATERMETER = 330;
+    const IC_HEATMETER = 340;
     const THERMOSTAT = 400;
     const THERMOSTATHEATPOLHOMEPLUS = 410;
     const VALVEOPENCLOSE = 500;
     const VALVEPERCENTAGE = 510;
+    const GENERAL_PURPOSE_MEASUREMENT = 520;
+    const ACTION_TRIGGER = 700;
+    const DIGIGLASS_HORIZONTAL = 800;
+    const DIGIGLASS_VERTICAL = 810;
 
     public static function getFunctionsToRegisterInStateWebhook() {
         return array_map(function ($function) {
@@ -100,7 +108,12 @@ final class ChannelFunction extends Enum {
             self::OPENINGSENSOR_GATE,
             self::OPENINGSENSOR_GARAGEDOOR,
             self::OPENINGSENSOR_WINDOW,
+            self::OPENINGSENSOR_ROOFWINDOW,
             self::MAILSENSOR,
+            self::ELECTRICITYMETER,
+            self::IC_GASMETER,
+            self::IC_WATERMETER,
+//            self::IC_ELECTRICITYMETER,
         ]);
     }
 }
