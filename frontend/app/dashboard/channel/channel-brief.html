@@ -36,6 +36,9 @@
         <span class="label label-info" ng-if="$ctrl.channel.state.humidity">
             {{ $ctrl.channel.state.humidity | number:2 }}%
         </span>
+        <span class="label label-info" ng-if="$ctrl.channel.state.phases">
+            {{ ($ctrl.channel.state.phases[0].powerActive + $ctrl.channel.state.phases[1].powerActive + $ctrl.channel.state.phases[2].powerActive) | number:2 }} W
+        </span>
     </div>
     <channel-actions channel="$ctrl.channel"
                      ng-if="$ctrl.onAction"

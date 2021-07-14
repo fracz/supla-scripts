@@ -14,6 +14,22 @@ angular.module('supla-scripts').component 'stateLogsView',
         @LOGGABLE_FUNCTIONS = [
           'POWERSWITCH',
           'LIGHTSWITCH',
+          'THERMOMETER',
+          'OPENINGSENSOR_DOOR',
+          'OPENINGSENSOR_GATEWAY',
+          'HUMIDITY',
+          'HUMIDITYANDTEMPERATURE',
+          'OPENINGSENSOR_GATE',
+          'OPENINGSENSOR_GARAGEDOOR',
+          'OPENINGSENSOR_WINDOW',
+          'OPENINGSENSOR_ROOFWINDOW',
+          'MAILSENSOR',
+          'ELECTRICITYMETER',
+          'IC_ELECTRICITYMETER',
+          'GASMETER',
+          'IC_GASMETER',
+          'WATERMETER',
+          'IC_WATERMETER',
         ]
 
       loadNewestLogs: =>
