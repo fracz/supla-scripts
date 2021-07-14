@@ -12,6 +12,7 @@ use suplascripts\models\scene\FeedbackInterpolator;
 use suplascripts\models\scene\Scene;
 use suplascripts\models\scene\SceneExecutor;
 use suplascripts\models\supla\ChannelFunction;
+use suplascripts\models\supla\SuplaApiCached;
 use suplascripts\models\User;
 
 class StateWebhookController extends BaseController {
@@ -39,11 +40,13 @@ class StateWebhookController extends BaseController {
         $channelId = $parsedBody['channelId'];
         Assertion::integer($channelId);
         Assertion::keyExists($parsedBody, 'state');
-        Assertion::isArray($parsedBody['state']);
+        $state = $parsedBody['state'];
+        Assertion::isArray($state);
         Assertion::keyExists($parsedBody, 'channelFunction');
         $this->getApi($user)->clearCache();//$channelId);
+        SuplaApiCached::rememberState($channelId, $state);
         if (in_array($parsedBody['channelFunction'], ChannelFunction::getFunctionsToRegisterInStateWebhook())) {
-            $this->addStateLog($user, $channelId, $parsedBody['state'], $parsedBody['timestamp'] ?? time());
+            $this->addStateLog($user, $channelId, $state, $parsedBody['timestamp'] ?? time());
         }
         $this->triggerScenesExecution($user, $channelId);
         return $this->response(['status' => 'ok'])->withStatus(202);
@@ -60,8 +63,10 @@ class StateWebhookController extends BaseController {
     private function triggerScenesExecution(User $user, int $channelId) {
         /** @var Scene[] $scenes */
         $scenes = $user->scenes()->getQuery()
-            ->where(Scene::TRIGGER_CHANNELS, 'LIKE', '%' . $channelId . ',%')
-            ->orWhere(Scene::TRIGGER_CHANNELS, 'LIKE', '%' . $channelId . ']%')
+            ->where(Scene::TRIGGER_CHANNELS, 'LIKE', '%,' . $channelId . ',%')
+            ->orWhere(Scene::TRIGGER_CHANNELS, 'LIKE', '%,' . $channelId . ']%')
+            ->orWhere(Scene::TRIGGER_CHANNELS, 'LIKE', '%[' . $channelId . ']%')
+            ->orWhere(Scene::TRIGGER_CHANNELS, 'LIKE', '%[' . $channelId . ',%')
             ->get();
         $sceneExecutor = new SceneExecutor();
         foreach ($scenes as $scene) {

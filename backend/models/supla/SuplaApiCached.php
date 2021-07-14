@@ -13,6 +13,8 @@ class SuplaApiCached extends SuplaApi {
     /** @var User */
     private $user;
 
+    static $states = [];
+
     public function __construct(User $user, SuplaApi $api) {
         $this->api = $api;
         $this->user = $user;
@@ -31,8 +33,14 @@ class SuplaApiCached extends SuplaApi {
     }
 
     public function getChannelState(int $channelId) {
+        if (isset(self::$states[$channelId])) {
+            Application::getInstance()->metrics->increment('cache_hit');
+            return self::$states[$channelId];
+        }
         return $this->getFromCache(__METHOD__, [$channelId], function () use ($channelId) {
-            return $this->api->getChannelState($channelId);
+            $state = $this->api->getChannelState($channelId);
+            self::rememberState($state);
+            return $state;
         }, $channelId);
     }
 
@@ -92,5 +100,12 @@ class SuplaApiCached extends SuplaApi {
     public function clearCache($channelId = null) {
         $group = $this->user->id . ($channelId ? '/' . $channelId : '');
         @\FileSystemCache::invalidateGroup($group);
+    }
+
+    public static function rememberState(int $channelId, $state) {
+        if (is_array($state)) {
+            $state = json_decode(json_encode($state));
+        }
+        self::$states[$channelId] = $state;
     }
 }
