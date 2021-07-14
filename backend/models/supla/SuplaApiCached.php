@@ -39,7 +39,7 @@ class SuplaApiCached extends SuplaApi {
         }
         return $this->getFromCache(__METHOD__, [$channelId], function () use ($channelId) {
             $state = $this->api->getChannelState($channelId);
-            self::rememberState($state);
+            self::rememberState($channelId, $state);
             return $state;
         }, $channelId);
     }
