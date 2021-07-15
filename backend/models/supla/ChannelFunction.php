@@ -94,10 +94,14 @@ final class ChannelFunction extends Enum {
     const DIGIGLASS_HORIZONTAL = 800;
     const DIGIGLASS_VERTICAL = 810;
 
-    public static function getFunctionsToRegisterInStateWebhook() {
+    public static function getFunctionNamesToRegisterInStateWebhook() {
         return array_map(function ($function) {
             return (new ChannelFunction($function))->getKey();
-        }, [
+        }, self::getFunctionIdsToRegisterInStateWebhook());
+    }
+
+    public static function getFunctionIdsToRegisterInStateWebhook() {
+        return [
             self::LIGHTSWITCH,
             self::POWERSWITCH,
             self::THERMOMETER,
@@ -114,6 +118,6 @@ final class ChannelFunction extends Enum {
             self::IC_GASMETER,
             self::IC_WATERMETER,
 //            self::IC_ELECTRICITYMETER,
-        ]);
+        ];
     }
 }
