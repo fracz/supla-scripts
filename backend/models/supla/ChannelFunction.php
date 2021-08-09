@@ -117,7 +117,15 @@ final class ChannelFunction extends Enum {
             self::ELECTRICITYMETER,
             self::IC_GASMETER,
             self::IC_WATERMETER,
-//            self::IC_ELECTRICITYMETER,
+            self::IC_ELECTRICITYMETER,
+            self::NOLIQUIDSENSOR,
+            self::WINDSENSOR,
+            self::RAINSENSOR,
+            self::WEIGHTSENSOR,
+            self::DISTANCESENSOR,
+            self::DEPTHSENSOR,
+            self::PRESSURESENSOR,
+            self::OPENINGSENSOR_ROLLERSHUTTER,
         ];
     }
 }
