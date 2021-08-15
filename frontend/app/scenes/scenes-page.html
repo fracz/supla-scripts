@@ -1,25 +1,56 @@
 <div class="container">
     <h1 view-title>Sceny</h1>
 
-    <div class="row" ng-if="$ctrl.scenes">
-        <div ng-if="$ctrl.scenes.length !== 0" class="col-sm-3">
-            <div class="list-group">
-                <a class="list-group-item" ng-repeat="scene in $ctrl.scenes"
-                   ui-sref="scenes.details({id: scene.id})" ui-sref-active="active">
-                    <div class="pull-right">
-                        <fa name="flash" ng-if="scene.trigger" fw tooltips tooltip-template="Reaguje na zmiany stanu"></fa>
-                        <fa name="clock-o" ng-if="scene.intervals" fw tooltips tooltip-template="Wykonuje się cyklicznie"></fa>
-                        <fa name="question" ng-if="scene.condition" fw tooltips tooltip-template="Posiada warunek"></fa>
-                        <fa name="cog" ng-if="scene | hasActions" fw tooltips tooltip-template="Wykonuje akcje"></fa>
-                        <fa name="volume-up" ng-if="scene.feedback" fw tooltips tooltip-template="Zawiera odpowiedź"></fa>
-                        <fa name="bullhorn" ng-if="scene.voiceTriggers.length > 0" fw tooltips tooltip-template="Dostępna przez komendy głosowe"></fa>
-                        <fa name="globe" ng-if="scene.slug" fw tooltips tooltip-template="Dostępna przez publiczny URL"></fa>
-                        <fa name="bell-o" ng-if="scene.notifications" fw tooltips tooltip-template="Wysyła powiadomienia"></fa>
+    <div class="row" ng-if="$ctrl.sceneGroups && $ctrl.scenes">
+        <div ng-if="$ctrl.scenes.length !== 0" class="col-sm-3 scenes-links">
+            <div
+                    dnd-list="$ctrl.sceneGroups"
+                    dnd-allowed-types="['sceneGroup']">
+                <div class="panel panel-default"
+                     ng-repeat="sceneGroup in $ctrl.sceneGroups"
+                     dnd-type="'sceneGroup'"
+                     dnd-draggable="sceneGroup"
+                     dnd-moved="$ctrl.sceneGroups.splice($index, 1)"
+                     dnd-effect-allowed="move">
+                    <div class="panel-heading" ng-if="sceneGroup.id !== 'default'">
+                        <a class="btn-block"
+                           ng-click="$ctrl.toggleSceneGroup(sceneGroup)"
+                           ng-dblclick="$ctrl.editSceneGroupName(sceneGroup)">{{ sceneGroup.name }}</a>
                     </div>
-                    <div>{{ scene.label }}</div>
-                    <scene-caption class="text-muted small" scene="scene"></scene-caption>
-                </a>
+                    <div class="list-group" dnd-list="sceneGroup.scenes" dnd-allowed-types="['scene']" ng-show="!sceneGroup.collapsed">
+                        <a class="list-group-item" ng-repeat="scene in sceneGroup.scenes"
+                           ui-sref="scenes.details({id: scene.id})" ui-sref-active="active"
+                           dnd-type="'scene'"
+                           dnd-draggable="scene"
+                           dnd-moved="sceneGroup.scenes.splice($index, 1)"
+                           dnd-effect-allowed="move">
+                            <div class="pull-right">
+                                <fa name="flash" ng-if="scene.trigger" fw tooltips tooltip-template="Reaguje na zmiany stanu"></fa>
+                                <fa name="clock-o" ng-if="scene.intervals" fw tooltips tooltip-template="Wykonuje się cyklicznie"></fa>
+                                <fa name="question" ng-if="scene.condition" fw tooltips tooltip-template="Posiada warunek"></fa>
+                                <fa name="cog" ng-if="scene | hasActions" fw tooltips tooltip-template="Wykonuje akcje"></fa>
+                                <fa name="volume-up" ng-if="scene.feedback" fw tooltips tooltip-template="Zawiera odpowiedź"></fa>
+                                <fa name="bullhorn" ng-if="scene.voiceTriggers.length > 0" fw tooltips
+                                    tooltip-template="Dostępna przez komendy głosowe"></fa>
+                                <fa name="globe" ng-if="scene.slug" fw tooltips tooltip-template="Dostępna przez publiczny URL"></fa>
+                                <fa name="bell-o" ng-if="scene.notifications" fw tooltips tooltip-template="Wysyła powiadomienia"></fa>
+                            </div>
+                            <div>{{ scene.label }}</div>
+                            <scene-caption class="text-muted small" scene="scene"></scene-caption>
+                        </a>
+                        <a class="list-group-item list-group-item-danger text-center"
+                           ng-click="$ctrl.removeEmptyGroup(sceneGroup)"
+                           ng-if="sceneGroup.id !== 'default' && sceneGroup.scenes.length === 0">
+                            Usuń pustą grupę
+                        </a>
+                    </div>
+                </div>
             </div>
+
+            <button type="button" class="btn btn-default btn-block btn-xs" ng-click="$ctrl.addNewSceneGroup()">
+                <fa name="plus" fw></fa>
+                Dodaj grupę scen
+            </button>
         </div>
 
         <div class="col-sm-9 col-12-if-alone">

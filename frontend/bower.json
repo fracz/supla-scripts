@@ -32,7 +32,8 @@
     "ngstorage": "0.3.11",
     "restangular": "1.6.1",
     "smart-area": "1.5.0",
-    "swangular": "1.3.9"
+    "swangular": "1.3.9",
+    "angular-drag-and-drop-lists": "^2.1.0"
   },
   "resolutions": {
     "angular": "1.6.7",
@@ -60,6 +61,12 @@
     },
     "angular-chart.js": {
       "main": "dist/angular-chart.min.js"
+    },
+    "angular-drag-and-drop-lists": {
+      "main": "angular-drag-and-drop-lists.min.js",
+      "dependencies": {
+        "angular": "*"
+      }
     },
     "angular-fontawesome": {
       "main": "dist/angular-fontawesome.min.js"

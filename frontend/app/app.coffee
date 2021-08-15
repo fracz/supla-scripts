@@ -8,6 +8,7 @@ angular.module 'supla-scripts', [
   'angularPromiseButtons'
   'angular-svg-round-progressbar'
   'chart.js'
+  'dndLists'
   'elif'
   'monospaced.elastic'
   'ngAnimate'

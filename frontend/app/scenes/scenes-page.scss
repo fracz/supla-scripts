@@ -1,0 +1,16 @@
+.scenes-links {
+  .list-group {
+    min-height: 42px;
+    a.list-group-item {
+      min-height: 42px;
+    }
+  }
+  .dndDraggingSource {
+    display: none;
+  }
+  .dndPlaceholder {
+    background-color: #ddd;
+    display: block;
+    min-height: 42px;
+  }
+}
