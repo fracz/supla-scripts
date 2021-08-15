@@ -26,6 +26,7 @@ use suplascripts\models\User;
  * @property string $intervals
  * @property \DateTime $nextExecutionTime
  * @property array $notifications
+ * @property boolean $enabled
  */
 class Scene extends Model implements BelongsToUser {
     const TABLE_NAME = 'scenes';
@@ -43,10 +44,11 @@ class Scene extends Model implements BelongsToUser {
     const INTERVALS = 'intervals';
     const NOTIFICATIONS = 'notifications';
     const NEXT_EXECUTION_TIME = 'nextExecutionTime';
+    const ENABLED = 'enabled';
 
     protected $dates = [self::LAST_USED, self::NEXT_EXECUTION_TIME];
     protected $fillable = [self::LABEL, self::ACTIONS, self::FEEDBACK, self::VOICE_TRIGGERS, self::CONDITION, self::TRIGGER, self::INTERVALS,
-        self::NOTIFICATIONS];
+        self::NOTIFICATIONS, self::ENABLED];
     protected $jsonEncoded = [self::ACTIONS, self::VOICE_TRIGGERS, self::TRIGGER_CHANNELS, self::NOTIFICATIONS];
 
     public function user(): BelongsTo {

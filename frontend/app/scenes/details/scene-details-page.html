@@ -26,12 +26,18 @@
     <h2 class="no-margin-top">
         {{ $ctrl.scene.label }}
     </h2>
+
+    <div class="alert alert-danger" ng-if="!$ctrl.scene.enabled">
+        <fa name="ban" fw class="pull-right" size="2"></fa>
+        Scena jest wyłączona.
+    </div>
+
     <p class="text-muted">
         <span ng-if="$ctrl.scene.lastUsed">ostatnie wykonanie: {{ $ctrl.scene.lastUsed | amCalendar }}</span>
         <span ng-else>scena nie była jeszcze wykonana</span>
     </p>
 
-    <button class="btn btn-info btn-lg btn-block" ng-click="$ctrl.scene.executeWithFeedback()" promise-btn>
+    <button ng-if="$ctrl.scene.enabled" class="btn btn-info btn-lg btn-block" ng-click="$ctrl.scene.executeWithFeedback()" promise-btn>
         <fa name="cogs" fw></fa>
         Wykonaj scenę
     </button>
@@ -146,7 +152,9 @@
     </div>
 
     <h3>
-        <a class="pull-right" ng-click="$broadcast('refreshLogs')"><fa name="refresh"></fa></a>
+        <a class="pull-right" ng-click="$broadcast('refreshLogs')">
+            <fa name="refresh"></fa>
+        </a>
         Logi
     </h3>
     <logs-table entity-id="$ctrl.scene.id" limit="30" on-new-logs="$ctrl.reloadScene()"></logs-table>

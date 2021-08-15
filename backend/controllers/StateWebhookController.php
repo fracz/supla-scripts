@@ -63,10 +63,13 @@ class StateWebhookController extends BaseController {
     private function triggerScenesExecution(User $user, int $channelId) {
         /** @var Scene[] $scenes */
         $scenes = $user->scenes()->getQuery()
-            ->where(Scene::TRIGGER_CHANNELS, 'LIKE', '%,' . $channelId . ',%')
-            ->orWhere(Scene::TRIGGER_CHANNELS, 'LIKE', '%,' . $channelId . ']%')
-            ->orWhere(Scene::TRIGGER_CHANNELS, 'LIKE', '%[' . $channelId . ']%')
-            ->orWhere(Scene::TRIGGER_CHANNELS, 'LIKE', '%[' . $channelId . ',%')
+            ->where(Scene::ENABLED, true)
+            ->where(function ($query) use ($channelId) {
+                $query->where(Scene::TRIGGER_CHANNELS, 'LIKE', '%,' . $channelId . ',%')
+                    ->orWhere(Scene::TRIGGER_CHANNELS, 'LIKE', '%,' . $channelId . ']%')
+                    ->orWhere(Scene::TRIGGER_CHANNELS, 'LIKE', '%[' . $channelId . ']%')
+                    ->orWhere(Scene::TRIGGER_CHANNELS, 'LIKE', '%[' . $channelId . ',%');
+            })
             ->get();
         $sceneExecutor = new SceneExecutor();
         foreach ($scenes as $scene) {

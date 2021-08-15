@@ -10,8 +10,9 @@ angular.module('supla-scripts').component 'sceneForm',
         if @scene
           @scene = angular.copy(@scene.plain?() or @scene)
           @scene.generateSlug = !!@scene.slug
+          @scene.enabled = !!@scene.enabled
         else
-          @scene = {actions: {}}
+          @scene = {actions: {}, enabled: true}
 
       submit: ->
         savedScene = angular.copy(@scene)

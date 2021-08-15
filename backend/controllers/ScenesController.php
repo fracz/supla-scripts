@@ -103,6 +103,9 @@ class ScenesController extends BaseController {
     }
 
     private function doExecuteScene(Scene $scene): Response {
+        if (!$scene->enabled) {
+            return $this->response(['error' => 'Scene is disabled.'])->withStatus(409);
+        }
         $feedback = (new SceneExecutor())->executeWithFeedback($scene);
         if ($feedback) {
             return $this->getApp()->response->write($feedback);

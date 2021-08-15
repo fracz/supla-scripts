@@ -3,9 +3,8 @@
 
     <div class="row" ng-if="$ctrl.sceneGroups && $ctrl.scenes">
         <div ng-if="$ctrl.scenes.length !== 0" class="col-sm-3 scenes-links">
-            <div
-                    dnd-list="$ctrl.sceneGroups"
-                    dnd-allowed-types="['sceneGroup']">
+            <div dnd-list="$ctrl.sceneGroups"
+                 dnd-allowed-types="['sceneGroup']">
                 <div class="panel panel-default"
                      ng-repeat="sceneGroup in $ctrl.sceneGroups"
                      dnd-type="'sceneGroup'"
@@ -18,7 +17,8 @@
                            ng-dblclick="$ctrl.editSceneGroupName(sceneGroup)">{{ sceneGroup.name }}</a>
                     </div>
                     <div class="list-group" dnd-list="sceneGroup.scenes" dnd-allowed-types="['scene']" ng-show="!sceneGroup.collapsed">
-                        <a class="list-group-item" ng-repeat="scene in sceneGroup.scenes"
+                        <a class="list-group-item"
+                           ng-repeat="scene in sceneGroup.scenes"
                            ui-sref="scenes.details({id: scene.id})" ui-sref-active="active"
                            dnd-type="'scene'"
                            dnd-draggable="scene"
@@ -34,6 +34,7 @@
                                     tooltip-template="Dostępna przez komendy głosowe"></fa>
                                 <fa name="globe" ng-if="scene.slug" fw tooltips tooltip-template="Dostępna przez publiczny URL"></fa>
                                 <fa name="bell-o" ng-if="scene.notifications" fw tooltips tooltip-template="Wysyła powiadomienia"></fa>
+                                <fa name="ban" ng-if="!scene.enabled" fw tooltips tooltip-template="Scena wyłączona" class="text-danger"></fa>
                             </div>
                             <div>{{ scene.label }}</div>
                             <scene-caption class="text-muted small" scene="scene"></scene-caption>
