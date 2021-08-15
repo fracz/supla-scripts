@@ -27,6 +27,7 @@ use suplascripts\models\User;
  * @property \DateTime $nextExecutionTime
  * @property array $notifications
  * @property boolean $enabled
+ * @property int $ordinalNumber
  */
 class Scene extends Model implements BelongsToUser {
     const TABLE_NAME = 'scenes';
@@ -45,6 +46,8 @@ class Scene extends Model implements BelongsToUser {
     const NOTIFICATIONS = 'notifications';
     const NEXT_EXECUTION_TIME = 'nextExecutionTime';
     const ENABLED = 'enabled';
+    const GROUP_ID = 'groupId';
+    const ORDINAL_NUMBER = 'ordinalNumber';
 
     protected $dates = [self::LAST_USED, self::NEXT_EXECUTION_TIME];
     protected $fillable = [self::LABEL, self::ACTIONS, self::FEEDBACK, self::VOICE_TRIGGERS, self::CONDITION, self::TRIGGER, self::INTERVALS,
@@ -53,6 +56,10 @@ class Scene extends Model implements BelongsToUser {
 
     public function user(): BelongsTo {
         return $this->belongsTo(User::class, self::USER_ID);
+    }
+
+    public function group(): BelongsTo {
+        return $this->belongsTo(SceneGroup::class, self::GROUP_ID);
     }
 
     public function pendingScenes(): HasMany {
