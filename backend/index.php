@@ -8,6 +8,7 @@ use suplascripts\controllers\ClientsController;
 use suplascripts\controllers\DevicesController;
 use suplascripts\controllers\LogsController;
 use suplascripts\controllers\NotificationsController;
+use suplascripts\controllers\SceneGroupsController;
 use suplascripts\controllers\ScenesController;
 use suplascripts\controllers\StateLogsController;
 use suplascripts\controllers\StateWebhookController;
@@ -92,6 +93,14 @@ $app->group('/api', function () use ($app) {
         $app->patch('/feedback', ScenesController::class . ':interpolateFeedback');
         $app->patch('/{id}', ScenesController::class . ':executeScene');
         $app->post('/{id}/tokens', ScenesController::class . ':createClientForScene');
+    });
+
+    $app->group('/scene-groups', function () use ($app) {
+        $app->get('', SceneGroupsController::class . ':getList');
+        $app->post('', SceneGroupsController::class . ':post');
+        $app->patch('', SceneGroupsController::class . ':updateOrder');
+        $app->put('/{id}', SceneGroupsController::class . ':put');
+        $app->delete('/{id}', SceneGroupsController::class . ':delete');
     });
 
     $app->group('/notifications', function () use ($app) {

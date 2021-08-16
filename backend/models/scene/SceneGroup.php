@@ -11,15 +11,17 @@ use suplascripts\models\User;
 /**
  * @property string $slug
  * @property string $label
+ * @property bool $collapsed
  * @property int $ordinalNumber
  */
 class SceneGroup extends Model implements BelongsToUser {
     const TABLE_NAME = 'scene_groups';
     const LABEL = 'label';
+    const COLLAPSED = 'collapsed';
     const ORDINAL_NUMBER = 'ordinalNumber';
     const USER_ID = 'userId';
 
-    protected $fillable = [self::LABEL, self::ORDINAL_NUMBER];
+    protected $fillable = [self::LABEL, self::COLLAPSED, self::ORDINAL_NUMBER];
 
     public function user(): BelongsTo {
         return $this->belongsTo(User::class, self::USER_ID);

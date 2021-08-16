@@ -9,6 +9,7 @@ use suplascripts\models\log\StateLogEntry;
 use suplascripts\models\notification\Notification;
 use suplascripts\models\scene\NotificationSender;
 use suplascripts\models\scene\Scene;
+use suplascripts\models\scene\SceneGroup;
 use suplascripts\models\supla\SuplaApi;
 use suplascripts\models\thermostat\Thermostat;
 
@@ -71,6 +72,10 @@ class User extends Model {
 
     public function scenes(): HasMany {
         return $this->hasMany(Scene::class, Scene::USER_ID);
+    }
+
+    public function sceneGroups(): HasMany {
+        return $this->hasMany(SceneGroup::class, SceneGroup::USER_ID);
     }
 
     public function notifications(): HasMany {

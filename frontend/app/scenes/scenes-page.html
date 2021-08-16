@@ -9,12 +9,13 @@
                      ng-repeat="sceneGroup in $ctrl.sceneGroups"
                      dnd-type="'sceneGroup'"
                      dnd-draggable="sceneGroup"
-                     dnd-moved="$ctrl.sceneGroups.splice($index, 1)"
+                     dnd-moved="$ctrl.sceneOrderChanged($ctrl.sceneGroups, $index)"
                      dnd-effect-allowed="move">
                     <div class="panel-heading" ng-if="sceneGroup.id !== 'default'">
+                        <span class="badge pull-right">{{ sceneGroup.scenes.length || 0 }}</span>
                         <a class="btn-block"
                            ng-click="$ctrl.toggleSceneGroup(sceneGroup)"
-                           ng-dblclick="$ctrl.editSceneGroupName(sceneGroup)">{{ sceneGroup.name }}</a>
+                           ng-dblclick="$ctrl.editSceneGroupName(sceneGroup)">{{ sceneGroup.label }}</a>
                     </div>
                     <div class="list-group" dnd-list="sceneGroup.scenes" dnd-allowed-types="['scene']" ng-show="!sceneGroup.collapsed">
                         <a class="list-group-item"
@@ -22,7 +23,7 @@
                            ui-sref="scenes.details({id: scene.id})" ui-sref-active="active"
                            dnd-type="'scene'"
                            dnd-draggable="scene"
-                           dnd-moved="sceneGroup.scenes.splice($index, 1)"
+                           dnd-moved="$ctrl.sceneOrderChanged(sceneGroup.scenes, $index)"
                            dnd-effect-allowed="move">
                             <div class="pull-right">
                                 <fa name="flash" ng-if="scene.trigger" fw tooltips tooltip-template="Reaguje na zmiany stanu"></fa>

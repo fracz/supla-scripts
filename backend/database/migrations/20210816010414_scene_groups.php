@@ -9,6 +9,7 @@ class SceneGroups extends Migration {
     public function change() {
         $this->table(SceneGroup::TABLE_NAME)
             ->addColumn(SceneGroup::LABEL, 'string')
+            ->addColumn(SceneGroup::COLLAPSED, 'boolean', ['default' => false])
             ->addColumn(SceneGroup::ORDINAL_NUMBER, 'integer', ['default' => 0])
             ->addColumn(SceneGroup::USER_ID, 'uuid')
             ->addForeignKey(SceneGroup::USER_ID, User::TABLE_NAME, User::ID, ['delete' => 'CASCADE'])

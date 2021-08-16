@@ -31,7 +31,7 @@ class ScenesController extends BaseController {
 
     public function getListAction() {
         $this->ensureAuthenticated();
-        $scenes = $this->getCurrentUser()->scenes()->getQuery()->orderBy(Scene::LABEL)->get();
+        $scenes = $this->getCurrentUser()->scenes()->getQuery()->orderBy(Scene::ORDINAL_NUMBER)->get();
         return $this->response($scenes);
     }
 
