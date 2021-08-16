@@ -5,7 +5,7 @@ angular.module('supla-scripts').component 'dashboard',
       $onInit: ->
 #        ScopeInterval($scope, @fetchDevices, 7000, 2000)
         @fetchDevices()
-        Scenes.getList().then((@scenes) =>)
+        Scenes.getList().then((scenes) => @scenes = (scene for scene in scenes when scene.enabled))
 
       fetchDevices: =>
         Devices.getList().then((@devices) =>)
