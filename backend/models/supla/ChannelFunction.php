@@ -104,6 +104,7 @@ final class ChannelFunction extends Enum {
         return [
             self::LIGHTSWITCH,
             self::POWERSWITCH,
+            self::STAIRCASETIMER,
             self::THERMOMETER,
             self::OPENINGSENSOR_DOOR,
             self::OPENINGSENSOR_GATEWAY,
