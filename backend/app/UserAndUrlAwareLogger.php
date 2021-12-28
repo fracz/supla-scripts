@@ -3,7 +3,7 @@
 namespace suplascripts\app;
 
 use Monolog\Handler\HandlerInterface;
-use Monolog\Handler\StreamHandler;
+use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use suplascripts\models\HasApp;
@@ -22,14 +22,15 @@ class UserAndUrlAwareLogger implements LoggerInterface {
     /** @var int */
     private $level;
 
-    public function __construct($level = Logger::NOTICE) {
+    public function __construct($level = Logger::NOTICE, string $defaultFilename = 'app') {
         $this->level = $level;
         $this->logger = new Logger('app_logger');
-        $this->defaultHandlers = [$this->logFileHandler('app')];
+        $this->defaultHandlers = [$this->logFileHandler($defaultFilename)];
     }
 
     private function logFileHandler(string $filename): HandlerInterface {
-        return new StreamHandler(Application::VAR_PATH . "/logs/$filename.log", $this->level);
+        $filename = Application::VAR_PATH . "/logs/$filename.log";
+        return new RotatingFileHandler($filename, 5, $this->level);
     }
 
     private function buildContext(array $context): array {
@@ -44,7 +45,7 @@ class UserAndUrlAwareLogger implements LoggerInterface {
             $currentUser = $app->getCurrentUser();
             return array_merge([
                 'url' => (string)$app->request->getUri(),
-                'username' => $currentUser ? $currentUser->username : 'not authenticated',
+                'userId' => $currentUser ? $currentUser->id : 'not authenticated',
             ], $context);
         } else {
             return $context;

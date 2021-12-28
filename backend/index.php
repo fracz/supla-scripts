@@ -2,7 +2,10 @@
 
 namespace suplascripts;
 
+use Monolog\ErrorHandler;
+use Monolog\Logger;
 use suplascripts\app\Application;
+use suplascripts\app\UserAndUrlAwareLogger;
 use suplascripts\controllers\ChannelsController;
 use suplascripts\controllers\ClientsController;
 use suplascripts\controllers\DevicesController;
@@ -23,9 +26,7 @@ use suplascripts\controllers\VoiceCommandsController;
 require __DIR__ . '/vendor/autoload.php';
 ini_set('display_errors', 'Off');
 ini_set("log_errors", 1);
-ini_set("error_log", Application::VAR_PATH . "/logs/error.log");
-
-$startTime = microtime(true);
+ErrorHandler::register(new UserAndUrlAwareLogger(Logger::NOTICE, 'error'));
 
 $app = new Application();
 $app->group('/api', function () use ($app) {
