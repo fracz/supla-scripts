@@ -4,6 +4,7 @@ namespace suplascripts\controllers;
 
 use suplascripts\app\Application;
 use suplascripts\app\authorization\JwtAndBasicAuthorizationMiddleware;
+use suplascripts\models\User;
 
 class SystemController extends BaseController {
     public function getInfoAction() {
@@ -17,6 +18,7 @@ class SystemController extends BaseController {
             'scriptsUrl' => $this->getApp()->getSetting('oauth')['scriptsUrl'] ?? 'https://supla.fracz.com',
             'cloudUrl' => $this->getApp()->getSetting('oauth')['cloudUrl'] ?? 'https://cloud.supla.org',
             'time' => (new \DateTime())->format(\DateTime::ATOM),
+            'databaseStatus' => User::count() > 0 ? 'database ok' : 'database down',
         ];
         if ($authenticated) {
             $response['user'] = ['username' => $this->getCurrentUser()->username];
