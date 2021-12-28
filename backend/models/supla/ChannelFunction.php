@@ -129,4 +129,29 @@ final class ChannelFunction extends Enum {
             self::OPENINGSENSOR_ROLLERSHUTTER,
         ];
     }
+
+    public static function getFunctionNamesToStoreStateLogs() {
+        return array_map(function ($function) {
+            return (new ChannelFunction($function))->getKey();
+        }, self::getFunctionIdsToStoreStateLogs());
+    }
+
+    public static function getFunctionIdsToStoreStateLogs() {
+        return array_diff(self::getFunctionIdsToRegisterInStateWebhook(), [
+            self::THERMOMETER,
+            self::HUMIDITY,
+            self::HUMIDITYANDTEMPERATURE,
+            self::ELECTRICITYMETER,
+            self::IC_GASMETER,
+            self::IC_WATERMETER,
+            self::IC_ELECTRICITYMETER,
+            self::NOLIQUIDSENSOR,
+            self::WINDSENSOR,
+            self::RAINSENSOR,
+            self::WEIGHTSENSOR,
+            self::DISTANCESENSOR,
+            self::DEPTHSENSOR,
+            self::PRESSURESENSOR,
+        ]);
+    }
 }

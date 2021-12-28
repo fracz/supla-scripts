@@ -45,7 +45,7 @@ class StateWebhookController extends BaseController {
         Assertion::keyExists($parsedBody, 'channelFunction');
         $this->getApi($user)->clearCache();//$channelId);
         SuplaApiCached::rememberState($channelId, $state);
-        if (in_array($parsedBody['channelFunction'], ChannelFunction::getFunctionNamesToRegisterInStateWebhook())) {
+        if (in_array($parsedBody['channelFunction'], ChannelFunction::getFunctionNamesToStoreStateLogs())) {
             $this->addStateLog($user, $channelId, $state, $parsedBody['timestamp'] ?? time());
         }
         $this->triggerScenesExecution($user, $channelId);
