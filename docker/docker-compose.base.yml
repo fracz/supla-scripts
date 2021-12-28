@@ -11,6 +11,7 @@ services:
       - ./apache-conf:/etc/apache2/sites-available:z
       - ../var/ssl:/etc/apache2/ssl:z
     logging:
+      driver: "json-file"
       options:
         max-size: 50m
     depends_on:
@@ -29,6 +30,7 @@ services:
     volumes:
        - ${VOLUME_DATA}/mysql:/var/lib/mysql:z
     logging:
+      driver: "json-file"
       options:
         max-size: 50m
 
