@@ -27,6 +27,7 @@ require __DIR__ . '/vendor/autoload.php';
 ini_set('display_errors', 'Off');
 ini_set("log_errors", 1);
 ErrorHandler::register(new UserAndUrlAwareLogger(Logger::NOTICE, 'error'));
+$startTime = microtime(true);
 
 $app = new Application();
 $app->group('/api', function () use ($app) {
