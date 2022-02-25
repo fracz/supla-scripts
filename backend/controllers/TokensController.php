@@ -185,6 +185,9 @@ class TokensController extends BaseController {
             $user->shortUniqueId = $userData->shortUniqueId;
         }
         $user->setApiCredentials($apiCredentials);
+        if (!$user->webhookToken) {
+            $user->webhookToken = sha1(Uuid::getFactory()->uuid4());
+        }
         $user->save();
         $token = JwtToken::create()->user($user)->issue();
         $this->getApp()->getContainer()['currentUser'] = $user;
