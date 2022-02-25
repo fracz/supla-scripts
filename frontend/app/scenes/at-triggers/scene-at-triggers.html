@@ -1,0 +1,32 @@
+<div ng-class="{disabled: $ctrl.disabled}">
+    <channel-selector ng-if="!$ctrl.disabled"
+                      ng-model="$ctrl.newChannel"
+                      ng-change="$ctrl.addNewSceneAt($ctrl.newChannel)"
+                      functions="['ACTION_TRIGGER']">
+    </channel-selector>
+    <div class="scene-action-triggers" ng-if="$ctrl.channels">
+        <table class="table no-margin table-width-auto">
+            <tr class="scene-action-trigger" ng-repeat="trigger in $ctrl.actionTriggers">
+                <td>
+                    <channel-brief channel="$ctrl.channels[trigger.channelId]"></channel-brief>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <label>Wyzwalacz</label>
+                        <input type="text" class="form-control" placeholder="np. PRESS_2X" ng-model="trigger.trigger" ng-change="$ctrl.updateModel()"
+                               ng-if="!$ctrl.disabled">
+                        <div ng-else>
+                            <span class="label label-info">{{ trigger.trigger }}</span>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <a ng-click="$ctrl.deleteSceneAt(trigger)"
+                       ng-if="!$ctrl.disabled">
+                        <fa name="times-circle-o"></fa>
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

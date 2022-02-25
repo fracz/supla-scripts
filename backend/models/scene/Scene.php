@@ -19,8 +19,9 @@ use suplascripts\models\User;
  * @property string $condition
  * @property string $trigger
  * @property boolean $lastTriggerState
- * @property boolean $triggerChannels
+ * @property int[] $triggerChannels
  * @property string[] $voiceTriggers
+ * @property array[] $actionTriggers
  * @property \DateTime $lastUsed
  * @property User $user
  * @property string $intervals
@@ -40,6 +41,7 @@ class Scene extends Model implements BelongsToUser {
     const LAST_TRIGGER_STATE = 'lastTriggerState';
     const TRIGGER_CHANNELS = 'triggerChannels';
     const VOICE_TRIGGERS = 'voiceTriggers';
+    const ACTION_TRIGGERS = 'actionTriggers';
     const LAST_USED = 'lastUsed';
     const USER_ID = 'userId';
     const INTERVALS = 'intervals';
@@ -51,8 +53,8 @@ class Scene extends Model implements BelongsToUser {
 
     protected $dates = [self::LAST_USED, self::NEXT_EXECUTION_TIME];
     protected $fillable = [self::LABEL, self::ACTIONS, self::FEEDBACK, self::VOICE_TRIGGERS, self::CONDITION, self::TRIGGER, self::INTERVALS,
-        self::NOTIFICATIONS, self::ENABLED];
-    protected $jsonEncoded = [self::ACTIONS, self::VOICE_TRIGGERS, self::TRIGGER_CHANNELS, self::NOTIFICATIONS];
+        self::NOTIFICATIONS, self::ENABLED, self::ACTION_TRIGGERS];
+    protected $jsonEncoded = [self::ACTIONS, self::VOICE_TRIGGERS, self::TRIGGER_CHANNELS, self::NOTIFICATIONS, self::ACTION_TRIGGERS];
 
     public function user(): BelongsTo {
         return $this->belongsTo(User::class, self::USER_ID);
@@ -137,6 +139,18 @@ class Scene extends Model implements BelongsToUser {
             foreach ($notifications as $notification) {
                 Assertion::notEmptyKey($notification, 'message', 'Every notification must have a message.');
                 Assertion::lessOrEqualThan(count($notification), 3, 'Invalid notification config.');
+            }
+        }
+        if ($attributes[self::ACTION_TRIGGERS]) {
+            Assertion::isArray($attributes[self::ACTION_TRIGGERS]);
+            foreach ($attributes[self::ACTION_TRIGGERS] as $at) {
+                Assertion::isArray($at);
+                Assertion::keyExists($at, 'channelId');
+                Assertion::integer($at['channelId']);
+                Assertion::keyExists($at, 'trigger', 'Did not set a trigger name for ' . $at['channelId']);
+                Assertion::string($at['trigger']);
+                Assertion::notBlank($at['trigger'], 'Did not set a trigger name for ' . $at['channelId']);
+                Assertion::count($at, 2);
             }
         }
     }

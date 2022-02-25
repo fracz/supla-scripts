@@ -37,16 +37,23 @@
         <span ng-else>scena nie była jeszcze wykonana</span>
     </p>
 
-    <button ng-if="$ctrl.scene.enabled" class="btn btn-info btn-lg btn-block" ng-click="$ctrl.scene.executeWithFeedback()" promise-btn>
-        <fa name="cogs" fw></fa>
-        Wykonaj scenę
-    </button>
+    <div class="form-group">
+        <button ng-if="$ctrl.scene.enabled" class="btn btn-info btn-lg btn-block" ng-click="$ctrl.scene.executeWithFeedback()" promise-btn>
+            <fa name="cogs" fw></fa>
+            Wykonaj scenę
+        </button>
+    </div>
 
     <div ng-if="$ctrl.scene.intervals">
         <h3>Wyzwalanie czasowe</h3>
         <div class="form-group">
             Najbliższe wykonanie po: {{ $ctrl.scene.nextExecutionTime | date:'short' }}
         </div>
+    </div>
+
+    <div class="form-group" ng-if="$ctrl.scene.actionTriggers && $ctrl.scene.actionTriggers.length > 0">
+        <label>Uruchamianie sceny z wyzwalaczy akcji w SUPLI</label>
+        <scene-at-triggers ng-model="$ctrl.scene.actionTriggers" disabled="true"></scene-at-triggers>
     </div>
 
     <div ng-if="$ctrl.scene.trigger">

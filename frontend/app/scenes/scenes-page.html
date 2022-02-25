@@ -33,6 +33,8 @@
                                 <fa name="volume-up" ng-if="scene.feedback" fw tooltips tooltip-template="Zawiera odpowiedź"></fa>
                                 <fa name="bullhorn" ng-if="scene.voiceTriggers.length > 0" fw tooltips
                                     tooltip-template="Dostępna przez komendy głosowe"></fa>
+                                <fa name="hand-pointer-o" ng-if="scene.actionTriggers.length > 0" fw tooltips
+                                    tooltip-template="Wyzwalana wyzwalaczem akcji"></fa>
                                 <fa name="globe" ng-if="scene.slug" fw tooltips tooltip-template="Dostępna przez publiczny URL"></fa>
                                 <fa name="bell-o" ng-if="scene.notifications" fw tooltips tooltip-template="Wysyła powiadomienia"></fa>
                                 <fa name="ban" ng-if="!scene.enabled" fw tooltips tooltip-template="Scena wyłączona" class="text-danger"></fa>

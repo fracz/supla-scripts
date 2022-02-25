@@ -50,6 +50,7 @@ class StateWebhookController extends BaseController {
             Assertion::isArray($triggeredActions);
             SuplaApiCached::rememberState($channelId, $triggeredActions);
             $this->addStateLog($user, $channelId, $triggeredActions, $parsedBody['timestamp'] ?? time());
+            $this->triggerScenesExecutionFromActionTrigger($user, $channelId, $triggeredActions);
         } else {
             Assertion::keyExists($parsedBody, 'state');
             $state = $parsedBody['state'] ?? [];
@@ -59,8 +60,8 @@ class StateWebhookController extends BaseController {
             if (in_array($channelFunction, ChannelFunction::getFunctionNamesToStoreStateLogs())) {
                 $this->addStateLog($user, $channelId, $state, $parsedBody['timestamp'] ?? time());
             }
+            $this->triggerScenesExecution($user, $channelId);
         }
-        $this->triggerScenesExecution($user, $channelId);
         return $this->response(['status' => 'ok'])->withStatus(202);
     }
 
@@ -101,6 +102,31 @@ class StateWebhookController extends BaseController {
                     $sceneExecutor->executeWithFeedback($scene);
                     $scene->save();
                 }
+            }
+        }
+    }
+
+    private function triggerScenesExecutionFromActionTrigger(User $user, int $channelId, array $triggeredActions) {
+        /** @var Scene[] $scenes */
+        $scenes = $user->scenes()->getQuery()
+            ->where(Scene::ENABLED, true)
+            ->where(function ($query) use ($channelId) {
+                $query->where(Scene::ACTION_TRIGGERS, 'LIKE', '%:' . $channelId . ',%')
+                    ->orWhere(Scene::ACTION_TRIGGERS, 'LIKE', '%:' . $channelId . ']%');
+            })
+            ->get();
+        $sceneExecutor = new SceneExecutor();
+        foreach ($scenes as $scene) {
+            $triggered = array_filter($scene->actionTriggers, function ($actionTrigger) use ($channelId, $triggeredActions) {
+                if ($actionTrigger['channelId'] == $channelId) {
+                    return in_array($actionTrigger['trigger'], $triggeredActions);
+                }
+                return false;
+            });
+            if ($triggered) {
+                $scene->log('Wykonuję scenę na podstawie wyzwalacza akcji.');
+                $sceneExecutor->executeWithFeedback($scene);
+                $scene->save();
             }
         }
     }

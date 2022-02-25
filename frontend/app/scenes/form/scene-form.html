@@ -10,6 +10,32 @@
     </div>
 
     <div class="form-group" show-errors>
+        <fa name="question-circle" class="pull-right pointer" ng-click="$ctrl.atHelp = !$ctrl.atHelp"></fa>
+        <label>Uruchamiaj scenę z wyzwalacza akcji w SUPLI</label>
+        <scene-at-triggers ng-model="$ctrl.scene.actionTriggers"></scene-at-triggers>
+        <div class="help-block fx-fade-up" ng-if="$ctrl.atHelp">
+            <p>Scena może być wykonywana po wykryciu skonfigurowanych wyzwalaczy akcji w SUPLI.</p>
+            <p>
+                Upewnij się, że dla zadanego wyzwalacza w SUPLA Cloud wybierzesz akcję "Inną" i tam wskażesz "Publikuj do integracji".
+                To umożliwi wykrywanie danego wyzwalacza w skryptach.
+            </p>
+            <p>
+                Następnie, dla każdej sceny, skonfiguruj ID kanału wyzwalacza oraz wyzwalacz, który ma powodować uruchomienie sceny.
+                Przykładowe wartości to
+                <code>HOLD</code>, <code>TURN_ON</code>, <code>TURN_OFF</code>,
+                <code>PRESS_X1</code>, <code>PRESS_X2</code>, <code>PRESS_X3</code>, <code>PRESS_X4</code>, <code>PRESS_X5</code>,
+                <code>TOGGLE_X1</code>, <code>TOGGLE_X2</code>, <code>TOGGLE_X3</code>, <code>TOGGLE_X4</code>, <code>TOGGLE_X5</code>.
+                Przekazana akcja zależy od firmware urządzenia. W razie wątpliwości, przed konfiguracją
+                sceny zobacz jaka akcja jest odnotowywana w Historii Kanałów.
+            </p>
+            <p>
+                Po każdym wykryciu wskazanego tutaj wyzwalacza zostanie podjęta próba wykonania sceny, z uwzględnieniem jej warunku (efekt jest taki
+                sam, jak kliknięcie przycisku "Wykonaj" na stronie sceny).
+            </p>
+        </div>
+    </div>
+
+    <div class="form-group" show-errors>
         <fa name="question-circle" class="pull-right pointer" ng-click="$ctrl.intervalHelp = !$ctrl.intervalHelp"></fa>
         <label>Wyzwalacz sceny w oparciu o czas</label>
         <input type="text" class="form-control" ng-model="$ctrl.scene.intervals" name="interval">

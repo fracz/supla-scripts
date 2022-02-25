@@ -206,7 +206,7 @@ class TokensController extends BaseController {
     protected function getUserDataBasedOnPersonalToken($token): array {
         $oauthClient = new OAuthClient();
         $suplaUrl = $oauthClient->getSuplaAddress($token);
-        Assertion::url($suplaUrl, 'Invalid token (no encoded SUPLA Cloud URL).');
+        Assertion::string($suplaUrl, 'Invalid token (no encoded SUPLA Cloud URL).');
         $suplaApi = new SuplaApiClientWithOAuthSupport(null, ['personal_token' => $token, 'target_url' => $suplaUrl], false, false, false);
         $tokenInfo = $suplaApi->remoteRequest(null, '/api/token-info', 'GET', true);
         Assertion::isObject($tokenInfo, "Invalid token (SUPLA Cloud $suplaUrl does not authorize it).");
