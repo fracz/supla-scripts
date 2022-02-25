@@ -19,3 +19,9 @@
     <dt>Identyfikator użytkownika w SUPLA</dt>
     <dd>{{ $ctrl.user.shortUniqueId }}</dd>
 </dl>
+<dl ng-if="$ctrl.user.webhookToken">
+    <dt>Access Token dla webhooków</dt>
+    <dd><code>{{ $ctrl.user.webhookToken }}</code></dd>
+    <dt>Refresh Token dla webhooków</dt>
+    <dd><code>{{ $ctrl.user.webhookRefreshToken }}</code></dd>
+</dl>

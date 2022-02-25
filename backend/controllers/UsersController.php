@@ -26,6 +26,10 @@ class UsersController extends BaseController {
             throw new Http403Exception();
         }
         $userData = $user->toArray();
+        if (!$userData['tokenExpirationTime']) {
+            $userData['webhookToken'] = sha1($user->webhookToken);
+            $userData['webhookRefreshToken'] = $user->webhookToken;
+        }
         return $this->response($userData);
     }
 

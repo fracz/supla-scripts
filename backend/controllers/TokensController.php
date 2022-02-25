@@ -28,6 +28,9 @@ class TokensController extends BaseController {
         $user = $this->findMatchingUser($usernameOrEmail, $password);
         $token = JwtToken::create()->user($user)->rememberMe($body['rememberMe'] ?? false)->issue();
         $this->getApp()->getContainer()['currentUser'] = $user;
+        if (!$user->webhookToken) {
+            $user->webhookToken = sha1(Uuid::getFactory()->uuid4());
+        }
         $user->trackLastLogin();
         return $this->response(['token' => $token]);
     }
