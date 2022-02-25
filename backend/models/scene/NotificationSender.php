@@ -26,8 +26,8 @@ class NotificationSender {
     public function send(array $notification) {
         $pushoverCredentials = $this->user->getPushoverCredentials();
         if ($pushoverCredentials) {
-            $title = $notification['title'] ? $this->feedbackInterpolator->interpolate($notification['title']) : '';
-            $message = $notification['message'] ? $this->feedbackInterpolator->interpolate($notification['message']) : '';
+            $title = ($notification['title'] ?? '') ? $this->feedbackInterpolator->interpolate($notification['title']) : '';
+            $message = ($notification['message'] ?? '') ? $this->feedbackInterpolator->interpolate($notification['message']) : '';
             $pushover = new \Pushover();
             $pushover->setToken($pushoverCredentials['token']);
             $pushover->setUser($pushoverCredentials['user']);

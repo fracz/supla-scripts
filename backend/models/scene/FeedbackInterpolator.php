@@ -70,7 +70,7 @@ class FeedbackInterpolator {
 
     public function replaceChannelState($channelId, $field, $varType, $config) {
         $state = $this->getApi($this->user)->getChannelState($channelId);
-        $desiredValue = $state->{$field};
+        $desiredValue = $state->{$field} ?? 0;
         if (!$state->connected) {
             return self::NOT_CONNECTED_RESPONSE;
         }
