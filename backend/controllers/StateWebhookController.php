@@ -49,7 +49,8 @@ class StateWebhookController extends BaseController {
             $triggeredActions = $parsedBody['triggered_actions'];
             Assertion::isArray($triggeredActions);
             SuplaApiCached::rememberState($channelId, $triggeredActions);
-            $this->addStateLog($user, $channelId, $triggeredActions, $parsedBody['timestamp'] ?? time());
+            $state = ['connected' => true, 'triggeredActions' => $triggeredActions];
+            $this->addStateLog($user, $channelId, $state, $parsedBody['timestamp'] ?? time());
             $this->triggerScenesExecutionFromActionTrigger($user, $channelId, $triggeredActions);
         } else {
             Assertion::keyExists($parsedBody, 'state');
