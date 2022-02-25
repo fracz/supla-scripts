@@ -7,6 +7,7 @@ use MyCLabs\Enum\Enum;
 /**
  * @method static ChannelFunction UNSUPPORTED()
  * @method static ChannelFunction NONE()
+ * @method static ChannelFunction SCENE()
  * @method static ChannelFunction CONTROLLINGTHEGATEWAYLOCK()
  * @method static ChannelFunction CONTROLLINGTHEGATE()
  * @method static ChannelFunction CONTROLLINGTHEGARAGEDOOR()
@@ -20,7 +21,9 @@ use MyCLabs\Enum\Enum;
  * @method static ChannelFunction CONTROLLINGTHEDOORLOCK()
  * @method static ChannelFunction OPENINGSENSOR_DOOR()
  * @method static ChannelFunction CONTROLLINGTHEROLLERSHUTTER()
+ * @method static ChannelFunction CONTROLLINGTHEROOFWINDOW()
  * @method static ChannelFunction OPENINGSENSOR_ROLLERSHUTTER()
+ * @method static ChannelFunction OPENINGSENSOR_ROOFWINDOW()
  * @method static ChannelFunction POWERSWITCH()
  * @method static ChannelFunction LIGHTSWITCH()
  * @method static ChannelFunction DIMMER()
@@ -37,13 +40,18 @@ use MyCLabs\Enum\Enum;
  * @method static ChannelFunction WEATHER_STATION()
  * @method static ChannelFunction STAIRCASETIMER()
  * @method static ChannelFunction ELECTRICITYMETER()
- * @method static ChannelFunction GASMETER()
- * @method static ChannelFunction WATERMETER()
- * @method static ChannelFunction HEATMETER()
+ * @method static ChannelFunction IC_ELECTRICITYMETER()
+ * @method static ChannelFunction IC_GASMETER()
+ * @method static ChannelFunction IC_HEATMETER()
+ * @method static ChannelFunction IC_WATERMETER()
  * @method static ChannelFunction THERMOSTAT()
  * @method static ChannelFunction THERMOSTATHEATPOLHOMEPLUS()
  * @method static ChannelFunction VALVEOPENCLOSE()
  * @method static ChannelFunction VALVEPERCENTAGE()
+ * @method static ChannelFunction GENERAL_PURPOSE_MEASUREMENT()
+ * @method static ChannelFunction ACTION_TRIGGER()
+ * @method static ChannelFunction DIGIGLASS_VERTICAL()
+ * @method static ChannelFunction DIGIGLASS_HORIZONTAL()
  */
 final class ChannelFunction extends Enum {
     const UNSUPPORTED = -1;
@@ -127,6 +135,7 @@ final class ChannelFunction extends Enum {
             self::DEPTHSENSOR,
             self::PRESSURESENSOR,
             self::OPENINGSENSOR_ROLLERSHUTTER,
+            self::ACTION_TRIGGER,
         ];
     }
 

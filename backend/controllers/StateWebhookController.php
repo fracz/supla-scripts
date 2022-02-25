@@ -23,6 +23,9 @@ class StateWebhookController extends BaseController {
 //        $parsedBody = ['userShortUniqueId' => 'dc85740d-cb27-405b-9da3-e8be5c71ae5b', 'channelId' => 123,
 //            'state' => ['on' => true, 'connected' => true], 'timestamp' => time(),
 //            'channelFunction' => 'LIGHTSWITCH', 'authToken' => 'XXX'];
+//        $parsedBody = ['userShortUniqueId' => 'dc85740d-cb27-405b-9da3-e8be5c71ae5b', 'channelId' => 123,
+//            'triggered_actions' => ['HOLD'], 'timestamp' => time(),
+//            'channelFunction' => 'ACTION_TRIGGER', 'authToken' => 'XXX'];
         Assertion::keyExists($parsedBody, 'userShortUniqueId');
         /** @var User $user */
         $user = $this->ensureExists(User::where([User::SHORT_UNIQUE_ID => $parsedBody['userShortUniqueId']])->first());
@@ -39,14 +42,23 @@ class StateWebhookController extends BaseController {
         Assertion::keyExists($parsedBody, 'channelId');
         $channelId = $parsedBody['channelId'];
         Assertion::integer($channelId);
-        Assertion::keyExists($parsedBody, 'state');
-        $state = $parsedBody['state'];
-        Assertion::isArray($state);
         Assertion::keyExists($parsedBody, 'channelFunction');
-        $this->getApi($user)->clearCache();//$channelId);
-        SuplaApiCached::rememberState($channelId, $state);
-        if (in_array($parsedBody['channelFunction'], ChannelFunction::getFunctionNamesToStoreStateLogs())) {
-            $this->addStateLog($user, $channelId, $state, $parsedBody['timestamp'] ?? time());
+        $channelFunction = $parsedBody['channelFunction'];
+        if ($channelFunction === ChannelFunction::ACTION_TRIGGER()->getKey()) {
+            Assertion::keyExists($parsedBody, 'triggered_actions');
+            $triggeredActions = $parsedBody['triggered_actions'];
+            Assertion::isArray($triggeredActions);
+            SuplaApiCached::rememberState($channelId, $triggeredActions);
+            $this->addStateLog($user, $channelId, $triggeredActions, $parsedBody['timestamp'] ?? time());
+        } else {
+            Assertion::keyExists($parsedBody, 'state');
+            $state = $parsedBody['state'] ?? [];
+            Assertion::isArray($state);
+            $this->getApi($user)->clearCache();//$channelId);
+            SuplaApiCached::rememberState($channelId, $state);
+            if (in_array($channelFunction, ChannelFunction::getFunctionNamesToStoreStateLogs())) {
+                $this->addStateLog($user, $channelId, $state, $parsedBody['timestamp'] ?? time());
+            }
         }
         $this->triggerScenesExecution($user, $channelId);
         return $this->response(['status' => 'ok'])->withStatus(202);

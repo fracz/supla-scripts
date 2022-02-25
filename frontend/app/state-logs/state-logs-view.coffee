@@ -30,6 +30,7 @@ angular.module('supla-scripts').component 'stateLogsView',
           'IC_GASMETER',
           'WATERMETER',
           'IC_WATERMETER',
+          'ACTION_TRIGGER',
         ]
 
       loadNewestLogs: =>
