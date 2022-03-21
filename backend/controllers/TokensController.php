@@ -78,7 +78,7 @@ class TokensController extends BaseController {
         $apiCredentials = $oauthClient->issueNewAccessTokens(
             [
                 'grant_type' => 'authorization_code',
-                'redirect_uri' => ($this->getApp()->getSetting('oauth')['scriptsUrl'] ?? 'https://supla.fracz.com') . '/authorize',
+                'redirect_uri' => ($this->getApp()->getSetting('oauth')['scriptsUrl'] ?? 'https://scripts.supla.io') . '/authorize',
                 'code' => $code,
             ]
         );
@@ -223,7 +223,7 @@ class TokensController extends BaseController {
     private function registerStateWebhook(User $user, SuplaApiClientWithOAuthSupport $api) {
         $user->webhookToken = sha1(Uuid::getFactory()->uuid4());
         $webhookRequest = [
-            'url' => ($this->getApp()->getSetting('oauth')['scriptsUrl'] ?? 'https://supla.fracz.com') . '/api/state-webhook',
+            'url' => ($this->getApp()->getSetting('oauth')['scriptsUrl'] ?? 'https://scripts.supla.io') . '/api/state-webhook',
             'accessToken' => sha1($user->webhookToken),
             'refreshToken' => $user->webhookToken,
             'expiresAt' => strtotime('+1 month'),

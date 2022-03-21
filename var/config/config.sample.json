@@ -28,7 +28,7 @@
     "expirationTime": 3600,
     "expirationTimeRememberMe": 604800,
     "expirationTimeClient": 157680000,
-    "iss": "https://supla.fracz.com"
+    "iss": "https://scripts.supla.io"
   },
   "metrics": {
     "enabled": false,
