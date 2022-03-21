@@ -2,6 +2,7 @@
 
 namespace suplascripts\app\commands;
 
+use Assert\Assertion;
 use suplascripts\app\Application;
 use suplascripts\models\scene\Scene;
 use suplascripts\models\scene\SceneExecutor;
@@ -17,12 +18,13 @@ class ExecuteIntervalScenesCommand extends Command {
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
+        Assertion::true(set_time_limit(60), 'Could not set the script execution time limit.');
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
         /** @var Scene[] $scenes */
         $scenes = Scene::where(Scene::NEXT_EXECUTION_TIME, '<=', $now)
             ->where(Scene::ENABLED, true)
             ->orderBy(Scene::NEXT_EXECUTION_TIME)
-            ->limit(100)
+            ->limit(80)
             ->get();
         //  $scenes = [Scene::find('85b47744-1b47-47bc-be59-320df0ae951a')];
         Application::getInstance()->metrics->count('interval_scenes', count($scenes));
@@ -32,7 +34,11 @@ class ExecuteIntervalScenesCommand extends Command {
         $sceneExecutor = new SceneExecutor();
         foreach ($scenes as $scene) {
             Application::getInstance()->getContainer()['currentUser'] = $scene->user;
-            $sceneExecutor->executeWithFeedback($scene);
+            try {
+                $sceneExecutor->executeWithFeedback($scene);
+            } catch (\Throwable $e) {
+                // ignore
+            }
             $scene->updateNextExecutionTime();
             $scene->save();
         }

@@ -2,6 +2,7 @@
 
 namespace suplascripts\app\commands;
 
+use Assert\Assertion;
 use suplascripts\app\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,6 +18,7 @@ class DispatchTimeScenesCommand extends Command {
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
+        Assertion::true(set_time_limit(90), 'Could not set the script execution time limit.');
         $intervals = Application::getInstance()->getSetting('intervals', []);
         $phpPath = Application::getInstance()->getSetting('phpPath', '/usr/local/bin/php');
         $interval = $intervals['timeScenes'] ?? 5;

@@ -2,6 +2,7 @@
 
 namespace suplascripts\app\commands;
 
+use Assert\Assertion;
 use suplascripts\app\Application;
 use suplascripts\models\scene\PendingScene;
 use suplascripts\models\scene\SceneExecutor;
@@ -18,6 +19,7 @@ class DispatchTimeScenesExecutionCommand extends Command {
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
+        Assertion::true(set_time_limit(10), 'Could not set the script execution time limit.');
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
         $sceneExecutor = new SceneExecutor();
         $pendingScenesQuery = PendingScene::where(PendingScene::EXECUTE_AFTER, '<=', $now);
