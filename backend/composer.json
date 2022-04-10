@@ -4,6 +4,7 @@
   "require": {
     "ext-curl": "*",
     "ext-json": "*",
+    "ext-xml": "*",
     "beberlei/assert": "^2.7",
     "defuse/php-encryption": "^2.0",
     "firebase/php-jwt": "^4.0",
