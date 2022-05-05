@@ -65,8 +65,6 @@ class SceneExecutor {
             $scene->log('Zignorowano zbyt szybkie wykonanie sceny.');
             return '';
         }
-        $scene->lastUsed = new \DateTime();
-        $scene->save();
         $feedbackInterpolator = new FeedbackInterpolator($scene);
         if (is_string($scene->condition) && $scene->condition !== '') {
             $conditionMet = $feedbackInterpolator->isConditionMet($scene->condition, true);
@@ -75,6 +73,8 @@ class SceneExecutor {
                 return '';
             }
         }
+        $scene->lastUsed = new \DateTime();
+        $scene->save();
         $this->sceneStack[] = $scene->id;
         $actions = is_array($scene->actions) ? array_filter($scene->actions) : [];
         if (count($actions)) {
