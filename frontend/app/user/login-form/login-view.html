@@ -11,8 +11,11 @@
                 <login-with-supla ng-if="$ctrl.mode == 'oauth'"></login-with-supla>
                 <login-form ng-else-if="$ctrl.mode == 'password'"></login-form>
                 <login-with-token ng-else></login-with-token>
-                <div class="text-center">
+                <div class="text-center form-group">
                     <a ng-click="$ctrl.changeMode('choose')">Inne metody logowania</a>
+                </div>
+                <div class="text-center">
+                    Logując się, oświadczasz, że akceptujesz <a href="/regulamin_supla_scripts.pdf">regulamin</a>.
                 </div>
             </div>
             <div class="panel-body" ng-else>
