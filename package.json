@@ -1,8 +1,8 @@
 {
   "name": "supla-scripts",
-  "version": "4.5.1",
+  "version": "4.5.2",
   "description": "",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "build": "cd frontend && npm run -s build",
