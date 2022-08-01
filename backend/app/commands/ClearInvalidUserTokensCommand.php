@@ -15,7 +15,8 @@ class ClearInvalidUserTokensCommand extends Command {
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
-        Application::getInstance()->db->getConnection()
-            ->statement('UPDATE users SET tokenExpirationTime = null WHERE tokenExpirationTime < DATE_SUB(CURRENT_DATE, INTERVAL 2 DAY)');
+        $affected = Application::getInstance()->db->getConnection()
+            ->affectingStatement('UPDATE users SET tokenExpirationTime = null WHERE tokenExpirationTime < DATE_SUB(CURRENT_TIMESTAMP, INTERVAL 10 HOUR)');
+        $output->writeln('DISABLED: ' . $affected);
     }
 }
