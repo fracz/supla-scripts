@@ -30,6 +30,8 @@ class SendMetricsGaugesCommand extends Command {
             Application::getInstance()->metrics->gauge('users', User::count());
             Application::getInstance()->metrics->gauge('users_oauth', User::whereNotNull(User::SHORT_UNIQUE_ID)->count());
             Application::getInstance()->metrics->gauge('users_webhook', User::whereNotNull(User::WEBHOOK_TOKEN)->count());
+            $nowUtc = new \DateTime('now', new \DateTimeZone('UTC'));
+            Application::getInstance()->metrics->gauge('users_active', User::where(User::TOKEN_EXPIRATION_TIME, '>', $nowUtc)->count());
             Application::getInstance()->metrics->gauge('pending_scenes', PendingScene::count());
             Application::getInstance()->metrics->gauge('scenes', Scene::count());
             Application::getInstance()->metrics->gauge('notifications', Notification::count());
