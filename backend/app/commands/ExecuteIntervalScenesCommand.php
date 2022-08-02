@@ -39,6 +39,7 @@ class ExecuteIntervalScenesCommand extends Command {
                 $this->executeIntervalScene($scene);
                 if ($output->isVerbose()) {
                     $output->writeln('OK');
+                    $output->writeln('Next execution time: ' . $scene->nextExecutionTime->format(\DateTime::ATOM));
                 }
             } catch (\Throwable $e) {
                 if ($output->isVerbose()) {
