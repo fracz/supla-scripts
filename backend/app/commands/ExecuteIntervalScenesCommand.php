@@ -31,17 +31,35 @@ class ExecuteIntervalScenesCommand extends Command {
         if ($input->isInteractive()) {
             $output->writeln('Number of scenes: ' . count($scenes));
         }
-        $sceneExecutor = new SceneExecutor();
         foreach ($scenes as $scene) {
-            Application::getInstance()->getContainer()['currentUser'] = $scene->user;
-            try {
-                $sceneExecutor->executeWithFeedback($scene);
-            } catch (\Throwable $e) {
-                // ignore
+            if ($output->isVerbose()) {
+                $output->write('Scene ' . $scene->id . '... ');
             }
-            $scene->updateNextExecutionTime();
-            $scene->save();
+            try {
+                $this->executeIntervalScene($scene);
+                if ($output->isVerbose()) {
+                    $output->writeln('OK');
+                }
+            } catch (\Throwable $e) {
+                if ($output->isVerbose()) {
+                    $output->writeln('ERROR ON SAVE - disabling.');
+                }
+                $scene->enabled = false;
+                $scene->save();
+            }
         }
         Application::getInstance()->metrics->send();
+    }
+
+    private function executeIntervalScene(Scene $scene) {
+        $sceneExecutor = new SceneExecutor();
+        Application::getInstance()->getContainer()['currentUser'] = $scene->user;
+        try {
+            $sceneExecutor->executeWithFeedback($scene);
+        } catch (\Throwable $e) {
+            // ignore
+        }
+        $scene->updateNextExecutionTime();
+        $scene->save();
     }
 }

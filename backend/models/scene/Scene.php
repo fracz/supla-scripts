@@ -89,7 +89,7 @@ class Scene extends Model implements BelongsToUser {
         $this->voiceTriggers = array_values(array_unique(array_map(function ($trigger) {
             return trim(mb_strtolower($trigger, 'UTF-8'));
         }, $this->voiceTriggers)));
-        if ($this->trigger) {
+        if ($this->trigger && $this->enabled) {
             $feedbackInterpolator = new FeedbackInterpolator($this);
             $this->lastTriggerState = boolval($feedbackInterpolator->interpolate($this->trigger, true));
             $this->triggerChannels = $feedbackInterpolator->getUsedChannelsIds($this->trigger);
