@@ -28,6 +28,7 @@ class SuplaScriptsManager extends Application {
             new ClearInvalidUserTokensCommand(),
             new ExecuteSceneCommand(),
             new ExecuteIntervalScenesCommand(),
+            new UserUpdateCommand(),
         ]);
     }
 }
