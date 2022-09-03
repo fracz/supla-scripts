@@ -34,7 +34,7 @@ class UserUpdateCommand extends Command {
             $io->section('API Settings');
             $io->writeln(json_encode($user->getApiCredentials(), JSON_PRETTY_PRINT));
         }
-        $user->sceneLimit = min(10, intval($io->ask('Senes limit', $user->sceneLimit)));
+        $user->sceneLimit = max(10, intval($io->ask('Senes limit', $user->sceneLimit)));
         $user->save();
         $io->success('OK');
     }
