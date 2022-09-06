@@ -22,10 +22,10 @@ class StateWebhookController extends BaseController {
         $parsedBody = $this->request()->getParsedBody();
 //        $parsedBody = ['userShortUniqueId' => 'dc85740d-cb27-405b-9da3-e8be5c71ae5b', 'channelId' => 123,
 //            'state' => ['on' => true, 'connected' => true], 'timestamp' => time(),
-//            'channelFunction' => 'LIGHTSWITCH', 'authToken' => 'XXX'];
+//            'channelFunction' => 'LIGHTSWITCH', 'accessToken' => 'XXX'];
 //        $parsedBody = ['userShortUniqueId' => 'dc85740d-cb27-405b-9da3-e8be5c71ae5b', 'channelId' => 123,
 //            'triggered_actions' => ['HOLD'], 'timestamp' => time(),
-//            'channelFunction' => 'ACTION_TRIGGER', 'authToken' => 'XXX'];
+//            'channelFunction' => 'ACTION_TRIGGER', 'accessToken' => 'XXX'];
         Assertion::keyExists($parsedBody, 'userShortUniqueId');
         /** @var User $user */
         $user = $this->ensureExists(User::where([User::SHORT_UNIQUE_ID => $parsedBody['userShortUniqueId']])->first());

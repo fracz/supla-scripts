@@ -33,6 +33,8 @@ class UserUpdateCommand extends Command {
         if ($input->getOption('all')) {
             $io->section('API Settings');
             $io->writeln(json_encode($user->getApiCredentials(), JSON_PRETTY_PRINT));
+            $io->writeln('Webhook token: ' . ($user->webhookToken ?: 'NONE'));
+            $io->writeln('Webhook token (SHA1): ' . ($user->webhookToken ? sha1($user->webhookToken) : 'NONE'));
         }
         $user->sceneLimit = max(10, intval($io->ask('Senes limit', $user->sceneLimit)));
         $user->save();
