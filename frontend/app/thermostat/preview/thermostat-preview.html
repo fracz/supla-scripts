@@ -1,19 +1,19 @@
 <loader-dots ng-if="!$ctrl.thermostat"></loader-dots>
 <div ng-else loading-cover="$ctrl.changingPromise">
-    <view-title>{{ $ctrl.thermostat.label }} - termostaty</view-title>
+    <view-title>{{ $ctrl.thermostat.label }} - thermostats</view-title>
     <div ng-class="$ctrl.slug ? 'container-fluid' : 'container'">
         <div class="row thermostat-header">
             <div class="col-xs-12 text-center">
                 <div class="form-group">
-                    <label>Aktywny profil:</label>
+                    <label>Active profile:</label>
                     <select class="form-control margin-bottom" ng-model="$ctrl.thermostat.activeProfile.id"
                             ng-disabled="$ctrl.changingPromise"
                             ng-change="$ctrl.updateActiveProfile()"
                             ng-options="profile.id as profile.name for profile in $ctrl.thermostat.profiles">
-                        <option value="">Brak</option>
+                        <option value="">None</option>
                     </select>
                     <span ng-if="!$ctrl.slug">
-                        <label>Włącz / wyłącz termostat:</label>
+                        <label>ON / OFF thermostat:</label>
                         <switch ng-model="$ctrl.thermostat.enabled" ng-change="$ctrl.toggleEnabled()"
                                 ng-disabled="$ctrl.changingPromise"></switch>
                     </span>
@@ -63,11 +63,11 @@
                             </div>
                             <div class="target text-center" ng-if="$ctrl.thermostat.roomsState[room.id].forcedAction">
                                 <div ng-if="$ctrl.thermostat.roomsState[room.id].forcedUntil | unixToDate | isInNearFuture">
-                                    Manualnie ustalony stan wygaśnie za
+                                    Manual operation will expire
                                     {{ $ctrl.thermostat.roomsState[room.id].forcedUntil | unixToDate | fromNow:true }}
                                 </div>
                                 <div>
-                                    <a ng-click="$ctrl.clearRoomAction(room)">wróć do sterowania automatycznego</a>
+                                    <a ng-click="$ctrl.clearRoomAction(room)">turn back ON Auto Mode</a>
                                 </div>
                             </div>
                             <thermostat-manual-room-action-change
@@ -84,13 +84,13 @@
         <div class="row">
             <div class="col-xs-12 text-center">
                 <p class="text-muted">
-                    Kolejna automatyczna zmiana profilu nastąpi po
+                    Next automated profile change apply after
                     {{ $ctrl.thermostat.nextProfileChange | date:'short' }}
                     &nbsp;
                     <thermostat-manual-profile-time-change thermostat="$ctrl.thermostat" on-time-change="$ctrl.setNextProfileChange(time)"></thermostat-manual-profile-time-change>
                 </p>
                 <p class="text-muted" ng-hide="$ctrl.slug">
-                    Ten widok dostępny jest bez logowania pod adresem {{ $ctrl.thermostat.slug | thermostatPreviewUrl }}
+                    This view is availiable without login under url {{ $ctrl.thermostat.slug | thermostatPreviewUrl }}
                     &nbsp;
                     <copy-button text="$ctrl.thermostat.slug | thermostatPreviewUrl" link="true"></copy-button>
                 </p>
