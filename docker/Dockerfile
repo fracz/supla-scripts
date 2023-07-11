@@ -1,4 +1,4 @@
-FROM php:7.1.27-apache-stretch
+FROM php:7.1.30-apache-buster
 
 WORKDIR /var/www
 
@@ -11,7 +11,7 @@ RUN apt-get update \
       libcurl4-gnutls-dev \
       git \
       unzip \
-      mysql-client \
+      default-mysql-client \
       supervisor \
       cron \
       wget \
