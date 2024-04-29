@@ -12,7 +12,6 @@ angular.module 'supla-scripts', [
   'elif'
   'monospaced.elastic'
   'ngAnimate'
-  'ngFx'
   'ngStorage'
   'picardy.fontawesome'
   'restangular'

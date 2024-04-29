@@ -4,9 +4,10 @@
   "private": true,
   "license": "MIT",
   "scripts": {
+    "preinstall": "npx npm-force-resolutions",
     "build": "gulp build",
     "clean": "gulp clean",
-    "dist": "npm install && gulp dist",
+    "dist": "gulp dist",
     "install": "bower install",
     "lint": "gulp lint",
     "watch": "gulp watch"
@@ -16,7 +17,7 @@
     "bower": "1.8.8",
     "browser-sync": "2.18.6",
     "coffee-script": "1.11.1",
-    "compass-mixins": "0.12.10",
+    "compass-mixins-fixed": "^1.0.1",
     "del": "1.2.1",
     "gulp": "3.9.1",
     "gulp-angular-filesort": "1.1.1",
@@ -27,6 +28,7 @@
     "gulp-coffeelint": "0.6.0",
     "gulp-concat": "2.6.1",
     "gulp-concat-css": "2.3.0",
+    "gulp-dart-sass": "1.0.2",
     "gulp-filter": "4.0.0",
     "gulp-htmlmin": "3.0.0",
     "gulp-if": "2.0.2",
@@ -36,7 +38,6 @@
     "gulp-ng-config": "1.4.0",
     "gulp-replace": "0.5.4",
     "gulp-rev": "7.1.2",
-    "gulp-sass": "2.3.2",
     "gulp-sourcemaps": "1.9.1",
     "gulp-uglify": "2.0.0",
     "gulp-util": "3.0.8",
@@ -46,6 +47,9 @@
     "yargs": "8.0.2"
   },
   "engines": {
-    "node": "^4.0"
+    "node": "^14.0"
+  },
+  "resolutions": {
+    "graceful-fs": "^4.2.11"
   }
 }
