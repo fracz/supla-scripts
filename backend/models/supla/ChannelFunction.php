@@ -162,6 +162,7 @@ final class ChannelFunction extends Enum {
             self::DISTANCESENSOR,
             self::DEPTHSENSOR,
             self::PRESSURESENSOR,
+            self::CONTROLLINGTHEROLLERSHUTTER,
         ]);
     }
 }
