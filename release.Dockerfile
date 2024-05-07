@@ -6,7 +6,7 @@ RUN composer install --optimize-autoloader --ignore-platform-reqs --no-dev
 FROM node:14.21.2 AS frontend
 COPY --from=backend /var/app /var/app
 WORKDIR /var/app/frontend
-RUN mkdir bower_components && npm ci && npm run dist
+RUN npm ci && npm run bower && npm run dist
 WORKDIR /var/app
 RUN npm ci && node scripts/version-dump.js && node scripts/release.js && ls -ahl
 

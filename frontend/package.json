@@ -8,7 +8,7 @@
     "build": "gulp build",
     "clean": "gulp clean",
     "dist": "gulp dist",
-    "install": "bower install",
+    "bower": "bower install --allow-root",
     "lint": "gulp lint",
     "watch": "gulp watch"
   },
