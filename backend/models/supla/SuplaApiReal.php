@@ -128,11 +128,19 @@ class SuplaApiReal extends SuplaApi {
     }
 
     public function shut(int $channelId, int $percent = 100) {
-        return $this->client->channelShut($channelId, $percent);
+        $shutPartiallyCallback = function () use ($percent, $channelId) {
+            return $this->patch('/channels/' . $channelId, ['action' => 'shut-partially', 'percent' => $percent]);
+        };
+        $shutPartially = $shutPartiallyCallback->bindTo($this->client, SuplaApiClient::class);
+        return $shutPartially();
     }
 
     public function reveal(int $channelId, int $percent = 100) {
-        return $this->client->channelReveal($channelId, $percent);
+        $revealPartiallyCallback = function () use ($percent, $channelId) {
+            return $this->patch('/channels/' . $channelId, ['action' => 'reveal-partially', 'percent' => $percent]);
+        };
+        $revealPartially = $revealPartiallyCallback->bindTo($this->client, SuplaApiClient::class);
+        return $revealPartially();
     }
 
     private function handleError($response) {
