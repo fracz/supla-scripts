@@ -95,12 +95,27 @@ final class ChannelFunction extends Enum {
     const IC_HEATMETER = 340;
     const THERMOSTAT = 400;
     const THERMOSTATHEATPOLHOMEPLUS = 410;
+    const HVAC_THERMOSTAT = 420;
+    const HVAC_THERMOSTAT_HEAT_COOL = 422;
+    const HVAC_DRYER = 423;
+    const HVAC_FAN = 424;
+    const HVAC_THERMOSTAT_DIFFERENTIAL = 425;
+    const HVAC_DOMESTIC_HOT_WATER = 426;
     const VALVEOPENCLOSE = 500;
     const VALVEPERCENTAGE = 510;
     const GENERAL_PURPOSE_MEASUREMENT = 520;
+    const GENERAL_PURPOSE_METER = 530;
     const ACTION_TRIGGER = 700;
     const DIGIGLASS_HORIZONTAL = 800;
     const DIGIGLASS_VERTICAL = 810;
+    const CONTROLLINGTHEFACADEBLIND = 900;
+    const TERRACE_AWNING = 910;
+    const PROJECTOR_SCREEN = 920;
+    const CURTAIN = 930;
+    const VERTICAL_BLIND = 940;
+    const ROLLER_GARAGE_DOOR = 950;
+    const PUMPSWITCH = 960;
+    const HEATORCOLDSOURCESWITCH = 970;
 
     public static function getFunctionNamesToRegisterInStateWebhook() {
         return array_map(function ($function) {
@@ -137,6 +152,12 @@ final class ChannelFunction extends Enum {
             self::OPENINGSENSOR_ROLLERSHUTTER,
             self::ACTION_TRIGGER,
             self::CONTROLLINGTHEROLLERSHUTTER,
+            self::HVAC_THERMOSTAT,
+            self::HVAC_DOMESTIC_HOT_WATER,
+            self::HVAC_FAN,
+            self::HVAC_DRYER,
+            self::HVAC_THERMOSTAT_DIFFERENTIAL,
+            self::HVAC_THERMOSTAT_HEAT_COOL,
         ];
     }
 
