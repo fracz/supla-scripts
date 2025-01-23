@@ -1,17 +1,17 @@
-<h2 class="no-margin-top">{{ $ctrl.scene.id ? 'Edytuj' : 'Dodaj' }} scenę</h2>
+<h2 class="no-margin-top">{{ $ctrl.scene.id ? 'Edit' : 'Add' }} scene</h2>
 <form name="sceneForm"
       novalidate
       promise-btn
       ng-submit="$broadcast('show-errors-check-validity') && sceneForm.$valid && $ctrl.submit()">
 
     <div class="form-group" show-errors>
-        <label>Nazwa</label>
+        <label>Scene Name</label>
         <input type="text" class="form-control" name="label" required ng-model="$ctrl.scene.label">
     </div>
 
     <div class="form-group" show-errors>
         <fa name="question-circle" class="pull-right pointer" ng-click="$ctrl.atHelp = !$ctrl.atHelp"></fa>
-        <label>Uruchamiaj scenę z wyzwalacza akcji w SUPLI</label>
+        <label>Launch scene from SUPLA acction trigger</label>
         <scene-at-triggers ng-model="$ctrl.scene.actionTriggers"></scene-at-triggers>
         <div class="help-block fx-fade-up" ng-if="$ctrl.atHelp">
             <p>Scena może być wykonywana po wykryciu skonfigurowanych wyzwalaczy akcji w SUPLI.</p>
