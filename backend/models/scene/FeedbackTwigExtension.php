@@ -222,7 +222,7 @@ class FeedbackTwigExtension extends \Twig_Extension {
             }
             \FileSystemCache::store($key, $value, 60);
         }
-        if (isset($config['regex']) && $config['regex'] && preg_match($config['regex'], $value, $match)) {
+        if (isset($config['regex']) && $config['regex'] && @preg_match($config['regex'], $value, $match)) {
             return $match[$config['regexGroup'] ?? 1];
         }
         return $value;
