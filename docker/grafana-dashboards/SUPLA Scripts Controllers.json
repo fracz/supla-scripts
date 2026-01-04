@@ -292,7 +292,7 @@
           "targets": [
             {
               "refId": "A",
-              "target": "averageSeries(stats.timers.suplascripts.$Instance.endpoint.$Controller.*.time.upper_90)",
+              "target": "averageSeries(stats.timers.suplascripts.$Instance.endpoint.$Controller.*.time.mean_90)",
               "textEditor": true
             }
           ],
@@ -470,5 +470,5 @@
   },
   "timezone": "",
   "title": "SUPLA Scripts Controllers",
-  "version": 16
+  "version": 17
 }
