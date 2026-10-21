@@ -65,7 +65,7 @@ class SuplaApiClientWithOAuthSupport extends SuplaApiClient {
 
     public function remoteRequest($data, $path, $method = 'POST', $bearer = false) {
         Application::getInstance()->metrics->increment('api_call');
-        $result = parent::remoteRequest($data, $path, $method, $bearer);
+        $result = $this->sendRequest($data, $path, $method, $bearer);
         if (!$result && strpos((string) $this->getLastError(), 'HTTP: 401') === 0 && $this->user) {
             $previousCredentials = $this->user->apiCredentials;
             $this->user->refresh();
@@ -79,8 +79,49 @@ class SuplaApiClientWithOAuthSupport extends SuplaApiClient {
             if (array_key_exists('refresh_token', $this->serverParams)) {
                 (new OAuthClient())->refreshAccessToken($this->user);
                 $this->serverParams = $this->user->getApiCredentials();
-                $result = parent::remoteRequest($data, $path, $method, $bearer);
+                $result = $this->sendRequest($data, $path, $method, $bearer);
             }
+        }
+        return $result;
+    }
+
+    private function sendRequest($data, $path, $method, $bearer) {
+        if ($method !== 'GET') {
+            return parent::remoteRequest($data, $path, $method, $bearer);
+        }
+        // The legacy GET transport rejects null on PHP 8 and always appends a slash,
+        // causing redirects on strict Cloud routes and corrupting existing query strings.
+        $token = $bearer ? $this->getAccessToken() : null;
+        if ($bearer && !$token) {
+            return false;
+        }
+        $query = http_build_query($data ?? []);
+        if ($query !== '') {
+            $path .= (strpos($path, '?') === false ? '?' : '&') . $query;
+        }
+        $handle = curl_init($this->server . $path);
+        curl_setopt_array($handle, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_SSL_VERIFYPEER => $this->sslVerify,
+            CURLOPT_SSL_VERIFYHOST => $this->sslVerify ? 2 : 0,
+        ]);
+        if ($bearer) {
+            curl_setopt($handle, CURLOPT_HTTPHEADER, ['Authorization: Bearer ' . $token]);
+        }
+        $response = curl_exec($handle);
+        $status = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+        $result = false;
+        if (curl_errno($handle)) {
+            $this->setLastError('CURL ERR: ' . curl_error($handle));
+        } elseif ($status >= 200 && $status <= 299) {
+            $result = $response ? json_decode($response) : true;
+        } else {
+            $this->setLastError('HTTP: ' . $status);
+        }
+        curl_close($handle);
+        if ($this->debug) {
+            var_dump($response, $result);
+            echo $this->getLastError() . PHP_EOL;
         }
         return $result;
     }
