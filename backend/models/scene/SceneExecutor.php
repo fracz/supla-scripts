@@ -18,7 +18,7 @@ class SceneExecutor {
     private $sceneStack = [];
 
     public function executeCommandFromString($command, User $user) {
-        list($channelId, $action) = explode(self::CHANNEL_DELIMITER, $command);
+        list($channelId, $action) = explode(self::CHANNEL_DELIMITER, (string) $command);
         $args = explode(self::ARGUMENT_DELIMITER, $action);
         $action = array_shift($args);
         Assertion::inArray(

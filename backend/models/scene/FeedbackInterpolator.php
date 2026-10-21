@@ -37,12 +37,12 @@ class FeedbackInterpolator {
     }
 
     public function isConditionMet($feedback, $noCache = false): bool {
-        $conditionMet = trim($this->interpolate($feedback, $noCache));
+        $conditionMet = trim((string) $this->interpolate($feedback, $noCache));
         return boolval($conditionMet) && strlen($conditionMet) < 6;
     }
 
     public function getUsedChannelsIds($feedback): array {
-        preg_match_all('#state\(\s*(\d+)\s*\)#', $feedback, $matches);
+        preg_match_all('#state\(\s*(\d+)\s*\)#', (string) $feedback, $matches);
         $usedChannelsIds = array_unique(array_map('intval', $matches[1]));
         sort($usedChannelsIds);
         return $usedChannelsIds;
@@ -54,11 +54,11 @@ class FeedbackInterpolator {
         }
         $feedback = preg_replace_callback('#\[\[(http.+?)\]\]#i', function ($match) {
             return FeedbackTwigExtension::getUrlContents($match[1]);
-        }, $feedback);
+        }, (string) $feedback);
         $feedback = preg_replace_callback('#{{(\d+)\|(on|temperature|humidity|hi)\|(bool|number|compare):?([^}]+?)?}}#', function ($match) {
             $replacement = $this->replaceChannelState($match[1], $match[2], $match[3], isset($match[4]) ? explode(',', $match[4]) : []);
             return $replacement !== null ? $replacement : $match[0];
-        }, $feedback);
+        }, (string) $feedback);
         try {
             $template = $this->twig->createTemplate($feedback);
             $feedback = $template->render(['noCache' => $noCache]);

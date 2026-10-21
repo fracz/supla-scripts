@@ -213,7 +213,7 @@ class TokensController extends BaseController {
         $suplaApi = new SuplaApiClientWithOAuthSupport(null, ['personal_token' => $token, 'target_url' => $suplaUrl], false, false, false);
         $tokenInfo = $suplaApi->remoteRequest(null, '/api/token-info', 'GET', true);
         Assertion::isObject($tokenInfo, "Invalid token (SUPLA Cloud $suplaUrl does not authorize it).");
-        $scopes = explode(' ', $tokenInfo->scope);
+        $scopes = explode(' ', (string) $tokenInfo->scope);
         $missingScopes = array_diff(OAuthClient::REQUIRED_SCOPES, $scopes);
         Assertion::count($missingScopes, 0, 'Your token is missing some scopes: ' . implode(', ', $missingScopes));
         $userData = $suplaApi->remoteRequest(null, '/api/users/current', 'GET', true);

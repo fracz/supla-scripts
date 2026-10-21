@@ -13,7 +13,7 @@ use suplascripts\models\Model;
  */
 class ColumnEncryptor implements ColumnEncoder {
 
-    private static $PREFIX = '__SUPLA_SCRIPTS__:';
+    private static string $PREFIX = '__SUPLA_SCRIPTS__:';
     private static $key;
 
     public static function getCryptoKey(): Key {

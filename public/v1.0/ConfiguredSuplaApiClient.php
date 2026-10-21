@@ -30,7 +30,7 @@ class ConfiguredSuplaApiClient extends SuplaApiClient
 
     public function executeCommandFromString($command, $separator = ',')
     {
-        $args = explode($separator, $command);
+        $args = explode($separator, (string) $command);
         $methodSuffix = ucfirst(array_shift($args));
         if ($methodSuffix == 'Get') {
             $methodSuffix = '';

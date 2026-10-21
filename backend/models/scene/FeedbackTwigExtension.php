@@ -112,13 +112,13 @@ class FeedbackTwigExtension extends \Twig_Extension {
 
     private function html2rgb($color): array {
         if ($color[0] == '#') {
-            $color = substr($color, 1);
+            $color = substr((string) $color, 1);
         }
-        if (strlen($color) == 6) {
+        if (strlen((string) $color) == 6) {
             list($r, $g, $b) = array($color[0] . $color[1],
                 $color[2] . $color[3],
                 $color[4] . $color[5]);
-        } elseif (strlen($color) == 3) {
+        } elseif (strlen((string) $color) == 3) {
             list($r, $g, $b) = array($color[0] . $color[0],
                 $color[1] . $color[1], $color[2] . $color[2]);
         } else {
@@ -153,27 +153,27 @@ class FeedbackTwigExtension extends \Twig_Extension {
     }
 
     public function jsonDecode($json) {
-        return json_decode($json, true);
+        return json_decode((string) $json, true);
     }
 
     public function getTime($date = 'now') {
-        return date('H:i', strtotime($date));
+        return date('H:i', strtotime((string) $date));
     }
 
     public function getTimestamp($date = 'now') {
-        return strtotime($date);
+        return strtotime((string) $date);
     }
 
     public function getSunriseTime($latitude = null, $longitude = null, $date = 'now') {
         $location = $this->getLatitudeAndLongitude($latitude, $longitude);
-        $timestamp = date_sunrise(strtotime($date), SUNFUNCS_RET_TIMESTAMP, $location['latitude'], $location['longitude']);
+        $timestamp = date_sun_info(strtotime((string) $date), $location['latitude'], $location['longitude'])['sunrise'];
         $date = (new \DateTime('now'))->setTimestamp($timestamp);
         return $date->format('H:i');
     }
 
     public function getSunsetTime($latitude = null, $longitude = null, $date = 'now') {
         $location = $this->getLatitudeAndLongitude($latitude, $longitude);
-        $timestamp = date_sunset(strtotime($date), SUNFUNCS_RET_TIMESTAMP, $location['latitude'], $location['longitude']);
+        $timestamp = date_sun_info(strtotime((string) $date), $location['latitude'], $location['longitude'])['sunset'];
         $date = (new \DateTime('now'))->setTimestamp($timestamp);
         return $date->format('H:i');
     }
@@ -222,7 +222,7 @@ class FeedbackTwigExtension extends \Twig_Extension {
             }
             \FileSystemCache::store($key, $value, 60);
         }
-        if (isset($config['regex']) && $config['regex'] && @preg_match($config['regex'], $value, $match)) {
+        if (isset($config['regex']) && $config['regex'] && @preg_match($config['regex'], (string) $value, $match)) {
             return $match[$config['regexGroup'] ?? 1];
         }
         return $value;

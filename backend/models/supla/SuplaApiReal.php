@@ -102,8 +102,8 @@ class SuplaApiReal extends SuplaApi {
     }
 
     public function getSensorLogs(int $channelId, $fromTime = '-1day', $toTime = 'now'): array {
-        $fromTime = strtotime($fromTime);
-        $toTime = strtotime($toTime);
+        $fromTime = strtotime((string) $fromTime);
+        $toTime = strtotime((string) $toTime);
         $timeDiff = abs(time() - $fromTime);
         $withHumidity = false;
         $totalLogCount = $this->client->temperatureLogItemCount($channelId);

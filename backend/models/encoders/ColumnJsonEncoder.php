@@ -19,6 +19,6 @@ class ColumnJsonEncoder implements ColumnEncoder {
     }
 
     public function decode($value) {
-        return json_decode($value, true);
+        return json_decode((string) $value, true);
     }
 }

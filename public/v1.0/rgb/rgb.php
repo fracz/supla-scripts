@@ -2,7 +2,7 @@
 require __DIR__ . '/../vendor/autoload.php';
 
 $color = $_GET['color'];
-$color = hexdec($color);
+$color = hexdec((string) $color);
 $channel = $_GET['channel'];
 
 $client = new \SuplaScripts\ConfiguredSuplaApiClient('rgb');

@@ -99,10 +99,10 @@ class Notification extends Model implements BelongsToUser {
             return true;
         }
         $condition = (new FeedbackInterpolator($this))->interpolate($this->condition);
-        if (strpos($condition, FeedbackInterpolator::NOT_CONNECTED_RESPONSE) !== false) {
+        if (strpos((string) $condition, FeedbackInterpolator::NOT_CONNECTED_RESPONSE) !== false) {
             return $this->displayIfDisconnected;
         }
-        $conditions = array_map('boolval', array_map('trim', explode(' ', $condition)));
+        $conditions = array_map('boolval', array_map('trim', explode(' ', (string) $condition)));
         return count(array_filter($conditions)) >= $this->minConditions;
     }
 

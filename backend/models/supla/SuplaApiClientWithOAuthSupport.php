@@ -66,7 +66,7 @@ class SuplaApiClientWithOAuthSupport extends SuplaApiClient {
     public function remoteRequest($data, $path, $method = 'POST', $bearer = false) {
         Application::getInstance()->metrics->increment('api_call');
         $result = parent::remoteRequest($data, $path, $method, $bearer);
-        if (!$result && strpos($this->getLastError(), 'HTTP: 401') === 0 && $this->user) {
+        if (!$result && strpos((string) $this->getLastError(), 'HTTP: 401') === 0 && $this->user) {
             $previousCredentials = $this->user->apiCredentials;
             $this->user->refresh();
             if ($previousCredentials != $this->user->apiCredentials) {

@@ -101,8 +101,8 @@ class NearestColorFinder
         if (!function_exists('str2rgb')) {
             function str2rgb($str)
             {
-                $str = preg_replace('~[^0-9a-f]~', '', $str);
-                $rgb = str_split($str, 2);
+                $str = preg_replace('~[^0-9a-f]~', '', (string) $str);
+                $rgb = str_split((string) $str, 2);
                 for ($i = 0; $i < 3; $i++)
                     $rgb[$i] = intval($rgb[$i], 16);
 

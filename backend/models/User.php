@@ -93,12 +93,12 @@ class User extends Model {
     public function setPassword($plainPassword) {
         if ($plainPassword) {
             self::validatePlainPassword($plainPassword);
-            $this->password = password_hash($plainPassword, PASSWORD_DEFAULT);
+            $this->password = password_hash((string) $plainPassword, PASSWORD_DEFAULT);
         }
     }
 
     public function isPasswordValid($plainPassword): bool {
-        return password_verify($plainPassword, $this->password);
+        return password_verify((string) $plainPassword, $this->password);
     }
 
     public function validate(array $attributes = null): array {

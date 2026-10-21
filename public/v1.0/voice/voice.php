@@ -14,7 +14,7 @@ $feedbacks = [];
 
 foreach ($config as $cfg) {
     foreach ($cfg['commands'] as $cmd) {
-        $cmd = mb_strtolower($cmd, 'UTF-8');
+        $cmd = mb_strtolower((string) $cmd, 'UTF-8');
         if (strpos($command, $cmd) !== false) {
             $client->log("Executed command: $cmd ($cfg[action])");
             $results = $client->executeCommandsFromString($cfg['action']);

@@ -7,7 +7,7 @@ $client = new \SuplaScripts\ConfiguredSuplaApiClient();
 $channel = $_GET['channel'];
 $action = $_GET['action'];
 
-$methodName = 'channel' . ucfirst($action);
+$methodName = 'channel' . ucfirst((string) $action);
 $client->{$methodName}($channel);
 
 echo 'OK';

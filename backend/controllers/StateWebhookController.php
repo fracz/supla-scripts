@@ -93,7 +93,7 @@ class StateWebhookController extends BaseController {
             }
             $feedbackInterpolator = new FeedbackInterpolator($scene);
             $feedback = $feedbackInterpolator->interpolate($scene->trigger);
-            if (strpos($feedback, 'ERROR') !== false) {
+            if (strpos((string) $feedback, 'ERROR') !== false) {
                 $scene->log('Błąd przy sprawdzeniu wyzwalacza sceny. ' . $feedback);
             } else {
                 $triggerState = boolval($feedback);
