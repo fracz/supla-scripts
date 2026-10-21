@@ -15,6 +15,7 @@
     "angular-i18n": "1.6.7",
     "angular-jwt": "0.1.9",
     "angular-moment": "1.0.1",
+    "moment": "2.29.4",
     "angular-promise-buttons": "0.1.21",
     "angular-svg-round-progressbar": "0.4.8",
     "angular-toastr": "2.1.1",
@@ -37,6 +38,7 @@
   "resolutions": {
     "angular": "1.6.7",
     "angular-animate": "1.6.7",
+    "moment": "2.29.4",
     "jquery": "^2.2"
   },
   "overrides": {

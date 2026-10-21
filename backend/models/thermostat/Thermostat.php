@@ -77,7 +77,7 @@ class Thermostat extends Model implements BelongsToUser {
 
     public function validate(array $attributes = null) {
         if (!$attributes) {
-            $attributes = $this->getAttributes();
+            $attributes = $this->getDecodedAttributes();
         }
         Assertion::notEmptyKey($attributes, self::LABEL);
         Assertion::notEmptyKey($attributes, self::TARGET);

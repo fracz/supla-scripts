@@ -1,4 +1,4 @@
-FROM php:7.1.30-apache-buster
+FROM php:8.3-apache-bookworm AS runtime
 
 WORKDIR /var/www
 
@@ -8,19 +8,22 @@ RUN apt-get update \
       libpq-dev \
       ca-certificates \
       ssl-cert \
-      libcurl4-gnutls-dev \
+      libcurl4-openssl-dev \
       git \
       unzip \
       default-mysql-client \
       supervisor \
       cron \
       wget \
+      libonig-dev \
+      libzip-dev \
       zlib1g-dev \
     && update-ca-certificates \
     && docker-php-ext-install \
       pdo_mysql \
       opcache \
       curl \
+      mbstring \
       zip \
     && apt-get autoremove \
     && rm -r /var/lib/apt/lists/*
@@ -39,14 +42,21 @@ RUN { \
     && chmod 0644 /etc/cron.d/suplascripts
 
 
-ENV SUPLA_SCRIPTS_VERSION=4.5.9
-#COPY supla-scripts.tar.gz ./supla-scripts-$SUPLA_SCRIPTS_VERSION.tar.gz
-RUN wget -nc https://github.com/fracz/supla-scripts/releases/download/v${SUPLA_SCRIPTS_VERSION}/supla-scripts-${SUPLA_SCRIPTS_VERSION}.tar.gz \
-    && tar -xzf supla-scripts-${SUPLA_SCRIPTS_VERSION}.tar.gz -C . \
-    && rm -f supla-scripts-${SUPLA_SCRIPTS_VERSION}.tar.gz \
-    && chown -hR www-data:www-data .
-
 COPY utils/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY utils/entrypoint.sh /usr/local/bin/docker-php-entrypoint
-
 CMD ["/usr/bin/supervisord", "--nodaemon", "--configuration", "/etc/supervisor/conf.d/supervisord.conf"]
+
+FROM runtime AS release
+# Explicit legacy artifact target only. Older releases are not validated with PHP 8.3.
+ARG SUPLA_SCRIPTS_VERSION=4.5.9
+RUN wget -nc https://github.com/fracz/supla-scripts/releases/download/v${SUPLA_SCRIPTS_VERSION}/supla-scripts-${SUPLA_SCRIPTS_VERSION}.tar.gz \
+    && tar -xzf supla-scripts-${SUPLA_SCRIPTS_VERSION}.tar.gz -C /var/www \
+    && rm -f supla-scripts-${SUPLA_SCRIPTS_VERSION}.tar.gz \
+    && chown -hR www-data:www-data /var/www
+
+# Default image uses the current locally-built release archive from the build context.
+FROM runtime AS local
+COPY supla-scripts.tar.gz /tmp/supla-scripts.tar.gz
+RUN tar -xzf /tmp/supla-scripts.tar.gz -C /var/www \
+    && rm -f /tmp/supla-scripts.tar.gz \
+    && chown -hR www-data:www-data /var/www

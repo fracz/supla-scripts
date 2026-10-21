@@ -20,29 +20,32 @@ namespace suplascripts\models\scene;
 use Carbon\Carbon;
 use suplascripts\models\HasSuplaApi;
 use suplascripts\models\log\StateLogEntry;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 
-class FeedbackTwigExtension extends \Twig_Extension {
+class FeedbackTwigExtension extends AbstractExtension {
     use HasSuplaApi;
 
     const URL_FETCH_TIMEOUT = 5;
 
     public function getFunctions() {
         return [
-            new \Twig_Function('state', [$this, 'getChannelState'], ['needs_context' => true]),
-            new \Twig_Function('history', [$this, 'getChannelHistory']),
-            new \Twig_Function('getUrl', self::class . '::getUrlContents'),
-            new \Twig_Function('time', [$this, 'getTime']),
-            new \Twig_Function('timestamp', [$this, 'getTimestamp']),
-            new \Twig_Function('sunriseTime', [$this, 'getSunriseTime']),
-            new \Twig_Function('sunsetTime', [$this, 'getSunsetTime']),
+            new TwigFunction('state', [$this, 'getChannelState'], ['needs_context' => true]),
+            new TwigFunction('history', [$this, 'getChannelHistory']),
+            new TwigFunction('getUrl', self::class . '::getUrlContents'),
+            new TwigFunction('time', [$this, 'getTime']),
+            new TwigFunction('timestamp', [$this, 'getTimestamp']),
+            new TwigFunction('sunriseTime', [$this, 'getSunriseTime']),
+            new TwigFunction('sunsetTime', [$this, 'getSunsetTime']),
         ];
     }
 
     public function getFilters() {
         return [
-            new \Twig_Filter('colorName', [$this, 'getNearestColorName']),
-            new \Twig_Filter('colorNamePl', [$this, 'getNearestColorNamePolish']),
-            new \Twig_Filter('jsonDecode', [$this, 'jsonDecode']),
+            new TwigFilter('colorName', [$this, 'getNearestColorName']),
+            new TwigFilter('colorNamePl', [$this, 'getNearestColorNamePolish']),
+            new TwigFilter('jsonDecode', [$this, 'jsonDecode']),
         ];
     }
 

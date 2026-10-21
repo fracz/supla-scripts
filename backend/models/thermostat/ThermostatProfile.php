@@ -35,7 +35,7 @@ class ThermostatProfile extends Model {
 
     public function validate(array $attributes = null) {
         if (!$attributes) {
-            $attributes = $this->getAttributes();
+            $attributes = $this->getDecodedAttributes();
         }
         Assertion::notEmptyKey($attributes, self::NAME);
         Assertion::notEmptyKey($attributes, self::ROOMS_CONFIG, 'You must enter at least one temperature configuration.');

@@ -6,8 +6,8 @@ use Assert\Assertion;
 use suplascripts\models\BelongsToUser;
 use suplascripts\models\HasSuplaApi;
 use suplascripts\models\User;
-use Twig_Environment;
-use Twig_Loader_Array;
+use Twig\Environment;
+use Twig\Loader\ArrayLoader;
 
 class FeedbackInterpolator {
     use HasSuplaApi;
@@ -15,13 +15,13 @@ class FeedbackInterpolator {
     const URL_FETCH_TIMEOUT = 5;
     const NOT_CONNECTED_RESPONSE = ' DISCONNECTED ';
 
-    /** @var Twig_Environment */
+    /** @var Environment */
     private $twig;
     /** @var User */
     private $user;
 
     public function __construct($subject = null) {
-        $this->twig = new Twig_Environment(new Twig_Loader_Array([]));
+        $this->twig = new Environment(new ArrayLoader([]));
         $this->twig->addExtension(new FeedbackTwigExtension());
         if ($subject instanceof BelongsToUser) {
             $this->user = $subject->user;

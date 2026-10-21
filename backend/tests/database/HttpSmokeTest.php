@@ -97,6 +97,19 @@ class HttpSmokeTest extends DatabaseTestCase {
         $this->assertSame(401, $this->request('/api/users/current', 'not-a-jwt')['status']);
     }
 
+    public function testPublicInfoEndpointPreservesOptionalJwtAuthentication() {
+        $user = $this->createHttpUser('http-info-user');
+        $anonymous = $this->request('/api/info');
+        $this->assertSame(200, $anonymous['status'], $anonymous['body']);
+        $this->assertFalse(json_decode($anonymous['body'], true)['authenticated']);
+
+        $authenticated = $this->request('/api/info', $this->token($user));
+        $this->assertSame(200, $authenticated['status'], $authenticated['body']);
+        $data = json_decode($authenticated['body'], true);
+        $this->assertTrue($data['authenticated']);
+        $this->assertSame('http-info-user', $data['user']['username']);
+    }
+
     public function testValidTokenResolvesUserAndReturnsJsonWithoutStoredCredentials() {
         $user = $this->createHttpUser('http-current-user');
         $response = $this->request('/api/users/current', $this->token($user));
@@ -155,6 +168,17 @@ class HttpSmokeTest extends DatabaseTestCase {
         return $user;
     }
 
+    public function testPatchBodyTokenStillAuthenticatesWithoutOverridingBearerHeader() {
+        $user = $this->createHttpUser('http_body_token_user');
+        $body = json_encode(['__token' => $this->token($user)]);
+        $headers = ['Content-Type: application/json'];
+
+        $response = $this->request('/api/users/current', null, $headers, 'PATCH', $body);
+        $this->assertSame(200, $response['status'], $response['body']);
+        $this->assertSame((string)$user->id, json_decode($response['body'], true)['id']);
+        $this->assertSame(401, $this->request('/api/users/current', 'invalid-bearer-token', $headers, 'PATCH', $body)['status']);
+    }
+
     private function token(User $user, $key = null, $expired = false): string {
         return JWT::encode([
             'user' => ['id' => (string)$user->id],
@@ -162,15 +186,19 @@ class HttpSmokeTest extends DatabaseTestCase {
         ], $key ?? $this->jwtKey, 'HS256');
     }
 
-    private function request($path, $token = null, array $headers = []): array {
+    private function request($path, $token = null, array $headers = [], $method = 'GET', $body = null): array {
         $curl = curl_init($this->baseUrl . $path);
         curl_setopt_array($curl, [
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CONNECTTIMEOUT => 2,
             CURLOPT_TIMEOUT => 5,
             CURLOPT_PROXY => '',
-            CURLOPT_HTTPHEADER => $token === null ? $headers : ['Authorization: Bearer ' . $token],
+            CURLOPT_CUSTOMREQUEST => $method,
+            CURLOPT_HTTPHEADER => $token === null ? $headers : array_merge($headers, ['Authorization: Bearer ' . $token]),
         ]);
+        if ($body !== null) {
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
+        }
         try {
             $body = curl_exec($curl);
             if ($body === false) {

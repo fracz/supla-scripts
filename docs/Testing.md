@@ -1,8 +1,9 @@
 # Backend regression tests
 
-These characterization tests establish a baseline for the original PHP 7
-application before upgrading PHP or its runtime dependencies. They use PHPUnit
-9.6 and real Twig/Cron implementations from `backend/composer.lock`.
+These regression tests exercise the backend on PHP 8.3. Their original
+characterization was recorded on PHP 7.4 before upgrading PHP or runtime
+dependencies. They use PHPUnit and the implementations locked in
+`backend/composer.lock`.
 
 ## Run in Docker (recommended)
 
@@ -13,7 +14,7 @@ docker build -f docker/tests/Dockerfile -t supla-scripts-backend-tests .
 docker run --rm --network none supla-scripts-backend-tests --testdox
 ```
 
-The image supplies PHP 7.4, the required extensions, Composer, the locked
+The image supplies PHP 8.3, the required extensions, Composer, the locked
 dependencies, and the tests. Nothing needs to be installed on your host except
 Docker. Building needs internet access; running the tests does not.
 
@@ -34,33 +35,34 @@ server, or an HTTP server. History tests use a disposable SQLite in-memory
 database. SUPLA calls use test doubles, and `--network none` additionally
 prevents the container from reaching devices or external services.
 
-The current baseline passes 91 tests (135 assertions). The locked Twig 2.5 package emits a known
-PHP 7.4 deprecation about an unparenthesized nested ternary. It is left visible;
-vendor files are not patched and deprecations are not suppressed globally.
+The historical PHP 7.4 characterization passed 91 tests (135 assertions).
+The upgraded PHP 8.3.35 suite passes **94 tests / 146 assertions**, including
+startup/re-entrant logging checks. Runtime deprecations are left visible rather
+than suppressed globally. For a read-only run, allow disposable log/cache files:
+
+```sh
+docker run --rm --network none --read-only --tmpfs /tmp --tmpfs /app/var \
+    supla-scripts-backend-tests --order-by=random --random-order-seed=20261022
+```
 
 Travis uses the same Docker image to run tests and the existing coding-standard
-check. PHP_CodeSniffer was updated within its existing `^3.1` constraint so it
-can run on PHP 7.4. To run that check separately:
+check. To run that check separately:
 
 ```sh
 docker run --rm --network none --entrypoint composer supla-scripts-backend-tests phpcs
 ```
 
-The baseline has two pre-existing coding-standard findings, deliberately left
-unchanged: missing visibility on `$states` in
-`backend/models/supla/SuplaApiCached.php` (error), and an overlong line in
-`backend/app/commands/ClearInvalidUserTokensCommand.php` (warning). Thus the full
-lint check currently fails even though the regression tests pass. New test files
-pass the project's coding standard.
+The original characterization recorded two coding-standard findings: missing
+visibility on `$states` in `backend/models/supla/SuplaApiCached.php` (error), and
+an overlong line in `backend/app/commands/ClearInvalidUserTokensCommand.php`
+(warning). These remain in the full repository check; the changed production
+files and all test files pass targeted coding-standard checks.
 
-**PHP 7.4 and the legacy dependencies are end-of-life. This image is for isolated
-baseline tests only, not production deployment.** Do not use
-`--ignore-platform-reqs` for the baseline: dependency installation must succeed
-under the actual PHP 7.4 runtime.
-The Dockerfile uses Debian's archived Bullseye repositories because the original
-PHP 7.4 base image no longer has a supported distribution behind it.
+The test image uses PHP 8.3; it remains an isolated regression-test environment,
+not a production deployment image. Dependency installation should be checked
+against the actual runtime rather than bypassing platform requirements.
 
-## Run locally with PHP 7.4
+## Run locally with PHP 8.3
 
 With the required PHP extensions installed:
 
@@ -97,7 +99,8 @@ database suite is described under [Host MySQL integration tests](#host-mysql-int
 Test-only subclasses override the existing protected `getApi()` / `getApp()`
 methods to supply fake device access and a current-user context, without
 bootstrapping the configured application. The Twig extension methods themselves
-are not mocked. Production implementations and method signatures are unchanged.
+are not mocked. Compatibility fixes preserve the recorded behavior rather than
+weakening test expectations.
 Tests use fixed inputs and literal expected values, not real devices or the
 current clock. Temporary files, cache directories, database connections, and
 global timezone/resolver settings are cleaned up or restored between tests.
@@ -113,17 +116,18 @@ control loop, live SUPLA access, and HTTP-specific cURL behavior (headers, TLS,
 redirects, timeouts) still need separate tests. These are inline representative
 templates, not templates exported from user configurations.
 
-After the migration, run the same tests on PHP 8.3 against the upgraded
-dependencies. Passing this PHP 7.4 baseline alone does not establish PHP 8.3
-compatibility.
+The Docker runner targets PHP 8.3.35. Platform checks and the 19 strict
+source-compatibility checks also pass; see [PHP 8.3 notes](PHP83.md) for the
+targeted upgrades and remaining deployment limitations.
 
 ## Host MySQL integration tests
 
-The separate PHP 7.4 integration suite uses **only `supla_scripts_test`** on an
+The separate integration suite uses **only `supla_scripts_test`** on an
 explicitly configured MySQL-compatible server. It has been verified against the
-local MariaDB 11.7 server. Other MySQL/MariaDB versions still need separate runs.
-The database suite currently passes 16 tests / 123 assertions; the independent
-default suite continues to pass 91 tests / 135 assertions.
+local MariaDB 11.7 server on PHP 8.3.35: **18 tests / 133 assertions passed**
+with randomized order. The historical PHP 7.4 suite passed 16 tests / 123
+assertions; the two added HTTP cases protect compatibility with the upgraded
+middleware. Other MySQL/MariaDB versions still need separate runs.
 
 **Every invocation drops all tables in `supla_scripts_test` and runs all 36 real
 application migrations from scratch, even when `--filter` is supplied. Never
@@ -184,7 +188,9 @@ Coverage includes:
   JWTs, invalid signatures, and expired tokens return 401; a valid token resolves
   the correct account; reading another account returns 403. Basic authentication
   fallback is checked with correct and incorrect passwords. Account JSON is
-  checked for identity and absence of stored credentials for a token-backed user.
+   checked for identity and absence of stored credentials for a token-backed user.
+- PATCH-body `__token` authentication and Bearer-header precedence, plus the
+  public `/api/info` endpoint's optional JWT authentication.
 
 HTTP smoke tests start a temporary PHP server bound only to `127.0.0.1` on an
 ephemeral port, using disposable JWT settings and fixture credentials. No ports

@@ -21,6 +21,7 @@ class UserAndUrlAwareLogger implements LoggerInterface {
     private $nextLogFilename;
     /** @var int */
     private $level;
+    private $buildingContext = false;
 
     public function __construct($level = Logger::NOTICE, string $defaultFilename = 'app') {
         $this->level = $level;
@@ -34,21 +35,42 @@ class UserAndUrlAwareLogger implements LoggerInterface {
     }
 
     private function buildContext(array $context): array {
-        if ($this->nextLogFilename) {
-            $this->logger->setHandlers([$this->logFileHandler($this->nextLogFilename)]);
-            $this->nextLogFilename = null;
-        } else {
-            $this->logger->setHandlers($this->defaultHandlers);
+        if ($this->buildingContext) {
+            return $context;
         }
-        $app = $this->getApp();
-        if ($app) {
-            $currentUser = $app->getCurrentUser();
+
+        $this->buildingContext = true;
+        try {
+            if ($this->nextLogFilename) {
+                $this->logger->setHandlers([$this->logFileHandler($this->nextLogFilename)]);
+                $this->nextLogFilename = null;
+            } else {
+                $this->logger->setHandlers($this->defaultHandlers);
+            }
+            $app = $this->getApp();
+            $container = $app ? $app->getContainer() : null;
+            if (!$container) {
+                return $context;
+            }
+
+            $userId = 'not authenticated';
+            if ($container->has('currentUser')) {
+                $currentUser = $container->get('currentUser');
+                if ($currentUser) {
+                    $userId = $currentUser->id;
+                }
+            } elseif ($container->has('currentToken')) {
+                $token = $container->get('currentToken');
+                if (isset($token->user->id)) {
+                    $userId = $token->user->id;
+                }
+            }
             return array_merge([
                 'url' => (string)$app->request->getUri(),
-                'userId' => $currentUser ? $currentUser->id : 'not authenticated',
+                'userId' => $userId,
             ], $context);
-        } else {
-            return $context;
+        } finally {
+            $this->buildingContext = false;
         }
     }
 

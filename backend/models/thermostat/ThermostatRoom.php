@@ -49,7 +49,7 @@ class ThermostatRoom extends Model {
 
     public function validate(array $attributes = null) {
         if (!$attributes) {
-            $attributes = $this->getAttributes();
+            $attributes = $this->getDecodedAttributes();
         }
         Assertion::notEmptyKey($attributes, self::NAME);
         Assertion::notEmptyKey($attributes, self::THERMOMETERS, 'Room has to have at least one thermometer.');

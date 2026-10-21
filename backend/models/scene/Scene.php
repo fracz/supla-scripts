@@ -106,7 +106,7 @@ class Scene extends Model implements BelongsToUser {
 
     public function validate(array $attributes = null) {
         if (!$attributes) {
-            $attributes = $this->getAttributes();
+            $attributes = $this->getDecodedAttributes();
         }
         Assertion::keyExists($attributes, self::LABEL, 'Scene must have a label.');
         Assertion::notBlank($attributes[self::LABEL], 'Scene must have a label.');
@@ -157,7 +157,7 @@ class Scene extends Model implements BelongsToUser {
 
     private function getIntervals(string $fromIntervals = null) {
         $intervals = $fromIntervals ?: $this->intervals;
-        return array_filter(array_map('trim', explode('|', $intervals)));
+        return array_filter(array_map('trim', explode('|', (string) $intervals)));
     }
 
     public function calculateNextExecutionTime(): int {

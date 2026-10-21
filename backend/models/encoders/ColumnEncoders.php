@@ -27,7 +27,7 @@ trait ColumnEncoders {
         return $this->decodeAttributes(parent::getArrayableAttributes());
     }
 
-    public function getAttributes() {
+    public function getDecodedAttributes() {
         return $this->decodeAttributes(parent::getAttributes());
     }
 

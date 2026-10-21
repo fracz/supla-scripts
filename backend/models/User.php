@@ -103,7 +103,7 @@ class User extends Model {
 
     public function validate(array $attributes = null): array {
         if (!$attributes) {
-            $attributes = $this->getAttributes();
+            $attributes = $this->getDecodedAttributes();
         }
         Assertion::notEmptyKey($attributes, self::API_CREDENTIALS);
         if (!isset($attributes[self::SHORT_UNIQUE_ID])) {

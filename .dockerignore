@@ -1,4 +1,7 @@
 .idea/
+.git/
+**/.env
+**/.env.*
 node_modules/
 backend/vendor/
 frontend/node_modules/
@@ -6,6 +9,7 @@ frontend/bower_components/
 .drone.yml
 release/
 *.tar.gz
+docker/supla-scripts.tar.gz
 .dockerignore
 composer.phar
 release.sh
@@ -18,6 +22,12 @@ app/config/config_build.yml
 app/config/parameters.yml
 
 var/cache/*
+var/backups/*
+var/config/config.json
+var/mysql/*
+var/system/key
+var/ssl/*.key
+var/ssl/*.crt
 var/local/*
 var/logs/*
 var/sessions/*

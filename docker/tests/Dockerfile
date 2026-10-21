@@ -1,16 +1,15 @@
 FROM composer:2.2 AS composer
 
-# PHP 7.4 is only for characterizing the original application before migration.
-FROM php:7.4-cli-bullseye AS runtime
-
-COPY docker/tests/sources.list /etc/apt/sources.list
+# PHP 8.3 is the runtime used for current backend tests.
+FROM php:8.3-cli AS runtime
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         libcurl4-openssl-dev \
         libonig-dev \
+        libsqlite3-dev \
         unzip \
-    && docker-php-ext-install curl mbstring pdo_mysql \
+    && docker-php-ext-install curl mbstring pdo_mysql pdo_sqlite \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=composer /usr/bin/composer /usr/local/bin/composer

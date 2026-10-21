@@ -6,8 +6,7 @@ use Monolog\Logger;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
-use Slim\Middleware\HttpBasicAuthentication;
-use Slim\Middleware\JwtAuthentication;
+use Tuupola\Middleware\HttpBasicAuthentication;
 use suplascripts\app\UserAndUrlAwareLogger;
 use suplascripts\models\HasApp;
 use suplascripts\models\User;
@@ -18,7 +17,7 @@ class JwtAndBasicAuthorizationMiddleware {
 
     /** @var HttpBasicAuthentication */
     private $httpBasicAuthentication;
-    /** @var JwtAuthentication */
+    /** @var JwtWithBodyAuthentication */
     private $jwtAuthentication;
 
     public function __construct() {
@@ -26,7 +25,7 @@ class JwtAndBasicAuthorizationMiddleware {
             'path' => '/api',
             'logger' => new UserAndUrlAwareLogger(Logger::ERROR),
             'secure' => false, // do not force SSL!
-            'passthrough' => [
+            'ignore' => [
                 '/api/info',
                 '/api/oauth',
                 '/api/scenes/public',
@@ -44,23 +43,28 @@ class JwtAndBasicAuthorizationMiddleware {
         $this->jwtAuthentication = new JwtWithBodyAuthentication(array_merge($options, [
             'secret' => $this->getApp()->getSetting('jwt')['key'],
             'algorithm' => ['HS256'],
-            'callback' => function ($request, $response, $arguments) use ($container) {
-                $container['currentToken'] = $arguments['decoded'];
+            'before' => function ($request, $arguments) use ($container) {
+                $container['currentToken'] = (object) $arguments['decoded'];
             }
         ]));
 
         $this->httpBasicAuthentication = new HttpBasicAuthentication(array_merge($options, [
             'authenticator' => new UserAuthenticator(),
-            'callback' => function ($request, $response, $arguments) use ($container) {
+            'before' => function ($request, $arguments) use ($container) {
                 $container['currentUser'] = User::findByUsername($arguments['user']);
+                return $request;
             }
         ]));
     }
 
     public function authenticateWithJwt(RequestInterface $request) {
-        $this->jwtAuthentication->setRules([]);
-        return ($this->jwtAuthentication)($request, new Response(), function () {
+        $this->jwtAuthentication->withRules([]);
+        $authenticated = false;
+        $response = ($this->jwtAuthentication)($request, new Response(), function ($request, $response) use (&$authenticated) {
+            $authenticated = true;
+            return $response;
         });
+        return $authenticated ? null : $response;
     }
 
     public function __invoke(RequestInterface $request, ResponseInterface $response, callable $next) {

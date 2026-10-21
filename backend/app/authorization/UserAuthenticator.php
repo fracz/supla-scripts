@@ -2,13 +2,17 @@
 
 namespace suplascripts\app\authorization;
 
-use Slim\Middleware\HttpBasicAuthentication\AuthenticatorInterface;
+use Tuupola\Middleware\HttpBasicAuthentication\AuthenticatorInterface;
 use suplascripts\controllers\exceptions\ApiException;
 use suplascripts\models\User;
 
 class UserAuthenticator implements AuthenticatorInterface {
 
-    public function __invoke(array $arguments) {
+    public function __invoke(array $arguments): bool {
+        if (!is_string($arguments['user'] ?? null) || !is_string($arguments['password'] ?? null)) {
+            return false;
+        }
+
         try {
             $this->findMatchingUser($arguments['user'], $arguments['password']);
             return true;

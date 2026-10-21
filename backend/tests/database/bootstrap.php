@@ -61,7 +61,10 @@ $pdo->exec('SET FOREIGN_KEY_CHECKS=1');
 // its observers/singleton cannot leak into model tests. All files are container-only.
 mkdir(dirname(Application::CONFIG_PATH), 0700, true);
 mkdir(dirname(GenerateEncryptionKeyCommand::KEY_PATH), 0700, true);
-file_put_contents(Application::CONFIG_PATH, json_encode(['db' => $dbSettings]));
+file_put_contents(Application::CONFIG_PATH, json_encode([
+    'db' => $dbSettings,
+    'jwt' => ['key' => bin2hex(random_bytes(32))],
+]));
 chmod(Application::CONFIG_PATH, 0600);
 GenerateEncryptionKeyCommand::storeEncryptionKey(Key::createNewRandomKey()->saveToAsciiSafeString());
 try {

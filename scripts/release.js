@@ -29,6 +29,7 @@ function clearVendorDirectory() {
         .catch((err) => {
             console.log(err);
             spinner.fail();
+            process.exitCode = 1;
         });
 }
 
@@ -38,6 +39,7 @@ function clearReleaseDirectory() {
         if (err) {
             spinner.fail();
             console.error(err);
+            process.exitCode = 1;
         } else {
             spinner.succeed('Release directory deleted.');
             copyToReleaseDirectory();
@@ -55,11 +57,7 @@ function copyToReleaseDirectory() {
         calls.push(function (callback) {
             fs.mkdirsSync('release/' + filename);
             fs.copy(filename, 'release/' + filename, function (err) {
-                if (!err) {
-                    callback(err);
-                } else {
-                    callback(null, filename);
-                }
+                callback(err);
             });
         });
     });
@@ -67,6 +65,7 @@ function copyToReleaseDirectory() {
         if (err) {
             spinner.fail();
             console.error(err);
+            process.exitCode = 1;
         } else {
             createRequiredDirectories();
             copySingleRequiredFiles();
@@ -113,6 +112,9 @@ function deleteUnwantedSources() {
     var spinner = ora({text: 'Deleting unneeded sources.', color: 'yellow'}).start();
     del([
         'release/backend/database/drop.php',
+        'release/backend/tests',
+        'release/backend/phpunit*.xml',
+        'release/backend/rector.php',
         'release/backend/vendor/**/test/**',
         'release/backend/vendor/**/tests/**',
         'release/backend/vendor/**/doc/**',
@@ -137,6 +139,7 @@ function deleteUnwantedSources() {
         .catch((err) => {
             console.log(err);
             spinner.fail();
+            process.exitCode = 1;
         })
 }
 
@@ -146,6 +149,7 @@ function createTarArchive() {
         if (err) {
             spinner.fail();
             console.log(err);
+            process.exitCode = 1;
         } else {
             spinner.succeed('Release archive created.');
             console.log('');

@@ -3,8 +3,11 @@
 1. Install [Docker CE](https://docs.docker.com/engine/installation/) and [docker-compose](https://docs.docker.com/compose/install/).
 1. Clone this repository:
    ```
-   git clone https://github.com/fracz/supla-scripts.git
-   ```
+    git clone https://github.com/fracz/supla-scripts.git
+    ```
+1. [Build the release package](Releasing.md) and copy the generated archive to
+   `supla-scripts/docker/supla-scripts.tar.gz`. The PHP 8.3 image builds from this
+   local package; it no longer downloads the historical release by default.
 1. Run the following command to generate reasonable configuration files:
    ```
    supla-scripts/docker/suplascripts.sh
@@ -21,6 +24,7 @@
 ```
 cd supla-scripts
 git pull
+# Rebuild the release and refresh docker/supla-scripts.tar.gz; see Releasing.md.
 docker/suplascripts.sh restart
 ```
 
