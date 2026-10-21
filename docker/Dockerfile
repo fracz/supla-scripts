@@ -49,7 +49,7 @@ CMD ["/usr/bin/supervisord", "--nodaemon", "--configuration", "/etc/supervisor/c
 
 FROM runtime AS release
 # Explicit legacy artifact target only. Older releases are not validated with PHP 8.2.
-ARG SUPLA_SCRIPTS_VERSION=4.6.2
+ARG SUPLA_SCRIPTS_VERSION=4.6.3
 RUN wget -nc https://github.com/fracz/supla-scripts/releases/download/v${SUPLA_SCRIPTS_VERSION}/supla-scripts-${SUPLA_SCRIPTS_VERSION}.tar.gz \
     && tar -xzf supla-scripts-${SUPLA_SCRIPTS_VERSION}.tar.gz -C /var/www \
     && rm -f supla-scripts-${SUPLA_SCRIPTS_VERSION}.tar.gz \
