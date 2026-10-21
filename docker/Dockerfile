@@ -38,6 +38,7 @@ RUN { \
 		echo 'opcache.fast_shutdown=1'; \
 		echo 'opcache.enable_cli=1'; \
 	} > /usr/local/etc/php/conf.d/opcache-recommended.ini \
+    && echo 'session.upload_progress.enabled = Off' > /usr/local/etc/php/conf.d/session.ini \
     && a2enmod rewrite expires deflate ssl cgi alias env && a2ensite default-ssl \
     && chmod 0644 /etc/cron.d/suplascripts
 
