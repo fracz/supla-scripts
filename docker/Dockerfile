@@ -1,4 +1,4 @@
-FROM php:8.3-apache-bookworm AS runtime
+FROM php:8.2-apache-bookworm AS runtime
 
 WORKDIR /var/www
 
@@ -48,7 +48,7 @@ COPY utils/entrypoint.sh /usr/local/bin/docker-php-entrypoint
 CMD ["/usr/bin/supervisord", "--nodaemon", "--configuration", "/etc/supervisor/conf.d/supervisord.conf"]
 
 FROM runtime AS release
-# Explicit legacy artifact target only. Older releases are not validated with PHP 8.3.
+# Explicit legacy artifact target only. Older releases are not validated with PHP 8.2.
 ARG SUPLA_SCRIPTS_VERSION=4.6.1
 RUN wget -nc https://github.com/fracz/supla-scripts/releases/download/v${SUPLA_SCRIPTS_VERSION}/supla-scripts-${SUPLA_SCRIPTS_VERSION}.tar.gz \
     && tar -xzf supla-scripts-${SUPLA_SCRIPTS_VERSION}.tar.gz -C /var/www \

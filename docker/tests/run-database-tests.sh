@@ -12,7 +12,7 @@ export TEST_DB_RESET=supla_scripts_test
 
 cd "$(dirname "$0")/../.."
 echo 'Rebuilding all tables in supla_scripts_test; no other database is permitted.'
-docker build --target database-tests -f docker/tests/Dockerfile -t supla-scripts-database-tests .
+docker build --build-arg PHP_VERSION="${PHP_VERSION:-8.2}" --target database-tests -f docker/tests/Dockerfile -t supla-scripts-database-tests .
 docker run --rm --network host --read-only --tmpfs /tmp --tmpfs /app/var \
     -e TEST_DB_HOST -e TEST_DB_PORT -e TEST_DB_USERNAME -e TEST_DB_PASSWORD \
     -e TEST_DB_DATABASE -e TEST_DB_RESET \

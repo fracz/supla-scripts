@@ -1,7 +1,8 @@
+ARG PHP_VERSION=8.2
 FROM composer:2.2 AS composer
 
-# PHP 8.3 is the runtime used for current backend tests.
-FROM php:8.3-cli AS runtime
+# Test the minimum supported PHP by default; override to check newer PHP 8.x.
+FROM php:${PHP_VERSION}-cli-bookworm AS runtime
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \

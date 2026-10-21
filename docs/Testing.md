@@ -1,6 +1,6 @@
 # Backend regression tests
 
-These regression tests exercise the backend on PHP 8.3. Their original
+These regression tests exercise the backend on PHP 8.2 and 8.3. Their original
 characterization was recorded on PHP 7.4 before upgrading PHP or runtime
 dependencies. They use PHPUnit and the implementations locked in
 `backend/composer.lock`.
@@ -14,9 +14,16 @@ docker build -f docker/tests/Dockerfile -t supla-scripts-backend-tests .
 docker run --rm --network none supla-scripts-backend-tests --testdox
 ```
 
-The image supplies PHP 8.3, the required extensions, Composer, the locked
+The image supplies PHP 8.2 by default, the required extensions, Composer, the locked
 dependencies, and the tests. Nothing needs to be installed on your host except
 Docker. Building needs internet access; running the tests does not.
+
+To also check PHP 8.3 with the same locked dependencies:
+
+```sh
+docker build --build-arg PHP_VERSION=8.3 -f docker/tests/Dockerfile -t supla-scripts-backend-tests:php83 .
+docker run --rm --network none supla-scripts-backend-tests:php83
+```
 
 Rebuild after editing sources or tests. Docker caches the dependency-install
 layer when the Composer files have not changed. You can run a subset by passing
@@ -36,8 +43,9 @@ database. SUPLA calls use test doubles, and `--network none` additionally
 prevents the container from reaching devices or external services.
 
 The historical PHP 7.4 characterization passed 91 tests (135 assertions).
-The upgraded PHP 8.3.35 suite passes **94 tests / 146 assertions**, including
-startup/re-entrant logging checks. Runtime deprecations are left visible rather
+The current PHP 8.2.35 and PHP 8.3.36 suites each pass **100 tests / 180 assertions**,
+including startup/re-entrant logging and exact-URL OAuth GET checks.
+Runtime deprecations are left visible rather
 than suppressed globally. For a read-only run, allow disposable log/cache files:
 
 ```sh
@@ -45,8 +53,8 @@ docker run --rm --network none --read-only --tmpfs /tmp --tmpfs /app/var \
     supla-scripts-backend-tests --order-by=random --random-order-seed=20261022
 ```
 
-Travis uses the same Docker image to run tests and the existing coding-standard
-check. To run that check separately:
+Travis uses the same Dockerfile in a PHP 8.2/8.3 matrix to run tests, platform
+checks, strict helper checks, and the existing coding-standard check. To run that check separately:
 
 ```sh
 docker run --rm --network none --entrypoint composer supla-scripts-backend-tests phpcs
@@ -58,18 +66,20 @@ an overlong line in `backend/app/commands/ClearInvalidUserTokensCommand.php`
 (warning). These remain in the full repository check; the changed production
 files and all test files pass targeted coding-standard checks.
 
-The test image uses PHP 8.3; it remains an isolated regression-test environment,
+The test image uses PHP 8.2 by default; it remains an isolated regression-test environment,
 not a production deployment image. Dependency installation should be checked
 against the actual runtime rather than bypassing platform requirements.
 
-## Run locally with PHP 8.3
+## Run locally with PHP 8.2+
 
 With the required PHP extensions installed:
 
 ```sh
 cd backend
 composer install
+composer check-platform-reqs
 composer test
+composer test:compatibility
 ```
 
 ## Scope and limitations
@@ -90,8 +100,9 @@ database suite is described under [Host MySQL integration tests](#host-mysql-int
   SQLite to verify user/channel isolation, inclusive cutoff, descending order,
   the 20-entry limit, empty results, and decoded JSON state.
 - `timestamp()`, `sunriseTime()`, and `sunsetTime()` render fixed dates, including
-  winter/summer and timezone-derived coordinates. Solar expected values record
-  the legacy calculation exactly; changing algorithms requires reviewing them.
+   winter/summer and timezone-derived coordinates. Solar expected values are
+   strict literals for each PHP runtime: PHP 8.3 changed the built-in solar
+   altitude constant, producing times about two minutes different from PHP 8.2.
 - `getUrl()` runs real cURL against temporary `file://` fixtures, exercising
   function registration, regex arguments/capture groups, configuration arrays,
   cache reuse/isolation, and failure feedback without opening a network port.
@@ -116,15 +127,15 @@ control loop, live SUPLA access, and HTTP-specific cURL behavior (headers, TLS,
 redirects, timeouts) still need separate tests. These are inline representative
 templates, not templates exported from user configurations.
 
-The Docker runner targets PHP 8.3.35. Platform checks and the 19 strict
-source-compatibility checks also pass; see [PHP 8.3 notes](PHP83.md) for the
+The Docker runner targets PHP 8.2 by default. See [PHP compatibility notes](PHP83.md) for the
 targeted upgrades and remaining deployment limitations.
 
 ## Host MySQL integration tests
 
 The separate integration suite uses **only `supla_scripts_test`** on an
 explicitly configured MySQL-compatible server. It has been verified against the
-local MariaDB 11.7 server on PHP 8.3.35: **18 tests / 133 assertions passed**
+local MariaDB 11.7 server on PHP 8.2.35 and PHP 8.3.36:
+**18 tests / 133 assertions passed**
 with randomized order. The historical PHP 7.4 suite passed 16 tests / 123
 assertions; the two added HTTP cases protect compatibility with the upgraded
 middleware. Other MySQL/MariaDB versions still need separate runs.
@@ -148,6 +159,9 @@ Defaults are `127.0.0.1:3306`, username `root`. Override `TEST_DB_HOST`,
 environment variables, never committed, copied into the image, or written to
 host application configuration. A restricted account with schema privileges on
 `supla_scripts_test.*` is preferable to root for ongoing use.
+
+The integration image defaults to PHP 8.2; set `PHP_VERSION=8.3` to verify the
+same suite on PHP 8.3. Each run still resets only `supla_scripts_test`.
 
 The script builds the explicit `database-tests` Docker target and uses Linux
 host networking to reach MySQL on loopback; it does not require changing MySQL's

@@ -2,7 +2,7 @@
   "name": "fracz/supla-scripts",
   "type": "project",
   "require": {
-    "php": "^8.3",
+    "php": "^8.2",
     "ext-curl": "*",
     "ext-json": "*",
     "ext-xml": "*",
@@ -38,7 +38,8 @@
     "test": "phpunit",
     "rector": "rector process",
     "rector:check": "rector process --dry-run",
-    "test:php83": "@php tests/php83-smoke.php",
+    "test:compatibility": "@php tests/php83-smoke.php",
+    "test:php83": "@test:compatibility",
     "phpcs": "phpcs --ignore=*/vendor/*,*/database/migrations/* --standard=../scripts/phpcs-rules.xml .",
     "phpcbf": "phpcbf --ignore=*/vendor/*,*/database/migrations/* --standard=../scripts/phpcs-rules.xml ."
   },

@@ -6,7 +6,7 @@
     git clone https://github.com/fracz/supla-scripts.git
     ```
 1. [Build the release package](Releasing.md) and copy the generated archive to
-   `supla-scripts/docker/supla-scripts.tar.gz`. The PHP 8.3 image builds from this
+   `supla-scripts/docker/supla-scripts.tar.gz`. The PHP 8.2 image builds from this
    local package; it no longer downloads the historical release by default.
 1. Run the following command to generate reasonable configuration files:
    ```

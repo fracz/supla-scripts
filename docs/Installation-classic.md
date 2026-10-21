@@ -1,7 +1,13 @@
 # supla-scripts - classic installation
 
-1. You need to have PHP7.0+ with Apache and MySQL installed.
-    1. You already have this if you have successfully run the [SUPLA](https://github.com/SUPLA/supla-cloud) on the server.
+1. You need PHP **8.2 or newer within PHP 8.x**, Apache, and MySQL installed.
+    1. Enable the PHP extensions `curl`, `mbstring`, `pdo_mysql`, and `xml` (including DOM/SimpleXML), as well as the standard JSON/PDO extensions.
+    1. Check `php -v`: the CLI used for initialization and cron, Apache's PHP runtime,
+       and the configured `phpPath` must all meet this requirement.
+    1. Release archives include production Composer dependencies; Composer and Docker
+       are not required on the server. If a previous archive reports that it requires
+       PHP 8.3, replace it with a PHP 8.2-compatible build. Do not disable Composer's
+       platform check or manually edit generated vendor files.
 1. Create database for supla-scripts
     1. Enter the MySQL command prompt as `root`. 
        > Note: if you are on RaspberryPI based on SUPLA image, the root password

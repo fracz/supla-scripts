@@ -1,8 +1,13 @@
 language: minimal
 services:
   - docker
+env:
+  - PHP_VERSION=8.2
+  - PHP_VERSION=8.3
 before_script:
-  - docker build -f docker/tests/Dockerfile -t supla-scripts-backend-tests .
+  - docker build --build-arg PHP_VERSION="$PHP_VERSION" -f docker/tests/Dockerfile -t supla-scripts-backend-tests .
 script:
   - docker run --rm --network none supla-scripts-backend-tests --testdox
+  - docker run --rm --network none --entrypoint composer supla-scripts-backend-tests check-platform-reqs
+  - docker run --rm --network none --entrypoint composer supla-scripts-backend-tests test:compatibility
   - docker run --rm --network none --entrypoint composer supla-scripts-backend-tests phpcs

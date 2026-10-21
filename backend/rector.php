@@ -16,7 +16,7 @@ return RectorConfig::configure()
         __DIR__ . '/../supla-scripts',
     ])
     ->withSkip([__DIR__ . '/../public/v1.0/vendor'])
-    ->withPhpVersion(PhpVersion::PHP_83)
+    ->withPhpVersion(PhpVersion::PHP_82)
     // Compatibility fixes only: no constructor promotion, enums, readonly,
     // arrow functions, type additions, or other optional modernizations.
     ->withRules([

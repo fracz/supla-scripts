@@ -44,13 +44,13 @@ There are two ways to install supla-scripts.
 
 ## Backend tests
 
-See [Testing](docs/Testing.md) for the isolated PHP 8.3 Docker regression test runner
+See [Testing](docs/Testing.md) for the isolated PHP 8.2+ Docker regression test runner
 and the optional host-MySQL integration suite.
 
 ## Release packages
 
 See [Building a release locally](docs/Releasing.md) for creating the archive and
-building the PHP 8.3 deployment image from it without publishing or deploying.
+building the PHP 8.2 deployment image from it without publishing or deploying.
 
 ## Where is v1.0?
 
