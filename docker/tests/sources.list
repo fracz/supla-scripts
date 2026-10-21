@@ -1,0 +1,3 @@
+# Bullseye is archived; this image is only for isolated legacy regression tests.
+deb [check-valid-until=no] https://archive.debian.org/debian bullseye main
+deb [check-valid-until=no] https://archive.debian.org/debian-security bullseye-security main

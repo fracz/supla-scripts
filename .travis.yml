@@ -1,7 +1,8 @@
-language: php
-php:
-  - '7.1'
+language: minimal
+services:
+  - docker
 before_script:
-  - cd backend && composer install --no-interaction && cd ..
+  - docker build -f docker/tests/Dockerfile -t supla-scripts-backend-tests .
 script:
-  - cd backend && composer run-script phpcs && cd ..
+  - docker run --rm --network none supla-scripts-backend-tests --testdox
+  - docker run --rm --network none --entrypoint composer supla-scripts-backend-tests phpcs

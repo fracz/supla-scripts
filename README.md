@@ -42,8 +42,12 @@ There are two ways to install supla-scripts.
 * [using Docker](https://github.com/fracz/supla-scripts/blob/master/docs/Installation-docker.md)
 * [using a local MySQL database and local server](https://github.com/fracz/supla-scripts/blob/master/docs/Installation-classic.md)
 
+## Backend tests
+
+See [Testing](docs/Testing.md) for the isolated PHP 7.4 Docker regression test runner
+and the optional host-MySQL integration suite.
+
 ## Where is v1.0?
 
 The first version of the scripts (without GUI and multi-account support)
 is available on [`v1.0` branch](https://github.com/fracz/supla-scripts/tree/v1.0).
-
