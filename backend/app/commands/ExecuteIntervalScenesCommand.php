@@ -45,8 +45,11 @@ class ExecuteIntervalScenesCommand extends Command {
                 if ($output->isVerbose()) {
                     $output->writeln('ERROR ON SAVE - disabling.');
                 }
-                $scene->enabled = false;
-                $scene->save();
+                // Bypass save(): it recalculates the schedule that just failed.
+                Scene::where(Scene::ID, $scene->id)->update([
+                    Scene::ENABLED => false,
+                    Scene::NEXT_EXECUTION_TIME => null,
+                ]);
             }
         }
         Application::getInstance()->metrics->send();

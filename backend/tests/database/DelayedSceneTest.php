@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use suplascripts\app\Application;
 use suplascripts\app\commands\DispatchTimeScenesCommand;
 use suplascripts\app\commands\DispatchTimeScenesExecutionCommand;
+use suplascripts\app\commands\ExecuteIntervalScenesCommand;
 use suplascripts\models\scene\PendingScene;
 use suplascripts\models\scene\Scene;
 use suplascripts\models\scene\SceneExecutor;
@@ -123,5 +124,50 @@ class DelayedSceneTest extends DatabaseTestCase {
             $settings->set('phpPath', $oldPath);
             $settings->set('intervals', $oldIntervals);
         }
+    }
+
+    /** @dataProvider invalidIntervals */
+    public function testInvalidIntervalIsDisabledWithoutStoppingLaterScenes($interval) {
+        $user = $this->createUser();
+        $invalid = $user->scenes()->create([
+            Scene::LABEL => 'Invalid schedule',
+            Scene::ACTIONS => [],
+            Scene::FEEDBACK => 'Invalid scene',
+            Scene::ENABLED => true,
+        ]);
+        $valid = $user->scenes()->create([
+            Scene::LABEL => 'Valid schedule',
+            Scene::ACTIONS => [],
+            Scene::FEEDBACK => 'Valid scene executed',
+            Scene::ENABLED => true,
+        ]);
+        // Reproduce legacy persisted schedules without invoking the save hook.
+        $this->db->getConnection()->table(Scene::TABLE_NAME)->where('id', $invalid->id)->update([
+            Scene::INTERVALS => $interval,
+            Scene::NEXT_EXECUTION_TIME => '2020-01-01 00:00:00',
+        ]);
+        $this->db->getConnection()->table(Scene::TABLE_NAME)->where('id', $valid->id)->update([
+            Scene::INTERVALS => '*/5 * * * *',
+            Scene::NEXT_EXECUTION_TIME => '2020-01-02 00:00:00',
+        ]);
+
+        $tester = new CommandTester(new ExecuteIntervalScenesCommand());
+        $tester->execute([], ['interactive' => false]);
+
+        $invalid = $invalid->fresh();
+        $this->assertFalse((bool) $invalid->enabled);
+        $this->assertNull($invalid->nextExecutionTime);
+        $this->assertSame($interval, $invalid->intervals, 'Preserve the schedule so the user can correct it.');
+        $valid = $valid->fresh();
+        $this->assertTrue((bool) $valid->enabled);
+        $this->assertNotNull($valid->lastUsed, 'The dispatcher must continue after disabling the invalid scene.');
+        $this->assertGreaterThan(time(), $valid->nextExecutionTime->getTimestamp());
+    }
+
+    public function invalidIntervals() {
+        return [
+            'missing step offset' => ['/5 * * * *'],
+            'wildcard range offset' => ['*-59/5 * * * *'],
+        ];
     }
 }
